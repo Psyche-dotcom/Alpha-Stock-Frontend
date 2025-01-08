@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ChakraWrapperProvider } from "@/providers/chakraProvider";
-import Navbar from "@/components/navbar";
 import TopLoader from "@/components/top-loader";
-import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Nvidia",
@@ -18,12 +16,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <header>
-          <Navbar />
-        </header>
         <TopLoader />
         <ChakraWrapperProvider>{children}</ChakraWrapperProvider>
-        <Footer />
       </body>
     </html>
   );

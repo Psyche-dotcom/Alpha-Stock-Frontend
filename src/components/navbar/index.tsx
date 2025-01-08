@@ -18,20 +18,20 @@ const Navbar = () => {
         <Link href={"/"} passHref>
           <CompanyIcon />
         </Link>
-        <Box>
-          <Flex
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            gap={"8px"}
-            me={"auto"}
-          >
-            {navbarList.map((nav, index) => (
-              <Link href={nav.path} key={index} passHref>
-                <Box p={16}>{nav.title}</Box>
-              </Link>
-            ))}
-          </Flex>
-        </Box>
+
+        <Flex
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          gap={"8px"}
+          me={"auto"}
+        >
+          {navbarList.map((nav, index) => (
+            <Link href={nav.path} key={index} passHref>
+              <Box p={4}>{nav.title}</Box>
+            </Link>
+          ))}
+        </Flex>
+
         <Box w={"100%"} display={"flex"} gap="10px">
           <InputGroup display={"flex"} alignItems={"center"} py="16px" h="42px">
             <InputLeftElement pointerEvents="none" p="12px 16px">

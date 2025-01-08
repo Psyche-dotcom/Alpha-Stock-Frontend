@@ -7,10 +7,15 @@ import { IStock } from "@/interface/stock-view";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import MarketMove from "../market-move";
 import TradeDecision from "../trade-decision";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const Home = () => {
   return (
     <Box>
+      <header>
+        <Navbar />
+      </header>
       <Flex gap={8} py={8} h={"75vh"} mb={4}>
         <Box
           borderRadius={12}
@@ -92,6 +97,7 @@ const Home = () => {
       />
       <MarketMove />
       <TradeDecision />
+      <Footer />
     </Box>
   );
 };

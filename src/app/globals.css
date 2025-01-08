@@ -19,3 +19,12 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+.custom-table .ant-table-thead > tr > th {
+  background-color: #ebe9e6 !important;
+}

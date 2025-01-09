@@ -14,6 +14,8 @@ interface IButtonIcon {
   gap?: number;
   type?: "button" | "submit" | "reset";
   fontSize?: string;
+  flexDirection?: "row" | "row-reverse";
+  onClick?: () => void;
 }
 const ButtonIcon: FC<IButtonIcon> = ({
   variant,
@@ -28,6 +30,8 @@ const ButtonIcon: FC<IButtonIcon> = ({
   w,
   type = "button",
   fontSize,
+  flexDirection = "row",
+  onClick,
 }) => {
   return (
     <Button
@@ -37,6 +41,7 @@ const ButtonIcon: FC<IButtonIcon> = ({
       border={variant === "outline" ? border : ""}
       borderRadius={"8px"}
       p={p}
+      onClick={onClick}
       color={color}
       fontWeight={fontWeight}
       fontSize={fontSize}
@@ -51,6 +56,7 @@ const ButtonIcon: FC<IButtonIcon> = ({
       alignContent={"center"}
       gap={gap}
       w={w}
+      flexDirection={flexDirection}
     >
       {icon && <Box>{icon}</Box>}
       <Text>{text}</Text>

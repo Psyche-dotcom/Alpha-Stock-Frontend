@@ -253,17 +253,40 @@ export const sidebarList: ISidebar[] = [
 
   {
     title: "Reports",
-    path: ROUTES.USER.PLAN,
+    path: ROUTES.ADMIN.REPORTSANDFEEDBACKS,
     icon: <ReportIcon />,
   },
   {
     title: "Blog",
-    path: ROUTES.USER.PLAN,
+    path: ROUTES.ADMIN.BLOGMANAGER,
     icon: <BlogIcon />,
   },
   {
     title: "Profile",
     path: ROUTES.USER.PLAN,
     icon: <ProfileIcon />,
+  },
+];
+
+export const stockManagerFilterList = [
+  {
+    id: 1,
+    text: "Top Searches",
+    value: "search",
+  },
+  {
+    id: 2,
+    text: "Top Gainers",
+    value: "gains",
+  },
+  {
+    id: 3,
+    text: "Top Losers",
+    value: "losses",
+  },
+  {
+    id: 4,
+    text: "Blacklisted",
+    value: "blacklisted",
   },
 ];

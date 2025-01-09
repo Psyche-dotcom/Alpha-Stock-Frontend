@@ -16,5 +16,7 @@ export const ROUTES = {
     STOCK: "/admin/stock",
     PLANS: "/admin/plans",
     ANALYTICS: "/admin/analytics",
+    BLOGMANAGER: "/admin/blog-manager",
+    REPORTSANDFEEDBACKS: "/admin/reports-and-feedbacks",
   },
 };

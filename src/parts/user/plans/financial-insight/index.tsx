@@ -7,9 +7,11 @@ import Table, { ColumnsType } from "antd/es/table";
 interface DataType {
   id: number;
   isFree: boolean;
-  isRegular: boolean;
-  isStandard: boolean;
+  isRegular?: boolean;
+  isStandard?: boolean;
   feature: string;
+  isRegularText?: boolean;
+  isStandardText?: boolean;
 }
 
 const FinancialInsight = () => {
@@ -25,7 +27,7 @@ const FinancialInsight = () => {
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign="center">
           FREE
         </Text>
       ),
@@ -33,32 +35,60 @@ const FinancialInsight = () => {
       key: "isFree",
 
       render: (isFree) => {
-        return <>{isFree ? <SuccessIcon /> : <CancelIcon />}</>;
+        return (
+          <Box justifyContent={"center"} display="flex">
+            {isFree ? <SuccessIcon /> : <CancelIcon />}
+          </Box>
+        );
       },
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign="center">
           REGULAR
         </Text>
       ),
-      dataIndex: "isRegular",
-      key: "isRegular",
+      dataIndex: "",
+      key: "id",
 
-      render: (isRegular) => {
-        return <>{isRegular ? <SuccessIcon /> : <CancelIcon />}</>;
+      render: (record) => {
+        return (
+          <Box justifyContent={"center"} display="flex">
+            {record?.isRegularText ? (
+              <Text fontSize={16} fontWeight={600} color="#111928">
+                3 per month
+              </Text>
+            ) : record?.isRegular ? (
+              <SuccessIcon />
+            ) : (
+              <CancelIcon />
+            )}
+          </Box>
+        );
       },
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign={"center"}>
           STANDARD
         </Text>
       ),
-      dataIndex: "isStandard",
-      key: "isStandard",
-      render: (isStandard) => {
-        return <>{isStandard ? <SuccessIcon /> : <CancelIcon />}</>;
+      dataIndex: "",
+      key: "id",
+      render: (record) => {
+        return (
+          <Box justifyContent={"center"} display="flex">
+            {record?.isStandardText ? (
+              <Text fontSize={16} fontWeight={600} color="#111928">
+                Unlimited
+              </Text>
+            ) : record?.isStandard ? (
+              <SuccessIcon />
+            ) : (
+              <CancelIcon />
+            )}
+          </Box>
+        );
       },
     },
   ];
@@ -67,9 +97,11 @@ const FinancialInsight = () => {
     {
       id: 1,
       isFree: true,
-      isRegular: false,
+      iaRegular: false,
       isStandard: false,
       feature: "Stock Analysis",
+      isRegularText: true,
+      isStandardText: true,
     },
     {
       id: 2,
@@ -77,6 +109,8 @@ const FinancialInsight = () => {
       isRegular: false,
       isStandard: true,
       feature: "Data Table",
+      isRegularText: false,
+      isStandardText: false,
     },
     {
       id: 3,
@@ -84,6 +118,8 @@ const FinancialInsight = () => {
       isRegular: true,
       isStandard: true,
       feature: "Results",
+      isRegularText: false,
+      isStandardText: false,
     },
   ];
 

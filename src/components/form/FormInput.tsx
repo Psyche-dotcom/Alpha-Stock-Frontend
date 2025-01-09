@@ -12,6 +12,7 @@ interface IInputText {
   name: string;
   control: Control<any>;
   mb?: number;
+  style?: {};
 }
 
 const InputText: React.FC<IInputText> = ({
@@ -24,6 +25,7 @@ const InputText: React.FC<IInputText> = ({
   disabled = false,
   name,
   mb = 5,
+  style,
 }) => {
   const { field, fieldState } = useController({
     name,
@@ -44,7 +46,8 @@ const InputText: React.FC<IInputText> = ({
         maxLength={maxLength}
         placeholder={placeholder}
         {...field}
-        className="py-5 px-3 w-full mb-1 border-2 border-[#D1D5DB] bg-white rounded-lg"
+        className="py-5 px-3 mb-1 border-2 border-[#D1D5DB] bg-white rounded-lg"
+        style={style}
         disabled={disabled}
       />
       {fieldState.error && (

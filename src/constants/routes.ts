@@ -18,5 +18,7 @@ export const ROUTES = {
     ANALYTICS: "/admin/analytics",
     BLOGMANAGER: "/admin/blog-manager",
     REPORTSANDFEEDBACKS: "/admin/reports-and-feedbacks",
+    PROFILE: "/admin/profile",
+    CREATEBLOG: "/admin/blog-manager/create",
   },
 };

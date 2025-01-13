@@ -263,7 +263,7 @@ export const sidebarList: ISidebar[] = [
   },
   {
     title: "Profile",
-    path: ROUTES.USER.PLAN,
+    path: ROUTES.ADMIN.PROFILE,
     icon: <ProfileIcon />,
   },
 ];

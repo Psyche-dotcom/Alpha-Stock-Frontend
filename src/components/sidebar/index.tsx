@@ -18,7 +18,7 @@ const Sidebar = () => {
       borderRadius={"8px"}
       py={5}
       px={3}
-      h="calc(100vh - 64px)"
+      h="calc(100vh - 32px)"
       overflowY={"scroll"}
     >
       <Box mb={16} display="flex" justifyContent="center">

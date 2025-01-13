@@ -1,5 +1,7 @@
 "use client";
 
+import { LinkButton } from "@/components/button/link-button";
+import { ROUTES } from "@/constants/routes";
 import { ThreeDotsIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
@@ -147,18 +149,30 @@ const BlogManager = () => {
   ];
 
   return (
-    <Box bg="#fff" borderRadius={"8px"} pt={4} mt={4}>
-      <Box m={4} mt={0}>
-        <Text fontWeight={600} fontSize="18px" color="#111928">
-          Articles
-        </Text>
-      </Box>
-      <Table
-        className="custom-table"
-        dataSource={dataSources}
-        columns={columns}
-        //   loading={isLoading}
+    <Box>
+      <LinkButton
+        href={ROUTES.ADMIN.CREATEBLOG}
+        text="+ Create Blog"
+        variant="outline"
+        color="#3A2206"
+        p="12px 20px"
+        border="1px solid #3A2206"
+        fontWeight={500}
+        w={"content-fit"}
       />
+      <Box bg="#fff" borderRadius={"8px"} pt={4} mt={4}>
+        <Box m={4} mt={0}>
+          <Text fontWeight={600} fontSize="18px" color="#111928">
+            Articles
+          </Text>
+        </Box>
+        <Table
+          className="custom-table"
+          dataSource={dataSources}
+          columns={columns}
+          //   loading={isLoading}
+        />
+      </Box>
     </Box>
   );
 };

@@ -17,7 +17,7 @@ export default function AdminLayout({
     <>
       <Box display="flex" gap={"32px"}>
         <Sidebar />
-        <Box flex="1" h="calc(100vh - 64px)" overflow={"scroll"}>
+        <Box flex="1" h="calc(100vh - 32px)" overflow={"scroll"}>
           <Navbar />
           <>{children}</>
         </Box>

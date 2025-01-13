@@ -624,3 +624,23 @@ export const EditPlanIcon = () => {
     </svg>
   );
 };
+
+export const UploadIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="17"
+      height="16"
+      viewBox="0 0 17 16"
+      fill="none"
+    >
+      <path
+        d="M1.83331 11.3334V12.1667C1.83331 12.8297 2.09671 13.4656 2.56555 13.9345C3.03439 14.4033 3.67027 14.6667 4.33331 14.6667H12.6666C13.3297 14.6667 13.9656 14.4033 14.4344 13.9345C14.9033 13.4656 15.1666 12.8297 15.1666 12.1667V11.3334M11.8333 4.66671L8.49998 1.33337M8.49998 1.33337L5.16665 4.66671M8.49998 1.33337V11.3334"
+        stroke="#351F05"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

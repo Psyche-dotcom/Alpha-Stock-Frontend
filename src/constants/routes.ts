@@ -10,6 +10,11 @@ export const ROUTES = {
   USER: {
     COMMUNITY: "/community",
     PLAN: "/plans",
+    COMPANYINFO: "/company-info",
+    METRICS: "/metrics",
+    FINANCIALS: "/financials",
+    FUNDAMENTALS: "/fundamentals",
+    STOCKANALYSERS: "/stock-analysers",
   },
   ADMIN: {
     USERS: "/admin/user",

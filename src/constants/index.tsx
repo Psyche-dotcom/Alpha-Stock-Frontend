@@ -30,6 +30,29 @@ export const navbarList = [
   },
 ];
 
+export const userNavbarList = [
+  {
+    title: "Company Info",
+    path: ROUTES.USER.COMPANYINFO,
+  },
+  {
+    title: "Metrics",
+    path: ROUTES.USER.METRICS,
+  },
+  {
+    title: "Financials",
+    path: ROUTES.USER.FINANCIALS,
+  },
+  {
+    title: "Fundamentals",
+    path: ROUTES.USER.FUNDAMENTALS,
+  },
+  {
+    title: "Stock Analyser",
+    path: ROUTES.USER.STOCKANALYSERS,
+  },
+];
+
 export const trendingList = [
   {
     title: "What do members of congress know about these stocks that we don’t?",

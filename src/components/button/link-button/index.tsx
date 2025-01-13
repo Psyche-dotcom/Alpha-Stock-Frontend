@@ -15,6 +15,7 @@ interface ILinkButton {
   icon?: ReactNode;
   gap?: number | string;
   showText?: boolean;
+  w?: string | number;
 }
 const LinkButton: FC<ILinkButton> = ({
   href,
@@ -29,6 +30,7 @@ const LinkButton: FC<ILinkButton> = ({
   gap,
   icon,
   showText = true,
+  w = "100%",
 }) => {
   return (
     <Link href={href} passHref>
@@ -51,7 +53,7 @@ const LinkButton: FC<ILinkButton> = ({
         justifyContent={"start"}
         alignContent={"center"}
         gap={gap}
-        w="100%"
+        w={w}
       >
         {icon && <Box color={color}>{icon}</Box>}
         {showText && <Text>{text}</Text>}

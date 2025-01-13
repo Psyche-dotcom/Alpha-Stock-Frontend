@@ -1,8 +1,10 @@
 "use client";
 
+import InputText from "@/components/form/FormInput";
 import { CancelIcon, SuccessIcon } from "@/utils/icons";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Switch, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
+import { useForm } from "react-hook-form";
 
 interface DataType {
   id: number;
@@ -10,9 +12,21 @@ interface DataType {
   isRegular: boolean;
   isStandard: boolean;
   feature: string;
+  isRegularText?: boolean;
+  isStandardText?: boolean;
 }
 
-const AdminFinancialInsight = () => {
+interface IFinancialStock {
+  selectOption: string;
+}
+
+interface IFormInput {
+  email: string;
+  password: string;
+}
+
+const AdminFinancialInsight: React.FC<IFinancialStock> = ({ selectOption }) => {
+  const { handleSubmit, control } = useForm<IFormInput>();
   const columns: ColumnsType<DataType> = [
     {
       title: (
@@ -25,40 +39,119 @@ const AdminFinancialInsight = () => {
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign="center">
           FREE
         </Text>
       ),
-      dataIndex: "isFree",
-      key: "isFree",
+      dataIndex: "",
+      key: "id",
 
       render: (isFree) => {
-        return <>{isFree ? <SuccessIcon /> : <CancelIcon />}</>;
+        return (
+          <Box justifyContent={"center"} display="flex">
+            {selectOption === "edit" ? (
+              <Switch
+                // isChecked={record?.switchState}
+                // onChange={(e) => console.log(`Switch toggled: ${e.target.checked}`)}
+                size="md"
+                colorScheme="teal"
+              />
+            ) : isFree ? (
+              <SuccessIcon />
+            ) : (
+              <CancelIcon />
+            )}
+          </Box>
+        );
       },
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign="center">
           REGULAR
         </Text>
       ),
-      dataIndex: "isRegular",
-      key: "isRegular",
+      dataIndex: "",
+      key: "id",
 
-      render: (isRegular) => {
-        return <>{isRegular ? <SuccessIcon /> : <CancelIcon />}</>;
+      render: (record) => {
+        return (
+          <Box justifyContent="center" display="flex" alignItems="center">
+            {record?.isRegularText ? (
+              selectOption === "edit" ? (
+                <InputText
+                  name="regular"
+                  placeholder="3 per month"
+                  control={control}
+                  style={{
+                    padding: "12px",
+                  }}
+                  mb={0}
+                />
+              ) : (
+                <Text fontSize={16} fontWeight={600} color="#111928">
+                  Unlimited
+                </Text>
+              )
+            ) : selectOption === "edit" ? (
+              <Switch
+                // isChecked={record?.switchState}
+                // onChange={(e) => console.log(`Switch toggled: ${e.target.checked}`)}
+                size="md"
+                colorScheme="teal"
+              />
+            ) : record?.isRegular ? (
+              <SuccessIcon />
+            ) : (
+              <CancelIcon />
+            )}
+          </Box>
+        );
       },
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign="center">
           STANDARD
         </Text>
       ),
-      dataIndex: "isStandard",
-      key: "isStandard",
-      render: (isStandard) => {
-        return <>{isStandard ? <SuccessIcon /> : <CancelIcon />}</>;
+      dataIndex: "",
+      key: "id",
+      render: (record) => {
+        return (
+          <Box justifyContent="center" display="flex" alignItems="center">
+            {record?.isStandardText ? (
+              selectOption === "edit" ? (
+                <InputText
+                  name="standard"
+                  placeholder="Unlimited"
+                  control={control}
+                  style={{
+                    padding: "12px",
+                  }}
+                  mb={0}
+                />
+              ) : (
+                <Text fontSize={16} fontWeight={600} color="#111928">
+                  Unlimited
+                </Text>
+              )
+            ) : selectOption === "edit" ? (
+              <Switch
+                // isChecked={record?.switchState}
+                // onChange={(e) =>
+                //   console.log(`Switch toggled: ${e.target.checked}`)
+                // }
+                size="md"
+                colorScheme="teal"
+              />
+            ) : record?.isStandard ? (
+              <SuccessIcon />
+            ) : (
+              <CancelIcon />
+            )}
+          </Box>
+        );
       },
     },
   ];
@@ -70,6 +163,8 @@ const AdminFinancialInsight = () => {
       isRegular: false,
       isStandard: false,
       feature: "Stock Analysis",
+      isRegularText: true,
+      isStandardText: true,
     },
     {
       id: 2,
@@ -77,6 +172,8 @@ const AdminFinancialInsight = () => {
       isRegular: false,
       isStandard: true,
       feature: "Data Table",
+      isRegularText: false,
+      isStandardText: false,
     },
     {
       id: 3,
@@ -84,6 +181,8 @@ const AdminFinancialInsight = () => {
       isRegular: true,
       isStandard: true,
       feature: "Results",
+      isRegularText: false,
+      isStandardText: false,
     },
   ];
 

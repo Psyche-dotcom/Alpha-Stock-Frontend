@@ -1,4 +1,10 @@
+import StockManager from "@/parts/admin/stock-manager";
+
 const StockPage = () => {
-  return <></>;
+  return (
+    <>
+      <StockManager />
+    </>
+  );
 };
 export default StockPage;

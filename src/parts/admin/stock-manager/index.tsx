@@ -1,9 +1,9 @@
 "use client";
 
 import { ButtonIcon } from "@/components/button/button-icon";
-import { marketMoveFilterList } from "@/constants";
+import { stockManagerFilterList } from "@/constants";
 import { IMarketFilter } from "@/interface/market-filter";
-import { ShineIcon } from "@/utils/icons";
+import { ShineIcon, ThreeDotsIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
 import Image from "next/image";
@@ -23,7 +23,7 @@ interface DataType {
     isProgressive: boolean;
   };
 }
-const MarketMove = () => {
+const StockManager = () => {
   const [marketFilter, setMarketFilter] = useState<string>("search");
   const columns: ColumnsType<DataType> = [
     {
@@ -103,6 +103,22 @@ const MarketMove = () => {
         );
       },
     },
+    {
+      title: (
+        <Text fontWeight={400} fontSize={12}>
+          ACTION
+        </Text>
+      ),
+      dataIndex: "id",
+      key: "id",
+      render: () => {
+        return (
+          <Box>
+            <ThreeDotsIcon />
+          </Box>
+        );
+      },
+    },
   ];
 
   const dataSources = [
@@ -173,21 +189,25 @@ const MarketMove = () => {
             U.S. markets are open till 6:00 PM
           </Text>
         </Flex>
-        <Flex gap={2}>
-          {marketMoveFilterList.map((filter: IMarketFilter, index: number) => (
-            <ButtonIcon
-              key={index}
-              text={filter?.text}
-              variant={filter?.value === marketFilter ? "solid" : "ghost"}
-              bg={filter?.value === marketFilter ? "#351F05" : ""}
-              fontWeight={500}
-              color={filter?.value === marketFilter ? "#ffffff" : "#6B7280"}
-              fontSize="12px"
-              p={filter?.value === marketFilter ? "12px 16px" : "0px"}
-              onClick={() => setMarketFilter(filter?.value)}
-            />
-          ))}
-        </Flex>
+        <Box display="flex" justifyContent={"end"} mb={4}>
+          <Flex gap={2}>
+            {stockManagerFilterList?.map(
+              (filter: IMarketFilter, index: number) => (
+                <ButtonIcon
+                  key={index}
+                  text={filter?.text}
+                  variant={filter?.value === marketFilter ? "solid" : "ghost"}
+                  bg={filter?.value === marketFilter ? "#351F05" : ""}
+                  fontWeight={500}
+                  color={filter?.value === marketFilter ? "#ffffff" : "#6B7280"}
+                  fontSize="12px"
+                  p={filter?.value === marketFilter ? "12px 16px" : "0px"}
+                  onClick={() => setMarketFilter(filter?.value)}
+                />
+              )
+            )}
+          </Flex>
+        </Box>
       </Box>
       <Table
         className="custom-table"
@@ -200,4 +220,4 @@ const MarketMove = () => {
   );
 };
 
-export default MarketMove;
+export default StockManager;

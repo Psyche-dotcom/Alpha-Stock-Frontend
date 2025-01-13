@@ -30,6 +30,29 @@ export const navbarList = [
   },
 ];
 
+export const userNavbarList = [
+  {
+    title: "Company Info",
+    path: ROUTES.USER.COMPANYINFO,
+  },
+  {
+    title: "Metrics",
+    path: ROUTES.USER.METRICS,
+  },
+  {
+    title: "Financials",
+    path: ROUTES.USER.FINANCIALS,
+  },
+  {
+    title: "Fundamentals",
+    path: ROUTES.USER.FUNDAMENTALS,
+  },
+  {
+    title: "Stock Analyser",
+    path: ROUTES.USER.STOCKANALYSERS,
+  },
+];
+
 export const trendingList = [
   {
     title: "What do members of congress know about these stocks that we don’t?",
@@ -253,17 +276,40 @@ export const sidebarList: ISidebar[] = [
 
   {
     title: "Reports",
-    path: ROUTES.USER.PLAN,
+    path: ROUTES.ADMIN.REPORTSANDFEEDBACKS,
     icon: <ReportIcon />,
   },
   {
     title: "Blog",
-    path: ROUTES.USER.PLAN,
+    path: ROUTES.ADMIN.BLOGMANAGER,
     icon: <BlogIcon />,
   },
   {
     title: "Profile",
-    path: ROUTES.USER.PLAN,
+    path: ROUTES.ADMIN.PROFILE,
     icon: <ProfileIcon />,
+  },
+];
+
+export const stockManagerFilterList = [
+  {
+    id: 1,
+    text: "Top Searches",
+    value: "search",
+  },
+  {
+    id: 2,
+    text: "Top Gainers",
+    value: "gains",
+  },
+  {
+    id: 3,
+    text: "Top Losers",
+    value: "losses",
+  },
+  {
+    id: 4,
+    text: "Blacklisted",
+    value: "blacklisted",
   },
 ];

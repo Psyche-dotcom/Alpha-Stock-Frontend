@@ -15,7 +15,7 @@ interface IInputText {
   style?: {};
 }
 
-const InputText: React.FC<IInputText> = ({
+const TextArea: React.FC<IInputText> = ({
   label,
   rules,
   control,
@@ -41,12 +41,12 @@ const InputText: React.FC<IInputText> = ({
           {label}
         </label>
       )}
-      <input
+      <textarea
         id={name}
         maxLength={maxLength}
         placeholder={placeholder}
         {...field}
-        className="py-5 px-3 mb-1 border-2 border-[#D1D5DB] bg-white rounded-lg w-full"
+        className="py-5 px-3 mb-1 border-2 border-[#D1D5DB] bg-white rounded-lg w-full h-[256px]"
         style={style}
         disabled={disabled}
       />
@@ -57,4 +57,4 @@ const InputText: React.FC<IInputText> = ({
   );
 };
 
-export default InputText;
+export default TextArea;

@@ -39,13 +39,7 @@ const Footer = () => {
   ];
   return (
     <Box display="flex" justifyContent={"center"} gap={16} mt={"103px"}>
-      <Flex
-        alignItems={"center"}
-        gap={16}
-        bg="#fff"
-        borderRadius={"12px"}
-        p={16}
-      >
+      <Flex alignItems={"center"} gap={4} bg="#fff" borderRadius={"12px"} p={4}>
         {footerList.map((footer: IFooter, index: number) => (
           <Link href="#" passHref key={index}>
             <Box key={index}>{footer.icon}</Box>

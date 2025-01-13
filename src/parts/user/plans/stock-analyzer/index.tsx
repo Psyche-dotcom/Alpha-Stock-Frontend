@@ -25,38 +25,50 @@ const StockAnalyser = () => {
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign="center">
           FREE
         </Text>
       ),
       dataIndex: "isFree",
       key: "isFree",
       render: (isFree) => {
-        return <>{isFree ? <SuccessIcon /> : <CancelIcon />}</>;
+        return (
+          <Box justifyContent={"center"} display="flex">
+            {isFree ? <SuccessIcon /> : <CancelIcon />}
+          </Box>
+        );
       },
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign="center">
           REGULAR
         </Text>
       ),
       dataIndex: "isRegular",
       key: "isRegular",
       render: (isRegular) => {
-        return <>{isRegular ? <SuccessIcon /> : <CancelIcon />}</>;
+        return (
+          <Box justifyContent={"center"} display="flex">
+            {isRegular ? <SuccessIcon /> : <CancelIcon />}
+          </Box>
+        );
       },
     },
     {
       title: (
-        <Text fontWeight={600} fontSize={12}>
+        <Text fontWeight={600} fontSize={12} textAlign="center">
           STANDARD
         </Text>
       ),
       dataIndex: "isStandard",
       key: "isStandard",
       render: (isStandard) => {
-        return <>{isStandard ? <SuccessIcon /> : <CancelIcon />}</>;
+        return (
+          <Box justifyContent={"center"} display="flex">
+            {isStandard ? <SuccessIcon /> : <CancelIcon />}
+          </Box>
+        );
       },
     },
   ];

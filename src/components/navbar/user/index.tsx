@@ -2,12 +2,13 @@
 
 import { userNavbarList } from "@/constants";
 import { SearchIcon } from "@/utils/icons";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 import { useState } from "react";
 import { ROUTES } from "@/constants/routes";
 import { ButtonIcon } from "@/components/button/button-icon";
+import Image from "next/image";
 
 const UserNavbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -28,8 +29,8 @@ const UserNavbar = () => {
             </Link>
           ))}
         </Flex>
-        <Box w={"611px"}>
-          <Box display={"flex"} gap="10px">
+        <Box w={"611px"} gap={8} display={"flex"} alignItems="center">
+          <Box display={"flex"} gap="10px" flex={1}>
             <InputGroup
               display={"flex"}
               alignItems={"center"}
@@ -58,9 +59,25 @@ const UserNavbar = () => {
             />
           </Box>
 
-          <Box>
-            <Flex gap={"16px"} alignItems={"center"}></Flex>
-          </Box>
+          <Flex gap={"8px"} alignItems={"center"}>
+            <Box w={"48px"} h={"48px"} borderRadius={"50%"}>
+              <Image
+                src="/assets/images/card-image.png"
+                width={48}
+                height={48}
+                alt="Avatar icon"
+                className="rounded-full object-cover w-full h-full"
+              />
+            </Box>
+            <Box>
+              <Text color={"#111928"} fontWeight={600} fontSize={"16px"}>
+                Jese Leos
+              </Text>
+              <Text color={"#6B7280"} fontWeight={400} fontSize={"14px"}>
+                320 PTS
+              </Text>
+            </Box>
+          </Flex>
         </Box>
       </Flex>
     </Box>

@@ -1,9 +1,9 @@
-import Profile from "@/parts/profile";
+import Profiles from "@/parts/user/profiles";
 
 export default function ProfilePage() {
   return (
     <>
-      <Profile />
+      <Profiles />
     </>
   );
 }

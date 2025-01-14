@@ -414,3 +414,66 @@ export const metricsList = [
     text: "3.2%",
   },
 ];
+
+export const FundamentalsList = [
+  {
+    header: "Market Cap",
+    amount: "$12.69M",
+    isActive: true,
+  },
+  {
+    header: "1Yr P/E Ratio < 5000000000.00",
+    amount: "$8.45M",
+    isActive: true,
+  },
+  {
+    header: "Quarterly Growth",
+    amount: "15%",
+    isActive: false,
+  },
+  {
+    header: "Net Income",
+    amount: "$3.2M",
+    isActive: true,
+  },
+  {
+    header: "Dividend Yield",
+    amount: "4.5%",
+    isActive: false,
+  },
+  {
+    header: "Debt to Equity Ratio",
+    amount: 0.87,
+    isActive: true,
+  },
+  {
+    header: "Total Revenue",
+    amount: "$28.3M",
+    isActive: true,
+  },
+  {
+    header: "EPS (Earnings Per Share)",
+    amount: "$1.23",
+    isActive: false,
+  },
+  {
+    header: "Cash Flow",
+    amount: "$5.67M",
+    isActive: true,
+  },
+  {
+    header: "ROE (Return on Equity)",
+    amount: "13%",
+    isActive: true,
+  },
+  {
+    header: "Operating Margin",
+    amount: "9.5%",
+    isActive: false,
+  },
+  {
+    header: "Shares Outstanding",
+    amount: "50M",
+    isActive: true,
+  },
+];

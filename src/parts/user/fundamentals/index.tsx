@@ -1,26 +1,20 @@
 "use client";
 import { ButtonIcon } from "@/components/button/button-icon";
-import { metricsList } from "@/constants";
+import FundamentalsCard from "@/components/card/fundamentals-card";
+import { FundamentalsList, metricsList } from "@/constants";
 import { IButtonFilter } from "@/interface/button-filter";
+import { IFundamentalCard } from "@/interface/fundamental-card";
 import { InformationIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 const Fundamentals: React.FC = () => {
-  const [btnFilter, setBtnFilter] = useState<string>("daily");
+  const [btnFilter, setBtnFilter] = useState<string>("my-pillars");
   const filterBtn = [
-    { text: "Daily", value: "daily" },
+    { text: "My Pillars", value: "my-pillars" },
     {
-      text: "Weekly",
-      value: "weekly",
-    },
-    {
-      text: "Monthly",
-      value: "monthly",
-    },
-    {
-      text: "Yearly",
-      value: "yearly",
+      text: "Alpha Pillars",
+      value: "alpha-pillars",
     },
   ];
   return (
@@ -42,6 +36,20 @@ const Fundamentals: React.FC = () => {
           ))}
         </Flex>
       </Box>
+      <Flex wrap="wrap" gap={4}>
+        {FundamentalsList.map(
+          (fundamental: IFundamentalCard, index: number) => (
+            <Box
+              key={index}
+              flexBasis="calc(33.3% - 1rem)"
+              maxWidth="calc(33.3% - 1rem)"
+              flexGrow={1}
+            >
+              <FundamentalsCard fundamental={fundamental} />
+            </Box>
+          )
+        )}
+      </Flex>
       <Box mt={8} display="flex" gap={4}>
         <Box w="100%">
           <Box borderRadius="12px" bg={"#fff"} mb={4}>

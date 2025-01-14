@@ -12,7 +12,7 @@ import { ButtonIcon } from "@/components/button/button-icon";
 const UserNavbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   return (
-    <Box bg="#FFF" py="18.5px" px="16px" borderRadius={"12px"}>
+    <Box bg="#FFF" py="18.5px" px="16px" borderRadius={"12px"} mb={8}>
       <Flex alignItems={"center"} justifyContent="space-between">
         <Flex
           justifyContent={"space-between"}

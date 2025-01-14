@@ -1,7 +1,9 @@
+import Metrics from "@/parts/user/metrics";
+
 export default function MetricsPage() {
   return (
     <>
-      <p>Metrics info!</p>
+      <Metrics />
     </>
   );
 }

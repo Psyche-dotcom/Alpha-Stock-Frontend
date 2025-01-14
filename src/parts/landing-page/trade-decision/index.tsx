@@ -140,18 +140,19 @@ const TradeDecision = () => {
           p="12px 20px"
           color="#351F05"
           fontWeight={500}
+          w={"fit-content"}
         />
       </Box>
       <Box
         bg="#A4998C"
         pt={4}
-        mb={16}
         borderRadius={"12px"}
         ps={8}
         border="1px solid #351F05"
         w="100%"
         display={"flex"}
         alignItems={"end"}
+        h={"auto"}
       >
         <Table
           className="custom-table w-full"

@@ -158,7 +158,7 @@ const BlogManager = () => {
         p="12px 20px"
         border="1px solid #3A2206"
         fontWeight={500}
-        w={"content-fit"}
+        w={"fit-content"}
       />
       <Box bg="#fff" borderRadius={"8px"} pt={4} mt={4}>
         <Box m={4} mt={0}>

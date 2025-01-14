@@ -2,7 +2,7 @@
 
 import { ButtonIcon } from "@/components/button/button-icon";
 import { stockManagerFilterList } from "@/constants";
-import { IMarketFilter } from "@/interface/market-filter";
+import { IButtonFilter } from "@/interface/button-filter";
 import { ShineIcon, ThreeDotsIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
@@ -192,7 +192,7 @@ const StockManager = () => {
         <Box display="flex" justifyContent={"end"} mb={4}>
           <Flex gap={2}>
             {stockManagerFilterList?.map(
-              (filter: IMarketFilter, index: number) => (
+              (filter: IButtonFilter, index: number) => (
                 <ButtonIcon
                   key={index}
                   text={filter?.text}

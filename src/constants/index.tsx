@@ -313,3 +313,104 @@ export const stockManagerFilterList = [
     value: "blacklisted",
   },
 ];
+
+export const CompanyAnalysisList = [
+  {
+    id: 1,
+    count: "+16.20",
+    isProgressive: true,
+    value: 6.2,
+  },
+  {
+    id: 2,
+    count: "+16.20",
+    isProgressive: false,
+    value: 4.2,
+  },
+];
+
+export const CompanyStockList = [
+  {
+    name: "META",
+    amount: 500.0,
+    value: 3.98,
+    isProgressive: true,
+  },
+  {
+    name: "META",
+    amount: 500.0,
+    value: 3.98,
+    isProgressive: false,
+  },
+  {
+    name: "META",
+    amount: 500.0,
+    value: 3.98,
+    isProgressive: false,
+  },
+  {
+    name: "META",
+    amount: 500.0,
+    value: 3.98,
+    isProgressive: true,
+  },
+  {
+    name: "META",
+    amount: 500.0,
+    value: 3.98,
+    isProgressive: true,
+  },
+  {
+    name: "META",
+    amount: 500.0,
+    value: 3.98,
+    isProgressive: true,
+  },
+];
+
+export const metricsList = [
+  {
+    title: "Market Cap",
+    text: "$12.69M",
+  },
+  {
+    title: "Revenue",
+    text: "$8.34M",
+  },
+  {
+    title: "Profit Margin",
+    text: "24.7%",
+  },
+  {
+    title: "Active Users",
+    text: "1.2M",
+  },
+  {
+    title: "New Signups",
+    text: "45,600",
+  },
+  {
+    title: "Daily Transactions",
+    text: "230K",
+  },
+  {
+    title: "Customer Retention",
+    text: "87%",
+  },
+  {
+    title: "Employee Count",
+    text: "1,500",
+  },
+  {
+    title: "Funding",
+    text: "$5M",
+  },
+  {
+    title: "Growth Rate",
+    text: "12% QoQ",
+  },
+  {
+    title: "Churn Rate",
+    text: "3.2%",
+  },
+];

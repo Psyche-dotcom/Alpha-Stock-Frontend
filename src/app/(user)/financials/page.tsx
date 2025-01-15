@@ -1,7 +1,9 @@
+import Financials from "@/parts/user/financials";
+
 export default function FinancialsPage() {
   return (
     <>
-      <p>Financials info!</p>
+      <Financials />
     </>
   );
 }

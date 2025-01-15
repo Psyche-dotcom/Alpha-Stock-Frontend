@@ -9,6 +9,8 @@ import MarketMove from "../market-move";
 import TradeDecision from "../trade-decision";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { LinkButton } from "@/components/button/link-button";
+import { ROUTES } from "@/constants/routes";
 
 const Home = () => {
   return (
@@ -16,6 +18,28 @@ const Home = () => {
       <header>
         <Navbar />
       </header>
+      <Box mt={4} display="flex" gap={3}>
+        <LinkButton
+          href={ROUTES.ADMIN.USERS}
+          text="Admin Page"
+          variant="outline"
+          color="#3A2206"
+          p="12px 20px"
+          border="1px solid #3A2206"
+          fontWeight={500}
+          w="fit-content"
+        />
+        <LinkButton
+          href={ROUTES.USER.COMPANYINFO}
+          text="User Page"
+          variant="outline"
+          color="#3A2206"
+          p="12px 20px"
+          border="1px solid #3A2206"
+          fontWeight={500}
+          w="fit-content"
+        />
+      </Box>
       <Flex gap={8} py={8} h={"75vh"} mb={4}>
         <Box
           borderRadius={12}

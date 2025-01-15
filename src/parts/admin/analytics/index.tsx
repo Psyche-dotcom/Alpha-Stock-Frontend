@@ -18,7 +18,7 @@ interface DataType {
 }
 
 const TransactionsAnalytics = () => {
-  const [filter, setFilter] = useState<string>("Payment Insights");
+  const [filter, setFilter] = useState<string>("payment-insights");
   const dataSources = [
     {
       id: 1,
@@ -191,40 +191,36 @@ const TransactionsAnalytics = () => {
   const filterBtnList = [
     {
       id: 1,
-      status: "Payment Insights",
+      text: "Payment Insights",
+      value: "payment-insights",
     },
     {
       id: 2,
-      status: "Transaction History",
+      text: "Transaction History",
+      value: "transaction-history",
     },
 
     {
       id: 3,
-      status: "Refund Manager",
+      text: "Refund Manager",
+      value: "refund-manager",
     },
   ];
   return (
     <Box>
       <AreaChartComponent />
-      <Flex
-        mt={8}
-        gap={4}
-        bg="#fff"
-        p="10px"
-        borderRadius="8px"
-        w="fit-content"
-        mb={4}
-      >
+      <Flex mt={8} bg="#fff" p="10px" borderRadius="8px" w="fit-content" mb={4}>
         {filterBtnList.map((filterBtn, index: number) => (
           <ButtonIcon
             key={index}
-            text={filterBtn?.status}
-            variant={filter === filterBtn?.status ? "solid" : "ghost"}
-            bg={filter === filterBtn?.status ? "#351F05" : ""}
+            text={filterBtn?.text}
+            variant={filter === filterBtn?.value ? "solid" : "ghost"}
+            bg={filter === filterBtn?.value ? "#351F05" : ""}
             fontWeight={500}
-            color={filter === filterBtn?.status ? "#ffffff" : "#6B7280"}
-            fontSize="18px"
-            p={filter === filterBtn?.status ? "12px 16px" : "0px"}
+            color={filter === filterBtn?.value ? "#ffffff" : "#6B7280"}
+            fontSize="14px"
+            p={"12px"}
+            onClick={() => setFilter(filterBtn.value)}
           />
         ))}
       </Flex>

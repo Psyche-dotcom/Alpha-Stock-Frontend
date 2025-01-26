@@ -16,7 +16,7 @@ const HeaderCard: React.FC<IHeaderProps> = ({
   return (
     <Box
       borderRadius={12}
-      p={4}
+      p={{ base: 3, md: 4 }}
       w="100%"
       bg="#FFFFFF"
       border="1px solid #C2BAB2"
@@ -24,8 +24,14 @@ const HeaderCard: React.FC<IHeaderProps> = ({
       alignItems={"center"}
       justifyContent={"space-between"}
       mb={mb}
+      gap={3}
     >
-      <Text mb={2} fontWeight={700} fontSize={24} color="#111928">
+      <Text
+        mb={2}
+        fontWeight={700}
+        fontSize={{ base: 18, sm: 20, md: 22, lg: 24 }}
+        color="#111928"
+      >
         {text}
       </Text>
       <LinkButton

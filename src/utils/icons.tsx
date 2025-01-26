@@ -830,3 +830,25 @@ export const DeletePreferenceIcon = () => {
     </svg>
   );
 };
+
+export const BurgerIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+    >
+      <rect width="32" height="32" rx="16" fill="#291804" />
+      <path d="M8 10H24H8ZM8 16H24H8ZM8 22H15H8Z" fill="white" />
+      <path
+        d="M8 22H15M8 10H24H8ZM8 16H24H8Z"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

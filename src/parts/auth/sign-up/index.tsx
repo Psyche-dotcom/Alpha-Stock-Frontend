@@ -161,7 +161,9 @@ const Signup: React.FC = () => {
           />
         </Box>
       </Box>
-      <AuthCard />
+      <Box display={{ base: "none", md: "block" }} h="auto" maxWidth={585}>
+        <AuthCard />
+      </Box>
     </Flex>
   );
 };

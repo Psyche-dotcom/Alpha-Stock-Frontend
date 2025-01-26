@@ -38,8 +38,23 @@ const Footer = () => {
     },
   ];
   return (
-    <Box display="flex" justifyContent={"center"} gap={16} mt={"103px"}>
-      <Flex alignItems={"center"} gap={4} bg="#fff" borderRadius={"12px"} p={4}>
+    <Box
+      display={{ base: "grid", lg: "flex" }}
+      gridTemplateColumns={{ md: "repeat(2, 1fr)" }}
+      justifyContent={{ md: "center" }}
+      gap={4}
+      mt={"103px"}
+      flexDirection={{ base: "column", sm: "row" }}
+    >
+      <Flex
+        alignItems={"center"}
+        gap={4}
+        bg="#fff"
+        borderRadius={"8px"}
+        py={{ base: 4, md: 0 }}
+        px={4}
+        w="fit-content"
+      >
         {footerList.map((footer: IFooter, index: number) => (
           <Link href="#" passHref key={index}>
             <Box key={index}>{footer.icon}</Box>
@@ -51,9 +66,10 @@ const Footer = () => {
         text="Terms and Conditions"
         variant="solid"
         bg="#FFFFFF"
-        p="16px"
+        p={4}
         color="#000"
         fontWeight={500}
+        w={"fit-content"}
       />
       <LinkButton
         href={"#"}
@@ -63,6 +79,7 @@ const Footer = () => {
         p="16px"
         color="#000"
         fontWeight={500}
+        w={"fit-content"}
       />
       <LinkButton
         href={"#"}
@@ -72,6 +89,7 @@ const Footer = () => {
         p="16px"
         color="#000"
         fontWeight={500}
+        w={"fit-content"}
       />
     </Box>
   );

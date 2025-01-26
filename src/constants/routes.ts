@@ -19,9 +19,10 @@ export const ROUTES = {
   },
   ADMIN: {
     USERS: "/admin/user",
-    STOCK: "/admin/stock",
-    PLANS: "/admin/plans",
-    ANALYTICS: "/admin/analytics",
+    STOCKS: "/admin/stocks",
+    SUBSCRIPTIONS: "/admin/subscriptions",
+    ACCOUNTING: "/admin/accounting",
+    FORUM: "  /admin/forum",
     BLOGMANAGER: "/admin/blog-manager",
     REPORTSANDFEEDBACKS: "/admin/reports-and-feedbacks",
     PROFILE: "/admin/profile",

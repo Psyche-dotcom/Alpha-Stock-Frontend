@@ -254,23 +254,23 @@ export const sidebarList: ISidebar[] = [
     icon: <UserIcon />,
   },
   {
-    title: "Stock",
-    path: ROUTES.ADMIN.STOCK,
+    title: "Stocks",
+    path: ROUTES.ADMIN.STOCKS,
     icon: <StockIcon />,
   },
   {
-    title: "Plans",
-    path: ROUTES.ADMIN.PLANS,
+    title: "Subscriptions",
+    path: ROUTES.ADMIN.SUBSCRIPTIONS,
     icon: <PlanIcon />,
   },
   {
-    title: "Analytics",
-    path: ROUTES.ADMIN.ANALYTICS,
+    title: "Accounting",
+    path: ROUTES.ADMIN.ACCOUNTING,
     icon: <AnalyticsIcon />,
   },
   {
-    title: "Chats",
-    path: ROUTES.USER.PLAN,
+    title: "Forum",
+    path: ROUTES.ADMIN.FORUM,
     icon: <MessageIcon />,
   },
 

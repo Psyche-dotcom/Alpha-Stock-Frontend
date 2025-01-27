@@ -14,10 +14,18 @@ const StockCard: React.FC<IStockProps> = ({ stock }) => {
         justifyContent={"space-between"}
         mb={"13px"}
       >
-        <Text color={"#111928"} fontSize={20} fontWeight={700}>
+        <Text
+          color={"#111928"}
+          fontSize={{ base: 16, lg: 20 }}
+          fontWeight={700}
+        >
           {stock?.title}
         </Text>
-        <Text color={"#6B7280"} fontSize={24} fontWeight={600}>
+        <Text
+          color={"#6B7280"}
+          fontSize={{ base: 20, xl: 24 }}
+          fontWeight={600}
+        >
           {stock?.total}
         </Text>
       </Box>

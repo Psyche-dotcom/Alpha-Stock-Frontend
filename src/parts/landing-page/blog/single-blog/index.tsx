@@ -27,9 +27,20 @@ const BlogDetails = () => {
           What do members of congress know about these stocks that we don’t?
         </Text>
       </Flex>
-      <Flex gap={8}>
-        <Box bg="#fff" p={8} borderRadius={"12px"} width="100%">
-          <Text fontWeight={600} fontSize={36} color="#111928" mb="8px">
+      <Flex gap={{ base: 3, lg: 4 }} flexDir={{ base: "column", md: "row" }}>
+        <Box
+          bg="#fff"
+          p={{ base: 4, lg: 6, xl: 8 }}
+          borderRadius={"12px"}
+          width="100%"
+        >
+          <Text
+            fontWeight={600}
+            color="#111928"
+            mb="8px"
+            fontSize={{ base: "28px", lg: "32px", xl: "36px" }}
+            lineHeight={{ base: "42px", md: "48px", xl: "54px" }}
+          >
             What do members of congress know about these stocks that we don’t?
           </Text>
           <Text fontWeight={500} fontSize={14} color="#111928" mb="32px">
@@ -45,7 +56,12 @@ const BlogDetails = () => {
               className="object-cover"
             />
           </Box>
-          <Text fontWeight={700} fontSize={16} color="#111928" mb="32px">
+          <Text
+            fontWeight={700}
+            fontSize={{ base: 14, lg: 16 }}
+            color="#111928"
+            mb={{ base: "16px", md: "24px", lg: "28px", xl: "32px" }}
+          >
             Lorem ipsum dolor sit amet. Ut ratione fugit et alias fugiat est
             similique reprehenderit non nisi repellat ut voluptatibus officia et
             nemo dolore aut dolorum necessitatibus. Non dolor dolores vel esse
@@ -60,10 +76,20 @@ const BlogDetails = () => {
             laborum qui quia obcaecati 33 tempora magni. At optio quos sit autem
             earum eos doloribus accusamus.
           </Text>
-          <Text fontWeight={700} fontSize={24} color="#111928" mb="8px">
+          <Text
+            fontWeight={700}
+            fontSize={{ base: 20, lg: 24 }}
+            color="#111928"
+            mb="8px"
+          >
             Lorem ipsum dolor sit amet. Ut ratione fugit et alias
           </Text>
-          <Text fontWeight={700} fontSize={16} color="#111928" mb="32px">
+          <Text
+            fontWeight={700}
+            fontSize={{ base: 14, lg: 16 }}
+            color="#111928"
+            mb={{ base: "16px", md: "24px", lg: "28px", xl: "32px" }}
+          >
             Lorem ipsum dolor sit amet. Ut ratione fugit et alias fugiat est
             similique reprehenderit non nisi repellat ut voluptatibus officia et
             nemo dolore aut dolorum necessitatibus. Non dolor dolores vel esse
@@ -78,7 +104,7 @@ const BlogDetails = () => {
             laborum qui quia obcaecati 33 tempora magni. At optio quos sit autem
             earum eos doloribus accusamus.
           </Text>
-          <Box mb="32px">
+          <Box mb={{ base: "20px", md: "28px", xl: "32px" }}>
             <Image
               height={501}
               width={896}
@@ -89,7 +115,7 @@ const BlogDetails = () => {
           </Box>
         </Box>
 
-        <Flex flexDirection={"column"} gap={4} maxWidth={472}>
+        <Flex flexDirection={"column"} gap={4} w={{ base: "100%", md: 472 }}>
           {commentList.map((comment: IComment, index: number) => (
             <CommentCard comment={comment} key={index} />
           ))}

@@ -7,7 +7,7 @@ interface ILinkButton {
   text: string;
   variant?: string;
   bg?: string;
-  p?: string | number;
+  p?: string | number | object;
   color?: string;
   border?: string;
   fontWeight?: number;

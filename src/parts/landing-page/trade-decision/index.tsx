@@ -123,12 +123,33 @@ const TradeDecision = () => {
   ];
 
   return (
-    <Flex gap={8} h="100%">
-      <Box py={"84px"} bg="#180E03" px={8} borderRadius="12px" w="100%">
-        <Text mb={4} fontWeight={600} fontSize={60} color="#EBE9E6">
+    <Flex
+      gap={{ base: 4, lg: 8 }}
+      h="100%"
+      flexDirection={{ base: "column", lg: "row" }}
+    >
+      <Box
+        py={{ base: 5, sm: 6, md: 8, lg: "64px", xl: "84px" }}
+        bg="#180E03"
+        px={{ base: 5, sm: 6, md: 8 }}
+        borderRadius="12px"
+        w="100%"
+      >
+        <Text
+          mb={4}
+          fontWeight={600}
+          color="#EBE9E6"
+          fontSize={{ base: "30px", sm: "36px", md: "48px", xl: "60px" }}
+          lineHeight={{ base: "43.2px", md: "50px", lg: "59px" }}
+        >
           Make informed trade decisions after analysing your ROI
         </Text>
-        <Text fontWeight={400} fontSize={18} color="#C2BAB2" mb={4}>
+        <Text
+          fontWeight={400}
+          fontSize={{ md: 16, lg: 18 }}
+          color="#C2BAB2"
+          mb={4}
+        >
           Using our stock analysis system, you can now predict your return on
           investment on any stock in your portfolio for better investments.
         </Text>
@@ -145,7 +166,7 @@ const TradeDecision = () => {
       </Box>
       <Box
         bg="#A4998C"
-        pt={4}
+        pt={{ base: 4, sm: 6, md: 8 }}
         borderRadius={"12px"}
         ps={8}
         border="1px solid #351F05"

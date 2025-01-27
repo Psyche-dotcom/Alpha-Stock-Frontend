@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
+import { Inter } from "@next/font/google";
 
 export const colors = {
   brand: {
@@ -8,10 +9,6 @@ export const colors = {
     tertiary: "#B6CE1B",
     gray: "#D8E1E8",
     dark: "#021729",
-  },
-  fonts: {
-    heading: `'Satoshi', 'Open Sans'`,
-    body: `'Satoshi','Raleway', Poppins`,
   },
   status: {
     error: "#F02B2B",
@@ -29,6 +26,7 @@ export const chakraTheme = extendTheme({
         color: "gray.700",
         backgroundColor: "#EBE9E6",
       },
+
       body: {
         padding: "32px",
       },

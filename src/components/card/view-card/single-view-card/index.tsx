@@ -16,10 +16,23 @@ const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
-      w="100%"
+      flex={1}
     >
-      <Box borderRadius={12} p={2.5} w="100%" bg="#FFFFFF" maxWidth="702px">
-        <Text color={"#111928"} fontSize={"36px"} fontWeight={600} mb={2.5}>
+      <Box
+        borderRadius={12}
+        p={2.5}
+        w="100%"
+        bg="#FFFFFF"
+        maxWidth="702px"
+        mt={{ base: "217px", md: "0px" }}
+      >
+        <Text
+          color={"#111928"}
+          fontSize={{ base: "28px", lg: "32px", xl: "36px" }}
+          fontWeight={600}
+          mb={2.5}
+          lineHeight={{ base: "42px", md: "48px", xl: "54px" }}
+        >
           {card?.title}
         </Text>
         <Text color={"#6B7280"} fontSize={"12px"} fontWeight={400}>

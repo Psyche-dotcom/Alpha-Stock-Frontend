@@ -1,202 +1,152 @@
 "use client";
 
-import { ButtonIcon } from "@/components/button/button-icon";
+import { TableComponent } from "@/components/custom-table";
+import { Button } from "@/components/ui/button";
 import { marketMoveFilterList } from "@/constants";
 import { IButtonFilter } from "@/interface/button-filter";
+import { MarketMove } from "@/types";
 import { ShineIcon } from "@/utils/icons";
-import { Box, Flex, Text } from "@chakra-ui/react";
-import Table, { ColumnsType } from "antd/es/table";
 import Image from "next/image";
 import { useState } from "react";
 
-interface DataType {
-  id: number;
-  url: string;
-  agent: string;
-  price: number;
-  change: {
-    value: number;
-    isProgressive: boolean;
-  };
-  changePercent: {
-    percent: number;
-    isProgressive: boolean;
-  };
-}
 const MarketMove = () => {
   const [marketFilter, setMarketFilter] = useState<string>("search");
-  const columns: ColumnsType<DataType> = [
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          SYMBOL
-        </Text>
-      ),
-      dataIndex: "",
-      key: "id",
-      render: (record: DataType) => {
-        return (
-          <Flex gap={2} alignItems={"center"}>
-            <Box h="24px" w="24px">
-              <Image
-                src={record?.url || "/assets/images/card-image.png"}
-                alt={record?.agent}
-                width={24}
-                height={24}
-                className="rounded-full object-cover h-full w-full"
-              />
-            </Box>
-            <Text fontWeight={600} fontSize={12} color="#111928">
-              {record?.agent}
-            </Text>
-          </Flex>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          LAST PRICE
-        </Text>
-      ),
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          CHANGE
-        </Text>
-      ),
-      dataIndex: "",
-      key: "id",
-      render: (record: DataType) => {
-        return (
-          <Text
-            fontWeight={400}
-            fontSize={14}
-            color={record?.change?.isProgressive ? "#0E9F6E" : "#E74694"}
-          >
-            {record?.change?.isProgressive ? "+" : "-"} {record?.change?.value}
-          </Text>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          %CHANGE
-        </Text>
-      ),
-      dataIndex: "",
-      key: "id",
-      render: (record: DataType) => {
-        return (
-          <Text
-            fontWeight={400}
-            fontSize={14}
-            color={record?.changePercent?.isProgressive ? "#0E9F6E" : "#E74694"}
-          >
-            {record?.changePercent?.isProgressive ? "+" : "-"}
-            {record?.changePercent?.percent}
-          </Text>
-        );
-      },
-    },
-  ];
 
-  const dataSources = [
+  const dataSources: MarketMove[] = [
     {
       id: 1,
       url: "/assets/images/card-image.png",
       agent: "GFAI",
       price: 1.27,
-      change: {
-        value: 0.03,
-        isProgressive: true,
-      },
-      changePercent: {
-        percent: 0.16,
-        isProgressive: false,
-      },
+
+      changeValue: 0.17,
+      changeProgress: true,
+      changePercent: 0.32,
+      changePercentProgress: false,
     },
     {
       id: 2,
       url: "/assets/images/card-image.png",
       agent: "ASML",
       price: 386.46,
-      change: {
-        value: 0.02,
-        isProgressive: false,
-      },
-      changePercent: {
-        percent: 0.1,
-        isProgressive: true,
-      },
+
+      changeValue: 0.17,
+      changeProgress: false,
+
+      changePercent: 0.32,
+      changePercentProgress: true,
     },
     {
       id: 3,
       url: "/assets/images/card-image.png",
       agent: "NVDIA",
       price: 1.45,
-      change: {
-        value: 0.17,
-        isProgressive: true,
-      },
-      changePercent: {
-        percent: 0.32,
-        isProgressive: true,
-      },
+
+      changeValue: 0.17,
+      changeProgress: true,
+
+      changePercent: 0.32,
+      changePercentProgress: true,
     },
     {
       id: 4,
       url: "/assets/images/card-image.png",
       agent: "LMPG",
       price: 547.98,
-      change: {
-        value: 0.17,
-        isProgressive: true,
-      },
-      changePercent: {
-        percent: 0.01,
-        isProgressive: true,
-      },
+
+      changeValue: 0.17,
+      changeProgress: true,
+
+      changePercent: 0.01,
+      changePercentProgress: true,
     },
   ];
 
+  const cellRenderers = {
+    symbol: (record: MarketMove) => (
+      <div className="flex gap-2 items-center">
+        <div className="h-6 w-6">
+          <Image
+            src={record?.url || "/assets/images/card-image.png"}
+            alt={record?.agent}
+            width={24}
+            height={24}
+            className="rounded-full object-cover h-full w-full"
+          />
+        </div>
+        <p className="font-semibold text-xs text-[#111928]">{record?.agent}</p>
+      </div>
+    ),
+    price: (item: MarketMove) => (
+      <span className="font-semibold">{item?.price}</span>
+    ),
+    change: (record: MarketMove) => (
+      <p
+        className={`font-normal text-sm ${
+          record?.changeProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
+        }`}
+      >
+        {record?.changeProgress ? "+" : "-"} {record?.changeValue}
+      </p>
+    ),
+    changePercent: (record: MarketMove) => (
+      <p
+        className={`font-normal text-sm ${
+          record?.changePercentProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
+        }`}
+      >
+        {record?.changePercentProgress ? "+" : "-"}
+        {record?.changePercent}
+      </p>
+    ),
+  };
+
+  const columnOrder: (keyof MarketMove)[] = [
+    "symbol",
+    "price",
+    "change",
+    "changePercent",
+  ];
+
+  const columnLabels = {
+    symbol: "SYMBOL",
+    price: "LAST PRICE",
+    change: "CHANGE",
+    changePercent: "%CHANGE",
+  };
+
   return (
-    <Box bg="#fff" pt={4} mb={16}>
-      <Box mb={4} mx={4}>
-        <Flex gap={3} alignItems={"center"} mb={4}>
+    <div className="bg-white pt-4 mb-[64px]">
+      <div className="mb-4 mx-4">
+        <div className="flex items-center mb-4 gap-3">
           <ShineIcon />
-          <Text fontWeight={400} fontSize={12} color="#6B7280">
+          <p className="font-normal text-xs text-[#6B7280]">
             U.S. markets are open till 6:00 PM
-          </Text>
-        </Flex>
-        <Flex gap={2}>
+          </p>
+        </div>
+        <div className="flex gap-2">
           {marketMoveFilterList.map((filter: IButtonFilter, index: number) => (
-            <ButtonIcon
+            <Button
+              variant={filter?.value === marketFilter ? "secondary" : "ghost"}
               key={index}
-              text={filter?.text}
-              variant={filter?.value === marketFilter ? "solid" : "ghost"}
-              bg={filter?.value === marketFilter ? "#351F05" : ""}
-              fontWeight={500}
-              color={filter?.value === marketFilter ? "#ffffff" : "#6B7280"}
-              fontSize="12px"
-              p={filter?.value === marketFilter ? "12px 16px" : "0px"}
+              btnText={filter?.text}
               onClick={() => setMarketFilter(filter?.value)}
+              className={`font-medium text-xs ${
+                filter?.value === marketFilter
+                  ? "bg-[#351F05] text-white py-3 px-4"
+                  : "p-0 text-[#6B7280]"
+              }`}
             />
           ))}
-        </Flex>
-      </Box>
-      <Table
-        className="custom-table"
-        dataSource={dataSources}
-        columns={columns}
-        //   loading={isLoading}
-        pagination={false}
+        </div>
+      </div>
+      <TableComponent<MarketMove>
+        tableData={dataSources}
+        cellRenderers={cellRenderers}
+        columnOrder={columnOrder}
+        columnLabels={columnLabels}
       />
-    </Box>
+    </div>
   );
 };
 

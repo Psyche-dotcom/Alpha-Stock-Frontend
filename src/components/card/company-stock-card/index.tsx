@@ -15,7 +15,11 @@ const CompanyStockCard: React.FC<ICompanyStockProp> = ({ company }) => {
             {company?.name}
           </h2>
         </Box>
-        <Text color="#6B7280" fontSize="30px" fontWeight={600}>
+        <Text
+          color="#6B7280"
+          fontSize={{ base: "24px", lg: "30px" }}
+          fontWeight={600}
+        >
           ${company?.amount}
         </Text>
       </Box>

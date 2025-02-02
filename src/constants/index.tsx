@@ -51,6 +51,10 @@ export const userNavbarList = [
     title: "Stock Analyser",
     path: ROUTES.USER.STOCKANALYSERS,
   },
+  {
+    title: "Plans",
+    path: ROUTES.USER.PLANS,
+  },
 ];
 
 export const trendingList = [

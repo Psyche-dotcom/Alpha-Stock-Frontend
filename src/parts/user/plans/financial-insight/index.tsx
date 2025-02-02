@@ -1,10 +1,11 @@
 "use client";
 
+import { TableComponent } from "@/components/custom-table";
+import { DataItem } from "@/types";
 import { CancelIcon, SuccessIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
-import Table, { ColumnsType } from "antd/es/table";
 
-interface DataType {
+interface DataType extends DataItem {
   id: number;
   isFree: boolean;
   isRegular?: boolean;
@@ -15,83 +16,59 @@ interface DataType {
 }
 
 const FinancialInsight = () => {
-  const columns: ColumnsType<DataType> = [
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          FEATURE
-        </Text>
-      ),
-      dataIndex: "feature",
-      key: "feature",
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12} textAlign="center">
-          FREE
-        </Text>
-      ),
-      dataIndex: "isFree",
-      key: "isFree",
+  const cellRenderers = {
+    feature: (item: DataType) => (
+      <Text fontWeight={600} fontSize={16} color="#111928">
+        {item?.feature}
+      </Text>
+    ),
+    isFree: (item: DataType) => (
+      <Box className="flex justify-center">
+        {item?.isFree ? <SuccessIcon /> : <CancelIcon />}
+      </Box>
+    ),
+    isRegular: (item: DataType) => (
+      <Box className="flex justify-center">
+        {item?.isRegularText ? (
+          <Text fontSize={16} fontWeight={600} color="#111928">
+            3 per month
+          </Text>
+        ) : item?.isRegular ? (
+          <SuccessIcon />
+        ) : (
+          <CancelIcon />
+        )}
+      </Box>
+    ),
 
-      render: (isFree) => {
-        return (
-          <Box justifyContent={"center"} display="flex">
-            {isFree ? <SuccessIcon /> : <CancelIcon />}
-          </Box>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12} textAlign="center">
-          REGULAR
-        </Text>
-      ),
-      dataIndex: "",
-      key: "id",
+    isStandard: (item: DataType) => (
+      <Box className="flex justify-center">
+        {item?.isStandardText ? (
+          <Text fontSize={16} fontWeight={600} color="#111928">
+            Unlimited
+          </Text>
+        ) : item?.isStandard ? (
+          <SuccessIcon />
+        ) : (
+          <CancelIcon />
+        )}
+      </Box>
+    ),
+  };
 
-      render: (record) => {
-        return (
-          <Box justifyContent={"center"} display="flex">
-            {record?.isRegularText ? (
-              <Text fontSize={16} fontWeight={600} color="#111928">
-                3 per month
-              </Text>
-            ) : record?.isRegular ? (
-              <SuccessIcon />
-            ) : (
-              <CancelIcon />
-            )}
-          </Box>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12} textAlign={"center"}>
-          STANDARD
-        </Text>
-      ),
-      dataIndex: "",
-      key: "id",
-      render: (record) => {
-        return (
-          <Box justifyContent={"center"} display="flex">
-            {record?.isStandardText ? (
-              <Text fontSize={16} fontWeight={600} color="#111928">
-                Unlimited
-              </Text>
-            ) : record?.isStandard ? (
-              <SuccessIcon />
-            ) : (
-              <CancelIcon />
-            )}
-          </Box>
-        );
-      },
-    },
+  const columnOrder: (keyof DataType)[] = [
+    "feature",
+    "isFree",
+    "isRegular",
+    "isStandard",
   ];
+
+  const columnLabels = {
+    feature: "FEATURE",
+    isFree: "Free",
+    isRegular: "REGULAR",
+    isStandard: "STANDARD",
+  };
 
   const dataSources = [
     {
@@ -128,12 +105,11 @@ const FinancialInsight = () => {
       <Text fontWeight={600} fontSize={18} color="#111928" m={4} mt={0}>
         Financial Insights
       </Text>
-      <Table
-        className="custom-table"
-        dataSource={dataSources}
-        columns={columns}
-        //   loading={isLoading}
-        pagination={false}
+      <TableComponent<DataType>
+        tableData={dataSources}
+        cellRenderers={cellRenderers}
+        columnOrder={columnOrder}
+        columnLabels={columnLabels}
       />
     </Box>
   );

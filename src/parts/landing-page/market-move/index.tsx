@@ -78,11 +78,11 @@ const MarketMove = () => {
       </div>
     ),
     price: (item: MarketMove) => (
-      <span className="font-semibold">{item?.price}</span>
+      <p className="font-semibold text-center">{item?.price}</p>
     ),
     change: (record: MarketMove) => (
       <p
-        className={`font-normal text-sm ${
+        className={`font-normal text-sm text-center ${
           record?.changeProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
         }`}
       >
@@ -91,7 +91,7 @@ const MarketMove = () => {
     ),
     changePercent: (record: MarketMove) => (
       <p
-        className={`font-normal text-sm ${
+        className={`font-normal text-sm text-center ${
           record?.changePercentProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
         }`}
       >

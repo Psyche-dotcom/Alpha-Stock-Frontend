@@ -1,14 +1,16 @@
 "use client";
 
 import { ButtonIcon } from "@/components/button/button-icon";
+import { TableComponent } from "@/components/custom-table";
 import { marketMoveFilterList } from "@/constants";
 import { IButtonFilter } from "@/interface/button-filter";
+import { DataItem } from "@/types";
 import { ShineIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
 import { useState } from "react";
 
-interface DataType {
+interface DataType extends DataItem {
   id: number;
   row1: number;
   row2: number;
@@ -20,87 +22,6 @@ interface DataType {
 
 const Financials = () => {
   const [btnFilter, setBtnFilter] = useState<string>("income-statements");
-  const columns: ColumnsType<DataType> = [
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          INCOME
-        </Text>
-      ),
-      dataIndex: "title",
-      key: "id",
-      render: (title) => {
-        return (
-          <Text fontWeight={600} fontSize={16} color="#111928">
-            {title}
-          </Text>
-        );
-      },
-    },
-    {
-      title: <Text fontSize={12}>TTM</Text>,
-      dataIndex: "ttm",
-      key: "ttm",
-      render: (ttm) => {
-        return (
-          <Text fontSize={16} color="#111928">
-            ${ttm}
-          </Text>
-        );
-      },
-    },
-    {
-      title: <Text fontSize={12}>2022-12</Text>,
-      dataIndex: "row1",
-      key: "row1",
-      render: (row1) => {
-        return (
-          <Text fontSize={16} color="#111928">
-            ${row1}
-          </Text>
-        );
-      },
-    },
-    {
-      title: <Text fontSize={12}>2021-12</Text>,
-      dataIndex: "row2",
-
-      key: "row2",
-      render: (row2) => {
-        return (
-          <Text fontSize={16} color="#111928">
-            ${row2}
-          </Text>
-        );
-      },
-    },
-    {
-      title: <Text fontSize={12}>2020-12</Text>,
-      dataIndex: "row3",
-
-      key: "row3",
-      render: (row3) => {
-        return (
-          <Text fontSize={16} color="#111928">
-            ${row3}
-          </Text>
-        );
-      },
-    },
-    {
-      title: <Text fontSize={12}>2019-12</Text>,
-      dataIndex: "row4",
-
-      key: "row4",
-      render: (row4) => {
-        return (
-          <Text fontSize={16} color="#111928">
-            ${row4}
-          </Text>
-        );
-      },
-    },
-  ];
 
   const dataSources = [
     {
@@ -284,6 +205,56 @@ const Financials = () => {
       ttm: 12.1,
     },
   ];
+  const cellRenderers = {
+    title: (item: DataType) => (
+      <Text fontWeight={600} fontSize={16} color="#111928">
+        {item?.title}
+      </Text>
+    ),
+    ttm: (item: DataType) => (
+      <Text fontSize={16} color="#111928" textAlign={"center"}>
+        ${item?.ttm}
+      </Text>
+    ),
+    row1: (item: DataType) => (
+      <Text fontSize={16} color="#111928" textAlign={"center"}>
+        ${item?.row1}
+      </Text>
+    ),
+    row2: (item: DataType) => (
+      <Text fontSize={16} color="#111928" textAlign={"center"}>
+        ${item?.row2}
+      </Text>
+    ),
+    row3: (item: DataType) => (
+      <Text fontSize={16} color="#111928" textAlign={"center"}>
+        ${item?.row3}
+      </Text>
+    ),
+    row4: (item: DataType) => (
+      <Text fontSize={16} color="#111928" textAlign={"center"}>
+        ${item?.row4}
+      </Text>
+    ),
+  };
+
+  const columnOrder: (keyof DataType)[] = [
+    "title",
+    "ttm",
+    "row1",
+    "row2",
+    "row3",
+    "row4",
+  ];
+
+  const columnLabels = {
+    title: "INCOME",
+    ttm: "TTM",
+    row1: "2022-12",
+    row2: "2021-12",
+    row3: "2020-12",
+    row4: "2019-12",
+  };
 
   const btnList = [
     {
@@ -322,12 +293,11 @@ const Financials = () => {
           ))}
         </Flex>
       </Box>
-      <Table
-        className="custom-table"
-        dataSource={dataSources}
-        columns={columns}
-        //   loading={isLoading}
-        pagination={false}
+      <TableComponent<DataType>
+        tableData={dataSources}
+        cellRenderers={cellRenderers}
+        columnOrder={columnOrder}
+        columnLabels={columnLabels}
       />
     </Box>
   );

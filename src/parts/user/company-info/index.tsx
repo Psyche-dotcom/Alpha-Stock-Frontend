@@ -4,6 +4,7 @@ import CompanyAnalysisCard from "@/components/card/company-analysis-card";
 import CompanyCard from "@/components/card/company-card";
 import CompanyStockCard from "@/components/card/company-stock-card";
 import AreaChartComponent from "@/components/charts/area-graph";
+import { Button } from "@/components/ui/button";
 import {
   CompanyAnalysisList,
   CompanyStockList,
@@ -34,51 +35,49 @@ const CompanyInfo: React.FC = () => {
     },
   ];
   return (
-    <Box>
-      <Box display="flex" gap={4} mb={"34.5px"}>
+    <div>
+      <div className="xl:hidden gap-1 bg-[#351F05] mb-3 rounded-[12px] p-4 flex items-center w-fit-content">
+        <p className="font-semibold text-sm text-white">
+          Download Annual Report
+        </p>
+        <ArrowNarrowRight />
+      </div>
+      <div className="lg:flex xl:gap-4 gap-2 mb-[34.5px]">
         <CompanyCard />
-        <Flex gap={4} flex={1}>
+        <div className="grid md:grid-cols-2 xl:gap-4 gap-2">
           {CompanyAnalysisList.map(
             (analysis: ICompanyAnalysis, index: number) => (
               <CompanyAnalysisCard analysis={analysis} key={index} />
             )
           )}
-        </Flex>
-        <Box
-          bg="#351F05"
-          borderRadius="12px"
-          px={"10px"}
-          display="flex"
-          alignItems="center"
-          justifyContent={"space-between"}
-          w="fit-content"
-        >
-          <Text fontWeight={600} fontSize={14} color="#fff">
+        </div>
+        <div className="hidden  bg-[#351F05] gap-1 rounded-[12px] px-2.5 xl:flex items-center justify-between w-fit-content">
+          <p className="font-semibold text-sm text-white">
             Download Annual Report
-          </Text>
+          </p>
           <ArrowNarrowRight />
-        </Box>
-      </Box>
-      <Box bg={"#fff"} p={4} borderRadius={"12px"} mb={4}>
-        <Flex gap={2}>
+        </div>
+      </div>
+      <div className="bg-white p-4 rounded-[12px] mb-4">
+        <div className="flex gap-2">
           {filterBtn.map((filter: IButtonFilter, index: number) => (
-            <ButtonIcon
-              key={index}
-              text={filter?.text}
-              variant={filter?.value === btnFilter ? "solid" : "ghost"}
-              bg={filter?.value === btnFilter ? "#351F05" : ""}
-              fontWeight={500}
-              color={filter?.value === btnFilter ? "#ffffff" : "#6B7280"}
-              fontSize="12px"
-              p={filter?.value === btnFilter ? "12px 16px" : "0px"}
+            <Button
+              variant={filter?.value === btnFilter ? "secondary" : "ghost"}
               onClick={() => setBtnFilter(filter?.value)}
+              className={`${
+                filter?.value === btnFilter
+                  ? "text-white bg-[#351F05] py-3 px-4"
+                  : "text-[#6B7280] P-0"
+              }`}
+              key={index}
+              btnText={filter?.text}
             />
           ))}
-        </Flex>
-      </Box>
+        </div>
+      </div>
       <AreaChartComponent />
-      <Box mt={8} display="flex" gap={4}>
-        <Box borderRadius="12px" p={"10px"} bg={"#fff"} w="100%">
+      <div className="mt-8 lg:flex gap-4">
+        <div className="rounded-[12px] p-2.5 bg-white w-full">
           <Text fontWeight={700} fontSize={24} color="#111928" mb="10px">
             About NVIDIA Corp
           </Text>
@@ -107,19 +106,20 @@ const CompanyInfo: React.FC = () => {
             TV (a digital media player), as well as its cloud
             gaming service GeForce Now.[11]
           </Text>
-        </Box>
+        </div>
         <Box borderRadius="12px" p={"10px"} bg="#fff" w="100%" h="fit-content">
           <Text fontWeight={700} fontSize={24} color="#111928" mb="10px">
             Trending Companies
           </Text>
-          <Flex wrap="wrap" gap={4}>
+          <Flex wrap="wrap" display={{ sm: "flex", base: "flex-col" }} gap={4}>
             {CompanyStockList.map(
               (company: ICompanyStockCard, index: number) => (
                 <Box
                   key={index}
-                  flexBasis="calc(50% - 1rem)"
-                  maxWidth="calc(50% - 1rem)"
+                  flexBasis={{ sm: "calc(50% - 1rem)" }}
+                  maxWidth={{ sm: "calc(50% - 1rem)" }}
                   flexGrow={1}
+                  pb={{ base: 3, sm: 0 }}
                 >
                   <CompanyStockCard company={company} />
                 </Box>
@@ -127,8 +127,8 @@ const CompanyInfo: React.FC = () => {
             )}
           </Flex>
         </Box>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

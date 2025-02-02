@@ -1,131 +1,98 @@
 "use client";
-import { ButtonIcon } from "@/components/button/button-icon";
-import { LinkButton } from "@/components/button/link-button";
+
 import AuthCard from "@/components/card/auth-card";
-import InputText from "@/components/form/FormInput";
-import InputPassword from "@/components/form/FormPassword";
 import { ROUTES } from "@/constants/routes";
+import { type LoginSchemaType, loginSchema } from "@/schemas";
 import { GoogleIcon } from "@/utils/icons";
-import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-
-interface IFormInput {
-  email: string;
-  password: string;
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
+import InputForm from "@/components/form/InputForm";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 const Login: React.FC = () => {
-  const { handleSubmit, control } = useForm<IFormInput>();
-  const onSubmit = (data: IFormInput) => {
-    console.log(data);
-  };
+  const form = useForm<LoginSchemaType>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(values: LoginSchemaType) {
+    console.warn(values);
+  }
 
   return (
-    <Flex gap={8} py={8}>
-      <Box borderRadius={12} p={8} w="100%" bg="#FFFFFF">
-        <Text mb={2} fontWeight={800} fontSize={24} color="#111928">
-          Welcome Back,
-        </Text>
-        <Text mb={8} fontWeight={400} fontSize={16} color="#111928">
-          Lets get you on track with the right trade insights.
-        </Text>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <InputText
-            name="email"
-            placeholder="Email"
-            control={control}
-            rules={{
-              required: "Email is required",
-              pattern: {
-                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                message: "Invalid email address",
-              },
-            }}
+    <div className="flex gap-8 py-8">
+      <Card className="rounded-[12px] p-8 w-full bg-white">
+        <CardContent className="p-0">
+          <p className="mb-2 font-bold text-2xl text-[#111928]">
+            Welcome Back,
+          </p>
+          <p className="mb-8 font-normal text-base text-[#111928]">
+            Lets get you on track with the right trade insights.
+          </p>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="mb-10 space-y-5"
+            >
+              <InputForm form={form} name={"email"} />
+              <InputForm type="password" name="password" form={form} />
+              <div className="flex gap-2 items-center justify-end mb-8">
+                <p className="font-medium text-sm text-[#6B7280]">
+                  Forgot password?
+                </p>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="text-[#3A2206] font-bold text-sm p-0"
+                >
+                  <Link href={ROUTES.AUTH.FORGOTPASSWORD} passHref>
+                    Recover here
+                  </Link>
+                </Button>
+              </div>
+              <Button
+                variant="secondary"
+                className="w-full py-2.5 font-medium text-sm"
+              >
+                Sign in
+              </Button>
+            </form>
+          </Form>
+
+          <Separator className="bg-[#E5E7EB] h-1 my-8" />
+          <p className="text-sm font-normal text-center mb-8 text-[#6B7280]">
+            Or sign in with
+          </p>
+          <Button
+            btnText="Google"
+            variant="outline"
+            className="w-full text-base font-medium"
+            icon={<GoogleIcon />}
           />
-          <InputPassword
-            name="password"
-            placeholder="Password"
-            control={control}
-            mb={1}
-          />
-          <Box
-            display="flex"
-            gap="2px"
-            alignItems={"center"}
-            justifyContent={"end"}
-            p="0px"
-            mb={8}
-          >
-            <Text p="0px" fontWeight={500} fontSize={14} color="#6B7280">
-              Forgot password?
-            </Text>
-            <LinkButton
-              text="Recover here"
-              color="#3A2206"
-              href={ROUTES.AUTH.FORGOTPASSWORD}
-              variant="ghost"
-              p={"0px"}
-              fontWeight={700}
-              fontSize="14px"
-            />
-          </Box>
-          <ButtonIcon
-            text="Sign in"
-            bg="#291804"
-            variant="solid"
-            color="#ffffff"
-            w="100%"
-            p="10px"
-            type="submit"
-          />
-        </form>
-        <Box h={1} w="100%" bg={"#E5E7EB"} my={8}></Box>
-        <Text
-          p="0px"
-          fontWeight={400}
-          fontSize={14}
-          color="#6B7280"
-          mb={8}
-          textAlign={"center"}
-        >
-          Or sign in with
-        </Text>
-        <ButtonIcon
-          variant="outline"
-          text="Google"
-          icon={<GoogleIcon />}
-          color="#6B7280"
-          border="1px solid #6B7280"
-          gap={9.42}
-          w="100%"
-        />
-        <Box
-          display="flex"
-          gap="2px"
-          alignItems={"center"}
-          justifyContent={"center"}
-          p="0px"
-          mt={8}
-        >
-          <Text p="0px" fontWeight={500} fontSize={14} color="#6B7280">
-            New to the our platform?
-          </Text>
-          <LinkButton
-            text="Sign up here"
-            color="#3A2206"
-            href={ROUTES.AUTH.SIGNUP}
-            variant="ghost"
-            p={"0px"}
-            fontWeight={700}
-            fontSize="14px"
-          />
-        </Box>
-      </Box>
-      <Box display={{ base: "none", md: "block" }} h="auto" maxWidth={585}>
+          <div className="flex gap-2 items-center justify-center mt-8">
+            <p className="font-medium text-sm text-[#6B7280]">
+              New to the our platform?
+            </p>
+            <Button asChild className="text-[#3A2206] font-bold text-sm p-0">
+              <Link href={ROUTES.AUTH.SIGNUP} passHref>
+                Sign-up here
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+      <div className="w-fit-content hidden md:block">
         <AuthCard />
-      </Box>
-    </Flex>
+      </div>
+    </div>
   );
 };
 

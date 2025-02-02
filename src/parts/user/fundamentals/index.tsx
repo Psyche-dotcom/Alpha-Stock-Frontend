@@ -5,7 +5,7 @@ import { FundamentalsList, metricsList } from "@/constants";
 import { IButtonFilter } from "@/interface/button-filter";
 import { IFundamentalCard } from "@/interface/fundamental-card";
 import { InformationIcon } from "@/utils/icons";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 const Fundamentals: React.FC = () => {
@@ -36,124 +36,121 @@ const Fundamentals: React.FC = () => {
           ))}
         </Flex>
       </Box>
-      <Flex wrap="wrap" gap={4}>
+      <Grid
+        gap={{ base: 2, md: 4 }}
+        mb={{ base: 2, md: 4, xl: 8 }}
+        gridTemplateColumns={{ md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
+      >
         {FundamentalsList.map(
           (fundamental: IFundamentalCard, index: number) => (
-            <Box
-              key={index}
-              flexBasis="calc(33.3% - 1rem)"
-              maxWidth="calc(33.3% - 1rem)"
-              flexGrow={1}
-            >
+            <GridItem key={index}>
               <FundamentalsCard fundamental={fundamental} />
-            </Box>
+            </GridItem>
           )
         )}
-      </Flex>
-      <Box mt={8} display="flex" gap={4}>
-        <Box w="100%">
-          <Box borderRadius="12px" bg={"#fff"} mb={4}>
-            {metricsList.map((metrics, index: number) => (
-              <Box
-                p={4}
-                border={"1px solid #E5E7EB"}
-                display="flex"
-                justifyContent={"space-between"}
+      </Grid>
+      <Box display={{ md: "flex" }} gap={4}>
+        <Box borderRadius="12px" flex={1} bg={"#fff"} mb={{ base: 2, md: 4 }}>
+          {metricsList.map((metrics, index: number) => (
+            <Box
+              p={4}
+              border={"1px solid #E5E7EB"}
+              display="flex"
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              key={index}
+            >
+              <Text
+                fontWeight={500}
+                fontSize={16}
+                color="#111928"
+                display="inline-flex"
                 alignItems={"center"}
-                key={index}
               >
-                <Text
-                  fontWeight={500}
-                  fontSize={16}
-                  color="#111928"
-                  display="inline-flex"
-                  alignItems={"center"}
-                >
-                  {metrics?.title} <InformationIcon />
-                </Text>
-                <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                  {metrics?.text}
-                </Text>
-              </Box>
-            ))}
-          </Box>
-          <Box borderRadius="12px" bg={"#fff"} mb={4}>
-            {metricsList.map((metrics, index: number) => (
-              <Box
-                p={4}
-                border={"1px solid #E5E7EB"}
-                display="flex"
-                justifyContent={"space-between"}
-                alignItems={"center"}
-                key={index}
-              >
-                <Text
-                  fontWeight={500}
-                  fontSize={16}
-                  color="#111928"
-                  display="inline-flex"
-                  alignItems={"center"}
-                >
-                  {metrics?.title} <InformationIcon />
-                </Text>
-                <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                  {metrics?.text}
-                </Text>
-              </Box>
-            ))}
-          </Box>
+                {metrics?.title} <InformationIcon />
+              </Text>
+              <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                {metrics?.text}
+              </Text>
+            </Box>
+          ))}
         </Box>
-        <Box w="100%">
-          <Box borderRadius="12px" bg={"#fff"} mb={4}>
-            {metricsList.map((metrics, index: number) => (
-              <Box
-                p={4}
-                border={"1px solid #E5E7EB"}
-                display="flex"
-                justifyContent={"space-between"}
+        <Box borderRadius="12px" bg={"#fff"} mb={4} flex={1}>
+          {metricsList.map((metrics, index: number) => (
+            <Box
+              p={4}
+              border={"1px solid #E5E7EB"}
+              display="flex"
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              key={index}
+            >
+              <Text
+                fontWeight={500}
+                fontSize={16}
+                color="#111928"
+                display="inline-flex"
                 alignItems={"center"}
-                key={index}
               >
-                <Text
-                  fontWeight={500}
-                  fontSize={16}
-                  color="#111928"
-                  display="inline-flex"
-                  alignItems={"center"}
-                >
-                  {metrics?.title} <InformationIcon />
-                </Text>
-                <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                  {metrics?.text}
-                </Text>
-              </Box>
-            ))}
-          </Box>
-          <Box borderRadius="12px" bg={"#fff"} mb={4}>
-            {metricsList.map((metrics, index: number) => (
-              <Box
-                p={4}
-                border={"1px solid #E5E7EB"}
-                display="flex"
-                justifyContent={"space-between"}
+                {metrics?.title} <InformationIcon />
+              </Text>
+              <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                {metrics?.text}
+              </Text>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+      <Box gap={4} display={{ md: "flex" }}>
+        <Box borderRadius="12px" flex={1} bg={"#fff"} mb={{ base: 2, md: 4 }}>
+          {metricsList.map((metrics, index: number) => (
+            <Box
+              p={4}
+              border={"1px solid #E5E7EB"}
+              display="flex"
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              key={index}
+            >
+              <Text
+                fontWeight={500}
+                fontSize={16}
+                color="#111928"
+                display="inline-flex"
                 alignItems={"center"}
-                key={index}
               >
-                <Text
-                  fontWeight={500}
-                  fontSize={16}
-                  color="#111928"
-                  display="inline-flex"
-                  alignItems={"center"}
-                >
-                  {metrics?.title} <InformationIcon />
-                </Text>
-                <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                  {metrics?.text}
-                </Text>
-              </Box>
-            ))}
-          </Box>
+                {metrics?.title} <InformationIcon />
+              </Text>
+              <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                {metrics?.text}
+              </Text>
+            </Box>
+          ))}
+        </Box>
+        <Box borderRadius="12px" bg={"#fff"} mb={4} flex={1}>
+          {metricsList.map((metrics, index: number) => (
+            <Box
+              p={4}
+              border={"1px solid #E5E7EB"}
+              display="flex"
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              key={index}
+            >
+              <Text
+                fontWeight={500}
+                fontSize={16}
+                color="#111928"
+                display="inline-flex"
+                alignItems={"center"}
+              >
+                {metrics?.title} <InformationIcon />
+              </Text>
+              <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                {metrics?.text}
+              </Text>
+            </Box>
+          ))}
         </Box>
       </Box>
     </Box>

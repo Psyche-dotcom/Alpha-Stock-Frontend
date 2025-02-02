@@ -1,64 +1,59 @@
 "use client";
-import { ButtonIcon } from "@/components/button/button-icon";
+
 import AuthCard from "@/components/card/auth-card";
-import InputPassword from "@/components/form/FormPassword";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { type ResetPasswordSchemaType, resetPasswordSchema } from "@/schemas";
 import React from "react";
 import { useForm } from "react-hook-form";
-
-interface IFormInput {
-  email: string;
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
+import InputForm from "@/components/form/InputForm";
+import { Button } from "@/components/ui/button";
 
 const ResetPassword: React.FC = () => {
-  const { handleSubmit, control } = useForm<IFormInput>();
-  const onSubmit = (data: IFormInput) => {
-    console.log(data);
-  };
+  const form = useForm<ResetPasswordSchemaType>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      newpassword: "",
+      confirmpassword: "",
+    },
+  });
+
+  async function onSubmit(values: ResetPasswordSchemaType) {
+    console.warn(values);
+  }
 
   return (
-    <Flex gap={8} py={8} h={"100vh"}>
-      <Box
-        borderRadius={12}
-        p={8}
-        w="100%"
-        bg="#FFFFFF"
-        display="flex"
-        alignItems={"center"}
-        h="100%"
-      >
-        <Box w="100%">
-          <Text mb={2} fontWeight={700} fontSize={24} color="#111928">
-            Reset Password
-          </Text>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <InputPassword
-              name="new_password"
-              placeholder="New password"
-              control={control}
-            />
-            <InputPassword
-              name="confirm_password"
-              placeholder="Confirm password"
-              control={control}
-              mb={8}
-            />
-            <ButtonIcon
-              text="Save"
-              bg="#291804"
-              variant="solid"
-              color="#ffffff"
-              w="100%"
-              p="10px"
-              type="submit"
-            />
-          </form>
-        </Box>
-      </Box>
-      <Box display={{ base: "none", md: "block" }} h="auto" maxWidth={585}>
+    <div className="flex gap-8 py-8 h-[75vh]">
+      <Card className="rounded-[12px] p-8 w-full bg-white">
+        <CardContent className="flex h-full items-center p-0">
+          <div className="w-full">
+            <p className="mb-2 font-bold text-2xl text-[#111928]">
+              Reset Password
+            </p>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="mb-10 space-y-5"
+              >
+                <InputForm form={form} name={"newpassword"} />
+                <InputForm form={form} name={"confirmpassword"} />
+
+                <Button
+                  variant="secondary"
+                  className="w-full py-2.5 font-medium text-sm"
+                >
+                  Save
+                </Button>
+              </form>
+            </Form>
+          </div>
+        </CardContent>
+      </Card>
+      <div className="w-fit-content hidden md:block">
         <AuthCard />
-      </Box>
-    </Flex>
+      </div>
+    </div>
   );
 };
 

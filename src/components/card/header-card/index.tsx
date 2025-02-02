@@ -1,50 +1,44 @@
-import { LinkButton } from "@/components/button/link-button";
-import { Box, Text } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 interface IHeaderProps {
   text: string;
   linkText?: string;
-  mb?: number;
+  className?: string;
   href?: string;
 }
 
 const HeaderCard: React.FC<IHeaderProps> = ({
   text,
   linkText = "See more",
-  mb = 4,
+  className = "mb-4",
   href = "#",
 }) => {
   return (
-    <Box
-      borderRadius={12}
-      p={{ base: 3, md: 4 }}
-      w="100%"
-      bg="#FFFFFF"
-      border="1px solid #C2BAB2"
-      display="flex"
-      alignItems={"center"}
-      justifyContent={"space-between"}
-      mb={mb}
-      gap={3}
+    <Card
+      className={cn(
+        "bg-white p-3 md:p-4 w-full border border-[#C2BAB2]",
+        className
+      )}
     >
-      <Text
-        mb={2}
-        fontWeight={700}
-        fontSize={{ base: 18, sm: 20, md: 22, lg: 24 }}
-        color="#111928"
+      <CardContent
+        className={cn("p-0 flex items-center justify-between gap-3")}
       >
-        {text}
-      </Text>
-      <LinkButton
-        href={href}
-        text={linkText}
-        variant="outline"
-        color="#351F05"
-        p="8px 12px"
-        border="1px solid #351F05"
-        fontWeight={500}
-        fontSize="12px"
-      />
-    </Box>
+        <p className="text-[#111928] text-lg sm:text-xl md:text-[22px] lg:text-2xl font-bold mb-2">
+          {text}
+        </p>
+        <Button
+          className="border-[#351F05] px-3 py-2 font-medium text-[#351F05] text-xs"
+          variant={"outline"}
+          asChild
+        >
+          <Link passHref href={href}>
+            {linkText}
+          </Link>
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
 

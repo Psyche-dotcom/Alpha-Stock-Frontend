@@ -2,175 +2,136 @@
 
 import { navbarList } from "@/constants";
 import { BurgerIcon, CompanyIcon, SearchIcon } from "@/utils/icons";
-import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
-import { LinkButton } from "../button/link-button";
 import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 import { useState } from "react";
-import { ButtonIcon } from "../button/button-icon";
 import { ROUTES } from "@/constants/routes";
+import { Button } from "../ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { SearchSchemaType, searchSchema } from "@/schemas";
+import { Form } from "../ui/form";
+import InputForm from "../form/InputForm";
 
 const Navbar = () => {
+  const form = useForm<SearchSchemaType>({
+    resolver: zodResolver(searchSchema),
+    defaultValues: {
+      search: "",
+    },
+  });
+
+  async function onSubmit(values: SearchSchemaType) {
+    console.warn(values);
+  }
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   return (
-    <Box bg="#FFF" py="18.5px" px="16px" borderRadius={"12px"}>
-      <Flex
-        alignItems={"center"}
-        justifyContent={"space-between"}
-        gap={{ lg: "4rem", xl: "6rem" }}
-      >
+    <div className="bg-white py-[18.5px] px-4 rounded-[12px]">
+      <div className="flex items-center lg:gap-[64px] xl:gap-[96px] justify-between">
         <Link href={"/"} passHref>
           <CompanyIcon />
         </Link>
-        <Box
-          display={{ base: "none", lg: "flex" }}
-          alignItems={"center"}
-          gap={{ lg: "4rem", xl: "6rem" }}
-        >
-          <Flex
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            gap={{ lg: "4px", xl: "8px" }}
-            me={"auto"}
-          >
+        <div className="lg:gap-[64px] xl:gap-[96px] hidden lg:flex items-center flex-1">
+          <div className="flex me-auto lg:gap-1 gl:gap-2 flex items-center justify-between">
             {navbarList.map((nav, index) => (
               <Link href={nav.path} key={index} passHref>
-                <Box p={4}>{nav.title}</Box>
+                <div className="p-4">{nav.title}</div>
               </Link>
             ))}
-          </Flex>
-          <Box display="flex" gap={{ lg: "2rem", xl: "4rem" }}>
-            <Box flex={1} display={"flex"} gap="10px">
-              <InputGroup
-                display={"flex"}
-                alignItems={"center"}
-                py="16px"
-                h="42px"
+          </div>
+          <div className="flex lg:gap-[32px] xl:gap-[64px] flex-1">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex gap-2.5 w-full"
               >
-                <InputLeftElement pointerEvents="none" p="12px 16px">
-                  <SearchIcon />
-                </InputLeftElement>
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search..."
-                  w="100%"
-                  h="42px"
-                  ps="42px"
-                  border={"1px solid #D1D5DB"}
-                  borderRadius="8px"
+                <InputForm
+                  form={form}
+                  name="search"
+                  className="h-10 w-full"
+                  type="search"
                 />
-              </InputGroup>
-              <ButtonIcon
-                icon={<SearchIcon color="#FFF" />}
-                p="12px"
-                variant="solid"
-                bg="#351F05"
-              />
-            </Box>
+                <Button
+                  icon={<SearchIcon color="#fff" />}
+                  variant={"secondary"}
+                  className="flex items-center p-2"
+                />
+              </form>
+            </Form>
 
-            <Box>
-              <Flex gap={"16px"} alignItems={"center"}>
-                <LinkButton
-                  href={ROUTES.AUTH.LOGIN}
-                  text="Login"
+            <div>
+              <div className="gap-4 items-center flex">
+                <Button
                   variant="outline"
-                  color="#3A2206"
-                  p="12px 20px"
-                  border="1px solid #3A2206"
-                  fontWeight={500}
-                />
-                <LinkButton
-                  href={ROUTES.AUTH.SIGNUP}
-                  text="Create Account"
-                  variant="solid"
-                  bg="#291804"
-                  p="12px 20px"
-                  color="#FFF"
-                  fontWeight={500}
-                />
-              </Flex>
-            </Box>
-          </Box>
-        </Box>
-        <Box
-          display={{ lg: "none" }}
-          onClick={() => setShowNavbar(!showNavbar)}
-        >
+                  className="font-medium border px-3 py-5 border-[#3A2206] w-fit-content"
+                >
+                  <Link passHref href={ROUTES.AUTH.LOGIN}>
+                    Login
+                  </Link>
+                </Button>
+                <Button
+                  variant={"secondary"}
+                  className="font-medium px-3 py-5 w-fit-content"
+                >
+                  <Link passHref href={ROUTES.AUTH.SIGNUP}>
+                    Create Account
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="lg:hidden" onClick={() => setShowNavbar(!showNavbar)}>
           <BurgerIcon />
-        </Box>
-      </Flex>
+        </div>
+      </div>
       {showNavbar && (
-        <Box
-          display={{ base: "block", lg: "none" }}
-          alignItems={"center"}
-          gap={{ lg: "4rem", xl: "6rem" }}
-          mt={2}
-        >
-          <Flex flexDir={"column"}>
+        <div className="block lg:hidden mt-2">
+          <div className="flex flex-col">
             {navbarList.map((nav, index) => (
               <Link href={nav.path} key={index} passHref>
-                <Box p={2} fontSize={18} fontWeight={500}>
-                  {nav.title}
-                </Box>
+                <div className="p-2 text-lg font-medium">{nav.title}</div>
               </Link>
             ))}
-          </Flex>
+          </div>
 
-          <Box flex={1} display={"flex"} gap="10px" mb={3}>
-            <InputGroup
-              display={"flex"}
-              alignItems={"center"}
-              py="16px"
-              h="42px"
-            >
-              <InputLeftElement pointerEvents="none" p="12px 16px">
-                <SearchIcon />
-              </InputLeftElement>
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search..."
-                w="100%"
-                h="42px"
-                ps="42px"
-                border={"1px solid #D1D5DB"}
-                borderRadius="8px"
-              />
-            </InputGroup>
-            <ButtonIcon
-              icon={<SearchIcon color="#FFF" />}
-              p="12px"
-              variant="solid"
-              bg="#351F05"
-            />
-          </Box>
-          <Flex gap={"12px"} flexDir="column">
-            <LinkButton
-              href={ROUTES.AUTH.LOGIN}
-              text="Login"
+          <div className="flex gap-2.5 mb-3">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex gap-2.5 w-full"
+              >
+                <InputForm form={form} name="search" className="h-10 w-full" />
+                <Button
+                  icon={<SearchIcon color="#fff" />}
+                  variant={"secondary"}
+                  className="flex items-center p-2"
+                />
+              </form>
+            </Form>
+          </div>
+          <div className="gap-3 flex-col flex">
+            <Button
               variant="outline"
-              color="#3A2206"
-              p="12px 20px"
-              border="1px solid #3A2206"
-              fontWeight={500}
-              w="fit-content"
-            />
-            <LinkButton
-              href={ROUTES.AUTH.SIGNUP}
-              text="Create Account"
-              variant="solid"
-              bg="#291804"
-              p="12px 20px"
-              color="#FFF"
-              fontWeight={500}
-              w="fit-content"
-            />
-          </Flex>
-        </Box>
+              className="font-medium border px-3 py-5 border-[#3A2206] w-fit-content"
+            >
+              <Link passHref href={ROUTES.AUTH.LOGIN}>
+                Login
+              </Link>
+            </Button>
+            <Button
+              variant={"secondary"}
+              className="font-medium px-3 py-5 w-fit-content"
+            >
+              <Link passHref href={ROUTES.AUTH.SIGNUP}>
+                Create Account
+              </Link>
+            </Button>
+          </div>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

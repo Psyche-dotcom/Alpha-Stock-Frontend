@@ -4,82 +4,57 @@ import ViewCard from "@/components/card/view-card";
 import { marketList, stockList, trendingList } from "@/constants";
 import { ICardView } from "@/interface/card-view";
 import { IStock } from "@/interface/stock-view";
-import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import MarketMove from "../market-move";
 import TradeDecision from "../trade-decision";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { LinkButton } from "@/components/button/link-button";
 import { ROUTES } from "@/constants/routes";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Home = () => {
   return (
-    <Box>
+    <div>
       <header>
         <Navbar />
       </header>
-      <Box mt={4} display="flex" gap={3}>
-        <LinkButton
-          href={ROUTES.ADMIN.USERS}
-          text="Admin Page"
+      <div className="mt-4 flex gap-3">
+        <Button
+          asChild
           variant="outline"
-          color="#3A2206"
-          p="12px 20px"
-          border="1px solid #3A2206"
-          fontWeight={500}
-          w="fit-content"
-        />
-        <LinkButton
-          href={ROUTES.USER.COMPANYINFO}
-          text="User Page"
-          variant="outline"
-          color="#3A2206"
-          p="12px 20px"
-          border="1px solid #3A2206"
-          fontWeight={500}
-          w="fit-content"
-        />
-      </Box>
-      <Flex
-        gap={{ base: 4, md: 8 }}
-        py={{ base: 4, md: 8 }}
-        mb={4}
-        flexDirection={{ base: "column", lg: "row" }}
-      >
-        <Box
-          borderRadius={12}
-          p={8}
-          w="100%"
-          bg="#FFFFFF"
-          display="flex"
-          alignItems={"center"}
-          h="auto"
+          className="font-medium py-3 px-5 border border-[#3A2206] text-[#3A2206] w-fit-content"
         >
-          <Box w="100%">
-            <Text
-              mb={4}
-              fontWeight={700}
-              fontSize={{ base: "30px", sm: "36px", md: "48px", xl: "60px" }}
-              color="#180E03"
-              lineHeight={{ base: "43.2px", md: "50px", lg: "59px" }}
-            >
+          <Link passHref href={ROUTES.ADMIN.USERS}>
+            Admin Page
+          </Link>
+        </Button>
+        <Button
+          asChild
+          variant="outline"
+          className="font-medium py-3 px-5 border border-[#3A2206] text-[#3A2206] w-fit-content"
+        >
+          <Link passHref href={ROUTES.USER.COMPANYINFO}>
+            User Page
+          </Link>
+        </Button>
+      </div>
+      <div className="mb-4 flex gap-4 md:gap-8 py-4 md:py-8 flex-col lg:flex-row">
+        <div className="h-auto items-center flex bg-white w-full p-8 rounded-[12px]">
+          <div className="w-full">
+            <p className="mb-4 font-bold leading-[43.2px] md:leading-[50px] lg:leading-[59px] text-[#180E03] text-[30px] sm:text-[36px] md:text-[48px] xl:text-[60px]">
               Learn, observe and move with the market.
-            </Text>
-            <Text
-              fontWeight={400}
-              fontSize={{ md: 16, lg: 18 }}
-              color="#6B7280"
-            >
+            </p>
+            <p className="font-normal text-[#6B7280] text-base lg:text-lg">
               Whether you’re a seasoned investor or just starting out, our
               platform provides you with comprehensive tools and resources.
               Explore stock trends, get personalized trading insights, and
               access a wealth of educational content designed to help you make
               informed decisions
-            </Text>
-          </Box>
-        </Box>
-        <Box w="100%" borderRadius={"12px"} h="auto">
+            </p>
+          </div>
+        </div>
+        <div className="w-full rounded-[12px] h-auto">
           <Image
             src="/assets/images/card-image.png"
             className="object-cover rounded-[12px] w-full h-full"
@@ -87,56 +62,35 @@ const Home = () => {
             height={546}
             alt="Random snap"
           />
-        </Box>
-      </Flex>
-      <Grid
-        gap={{ base: 2, md: 4 }}
-        mb={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
-        templateColumns={{
-          sm: "repeat(2, 1fr)",
-          lg: "repeat(4, 1fr)",
-        }}
-      >
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
         {stockList.map((stock: IStock, index: number) => (
-          <GridItem key={index}>
+          <div key={index}>
             <StockCard stock={stock} />
-          </GridItem>
+          </div>
         ))}
-      </Grid>
-      <Box mb={16}>
+      </div>
+      <div className="mb-[64px]">
         <HeaderCard text="Trending Analysis" href="#" />
-        <Grid
-          gap={{ base: 2, md: 4 }}
-          templateColumns={{
-            md: "repeat(2, 1fr)",
-            lg: "repeat(3, 1fr)",
-            xl: "repeat(4, 1fr)",
-          }}
-        >
-          {trendingList.map((trend: ICardView, index: number) => (
-            <GridItem>
-              <ViewCard card={trend} />
-            </GridItem>
-          ))}
-        </Grid>
-      </Box>
-      <Box mb={16}>
-        <HeaderCard text="Learn About The Market" href="#" />
-        <Grid
-          gap={4}
-          templateColumns={{
-            md: "repeat(2, 1fr)",
-            lg: "repeat(3, 1fr)",
-            xl: "repeat(4, 1fr)",
-          }}
-        >
+        <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
           {marketList.map((trend: ICardView, index: number) => (
-            <GridItem key={index}>
+            <div key={index}>
               <ViewCard card={trend} />
-            </GridItem>
+            </div>
           ))}
-        </Grid>
-      </Box>
+        </div>
+      </div>
+      <div className="mb-[64px]">
+        <HeaderCard text="Learn About The Market" href="#" />
+        <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+          {marketList.map((trend: ICardView, index: number) => (
+            <div key={index}>
+              <ViewCard card={trend} />
+            </div>
+          ))}
+        </div>
+      </div>
       <HeaderCard
         text="Watch the market move in real time."
         linkText="Get started"
@@ -145,7 +99,7 @@ const Home = () => {
       <MarketMove />
       <TradeDecision />
       <Footer />
-    </Box>
+    </div>
   );
 };
 export default Home;

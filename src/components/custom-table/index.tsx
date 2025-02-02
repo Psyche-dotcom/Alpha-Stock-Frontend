@@ -52,14 +52,17 @@ export function TableComponent<T extends DataItem>({
   };
 
   return (
-    <div className="w-full">
-      <div className="rounded-md overflow-hidden">
+    <div className="">
+      <div className="rounded-md overflow-auto">
         <Table>
           <TableHeader className="bg-[#EBE9E6]">
             <TableRow className="border-none">
               {columns.map((column, index) => (
                 <TableHead
-                  className={cn("py-4 font-bold", index === 0 ? "pl-6" : "")}
+                  className={cn(
+                    "py-4 font-bold",
+                    index === 0 ? "pl-6 text-start" : "text-center"
+                  )}
                   key={String(column)}
                 >
                   {formatColumnName(String(column))}

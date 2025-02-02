@@ -1,10 +1,11 @@
 "use client";
 
+import { TableComponent } from "@/components/custom-table";
+import { DataItem } from "@/types";
 import { CancelIcon, SuccessIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
-import Table, { ColumnsType } from "antd/es/table";
 
-interface DataType {
+interface DataType extends DataItem {
   id: number;
   isFree: boolean;
   isRegular: boolean;
@@ -13,65 +14,43 @@ interface DataType {
 }
 
 const StockAnalyser = () => {
-  const columns: ColumnsType<DataType> = [
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          FEATURE
-        </Text>
-      ),
-      dataIndex: "feature",
-      key: "feature",
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12} textAlign="center">
-          FREE
-        </Text>
-      ),
-      dataIndex: "isFree",
-      key: "isFree",
-      render: (isFree) => {
-        return (
-          <Box justifyContent={"center"} display="flex">
-            {isFree ? <SuccessIcon /> : <CancelIcon />}
-          </Box>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12} textAlign="center">
-          REGULAR
-        </Text>
-      ),
-      dataIndex: "isRegular",
-      key: "isRegular",
-      render: (isRegular) => {
-        return (
-          <Box justifyContent={"center"} display="flex">
-            {isRegular ? <SuccessIcon /> : <CancelIcon />}
-          </Box>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12} textAlign="center">
-          STANDARD
-        </Text>
-      ),
-      dataIndex: "isStandard",
-      key: "isStandard",
-      render: (isStandard) => {
-        return (
-          <Box justifyContent={"center"} display="flex">
-            {isStandard ? <SuccessIcon /> : <CancelIcon />}
-          </Box>
-        );
-      },
-    },
+  const cellRenderers = {
+    feature: (item: DataType) => (
+      <Text fontWeight={600} fontSize={16} color="#111928">
+        {item?.feature}
+      </Text>
+    ),
+    isFree: (item: DataType) => (
+      <Box justifyContent={"center"} display="flex">
+        {item?.isFree ? <SuccessIcon /> : <CancelIcon />}
+      </Box>
+    ),
+    isRegular: (item: DataType) => (
+      <Box justifyContent={"center"} display="flex">
+        {item?.isRegular ? <SuccessIcon /> : <CancelIcon />}
+      </Box>
+    ),
+
+    isStandard: (item: DataType) => (
+      <Box justifyContent={"center"} display="flex">
+        {item?.isStandard ? <SuccessIcon /> : <CancelIcon />}
+      </Box>
+    ),
+  };
+
+  const columnOrder: (keyof DataType)[] = [
+    "feature",
+    "isFree",
+    "isRegular",
+    "isStandard",
   ];
+
+  const columnLabels = {
+    feature: "FEATURE",
+    isFree: "Free",
+    isRegular: "REGULAR",
+    isStandard: "STANDARD",
+  };
 
   const dataSources = [
     {
@@ -102,12 +81,11 @@ const StockAnalyser = () => {
       <Text fontWeight={600} fontSize={18} color="#111928" m={4} mt={0}>
         Stock Analyser
       </Text>
-      <Table
-        className="custom-table"
-        dataSource={dataSources}
-        columns={columns}
-        //   loading={isLoading}
-        pagination={false}
+      <TableComponent<DataType>
+        tableData={dataSources}
+        cellRenderers={cellRenderers}
+        columnOrder={columnOrder}
+        columnLabels={columnLabels}
       />
     </Box>
   );

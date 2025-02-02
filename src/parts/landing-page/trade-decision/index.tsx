@@ -62,7 +62,7 @@ const TradeDecision = () => {
     ),
     year: (record: DataType) => (
       <p
-        className={`font-normal text-sm ${
+        className={`font-normal text-sm text-center ${
           record?.yearProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
         }`}
       >
@@ -71,7 +71,7 @@ const TradeDecision = () => {
     ),
     years: (record: DataType) => (
       <p
-        className={`font-normal text-sm ${
+        className={`font-normal text-sm text-center ${
           record?.yearsProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
         }`}
       >

@@ -4,7 +4,7 @@ import ViewCard from "@/components/card/view-card";
 import { marketList, stockList, trendingList } from "@/constants";
 import { ICardView } from "@/interface/card-view";
 import { IStock } from "@/interface/stock-view";
-import MarketMove from "../market-move";
+import MarketMoveContent from "../market-move";
 import TradeDecision from "../trade-decision";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -96,7 +96,7 @@ const Home = () => {
         linkText="Get started"
         href="#"
       />
-      <MarketMove />
+      <MarketMoveContent />
       <TradeDecision />
       <Footer />
     </div>

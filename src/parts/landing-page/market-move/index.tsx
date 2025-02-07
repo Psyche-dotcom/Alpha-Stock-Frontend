@@ -9,7 +9,7 @@ import { ShineIcon } from "@/utils/icons";
 import Image from "next/image";
 import { useState } from "react";
 
-const MarketMove = () => {
+const MarketMoveContent = () => {
   const [marketFilter, setMarketFilter] = useState<string>("search");
 
   const dataSources: MarketMove[] = [
@@ -150,4 +150,4 @@ const MarketMove = () => {
   );
 };
 
-export default MarketMove;
+export default MarketMoveContent;

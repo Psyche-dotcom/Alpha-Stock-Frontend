@@ -1,3 +1,5 @@
+"use client";
+
 import { IComment } from "@/interface/comment";
 import {
   ChatIcon,
@@ -7,7 +9,22 @@ import {
   ThumbsIcon,
 } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { FileUploadIcon, SendIcon, SmileyIcon } from "@/utils/icons";
+
 import Image from "next/image";
+import { boolean, z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 interface ICommentProps {
   comment: IComment;
   showOptions?: boolean;
@@ -17,6 +34,21 @@ const CommentCard: React.FC<ICommentProps> = ({
   comment,
   showOptions = false,
 }) => {
+  const [showReply, setShowReply] = useState<boolean>(false);
+
+  const formSchema = z.object({
+    email: z.string(),
+  });
+
+  type FormSchemaType = z.infer<typeof formSchema>;
+  const form = useForm<FormSchemaType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  async function onSubmit(values: FormSchemaType) {}
   return (
     <Box
       bg="#FFFFFF"
@@ -64,13 +96,18 @@ const CommentCard: React.FC<ICommentProps> = ({
         justifyContent={"space-between"}
       >
         <Box display="flex" gap={5}>
-          <Flex alignItems={"center"} gap="8px">
+          <Flex
+            alignItems={"center"}
+            gap="8px"
+            cursor={"pointer"}
+            onClick={() => setShowReply(!showReply)}
+          >
             <Text fontWeight={500} fontSize={14} color="#1F2A37">
               Reply
             </Text>
             <ChatIcon />
           </Flex>
-          <Flex alignItems={"center"} gap="8px">
+          <Flex alignItems={"center"} gap="8px" cursor={"pointer"}>
             <Text fontWeight={500} fontSize={14} color="#1F2A37">
               Like
             </Text>
@@ -78,13 +115,13 @@ const CommentCard: React.FC<ICommentProps> = ({
           </Flex>
           {showOptions && (
             <>
-              <Flex alignItems={"center"} gap="8px">
+              <Flex alignItems={"center"} gap="8px" cursor={"pointer"}>
                 <Text fontWeight={500} fontSize={14} color="#1F2A37">
                   Downvote
                 </Text>
                 <DownvoteIcon />
               </Flex>
-              <Flex alignItems={"center"} gap="8px">
+              <Flex alignItems={"center"} gap="8px" cursor={"pointer"}>
                 <Text fontWeight={500} fontSize={14} color="#1F2A37">
                   Saved
                 </Text>
@@ -97,6 +134,50 @@ const CommentCard: React.FC<ICommentProps> = ({
           <ThreeDotsIcon />
         </Box>
       </Flex>
+      {showReply && (
+        <Box
+          position={"sticky"}
+          bottom={0}
+          w={"full"}
+          bg="white"
+          borderRadius={"8px"}
+          mt="20px"
+        >
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex gap-3 items-center"
+            >
+              <Button>
+                <FileUploadIcon />
+              </Button>
+              <Button>
+                <SmileyIcon />
+              </Button>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="flex-1 w-full">
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Type here ..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button>
+                <SendIcon />
+              </Button>
+            </form>
+          </Form>
+        </Box>
+      )}
     </Box>
   );
 };

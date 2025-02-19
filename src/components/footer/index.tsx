@@ -62,7 +62,7 @@ const Footer = () => {
         ))}
       </Flex>
       <LinkButton
-        href={"#"}
+        href={"/terms"}
         text="Terms and Conditions"
         variant="solid"
         bg="#FFFFFF"

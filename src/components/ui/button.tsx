@@ -9,13 +9,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-white text-primary-foreground hover:bg-white/90",
+        default: "bg-[#291804] text-white hover:bg-[#291804]/90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        outline: "border border-[#3A2206] bg-background text-[#3A2206]",
         secondary: "bg-[#291804] text-white hover:bg-[#291804]/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -23,6 +22,7 @@ const buttonVariants = cva(
         sm: "h-9",
         lg: "h-11",
         icon: "h-10 w-10",
+        xl: "",
       },
     },
     defaultVariants: {
@@ -61,10 +61,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        <div className="inline-flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           {icon || btnText ? (
             <>
-              {icon} <span>{btnText}</span>
+              {icon} {btnText && <span>{btnText}</span>}
             </>
           ) : (
             children

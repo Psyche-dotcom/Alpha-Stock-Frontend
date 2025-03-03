@@ -13,8 +13,12 @@ import InputForm from "@/components/form/InputForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { useLogin } from "@/services/auth";
 
 const Login: React.FC = () => {
+  const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
+    console.log(res);
+  });
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -25,6 +29,7 @@ const Login: React.FC = () => {
 
   async function onSubmit(values: LoginSchemaType) {
     console.warn(values);
+    loginPayload(values);
   }
 
   return (

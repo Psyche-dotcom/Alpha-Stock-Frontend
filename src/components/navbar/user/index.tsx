@@ -27,6 +27,7 @@ import { SearchSchemaType, searchSchema } from "@/schemas";
 import { Form } from "../../ui/form";
 import InputForm from "../../form/InputForm";
 import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 const UserNavbar = () => {
   const router = useRouter();
@@ -74,8 +75,8 @@ const UserNavbar = () => {
                   />
                   <Button
                     icon={<SearchIcon color="#fff" />}
-                    variant={"secondary"}
-                    className="flex items-center p-2"
+                    size={"xl"}
+                    className="flex items-center p-3 rounded-lg"
                   />
                 </form>
               </Form>
@@ -83,11 +84,11 @@ const UserNavbar = () => {
 
             <Menu>
               <MenuButton
-                py={3}
                 px={2}
+                py={1}
                 // rightIcon={<ArrowDownIcon />}
-                as={Button}
                 border="1px solid #D1D5DB"
+                borderRadius={"6px"}
               >
                 {/* Avatar display on button */}
                 <Flex gap="4px" alignItems="center">
@@ -108,6 +109,7 @@ const UserNavbar = () => {
                       320 PTS
                     </Text>
                   </Box>
+                  <ChevronDown size={14} />
                 </Flex>
               </MenuButton>
               <MenuList maxW={"60px"}>
@@ -141,7 +143,7 @@ const UserNavbar = () => {
               <Button
                 icon={<SearchIcon color="#fff" />}
                 variant={"secondary"}
-                className="flex items-center p-2"
+                className="flex items-center p-3"
               />
             </form>
           </Form>

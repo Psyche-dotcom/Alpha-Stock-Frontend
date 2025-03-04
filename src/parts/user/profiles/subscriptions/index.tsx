@@ -1,11 +1,13 @@
 "use client";
 
 import { ButtonIcon } from "@/components/button/button-icon";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { DownloadIcon } from "@/utils/icons";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
 import Image from "next/image";
 import { useState } from "react";
+import EditCard from "./edit-card";
 interface DataType {
   id: number;
   name: string;
@@ -18,6 +20,16 @@ interface DataType {
 
 const Subscriptions = () => {
   const [filter, setFilter] = useState<string>("all");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [option, setOption] = useState<string>("edit");
+  const renderItem = () => {
+    switch (option) {
+      case "edit":
+        return <EditCard />;
+      default:
+        return <EditCard />;
+    }
+  };
   const dataSources = [
     {
       id: 1,
@@ -185,14 +197,14 @@ const Subscriptions = () => {
 
   return (
     <Box>
-      <Flex mb={8} gap={4}>
+      <Grid mb={8} gap={4} gridTemplateColumns={"repeat(3, 1fr)"}>
         <Box borderRadius={"8px"} bg="#fff" overflow={"hidden"}>
           <Text px={6} py={4} color="#351F05" fontWeight={600} fontSize={16}>
             Subscription Information
           </Text>
           <Box p={6} bg={"#351F05"}>
             <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
-              Billing Information
+              Free Plan
             </Text>
             <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
               Expires on 27th March, 2025
@@ -229,6 +241,7 @@ const Subscriptions = () => {
                 bg="#fff"
                 borderRadius={"8px"}
                 color="#351F05"
+                fontWeight={900}
               >
                 VISA
               </Text>
@@ -249,10 +262,11 @@ const Subscriptions = () => {
               color="#291804"
               fontWeight={500}
               w="100%"
+              onClick={() => setIsOpen(true)}
             />
           </Box>
         </Box>
-      </Flex>
+      </Grid>
       <Box bg="#fff" pt={4} borderRadius={"12px"}>
         <Box px={4}>
           <Flex w="fit-content" mb={4}>
@@ -278,6 +292,11 @@ const Subscriptions = () => {
           //   loading={isLoading}
         />
       </Box>
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
+        <DialogContent className="bg-white p-[2rem] pt-[3.5rem]">
+          {renderItem()}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

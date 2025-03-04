@@ -50,7 +50,6 @@ const CommunityMain = () => {
         zIndex={10}
         width={"100%"}
         backdropFilter={"blur(10px)"}
-        // bg="rgba(255, 255, 255, 0.2)"
         boxShadow={"xl"}
         m="0px auto"
       >
@@ -59,10 +58,10 @@ const CommunityMain = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex gap-3 items-center"
           >
-            <Button>
+            <Button variant={"ghost"} size="xl">
               <FileUploadIcon />
             </Button>
-            <Button>
+            <Button variant={"ghost"} size="xl">
               <SmileyIcon />
             </Button>
             <FormField
@@ -78,7 +77,7 @@ const CommunityMain = () => {
               )}
             />
 
-            <Button>
+            <Button variant={"ghost"} size="xl">
               <SendIcon />
             </Button>
           </form>

@@ -5,7 +5,6 @@ import { TableComponent } from "@/components/custom-table";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { DataItem } from "@/types";
-import { Box, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 interface DataType extends DataItem {

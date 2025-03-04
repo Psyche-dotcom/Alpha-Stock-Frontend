@@ -55,7 +55,7 @@ const Navbar = () => {
                 <Button
                   icon={<SearchIcon color="#fff" />}
                   variant={"secondary"}
-                  className="flex items-center p-2"
+                  className="flex items-center p-3"
                 />
               </form>
             </Form>
@@ -105,8 +105,7 @@ const Navbar = () => {
                 <InputForm form={form} name="search" className="h-10 w-full" />
                 <Button
                   icon={<SearchIcon color="#fff" />}
-                  variant={"secondary"}
-                  className="flex items-center p-2"
+                  className="flex items-center p-3"
                 />
               </form>
             </Form>

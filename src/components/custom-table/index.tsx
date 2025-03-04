@@ -52,7 +52,7 @@ export function TableComponent<T extends DataItem>({
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       <div className="rounded-md overflow-auto">
         <Table>
           <TableHeader className="bg-[#EBE9E6]">
@@ -60,7 +60,7 @@ export function TableComponent<T extends DataItem>({
               {columns.map((column, index) => (
                 <TableHead
                   className={cn(
-                    "py-4 font-bold",
+                    "py-4 font-bold text-xs text-[#6B7280]",
                     index === 0 ? "pl-6 text-start" : "text-center"
                   )}
                   key={String(column)}

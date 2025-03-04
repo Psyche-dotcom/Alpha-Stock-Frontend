@@ -15,7 +15,7 @@ export const ROUTES = {
     METRICS: "/metrics",
     FINANCIALS: "/financials",
     FUNDAMENTALS: "/fundamentals",
-    STOCKANALYSERS: "/stock-analysers",
+    STOCKANALYSERS: "/stock-analyzer",
     PROFILE: "/profile",
     PLANS: "/plans",
   },

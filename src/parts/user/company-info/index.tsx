@@ -14,7 +14,7 @@ import { IButtonFilter } from "@/interface/button-filter";
 import { ICompanyAnalysis } from "@/interface/company-analysis";
 import { ICompanyStockCard } from "@/interface/company-stock-card";
 import { ArrowNarrowRight } from "@/utils/icons";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 const CompanyInfo: React.FC = () => {
@@ -107,25 +107,29 @@ const CompanyInfo: React.FC = () => {
             gaming service GeForce Now.[11]
           </Text>
         </div>
-        <Box borderRadius="12px" p={"10px"} bg="#fff" w="100%" h="fit-content">
+        <Box
+          borderRadius="12px"
+          p={"10px"}
+          mt={{ base: 4, lg: 0 }}
+          bg="#fff"
+          w="100%"
+          h="fit-content"
+        >
           <Text fontWeight={700} fontSize={24} color="#111928" mb="10px">
             Trending Companies
           </Text>
-          <Flex wrap="wrap" display={{ sm: "flex", base: "flex-col" }} gap={4}>
+          <Grid
+            gap={{ base: 2, md: 4 }}
+            gridTemplateColumns={{ sm: "repeat(2, 1fr)" }}
+          >
             {CompanyStockList.map(
               (company: ICompanyStockCard, index: number) => (
-                <Box
-                  key={index}
-                  flexBasis={{ sm: "calc(50% - 1rem)" }}
-                  maxWidth={{ sm: "calc(50% - 1rem)" }}
-                  flexGrow={1}
-                  pb={{ base: 3, sm: 0 }}
-                >
+                <Box key={index} pb={{ base: 3, sm: 0 }}>
                   <CompanyStockCard company={company} />
                 </Box>
               )
             )}
-          </Flex>
+          </Grid>
         </Box>
       </div>
     </div>

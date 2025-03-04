@@ -16,6 +16,7 @@ import Storage from "@/utils/storage";
 
 const ResetPassword: React.FC = () => {
   const { handlePush } = useHandlePush();
+  const email = Storage.get("email");
   const { resetPasswordData, resetPasswordIsLoading, resetPasswordPayload } =
     useResetPassword((res: any) => {
       Storage.remove("email");
@@ -26,13 +27,12 @@ const ResetPassword: React.FC = () => {
     defaultValues: {
       password: "",
       confirmPassword: "",
+      token: "",
+      email: email?.toString() || "",
     },
   });
-  const email = Storage.get("email");
-  console.log(email);
 
   async function onSubmit(values: ResetPasswordSchemaType) {
-    console.warn(values);
     resetPasswordPayload(values);
   }
 
@@ -49,13 +49,25 @@ const ResetPassword: React.FC = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="mb-10 space-y-5"
               >
-                <InputForm form={form} name={"password"} label="Password" />
+                <InputForm
+                  form={form}
+                  name={"email"}
+                  label="Email"
+                  disabled={true}
+                />
+                <InputForm form={form} name={"token"} label="Token" />
+                <InputForm
+                  form={form}
+                  name={"password"}
+                  label="Password"
+                  type="password"
+                />
                 <InputForm
                   form={form}
                   name={"confirmPassword"}
                   label="Confirm Password"
+                  type="password"
                 />
-                <InputForm form={form} name={"token"} label="Token" />
                 <Button
                   variant="secondary"
                   className="w-full py-2.5 font-medium text-sm"

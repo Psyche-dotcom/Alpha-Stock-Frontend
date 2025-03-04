@@ -14,10 +14,17 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { useLogin } from "@/services/auth";
+import { useHandlePush } from "@/hooks/handlePush";
 
 const Login: React.FC = () => {
+  const { handlePush } = useHandlePush();
   const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
     console.log(res);
+    if (res?.user[0].toLowerCase() === "user") {
+      handlePush("/company-info");
+      return;
+    }
+    handlePush("/admin/user");
   });
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),

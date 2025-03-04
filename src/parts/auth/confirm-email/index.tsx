@@ -1,7 +1,7 @@
 "use client";
 
 import AuthCard from "@/components/card/auth-card";
-import { type ForgotPasswordSchemaType, forgotPasswordSchema } from "@/schemas";
+import { type ConfirmEmailSchemaType, confirmEmailSchema } from "@/schemas";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,23 +11,26 @@ import InputForm from "@/components/form/InputForm";
 import { Button } from "@/components/ui/button";
 import { useConfirmEmail } from "@/services/auth";
 import Storage from "@/utils/storage";
+import { useHandlePush } from "@/hooks/handlePush";
+import { ROUTES } from "@/constants/routes";
 
 const ConfirmEmail: React.FC = () => {
+  const { handlePush } = useHandlePush();
   const email = Storage.get("email");
   const { confirmEmailData, confirmEmailIsLoading, confirmEmailPayload } =
     useConfirmEmail((res: any) => {
       Storage.remove("email");
-      console.log(res);
+      handlePush(ROUTES.AUTH.LOGIN);
     });
-  const form = useForm<ForgotPasswordSchemaType>({
-    resolver: zodResolver(forgotPasswordSchema),
+  const form = useForm<ConfirmEmailSchemaType>({
+    resolver: zodResolver(confirmEmailSchema),
     defaultValues: {
-      email: "",
+      email: email?.toString() || "",
+      token: "",
     },
   });
 
-  async function onSubmit(values: ForgotPasswordSchemaType) {
-    console.warn(values);
+  async function onSubmit(values: ConfirmEmailSchemaType) {
     confirmEmailPayload(values);
   }
 
@@ -44,6 +47,12 @@ const ConfirmEmail: React.FC = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="mb-10 space-y-5"
               >
+                <InputForm
+                  form={form}
+                  name={"email"}
+                  label="Email"
+                  disabled={true}
+                />
                 <InputForm form={form} name={"token"} label="Token" />
 
                 <Button

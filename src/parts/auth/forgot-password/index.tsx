@@ -31,8 +31,7 @@ const ForgotPassword: React.FC = () => {
   async function onSubmit(values: ForgotPasswordSchemaType) {
     console.warn(values);
     Storage.set("email", values.email);
-    handlePush(ROUTES.AUTH.RESETPASSWORD);
-    // forgotPasswordPayload(values);
+    forgotPasswordPayload({ email: values.email });
   }
 
   return (

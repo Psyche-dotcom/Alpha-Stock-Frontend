@@ -4,6 +4,7 @@ import httpService from "../httpService";
 import { ErrorHandler } from "../errorHandler";
 import useMutateItem from "../useMutateItem";
 import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
+import Storage from "@/utils/storage";
 
 export const useLogin = (handleSuccess) => {
   const { data, error, isPending, mutateAsync } = useMutateItem({
@@ -12,10 +13,10 @@ export const useLogin = (handleSuccess) => {
     onSuccess: (requestParams) => {
       const resData = requestParams?.data?.result || {};
       handleSuccess(resData);
-      console.log(requestParams);
+      Storage.set("token", requestParams?.data?.result?.jwt);
+      Storage.set("role", requestParams?.data?.result?.userRole[0] || "");
     },
     onError: (error) => {
-      console.log(error?.response?.data?.errorMessages[0]);
       showErrorAlert(error?.response?.data?.errorMessages[0]);
     },
   });
@@ -35,8 +36,7 @@ export const useSignup = (handleSuccess) => {
     onSuccess: (requestParams) => {
       const resData = requestParams?.data?.result || {};
       handleSuccess(resData);
-      console.log(requestParams);
-      // showSuccessAlert()
+      showSuccessAlert(resData);
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);
@@ -53,13 +53,12 @@ export const useSignup = (handleSuccess) => {
 
 export const useForgotPassword = (handleSuccess) => {
   const { data, error, isPending, mutateAsync } = useMutateItem({
-    mutationFn: (payload) =>
-      httpService.postDataWithoutToken(payload, routes.forgotPassword()),
+    mutationFn: ({ email }) =>
+      httpService.postDataWithoutToken({}, routes.forgotPassword(email)),
     onSuccess: (requestParams) => {
       const resData = requestParams?.data?.result || {};
       handleSuccess(resData);
-      console.log(requestParams);
-      // showSuccessAlert()
+      showSuccessAlert(resData);
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);
@@ -82,7 +81,7 @@ export const useResetPassword = (handleSuccess) => {
       const resData = requestParams?.data?.result || {};
       handleSuccess(resData);
       console.log(requestParams);
-      // showSuccessAlert()
+      showSuccessAlert(resData);
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);
@@ -102,10 +101,8 @@ export const useConfirmEmail = (handleSuccess) => {
     mutationFn: (payload) =>
       httpService.postDataWithoutToken(payload, routes.confirmEmail()),
     onSuccess: (requestParams) => {
-      const resData = requestParams?.data?.result || {};
-      handleSuccess(resData);
-      console.log(requestParams);
-      // showSuccessAlert()
+      handleSuccess(requestParams);
+      showSuccessAlert(requestParams);
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);

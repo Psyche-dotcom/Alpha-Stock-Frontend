@@ -14,6 +14,7 @@ interface IProps {
   placeholder?: string;
   name: string;
   className?: string;
+  disabled?: boolean;
 }
 
 const InputForm: React.FC<IProps> = ({
@@ -23,6 +24,7 @@ const InputForm: React.FC<IProps> = ({
   placeholder = "example@revvapay.com",
   name,
   className = "h-14",
+  disabled = false,
 }) => {
   return (
     <FormField
@@ -37,6 +39,7 @@ const InputForm: React.FC<IProps> = ({
               {...field}
               type={type}
               className={cn("border-[#D1D5DB]", className)}
+              disabled={disabled}
             />
           </FormControl>
           <FormMessage />

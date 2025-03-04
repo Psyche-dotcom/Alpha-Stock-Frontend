@@ -65,12 +65,32 @@ const Signup: React.FC = () => {
               className="mb-10 space-y-5"
             >
               <div className="flex gap-3">
-                <InputForm form={form} name={"firstName"} label="First Name" />
-                <InputForm form={form} name={"lastName"} label="Last Name" />
+                <InputForm
+                  form={form}
+                  name={"firstName"}
+                  label="First Name"
+                  placeholder="John"
+                />
+                <InputForm
+                  form={form}
+                  name={"lastName"}
+                  label="Last Name"
+                  placeholder="Doe"
+                />
               </div>
               <div className="flex gap-3">
-                <InputForm form={form} name={"userName"} label="Username" />
-                <InputForm form={form} name={"email"} label="Email" />
+                <InputForm
+                  form={form}
+                  name={"userName"}
+                  label="Username"
+                  placeholder="doe05"
+                />
+                <InputForm
+                  form={form}
+                  name={"email"}
+                  label="Email"
+                  placeholder="johndoe@gmail.com"
+                />
               </div>
               <div className="flex gap-3">
                 <FormField
@@ -95,6 +115,7 @@ const Signup: React.FC = () => {
                   form={form}
                   name={"phoneNumber"}
                   label="Phone Number"
+                  placeholder="+12309911223"
                 />
               </div>
               <InputForm
@@ -102,6 +123,7 @@ const Signup: React.FC = () => {
                 name="password"
                 form={form}
                 label="Password"
+                placeholder="Password12"
               />
               <div className="flex gap-2 items-center justify-end mb-8">
                 <p className="font-medium text-sm text-[#6B7280]">

@@ -4,7 +4,11 @@ export const loginSchema = z.object({
   email: z.string().email("Invalid email provided"),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters" }),
+    .min(6, { message: "Password must be at least 6 characters" })
+    .regex(/[A-Z]/, {
+      message: "Password must contain at least one uppercase letter",
+    })
+    .regex(/\d/, { message: "Password must contain at least one number" }),
 });
 
 export type LoginSchemaType = z.infer<typeof loginSchema>;
@@ -22,7 +26,11 @@ export const signupSchema = z.object({
   email: z.string().email("Invalid email provided"),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters" }),
+    .min(6, { message: "Password must be at least 6 characters" })
+    .regex(/[A-Z]/, {
+      message: "Password must contain at least one uppercase letter",
+    })
+    .regex(/\d/, { message: "Password must contain at least one number" }),
   phoneNumber: z.string().regex(/^\+?[0-9]{6,15}$/, {
     message: "Invalid phone number format",
   }),
@@ -39,16 +47,25 @@ export const forgotPasswordSchema = z.object({
 
 export type ForgotPasswordSchemaType = z.infer<typeof forgotPasswordSchema>;
 
-export const resetPasswordSchema = z.object({
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters" }),
-  confirmPassword: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters" }),
-  email: z.string().email(),
-  token: z.string(),
-});
+export const resetPasswordSchema = z
+  .object({
+    email: z.string().email({ message: "Invalid email format" }),
+    token: z.string().min(1, { message: "Token is required" }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/\d/, { message: "Password must contain at least one number" }),
+    confirmPassword: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export type ResetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
 
@@ -57,3 +74,10 @@ export const searchSchema = z.object({
 });
 
 export type SearchSchemaType = z.infer<typeof searchSchema>;
+
+export const confirmEmailSchema = z.object({
+  email: z.string().email("Invalid email provided"),
+  token: z.string(),
+});
+
+export type ConfirmEmailSchemaType = z.infer<typeof confirmEmailSchema>;

@@ -9,8 +9,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import InputForm from "@/components/form/InputForm";
 import { Button } from "@/components/ui/button";
+import { useForgotPassword } from "@/services/auth";
+import { useHandlePush } from "@/hooks/handlePush";
+import { ROUTES } from "@/constants/routes";
+import Storage from "@/utils/storage";
 
 const ForgotPassword: React.FC = () => {
+  const { handlePush } = useHandlePush();
+  const { forgotPasswordData, forgotPasswordIsLoading, forgotPasswordPayload } =
+    useForgotPassword((res: any) => {
+      console.log(res);
+      handlePush(ROUTES.AUTH.RESETPASSWORD);
+    });
   const form = useForm<ForgotPasswordSchemaType>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -20,6 +30,9 @@ const ForgotPassword: React.FC = () => {
 
   async function onSubmit(values: ForgotPasswordSchemaType) {
     console.warn(values);
+    Storage.set("email", values.email);
+    handlePush(ROUTES.AUTH.RESETPASSWORD);
+    // forgotPasswordPayload(values);
   }
 
   return (
@@ -35,11 +48,12 @@ const ForgotPassword: React.FC = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="mb-10 space-y-5"
               >
-                <InputForm form={form} name={"email"} />
+                <InputForm form={form} name={"email"} label="Email" />
 
                 <Button
                   variant="secondary"
                   className="w-full py-2.5 font-medium text-sm"
+                  disabled={forgotPasswordIsLoading}
                 >
                   Send Recovery Link
                 </Button>

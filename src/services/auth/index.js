@@ -1,8 +1,9 @@
 "use client";
 import { routes } from "../api-routes";
 import httpService from "../httpService";
-// import { ErrorHandler } from "../errorHandler";
+import { ErrorHandler } from "../errorHandler";
 import useMutateItem from "../useMutateItem";
+import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
 
 export const useLogin = (handleSuccess) => {
   const { data, error, isPending, mutateAsync } = useMutateItem({
@@ -13,12 +14,108 @@ export const useLogin = (handleSuccess) => {
       handleSuccess(resData);
       console.log(requestParams);
     },
+    onError: (error) => {
+      console.log(error?.response?.data?.errorMessages[0]);
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
   });
 
   return {
     loginData: data,
-    // loginDataError: ErrorHandler(error),
+    loginDataError: ErrorHandler(error),
     loginIsLoading: isPending,
     loginPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useSignup = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postDataWithoutToken(payload, routes.signup()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      console.log(requestParams);
+      // showSuccessAlert()
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    signupData: data,
+    signupDataError: ErrorHandler(error),
+    signupIsLoading: isPending,
+    signupPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useForgotPassword = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postDataWithoutToken(payload, routes.forgotPassword()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      console.log(requestParams);
+      // showSuccessAlert()
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    forgotPasswordData: data,
+    forgotPasswordDataError: ErrorHandler(error),
+    forgotPasswordIsLoading: isPending,
+    forgotPasswordPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useResetPassword = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postDataWithoutToken(payload, routes.resetPassword()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      console.log(requestParams);
+      // showSuccessAlert()
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    resetPasswordData: data,
+    resetPasswordDataError: ErrorHandler(error),
+    resetPasswordIsLoading: isPending,
+    resetPasswordPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useConfirmEmail = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postDataWithoutToken(payload, routes.confirmEmail()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      console.log(requestParams);
+      // showSuccessAlert()
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    confirmEmailData: data,
+    confirmEmailDataError: ErrorHandler(error),
+    confirmEmailIsLoading: isPending,
+    confirmEmailPayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };

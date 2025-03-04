@@ -30,7 +30,7 @@ const InputForm: React.FC<IProps> = ({
       name={name}
       render={({ field }) => (
         <FormItem className="w-full">
-          {label && <FormLabel>Email Address</FormLabel>}
+          {label && <FormLabel>{label}</FormLabel>}
           <FormControl className="w-full">
             <Input
               placeholder={placeholder}

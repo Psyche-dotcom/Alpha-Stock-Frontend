@@ -47,8 +47,13 @@ const Login: React.FC = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="mb-10 space-y-5"
             >
-              <InputForm form={form} name={"email"} />
-              <InputForm type="password" name="password" form={form} />
+              <InputForm form={form} name={"email"} label="Email" />
+              <InputForm
+                type="password"
+                name="password"
+                form={form}
+                label="Password"
+              />
               <div className="flex gap-2 items-center justify-end mb-8">
                 <p className="font-medium text-sm text-[#6B7280]">
                   Forgot password?
@@ -66,6 +71,7 @@ const Login: React.FC = () => {
               <Button
                 variant="secondary"
                 className="w-full py-2.5 font-medium text-sm"
+                disabled={loginIsLoading}
               >
                 Sign in
               </Button>

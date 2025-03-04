@@ -1,7 +1,7 @@
 "use client";
 
 import AuthCard from "@/components/card/auth-card";
-import { type ResetPasswordSchemaType, resetPasswordSchema } from "@/schemas";
+import { type ForgotPasswordSchemaType, forgotPasswordSchema } from "@/schemas";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,59 +9,49 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import InputForm from "@/components/form/InputForm";
 import { Button } from "@/components/ui/button";
-import { useHandlePush } from "@/hooks/handlePush";
-import { useResetPassword } from "@/services/auth";
-import { ROUTES } from "@/constants/routes";
+import { useConfirmEmail } from "@/services/auth";
 import Storage from "@/utils/storage";
 
-const ResetPassword: React.FC = () => {
-  const { handlePush } = useHandlePush();
-  const { resetPasswordData, resetPasswordIsLoading, resetPasswordPayload } =
-    useResetPassword((res: any) => {
+const ConfirmEmail: React.FC = () => {
+  const email = Storage.get("email");
+  const { confirmEmailData, confirmEmailIsLoading, confirmEmailPayload } =
+    useConfirmEmail((res: any) => {
       Storage.remove("email");
-      handlePush(ROUTES.AUTH.LOGIN);
+      console.log(res);
     });
-  const form = useForm<ResetPasswordSchemaType>({
-    resolver: zodResolver(resetPasswordSchema),
+  const form = useForm<ForgotPasswordSchemaType>({
+    resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      email: "",
     },
   });
-  const email = Storage.get("email");
-  console.log(email);
 
-  async function onSubmit(values: ResetPasswordSchemaType) {
+  async function onSubmit(values: ForgotPasswordSchemaType) {
     console.warn(values);
-    resetPasswordPayload(values);
+    confirmEmailPayload(values);
   }
 
   return (
-    <div className="flex gap-8 py-8 h-[100vh]">
+    <div className="flex gap-8 py-8 h-[75vh]">
       <Card className="rounded-[12px] p-8 w-full bg-white">
         <CardContent className="flex h-full items-center p-0">
           <div className="w-full">
             <p className="mb-2 font-bold text-2xl text-[#111928]">
-              Reset Password
+              Confirm Email
             </p>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="mb-10 space-y-5"
               >
-                <InputForm form={form} name={"password"} label="Password" />
-                <InputForm
-                  form={form}
-                  name={"confirmPassword"}
-                  label="Confirm Password"
-                />
                 <InputForm form={form} name={"token"} label="Token" />
+
                 <Button
                   variant="secondary"
                   className="w-full py-2.5 font-medium text-sm"
-                  disabled={resetPasswordIsLoading}
+                  disabled={confirmEmailIsLoading}
                 >
-                  Save
+                  Submit
                 </Button>
               </form>
             </Form>
@@ -75,4 +65,4 @@ const ResetPassword: React.FC = () => {
   );
 };
 
-export default ResetPassword;
+export default ConfirmEmail;

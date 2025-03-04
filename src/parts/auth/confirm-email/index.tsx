@@ -1,7 +1,7 @@
 "use client";
 
 import AuthCard from "@/components/card/auth-card";
-import { type ForgotPasswordSchemaType, forgotPasswordSchema } from "@/schemas";
+import { type ConfirmEmailSchemaType, confirmEmailSchema } from "@/schemas";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,29 +9,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import InputForm from "@/components/form/InputForm";
 import { Button } from "@/components/ui/button";
-import { useForgotPassword } from "@/services/auth";
+import { useConfirmEmail } from "@/services/auth";
+import Storage from "@/utils/storage";
 import { useHandlePush } from "@/hooks/handlePush";
 import { ROUTES } from "@/constants/routes";
-import Storage from "@/utils/storage";
 
-const ForgotPassword: React.FC = () => {
+const ConfirmEmail: React.FC = () => {
   const { handlePush } = useHandlePush();
-  const { forgotPasswordData, forgotPasswordIsLoading, forgotPasswordPayload } =
-    useForgotPassword((res: any) => {
-      console.log(res);
-      handlePush(ROUTES.AUTH.RESETPASSWORD);
+  const email = Storage.get("email");
+  const { confirmEmailData, confirmEmailIsLoading, confirmEmailPayload } =
+    useConfirmEmail((res: any) => {
+      Storage.remove("email");
+      handlePush(ROUTES.AUTH.LOGIN);
     });
-  const form = useForm<ForgotPasswordSchemaType>({
-    resolver: zodResolver(forgotPasswordSchema),
+  const form = useForm<ConfirmEmailSchemaType>({
+    resolver: zodResolver(confirmEmailSchema),
     defaultValues: {
-      email: "",
+      email: email?.toString() || "",
+      token: "",
     },
   });
 
-  async function onSubmit(values: ForgotPasswordSchemaType) {
-    console.warn(values);
-    Storage.set("email", values.email);
-    forgotPasswordPayload({ email: values.email });
+  async function onSubmit(values: ConfirmEmailSchemaType) {
+    confirmEmailPayload(values);
   }
 
   return (
@@ -40,21 +40,27 @@ const ForgotPassword: React.FC = () => {
         <CardContent className="flex h-full items-center p-0">
           <div className="w-full">
             <p className="mb-2 font-bold text-2xl text-[#111928]">
-              Forgot Password
+              Confirm Email
             </p>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="mb-10 space-y-5"
               >
-                <InputForm form={form} name={"email"} label="Email" />
+                <InputForm
+                  form={form}
+                  name={"email"}
+                  label="Email"
+                  disabled={true}
+                />
+                <InputForm form={form} name={"token"} label="Token" />
 
                 <Button
                   variant="secondary"
                   className="w-full py-2.5 font-medium text-sm"
-                  disabled={forgotPasswordIsLoading}
+                  disabled={confirmEmailIsLoading}
                 >
-                  Send Recovery Link
+                  Submit
                 </Button>
               </form>
             </Form>
@@ -68,4 +74,4 @@ const ForgotPassword: React.FC = () => {
   );
 };
 
-export default ForgotPassword;
+export default ConfirmEmail;

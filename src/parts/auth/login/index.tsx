@@ -13,8 +13,19 @@ import InputForm from "@/components/form/InputForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { useLogin } from "@/services/auth";
+import { useHandlePush } from "@/hooks/handlePush";
 
 const Login: React.FC = () => {
+  const { handlePush } = useHandlePush();
+  const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
+    console.log(res);
+    if (res?.user[0].toLowerCase() === "user") {
+      handlePush("/company-info");
+      return;
+    }
+    handlePush("/admin/user");
+  });
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -25,6 +36,7 @@ const Login: React.FC = () => {
 
   async function onSubmit(values: LoginSchemaType) {
     console.warn(values);
+    loginPayload(values);
   }
 
   return (
@@ -42,8 +54,13 @@ const Login: React.FC = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="mb-10 space-y-5"
             >
-              <InputForm form={form} name={"email"} />
-              <InputForm type="password" name="password" form={form} />
+              <InputForm form={form} name={"email"} label="Email" />
+              <InputForm
+                type="password"
+                name="password"
+                form={form}
+                label="Password"
+              />
               <div className="flex gap-2 items-center justify-end mb-8">
                 <p className="font-medium text-sm text-[#6B7280]">
                   Forgot password?
@@ -61,6 +78,7 @@ const Login: React.FC = () => {
               <Button
                 variant="secondary"
                 className="w-full py-2.5 font-medium text-sm"
+                disabled={loginIsLoading}
               >
                 Sign in
               </Button>

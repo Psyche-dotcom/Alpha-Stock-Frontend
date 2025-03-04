@@ -7,3 +7,8 @@
   margin: 0px;
   padding: 0px;
 }
+
+:root {
+  --destructive: 0, 84%, 60%;
+  --destructive-foreground: 0, 0%, 100%;
+}

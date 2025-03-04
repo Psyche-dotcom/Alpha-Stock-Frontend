@@ -9,22 +9,35 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import InputForm from "@/components/form/InputForm";
 import { Button } from "@/components/ui/button";
+import { useHandlePush } from "@/hooks/handlePush";
+import { useResetPassword } from "@/services/auth";
+import { ROUTES } from "@/constants/routes";
+import Storage from "@/utils/storage";
 
 const ResetPassword: React.FC = () => {
+  const { handlePush } = useHandlePush();
+  const email = Storage.get("email");
+  const { resetPasswordData, resetPasswordIsLoading, resetPasswordPayload } =
+    useResetPassword((res: any) => {
+      Storage.remove("email");
+      handlePush(ROUTES.AUTH.LOGIN);
+    });
   const form = useForm<ResetPasswordSchemaType>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      newpassword: "",
-      confirmpassword: "",
+      password: "",
+      confirmPassword: "",
+      token: "",
+      email: email?.toString() || "",
     },
   });
 
   async function onSubmit(values: ResetPasswordSchemaType) {
-    console.warn(values);
+    resetPasswordPayload(values);
   }
 
   return (
-    <div className="flex gap-8 py-8 h-[75vh]">
+    <div className="flex gap-8 py-8 h-[100vh]">
       <Card className="rounded-[12px] p-8 w-full bg-white">
         <CardContent className="flex h-full items-center p-0">
           <div className="w-full">
@@ -36,12 +49,29 @@ const ResetPassword: React.FC = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="mb-10 space-y-5"
               >
-                <InputForm form={form} name={"newpassword"} />
-                <InputForm form={form} name={"confirmpassword"} />
-
+                <InputForm
+                  form={form}
+                  name={"email"}
+                  label="Email"
+                  disabled={true}
+                />
+                <InputForm form={form} name={"token"} label="Token" />
+                <InputForm
+                  form={form}
+                  name={"password"}
+                  label="Password"
+                  type="password"
+                />
+                <InputForm
+                  form={form}
+                  name={"confirmPassword"}
+                  label="Confirm Password"
+                  type="password"
+                />
                 <Button
                   variant="secondary"
                   className="w-full py-2.5 font-medium text-sm"
+                  disabled={resetPasswordIsLoading}
                 >
                   Save
                 </Button>

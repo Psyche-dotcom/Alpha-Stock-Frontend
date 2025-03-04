@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
@@ -16,31 +16,37 @@ import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import InputForm from "@/components/form/InputForm";
 import { SignupSchemaType, signupSchema } from "@/schemas";
+import { CountryDropdown } from "@/components/ui/country-dropdown";
+import { useSignup } from "@/services/auth";
+import { useHandlePush } from "@/hooks/handlePush";
+import Storage from "@/utils/storage";
 
 const Signup: React.FC = () => {
+  const { handlePush } = useHandlePush();
+  const { signupData, signupIsLoading, signupPayload } = useSignup(
+    (res: any) => {
+      console.log(res);
+      handlePush(ROUTES.AUTH.CONFIRMEMAIL);
+    }
+  );
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
       email: "",
       password: "",
-      fullname: "",
-      username: "",
+      firstName: "",
+      lastName: "",
+      userName: "",
       country: "",
-      phonenumber: "",
+      phoneNumber: "",
     },
   });
 
   async function onSubmit(values: SignupSchemaType) {
-    console.warn(values);
+    signupPayload(values);
+    Storage.set("email", values.email);
   }
 
   return (
@@ -58,34 +64,67 @@ const Signup: React.FC = () => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="mb-10 space-y-5"
             >
-              <InputForm form={form} name={"fullname"} />
-              <InputForm form={form} name={"email"} />
-              <InputForm form={form} name={"username"} />
-              <FormField
-                control={form.control}
-                name="country"
-                render={({ field }) => (
-                  <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl className="border-[#D1D5DB]">
-                        <SelectTrigger>
-                          <SelectValue placeholder="--select option--" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="usdc">USDC</SelectItem>
-                        <SelectItem value="usdt">USDT</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <div className="flex gap-3">
+                <InputForm
+                  form={form}
+                  name={"firstName"}
+                  label="First Name"
+                  placeholder="John"
+                />
+                <InputForm
+                  form={form}
+                  name={"lastName"}
+                  label="Last Name"
+                  placeholder="Doe"
+                />
+              </div>
+              <div className="flex gap-3">
+                <InputForm
+                  form={form}
+                  name={"userName"}
+                  label="Username"
+                  placeholder="doe05"
+                />
+                <InputForm
+                  form={form}
+                  name={"email"}
+                  label="Email"
+                  placeholder="johndoe@gmail.com"
+                />
+              </div>
+              <div className="flex gap-3">
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Country</FormLabel>
+                      <CountryDropdown
+                        placeholder="--select option--"
+                        defaultValue={field.value}
+                        onChange={(country) => {
+                          field.onChange(country.name);
+                        }}
+                      />
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <InputForm
+                  form={form}
+                  name={"phoneNumber"}
+                  label="Phone Number"
+                  placeholder="+12309911223"
+                />
+              </div>
+              <InputForm
+                type="password"
+                name="password"
+                form={form}
+                label="Password"
+                placeholder="Password12"
               />
-              <InputForm form={form} name={"phonenumber"} />
-              <InputForm type="password" name="password" form={form} />
               <div className="flex gap-2 items-center justify-end mb-8">
                 <p className="font-medium text-sm text-[#6B7280]">
                   Forgot password?
@@ -103,6 +142,7 @@ const Signup: React.FC = () => {
               <Button
                 variant="secondary"
                 className="w-full py-2.5 font-medium text-sm"
+                disabled={signupIsLoading}
               >
                 Sign Up
               </Button>

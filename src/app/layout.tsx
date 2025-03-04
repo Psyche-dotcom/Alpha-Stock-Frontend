@@ -3,6 +3,7 @@ import "./globals.css";
 import { ChakraWrapperProvider } from "@/providers/chakraProvider";
 import TopLoader from "@/components/top-loader";
 import { Inter } from "@next/font/google";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body>
         <TopLoader />
+        <Toaster richColors expand={false} />
         <ChakraWrapperProvider>{children}</ChakraWrapperProvider>
       </body>
     </html>

@@ -1,5 +1,6 @@
 "use client";
 
+import Storage from "@/utils/storage";
 /* eslint-disable style/quote-props */
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
@@ -15,8 +16,7 @@ export type AxiosConfig = Partial<AxiosRequestConfig> & {
 };
 
 export function useRequest(): AxiosInstance {
-  const token = getCookie("revpay-token");
-  const adminToken = getCookie("revpay-admin-token");
+  const token = getCookie("token");
 
   const request = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -24,8 +24,8 @@ export function useRequest(): AxiosInstance {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      ...((adminToken || token) && {
-        Authorization: `Bearer ${(adminToken || token) as string}`,
+      ...(token && {
+        Authorization: `Bearer ${token as string}`,
       }),
     },
   });
@@ -37,7 +37,7 @@ export function useRequest(): AxiosInstance {
     async (error) => {
       const originalRequest = error.config;
 
-      const refreshToken = await getCookie("revpay-refresh");
+      const refreshToken = await Storage.get("token-refresh");
 
       if (
         error.response &&
@@ -51,18 +51,16 @@ export function useRequest(): AxiosInstance {
         try {
           const refreshedResponse = await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh/`,
-            { refresh: await getCookie("revpay-refresh") },
+            { refresh: await Storage.get("token-refresh") },
             {
               headers: {
-                Authorization: `Bearer ${await getCookie("revpay-refresh")}`,
+                Authorization: `Bearer ${await Storage.get("token-refresh")}`,
               },
             }
           );
 
-          // router.push('/dashboard')
-
-          await setCookie("revpay-token", refreshedResponse.data?.access);
-          await setCookie("revpay-refresh", refreshedResponse.data?.refresh);
+          await Storage.set("token", refreshedResponse.data?.access);
+          await Storage.set("token-refresh", refreshedResponse.data?.refresh);
 
           return await request.request(originalRequest);
         } catch (err) {

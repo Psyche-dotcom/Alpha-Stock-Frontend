@@ -1,7 +1,7 @@
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 export default class Storage {
-  static set(key, value) {
+  static async set(key, value) {
     try {
       setCookie(key, String(value));
     } catch (err) {

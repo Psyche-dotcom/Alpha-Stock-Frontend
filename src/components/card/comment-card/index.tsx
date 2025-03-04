@@ -148,10 +148,10 @@ const CommentCard: React.FC<ICommentProps> = ({
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex gap-3 items-center"
             >
-              <Button>
+              <Button variant={"ghost"} size="xl">
                 <FileUploadIcon />
               </Button>
-              <Button>
+              <Button variant={"ghost"} size="xl">
                 <SmileyIcon />
               </Button>
               <FormField
@@ -171,7 +171,7 @@ const CommentCard: React.FC<ICommentProps> = ({
                 )}
               />
 
-              <Button>
+              <Button variant={"ghost"} size="xl">
                 <SendIcon />
               </Button>
             </form>

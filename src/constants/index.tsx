@@ -48,7 +48,7 @@ export const userNavbarList = [
     path: ROUTES.USER.FUNDAMENTALS,
   },
   {
-    title: "Stock Analyser",
+    title: "Stock Analyzer",
     path: ROUTES.USER.STOCKANALYSERS,
   },
   {

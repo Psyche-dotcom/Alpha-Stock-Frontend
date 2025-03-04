@@ -11,9 +11,15 @@ import {
 import { Box, Text } from "@chakra-ui/react";
 interface IWatchlistProp {
   watchlist: ICompanyStockCard;
+  handlePreference: () => void;
+  handleDelete: () => void;
 }
 
-const WatchlistCard: React.FC<IWatchlistProp> = ({ watchlist }) => {
+const WatchlistCard: React.FC<IWatchlistProp> = ({
+  watchlist,
+  handleDelete,
+  handlePreference,
+}) => {
   return (
     <Box border="1px solid #C2BAB2" px={4} py={2} borderRadius="12px" bg="#fff">
       <Box
@@ -51,13 +57,18 @@ const WatchlistCard: React.FC<IWatchlistProp> = ({ watchlist }) => {
         </Box>
       </Box>
       <Box display="flex" justifyContent={"space-between"}>
-        <Box className="flex items-center gap-[10px] mb-2.5">
+        <Box
+          className="flex items-center gap-[10px] mb-2.5 cursor-pointer"
+          onClick={handlePreference}
+        >
           <AlarmIcon />
           <h2 className="text-base font-semibold text-[#111928]">
             Edit Preferences
           </h2>
         </Box>
-        <DeletePreferenceIcon />
+        <Box onClick={handleDelete} className="cursor-pointer">
+          <DeletePreferenceIcon />
+        </Box>
       </Box>
     </Box>
   );

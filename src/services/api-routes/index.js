@@ -6,4 +6,8 @@ export const routes = {
   confirmEmail: () => "/api/user/confirm-email",
   profile: () => "/api/user/info",
   updateProfile: (email) => `/api/user/update_details/${email}`,
+  blog: () => "/api/blog/post/retrieve/all",
+  getSingleBlog: () => "/api/blog/post/retrieve/single",
+  getSingleBlogComments: () => "/api/blog/comment/retrieve/all",
+  getSingleBlogCommentsComment: () => "/api/blog/comment/reply/retrieve/all",
 };

@@ -17,10 +17,6 @@ export const navbarList = [
     path: ROUTES.HOME,
   },
   {
-    title: "Community",
-    path: ROUTES.USER.COMMUNITY,
-  },
-  {
     title: "Blog",
     path: ROUTES.BLOG,
   },
@@ -31,75 +27,87 @@ export const navbarList = [
 ];
 
 export const userNavbarList = [
-  {
-    title: "Company Info",
-    path: ROUTES.USER.COMPANYINFO,
-  },
-  {
-    title: "Metrics",
-    path: ROUTES.USER.METRICS,
-  },
-  {
-    title: "Financials",
-    path: ROUTES.USER.FINANCIALS,
-  },
-  {
-    title: "Fundamentals",
-    path: ROUTES.USER.FUNDAMENTALS,
-  },
-  {
-    title: "Stock Analyzer",
-    path: ROUTES.USER.STOCKANALYSERS,
-  },
+  { title: "Home", path: "/user" },
+  { title: "Market Kit", path: "#" },
   {
     title: "Plans",
     path: ROUTES.USER.PLANS,
   },
+  { title: "Community", path: "#" },
+  { title: "Blog", path: "#" },
+  // {
+  //   title: "Company Info",
+  //   path: ROUTES.USER.COMPANYINFO,
+  // },
+  // {
+  //   title: "Metrics",
+  //   path: ROUTES.USER.METRICS,
+  // },
+  // {
+  //   title: "Financials",
+  //   path: ROUTES.USER.FINANCIALS,
+  // },
+  // {
+  //   title: "Fundamentals",
+  //   path: ROUTES.USER.FUNDAMENTALS,
+  // },
+  // {
+  //   title: "Stock Analyzer",
+  //   path: ROUTES.USER.STOCKANALYSERS,
+  // },
 ];
 
 export const trendingList = [
   {
+    id: "1",
     title: "What do members of congress know about these stocks that we don’t?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
   {
+    id: "2",
     title: "What do members of congress know about these stocks that we don’t?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
   {
+    id: "3",
     title: "What do members of congress know about these stocks that we don’t?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
   {
+    id: "4",
     title: "What do members of congress know about these stocks that we don’t?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
 ];
 
 export const marketList = [
   {
+    id: "1",
     title: "Top 5 Value Stocks On the Market",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
   {
+    id: "2",
     title: "Right Now! 3 Stocks To Buy Right Now Before Sales End",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
   {
+    id: "3",
     title: "Right Now! 3 Stocks To Buy Right Now Before Sales End",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
   {
+    id: "4",
     title: "Top 5 Value Stocks On the Market",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
 ];
 
@@ -154,64 +162,43 @@ export const marketMoveFilterList = [
 
 export const trendingLists = [
   {
+    id: "1",
     title: "What do members of congress know about these stocks that we don’t?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
   {
+    id: "2",
     title: "What do members of congress know about these stocks that we don’t?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   },
 ];
 
 export const commentList = [
   {
-    content: "Has anyone had any challenge with the premium sub plan?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
-    name: "Micheal Angelo",
-  },
-  {
-    content: "Has anyone had any challenge with the premium sub plan?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
-    name: "Micheal Angelo",
-  },
-  {
-    content: "Has anyone had any challenge with the premium sub plan?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    commentId: "1",
+    comment: "Has anyone had any challenge with the premium sub plan?",
+    commentDate: "August 2, 2024",
+    userImgUrl: "/assets/images/card-image.png",
     name: "Micheal Angelo",
   },
 ];
 
 export const communityList = [
   {
-    content: "Has anyone had any challenge with the premium sub plan?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    commentId: "1",
+    comment: "Has anyone had any challenge with the premium sub plan?",
+    commentDate: "August 2, 2024",
+    userImgUrl: "/assets/images/card-image.png",
     name: "Micheal Angelo",
   },
   {
-    content: "Has anyone had any challenge with the premium sub plan?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    commentId: "2",
+    comment: "Has anyone had any challenge with the premium sub plan?",
+    commentDate: "August 2, 2024",
+    userImgUrl: "/assets/images/card-image.png",
     name: "Micheal Angelo",
-    image: "/assets/images/card-image.png",
-  },
-  {
-    content: "Has anyone had any challenge with the premium sub plan?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
-    name: "Micheal Angelo",
-  },
-  {
-    content: "Has anyone had any challenge with the premium sub plan?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
-    name: "Micheal Angelo",
-    image: "/assets/images/card-image.png",
   },
 ];
 

@@ -1,8 +1,9 @@
-import { ICardView } from "@/interface/card-view";
+import { IViewCard } from "@/interface/card-view";
+import { formatDate } from "@/utils";
 import { Box, Text } from "@chakra-ui/react";
 import Image from "next/image";
 interface IViewProps {
-  card: ICardView;
+  card: IViewCard;
 }
 
 const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
@@ -12,7 +13,7 @@ const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
       p={2}
       display={"flex"}
       alignItems={"end"}
-      bgImage={`url(${card?.url})`}
+      bgImage={`url(${card?.blogThumbnailUrl})`}
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
@@ -36,7 +37,7 @@ const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
           {card?.title}
         </Text>
         <Text color={"#6B7280"} fontSize={"12px"} fontWeight={400}>
-          {card?.createdAt}
+          {formatDate(card?.publishedDate)}
         </Text>
         <Box display={"flex"}>
           <Box
@@ -54,13 +55,13 @@ const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
               <Image
                 width={32}
                 height={32}
-                src="/assets/images/card-image.png"
+                src={card?.publisherImgUrl || "/assets/images/card-image.png"}
                 alt="Single blog view"
                 className="rounded-full object-cover h-full w-full"
               />
             </Box>
             <Text color={"#180E03"} fontSize={"14px"} fontWeight={600}>
-              Marcus Jeffersson
+              {card?.publisherName}
             </Text>
           </Box>
         </Box>

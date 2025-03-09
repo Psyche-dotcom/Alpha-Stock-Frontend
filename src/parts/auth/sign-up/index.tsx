@@ -162,11 +162,13 @@ const Signup: React.FC = () => {
             <p className="font-medium text-sm text-[#6B7280]">
               Already a user on our platform?
             </p>
-            <Button asChild className="text-[#3A2206] font-bold text-sm p-0">
-              <Link href={ROUTES.AUTH.LOGIN} passHref>
-                Login Here
-              </Link>
-            </Button>
+            <Link
+              href={ROUTES.AUTH.LOGIN}
+              passHref
+              className="text-[#3A2206] font-bold text-sm p-0"
+            >
+              Login Here
+            </Link>
           </div>
         </CardContent>
       </Card>

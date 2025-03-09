@@ -18,6 +18,7 @@ export const useLogin = (handleSuccess) => {
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);
+      alert("Is this called again");
     },
   });
 

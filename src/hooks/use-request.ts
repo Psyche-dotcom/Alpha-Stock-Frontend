@@ -36,7 +36,6 @@ export function useRequest(): AxiosInstance {
     },
     async (error) => {
       const originalRequest = error.config;
-
       const refreshToken = await Storage.get("token-refresh");
 
       if (
@@ -47,6 +46,7 @@ export function useRequest(): AxiosInstance {
         !originalRequest._isRetry
       ) {
         originalRequest._isRetry = true;
+        alert("Unauthorized bro!!!");
 
         try {
           const refreshedResponse = await axios.post(

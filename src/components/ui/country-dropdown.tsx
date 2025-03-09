@@ -99,6 +99,8 @@ function CountryDropdownComponent(
     [onChange]
   );
 
+  console.log(countries);
+
   const triggerClasses = cn(
     "flex h-14 w-full items-center justify-between whitespace-nowrap bg-[#F8F8F9] rounded-md border border-[#D1D5DB] px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
     slim === true && "w-20"
@@ -116,7 +118,10 @@ function CountryDropdownComponent(
           <div className="flex w-0 flex-grow items-center gap-2 overflow-hidden">
             <div className="inline-flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full">
               <CircleFlag
-                countryCode={selectedCountry.alpha2.toLowerCase()}
+                countryCode={
+                  selectedCountry.alpha2.toLowerCase() ||
+                  selectedCountry?.name.toLowerCase()
+                }
                 height={20}
               />
             </div>

@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.mjs",
-    "src/utils/storage.js"
+    "src/utils/storage.js",
+    "src/services/profile/index.js"
   ],
   "exclude": ["node_modules"]
 }

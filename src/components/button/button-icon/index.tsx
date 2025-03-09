@@ -16,6 +16,7 @@ interface IButtonIcon {
   fontSize?: string;
   flexDirection?: "row" | "row-reverse";
   onClick?: () => void;
+  disabled?: boolean;
 }
 const ButtonIcon: FC<IButtonIcon> = ({
   variant,
@@ -32,6 +33,7 @@ const ButtonIcon: FC<IButtonIcon> = ({
   fontSize,
   flexDirection = "row",
   onClick,
+  disabled,
 }) => {
   return (
     <Button
@@ -57,6 +59,7 @@ const ButtonIcon: FC<IButtonIcon> = ({
       gap={gap}
       w={w}
       flexDirection={flexDirection}
+      disabled={disabled}
     >
       {icon && <Box>{icon}</Box>}
       <Text>{text}</Text>

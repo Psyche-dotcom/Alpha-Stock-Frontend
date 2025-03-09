@@ -19,8 +19,8 @@ import { useHandlePush } from "@/hooks/handlePush";
 const Login: React.FC = () => {
   const { handlePush } = useHandlePush();
   const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
-    console.log(res);
-    if (res?.user[0].toLowerCase() === "user") {
+    console.log(res?.userRole[0]);
+    if (res?.userRole[0].toLowerCase() === "user") {
       handlePush("/company-info");
       return;
     }
@@ -35,7 +35,6 @@ const Login: React.FC = () => {
   });
 
   async function onSubmit(values: LoginSchemaType) {
-    console.warn(values);
     loginPayload(values);
   }
 
@@ -99,11 +98,14 @@ const Login: React.FC = () => {
             <p className="font-medium text-sm text-[#6B7280]">
               New to the our platform?
             </p>
-            <Button asChild className="text-[#3A2206] font-bold text-sm p-0">
-              <Link href={ROUTES.AUTH.SIGNUP} passHref>
-                Sign-up here
-              </Link>
-            </Button>
+
+            <Link
+              href={ROUTES.AUTH.SIGNUP}
+              passHref
+              className="text-[#3A2206] font-bold text-sm p-0"
+            >
+              Sign-up here
+            </Link>
           </div>
         </CardContent>
       </Card>

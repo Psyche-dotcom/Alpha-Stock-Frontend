@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Box } from "@chakra-ui/react";
 import UserNavbar from "@/components/navbar/user";
+import { UserSessionProvider } from "../context/user-context";
 
 export const metadata: Metadata = {
   title: "Nvidia",
@@ -14,10 +15,12 @@ export default function UserLayout({
 }>) {
   return (
     <>
-      <Box overflow={"scroll"}>
-        <UserNavbar />
-        <>{children}</>
-      </Box>
+      <UserSessionProvider>
+        <Box overflow={"scroll"}>
+          <UserNavbar />
+          <>{children}</>
+        </Box>
+      </UserSessionProvider>
     </>
   );
 }

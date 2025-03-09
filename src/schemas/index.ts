@@ -81,3 +81,14 @@ export const confirmEmailSchema = z.object({
 });
 
 export type ConfirmEmailSchemaType = z.infer<typeof confirmEmailSchema>;
+
+export const updateDetailsSchema = z.object({
+  email: z.string().email("Invalid email provided"),
+  firstName: z.string().min(3, { message: "Must be grester than 2 letters" }),
+  lastName: z.string().min(3, { message: "Must be grester than 2 letters" }),
+  userName: z.string().min(3, { message: "Must be grester than 2 letters" }),
+  phoneNumber: z.string().min(6, { message: "Must be grester than 2 letters" }),
+  country: z.string(),
+});
+
+export type UpdateSchemaType = z.infer<typeof updateDetailsSchema>;

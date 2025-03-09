@@ -10,6 +10,7 @@ export default function useFetchItem({
   enabled,
   initialFilter,
   isPaginated,
+  staleTime,
 }) {
   const [pageNumber, setPageNumber] = useState(initialPage || 1);
   const [pageSize, setPageSize] = useState(initialPageSize || 10);
@@ -22,6 +23,7 @@ export default function useFetchItem({
     queryFn: () => queryFn(params),
     retry: retry || false,
     enabled,
+    ...(staleTime !== undefined && { staleTime }),
     keepPreviousData: isPaginated ? true : false,
   });
 

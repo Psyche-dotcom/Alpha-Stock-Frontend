@@ -28,9 +28,12 @@ import { Form } from "../../ui/form";
 import InputForm from "../../form/InputForm";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { useUserSession } from "@/app/context/user-context";
+import { useHandlePush } from "@/hooks/handlePush";
 
 const UserNavbar = () => {
-  const router = useRouter();
+  const { profileData } = useUserSession();
+  const { handlePush } = useHandlePush();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   const form = useForm<SearchSchemaType>({
@@ -103,7 +106,7 @@ const UserNavbar = () => {
                   </div>
                   <Box textAlign={"start"}>
                     <Text color="#111928" fontWeight={600} fontSize="12px">
-                      Jese Leos
+                      {profileData?.result?.firstName.toLowerCase()}
                     </Text>
                     <Text color="#6B7280" fontWeight={400} fontSize="12px">
                       320 PTS
@@ -114,7 +117,7 @@ const UserNavbar = () => {
               </MenuButton>
               <MenuList maxW={"60px"}>
                 {/* Dropdown menu items */}
-                <MenuItem onClick={() => router.push(ROUTES.USER.PROFILE)}>
+                <MenuItem onClick={() => handlePush(ROUTES.USER.PROFILE)}>
                   Profile
                 </MenuItem>
                 <MenuItem>Settings</MenuItem>

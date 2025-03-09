@@ -35,3 +35,10 @@ export interface MarketMove extends DataItem {
   changePercent: number;
   changePercentProgress: boolean;
 }
+
+export interface ApiResponse {
+  statusCode: number;
+  displayMessage: string;
+  result: string;
+  errorMessages: string | null;
+}

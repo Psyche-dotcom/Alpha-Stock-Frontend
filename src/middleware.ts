@@ -48,15 +48,13 @@ function merchantAuth(
 ) {
   const { pathname } = req.nextUrl;
 
-  // Redirect to login if user is not logged in
-  if (!isLoggedIn) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
+  // if (!isLoggedIn) {
+  //   return NextResponse.redirect(new URL("/login", req.url));
+  // }
 
-  // Redirect users to "/company-info" if logged in and trying to access "/login"
-  if (role === "user" && pathname === "/login") {
-    return NextResponse.redirect(new URL("/company-info", req.url));
-  }
+  // if (role === "user" && pathname === "/login") {
+  //   return NextResponse.redirect(new URL("/company-info", req.url));
+  // }
 
   return response;
 }

@@ -1,15 +1,58 @@
+"use client";
+
+import SingleCardSkeleton from "@/components/card/skeleton/single-view";
+import SkeletonViewCard from "@/components/card/skeleton/view";
 import ViewCard from "@/components/card/view-card";
 import SingleViewCard from "@/components/card/view-card/single-view-card";
-import { trendingList, trendingLists } from "@/constants";
-import { ICardView } from "@/interface/card-view";
+import { Pagination } from "@/components/ui/pagination";
+import { IViewCard } from "@/interface/card-view";
+import { useGetBlogs } from "@/services/blog";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 const Blog = () => {
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const card = {
+    id: "1",
     title: "What do members of congress know about these stocks that we don’t?",
-    createdAt: "August 2, 2024",
-    url: "/assets/images/card-image.png",
+    publishedDate: "August 2, 2024",
+    blogThumbnailUrl: "/assets/images/card-image.png",
   };
+
+  const { getBlogsData, getBlogsError, getBlogsIsLoading, getBlogsPayload } =
+    useGetBlogs((res: any) => {});
+  const splitArray = () => {
+    if (getBlogsData?.result?.length > 0) {
+      const firstBlog = getBlogsData?.result[0];
+      const SecondBlog = getBlogsData?.result.slice(1, 3);
+      const thirdBlog = getBlogsData?.result.slice(3);
+
+      return { firstBlog, SecondBlog, thirdBlog };
+    }
+    return { firstBlog: null, SecondBlog: [], thirdBlog: [] };
+  };
+
+  const { firstBlog, SecondBlog, thirdBlog } = splitArray();
+
+  useEffect(() => {
+    const payload = {
+      pageNumber: pageNumber,
+      perPageSize: 7,
+      category: "All",
+      status: "Published",
+      userId: "",
+      sinceDate: "",
+      search: "",
+    };
+    getBlogsPayload(payload);
+  }, [pageNumber]);
+
+  const onPageChange = (page: number) => {
+    setPageNumber(page);
+  };
+
+  console.log(getBlogsData);
+
   return (
     <Box mt={8}>
       <Flex
@@ -18,34 +61,74 @@ const Blog = () => {
         mb={8}
         flexDir={{ base: "column", md: "row" }}
       >
-        <SingleViewCard card={card} />
+        {getBlogsIsLoading ? (
+          <SingleCardSkeleton />
+        ) : (
+          <SingleViewCard card={firstBlog} />
+        )}
 
         <Flex
           gap={4}
           width={{ md: "20rem", lg: "25rem", xl: "29.5rem" }}
-          flexDirection={{ base: "column", sm: "row", md: "column" }}
+          flexDirection={{
+            base: "column",
+            sm: "column",
+            md: "column",
+            lg: "column",
+          }}
         >
-          {trendingLists.map((trend: ICardView, index: number) => (
-            <Box key={index} flexGrow={1}>
-              <ViewCard card={trend} showAuthor={true} />
-            </Box>
-          ))}
+          {getBlogsIsLoading
+            ? Array.from({ length: 2 }).map((_, index) => (
+                <Box key={index} flexGrow={1}>
+                  <SkeletonViewCard />
+                </Box>
+              ))
+            : SecondBlog.map((trend: IViewCard, index: number) => (
+                <Box key={index} flexGrow={1}>
+                  <ViewCard card={trend} showAuthor={true} />
+                </Box>
+              ))}
         </Flex>
       </Flex>
-      <Grid
-        gap={{ base: 2, md: 4 }}
-        mb={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
-        templateColumns={{
-          sm: "repeat(2, 1fr)",
-          lg: "repeat(4, 1fr)",
-        }}
-      >
-        {trendingList.map((trend: ICardView, index: number) => (
-          <GridItem key={index}>
-            <ViewCard card={trend} />
-          </GridItem>
-        ))}
-      </Grid>
+      {getBlogsIsLoading ? (
+        <Grid
+          gap={{ base: 2, md: 4 }}
+          mb={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
+          templateColumns={{
+            sm: "repeat(2, 1fr)",
+            lg: "repeat(4, 1fr)",
+          }}
+        >
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index}>
+              <SkeletonViewCard />
+            </div>
+          ))}
+        </Grid>
+      ) : (
+        <Grid
+          gap={{ base: 2, md: 4 }}
+          mb={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
+          templateColumns={{
+            sm: "repeat(1, 1fr)",
+            md: "repeat(2, 1fr)",
+            lg: "repeat(4, 1fr)",
+          }}
+        >
+          {thirdBlog.map((trend: IViewCard, index: number) => (
+            <GridItem key={index}>
+              <ViewCard card={trend} />
+            </GridItem>
+          ))}
+        </Grid>
+      )}
+      <div>
+        <Pagination
+          currentPage={pageNumber}
+          totalPages={getBlogsData?.totalPages}
+          onPageChange={onPageChange}
+        />
+      </div>
     </Box>
   );
 };

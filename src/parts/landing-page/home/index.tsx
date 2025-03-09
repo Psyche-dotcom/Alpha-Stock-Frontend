@@ -1,8 +1,10 @@
+"use client";
+
 import HeaderCard from "@/components/card/header-card";
 import StockCard from "@/components/card/stock-card";
 import ViewCard from "@/components/card/view-card";
-import { marketList, stockList, trendingList } from "@/constants";
-import { ICardView } from "@/interface/card-view";
+import { marketList, stockList } from "@/constants";
+import { IViewCard } from "@/interface/card-view";
 import { IStock } from "@/interface/stock-view";
 import MarketMoveContent from "../market-move";
 import TradeDecision from "../trade-decision";
@@ -12,8 +14,48 @@ import { ROUTES } from "@/constants/routes";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useAboutMarket, useTrendingAnalysis } from "@/services/blog";
+import { useEffect } from "react";
+import SkeletonViewCard from "@/components/card/skeleton/view";
 
 const Home = () => {
+  const {
+    trendPayload,
+    getTrendingData,
+    getTrendingIsLoading,
+    getTrendingError,
+  } = useTrendingAnalysis((res: any) => {});
+
+  const {
+    aboutMarketPayload,
+    getAboutMarketData,
+    getAboutMarketIsLoading,
+    getAboutMarketError,
+  } = useAboutMarket((res: any) => {});
+
+  useEffect(() => {
+    const payload = {
+      pageNumber: 1,
+      perPageSize: 5,
+      category: "TS",
+      status: "Published",
+      userId: "",
+      sinceDate: "",
+      search: "",
+    };
+    const aboutPayload = {
+      pageNumber: 1,
+      perPageSize: 5,
+      category: "LM",
+      status: "Published",
+      userId: "",
+      sinceDate: "",
+      search: "",
+    };
+
+    trendPayload(payload);
+    aboutMarketPayload(aboutPayload);
+  }, []);
   return (
     <div>
       <header>
@@ -64,6 +106,7 @@ const Home = () => {
           />
         </div>
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
         {stockList.map((stock: IStock, index: number) => (
           <div key={index}>
@@ -73,23 +116,43 @@ const Home = () => {
       </div>
       <div className="mb-[64px]">
         <HeaderCard text="Trending Analysis" href="#" />
-        <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
-          {marketList.map((trend: ICardView, index: number) => (
-            <div key={index}>
-              <ViewCard card={trend} />
-            </div>
-          ))}
-        </div>
+        {getTrendingIsLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index}>
+                <SkeletonViewCard />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+            {getTrendingData.map((trend: IViewCard, index: number) => (
+              <div key={index}>
+                <ViewCard card={trend} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="mb-[64px]">
         <HeaderCard text="Learn About The Market" href="#" />
-        <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
-          {marketList.map((trend: ICardView, index: number) => (
-            <div key={index}>
-              <ViewCard card={trend} />
-            </div>
-          ))}
-        </div>
+        {getAboutMarketIsLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index}>
+                <SkeletonViewCard />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+            {getAboutMarketData.map((trend: IViewCard, index: number) => (
+              <div key={index}>
+                <ViewCard card={trend} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <HeaderCard
         text="Watch the market move in real time."

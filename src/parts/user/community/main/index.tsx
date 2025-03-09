@@ -2,7 +2,7 @@
 
 import CommentCard from "@/components/card/comment-card";
 import { communityList } from "@/constants";
-import { IComment } from "@/interface/comment";
+import { IComments } from "@/interface/comment";
 import { Box, Flex } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -35,8 +35,13 @@ const CommunityMain = () => {
   return (
     <Box borderRadius="8px" bg="#C2BAB2" p={8} w="100%">
       <Flex flexDirection={"column"} gap={4}>
-        {communityList.map((comment: IComment, index: number) => (
-          <CommentCard comment={comment} key={index} showOptions={true} />
+        {communityList.map((comment: IComments, index: number) => (
+          <CommentCard
+            comment={comment}
+            key={index}
+            showOptions={true}
+            showUpload={true}
+          />
         ))}
       </Flex>
       <Box

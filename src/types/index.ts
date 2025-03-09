@@ -42,3 +42,9 @@ export interface ApiResponse {
   result: string;
   errorMessages: string | null;
 }
+
+export interface IPaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}

@@ -1,24 +1,25 @@
-import { ICardView } from "@/interface/card-view";
+import { IViewCard } from "@/interface/card-view";
+import { formatDate } from "@/utils";
 import { Box, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 interface IViewProps {
-  card: ICardView;
+  card: IViewCard;
   showAuthor?: boolean;
 }
 
 const ViewCard: React.FC<IViewProps> = ({ card, showAuthor = false }) => {
   return (
-    <Link passHref href="/blog/1">
+    <Link passHref href={`/blog/${card?.id}`}>
       <Box
         borderRadius="12px"
         p={2}
         h={"345px"}
         display={"flex"}
         alignItems={"end"}
-        bgImage={`url(${card?.url})`}
+        bgImage={`url(${card?.blogThumbnailUrl})`}
         bgSize="cover"
-        bgPosition="center"
+        bgPosition="auto"
         bgRepeat="no-repeat"
       >
         <Box borderRadius={12} p={2.5} w="100%" bg="#FFFFFF">
@@ -26,7 +27,7 @@ const ViewCard: React.FC<IViewProps> = ({ card, showAuthor = false }) => {
             {card?.title}
           </Text>
           <Text color={"#6B7280"} fontSize={"12px"} fontWeight={400}>
-            {card?.createdAt}
+            {formatDate(card?.publishedDate)}
           </Text>
           {showAuthor && (
             <Box display={"flex"}>
@@ -36,7 +37,9 @@ const ViewCard: React.FC<IViewProps> = ({ card, showAuthor = false }) => {
                 display="flex"
                 alignItems={"center"}
                 gap={2.5}
-                p={"2px"}
+                py={"2px"}
+                ps={"2px"}
+                pe={"8px"}
                 mt={2.5}
                 bg="#EBE9E6"
               >
@@ -44,13 +47,15 @@ const ViewCard: React.FC<IViewProps> = ({ card, showAuthor = false }) => {
                   <Image
                     width={32}
                     height={32}
-                    src="/assets/images/card-image.png"
+                    src={
+                      card?.publisherImgUrl || "/assets/images/card-image.png"
+                    }
                     alt="Single blog view"
-                    className="rounded-full object-cover h-full w-full"
+                    className="rounded-full object-cover h-8 w-8"
                   />
                 </Box>
                 <Text color={"#180E03"} fontSize={"14px"} fontWeight={600}>
-                  Marcus Jeffersson
+                  {card?.publisherName || "Jeffrey"}
                 </Text>
               </Box>
             </Box>

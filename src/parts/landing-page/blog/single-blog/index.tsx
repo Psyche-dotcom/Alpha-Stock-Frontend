@@ -1,11 +1,47 @@
+"use client";
+
 import CommentCard from "@/components/card/comment-card";
-import { commentList } from "@/constants";
-import { IComment } from "@/interface/comment";
+import CommentSkeleton from "@/components/card/skeleton/comment";
+import SingleCardSkeleton from "@/components/card/skeleton/single-view";
+import { IComments } from "@/interface/comment";
+import { useGetBlog, useGetBlogComments } from "@/services/blog";
+import { formatDate } from "@/utils";
 import { ArrowRightIcon, HomeIcon } from "@/utils/icons";
 import { Box, Text, Flex } from "@chakra-ui/react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
-const BlogDetails = () => {
+const BlogDetails = ({ blogId }: { blogId: string }) => {
+  const [pageSize, setPageSize] = useState<number>(5);
+  const { getBlogData, getBlogError, getBlogIsLoading, getBlogPayload } =
+    useGetBlog((res: any) => {});
+  const {
+    getBlogCommentsData,
+    getBlogCommentsError,
+    getBlogCommentsIsLoading,
+    getBlogCommentsPayload,
+  } = useGetBlogComments((res: any) => {});
+
+  useEffect(() => {
+    const payload = {
+      userId: "",
+      blogPostId: blogId,
+    };
+    getBlogPayload(payload);
+  }, []);
+
+  useEffect(() => {
+    const payload = {
+      userId: "",
+      blogPostId: blogId,
+      perPageSize: pageSize,
+    };
+    getBlogCommentsPayload(payload);
+  }, [pageSize]);
+  console.log(getBlogCommentsData);
+  const handleMoreClick = () => {
+    if (getBlogCommentsData?.totalPages !== 1) setPageSize((prev) => prev + 5);
+  };
   return (
     <Box mt={8}>
       <Flex
@@ -24,102 +60,94 @@ const BlogDetails = () => {
         </Text>
         <ArrowRightIcon />
         <Text fontWeight={500} fontSize={14} color="#FFF">
-          What do members of congress know about these stocks that we don’t?
+          {getBlogData?.title}
         </Text>
       </Flex>
       <Flex gap={{ base: 3, lg: 4 }} flexDir={{ base: "column", md: "row" }}>
-        <Box
-          bg="#fff"
-          p={{ base: 4, lg: 6, xl: 8 }}
-          borderRadius={"12px"}
-          width="100%"
-        >
-          <Text
-            fontWeight={600}
-            color="#111928"
-            mb="8px"
-            fontSize={{ base: "28px", lg: "32px", xl: "36px" }}
-            lineHeight={{ base: "42px", md: "48px", xl: "54px" }}
+        {getBlogIsLoading ? (
+          <SingleCardSkeleton />
+        ) : (
+          <Box
+            bg="#fff"
+            p={{ base: 4, lg: 6, xl: 8 }}
+            borderRadius={"12px"}
+            width="100%"
           >
-            What do members of congress know about these stocks that we don’t?
-          </Text>
-          <Text fontWeight={500} fontSize={14} color="#111928" mb="32px">
-            Written by <span className="font-bold">Joshua Martel</span> - August
-            2, 2024
-          </Text>
-          <Box mb="32px">
-            <Image
-              height={501}
-              width={896}
-              alt="Single blog snap"
-              src="/assets/images/card-image.png"
-              className="object-cover"
+            <Text
+              fontWeight={600}
+              color="#111928"
+              mb="8px"
+              fontSize={{ base: "28px", lg: "32px", xl: "36px" }}
+              lineHeight={{ base: "42px", md: "48px", xl: "54px" }}
+            >
+              {getBlogData?.title}
+            </Text>
+            <Text fontWeight={500} fontSize={14} color="#111928" mb="32px">
+              Written by{" "}
+              <span className="font-bold">{getBlogData?.publisherName}</span> -{" "}
+              {formatDate(
+                getBlogData?.publishedDate || "2025-03-07T23:40:33.987571Z"
+              )}
+            </Text>
+            <Box mb="32px">
+              <Image
+                height={501}
+                width={896}
+                alt="Single blog image"
+                src={
+                  getBlogData?.blogThumbnailUrl ||
+                  "/assets/images/card-image.png"
+                }
+                className="object-cover"
+              />
+            </Box>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getBlogData?.blogContent || "",
+              }}
             />
           </Box>
-          <Text
-            fontWeight={700}
-            fontSize={{ base: 14, lg: 16 }}
-            color="#111928"
-            mb={{ base: "16px", md: "24px", lg: "28px", xl: "32px" }}
+        )}
+        <Box>
+          {getBlogCommentsIsLoading ? (
+            <Flex
+              flexDirection={"column"}
+              gap={4}
+              w={{ base: "100%", md: 472 }}
+            >
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div key={index}>
+                  <CommentSkeleton />
+                </div>
+              ))}
+            </Flex>
+          ) : (
+            <Flex
+              flexDirection={"column"}
+              gap={4}
+              w={{ base: "100%", md: 472 }}
+            >
+              {getBlogCommentsData?.result?.map(
+                (comment: IComments, index: number) => (
+                  <CommentCard comment={comment} key={index} />
+                )
+              )}
+            </Flex>
+          )}
+          <Box
+            display={"flex"}
+            justifyContent={"end"}
+            textDecoration={"underline"}
+            fontSize={"sm"}
+            color="#351F05"
+            fontWeight={600}
+            mt="24px"
+            cursor={"pointer"}
+            onClick={handleMoreClick}
           >
-            Lorem ipsum dolor sit amet. Ut ratione fugit et alias fugiat est
-            similique reprehenderit non nisi repellat ut voluptatibus officia et
-            nemo dolore aut dolorum necessitatibus. Non dolor dolores vel esse
-            deserunt et deleniti quis aut fugiat laboriosam cum omnis quisquam
-            ea harum porro nam iste nemo. Ut modi voluptatem qui nostrum aliquid
-            est quos vitae et deleniti modi qui Quis Quis. Eos nulla commodi non
-            corporis labore quo accusamus voluptatibus ab molestias deleniti At
-            nostrum unde a tempora facere sit eius itaque. Ut quas maiores sit
-            quos voluptatibus ut consequatur modi. Est reprehenderit sint sit
-            accusamus perferendis qui ratione dolorum et voluptates ducimus et
-            autem similique eum excepturi dolor et harum pariatur? Eos tenetur
-            laborum qui quia obcaecati 33 tempora magni. At optio quos sit autem
-            earum eos doloribus accusamus.
-          </Text>
-          <Text
-            fontWeight={700}
-            fontSize={{ base: 20, lg: 24 }}
-            color="#111928"
-            mb="8px"
-          >
-            Lorem ipsum dolor sit amet. Ut ratione fugit et alias
-          </Text>
-          <Text
-            fontWeight={700}
-            fontSize={{ base: 14, lg: 16 }}
-            color="#111928"
-            mb={{ base: "16px", md: "24px", lg: "28px", xl: "32px" }}
-          >
-            Lorem ipsum dolor sit amet. Ut ratione fugit et alias fugiat est
-            similique reprehenderit non nisi repellat ut voluptatibus officia et
-            nemo dolore aut dolorum necessitatibus. Non dolor dolores vel esse
-            deserunt et deleniti quis aut fugiat laboriosam cum omnis quisquam
-            ea harum porro nam iste nemo. Ut modi voluptatem qui nostrum aliquid
-            est quos vitae et deleniti modi qui Quis Quis. Eos nulla commodi non
-            corporis labore quo accusamus voluptatibus ab molestias deleniti At
-            nostrum unde a tempora facere sit eius itaque. Ut quas maiores sit
-            quos voluptatibus ut consequatur modi. Est reprehenderit sint sit
-            accusamus perferendis qui ratione dolorum et voluptates ducimus et
-            autem similique eum excepturi dolor et harum pariatur? Eos tenetur
-            laborum qui quia obcaecati 33 tempora magni. At optio quos sit autem
-            earum eos doloribus accusamus.
-          </Text>
-          <Box mb={{ base: "20px", md: "28px", xl: "32px" }}>
-            <Image
-              height={501}
-              width={896}
-              alt="Single blog snap"
-              src="/assets/images/card-image.png"
-              className="object-cover"
-            />
+            view more comments
           </Box>
         </Box>
-
-        <Flex flexDirection={"column"} gap={4} w={{ base: "100%", md: 472 }}>
-          {commentList.map((comment: IComment, index: number) => (
-            <CommentCard comment={comment} key={index} />
-          ))}
-        </Flex>
       </Flex>
     </Box>
   );

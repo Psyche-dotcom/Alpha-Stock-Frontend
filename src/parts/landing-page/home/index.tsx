@@ -64,7 +64,6 @@ const Home = () => {
     eventSource.onmessage = (event) => {
       const stockPrice = event;
       console.log("Stock Price event:", stockPrice);
-      // Update your UI with the new stock price
     };
 
     eventSource.onerror = (err) => {

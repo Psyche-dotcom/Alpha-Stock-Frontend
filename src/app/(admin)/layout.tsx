@@ -15,11 +15,13 @@ export default function AdminLayout({
 }>) {
   return (
     <>
-      <Box display="flex" gap={"32px"}>
+      <Box display="flex" gap="32px" height="100vh">
         <Sidebar />
-        <Box flex="1" h="calc(100vh - 32px)" overflow={"scroll"}>
+        <Box flex="1" display="flex" flexDirection="column" height="100%">
           <Navbar />
-          <>{children}</>
+          <Box flex="1" overflow="auto">
+            {children}
+          </Box>
         </Box>
       </Box>
     </>

@@ -17,7 +17,7 @@ export default function LandingLayout({
       <header>
         <Navbar />
       </header>
-      <>{children}</>
+      <div className="px-8">{children}</div>
       <Footer />
     </>
   );

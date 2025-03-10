@@ -301,7 +301,7 @@ export const stockManagerFilterList = [
   {
     id: 4,
     text: "Blacklisted",
-    value: "blacklisted",
+    value: "BlackListed",
   },
 ];
 

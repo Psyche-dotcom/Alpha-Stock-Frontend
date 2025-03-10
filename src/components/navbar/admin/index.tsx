@@ -26,10 +26,10 @@ const Navbar = () => {
       <Flex
         justifyContent={"end"}
         bg="#FFF"
-        py="18.5px"
         px="16px"
         borderRadius={"12px"}
         mb={8}
+        className="sticky z-10 top-0 py-[18.5px]"
       >
         <Box w={"611px"} gap={8} display={"flex"} alignItems="center">
           <Box display={"flex"} gap="10px" flex={1}>

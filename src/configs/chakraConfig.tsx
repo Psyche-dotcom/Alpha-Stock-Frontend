@@ -27,9 +27,7 @@ export const chakraTheme = extendTheme({
         backgroundColor: "#EBE9E6",
       },
 
-      body: {
-        padding: "32px",
-      },
+      body: {},
       shadows: {
         customLight: "0px 2px 4px -2px #0000000D",
         customDark: "0px 4px 6px -1px #0000001A",

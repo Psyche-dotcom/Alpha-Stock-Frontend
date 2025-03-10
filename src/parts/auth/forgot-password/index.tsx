@@ -18,7 +18,6 @@ const ForgotPassword: React.FC = () => {
   const { handlePush } = useHandlePush();
   const { forgotPasswordData, forgotPasswordIsLoading, forgotPasswordPayload } =
     useForgotPassword((res: any) => {
-      console.log(res);
       handlePush(ROUTES.AUTH.RESETPASSWORD);
     });
   const form = useForm<ForgotPasswordSchemaType>({

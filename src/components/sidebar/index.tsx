@@ -18,8 +18,8 @@ const Sidebar = () => {
       borderRadius={"8px"}
       py={5}
       px={3}
-      h="calc(100vh - 32px)"
-      overflowY={"scroll"}
+      h="100vh"
+      overflowY={"auto"}
     >
       <Box mb={16} display="flex" justifyContent="center">
         <CompanyIcon />

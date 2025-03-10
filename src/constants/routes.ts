@@ -20,7 +20,7 @@ export const ROUTES = {
     PLANS: "/user/plans",
   },
   ADMIN: {
-    USERS: "/admin/user",
+    USERS: "/admin/users",
     STOCKS: "/admin/stocks",
     SUBSCRIPTIONS: "/admin/subscriptions",
     ACCOUNTING: "/admin/accounting",

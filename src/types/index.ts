@@ -35,6 +35,26 @@ export interface MarketMove extends DataItem {
   changePercent: number;
   changePercentProgress: boolean;
 }
+export interface UserData extends DataItem {
+  id: number;
+  username: string;
+  fullname: string;
+  status: string;
+  country?: string;
+  subscription?: string;
+  date_registered: string;
+}
+
+export interface StockData extends DataItem {
+  id: number;
+  url: string;
+  agent: string;
+  price: number;
+  changevalue: number;
+  changeIsProgressive: boolean;
+  changespercent: number;
+  changesisProgressive: boolean;
+}
 
 export interface ApiResponse {
   statusCode: number;

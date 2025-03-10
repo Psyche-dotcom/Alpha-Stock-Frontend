@@ -81,7 +81,6 @@ export const useResetPassword = (handleSuccess) => {
     onSuccess: (requestParams) => {
       const resData = requestParams?.data?.result || {};
       handleSuccess(resData);
-      console.log(requestParams);
       showSuccessAlert(resData);
     },
     onError: (error) => {

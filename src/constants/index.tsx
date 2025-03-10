@@ -145,18 +145,18 @@ export const stockList = [
 export const marketMoveFilterList = [
   {
     id: 1,
-    text: "Top Searches",
-    value: "search",
+    text: "Top Traded",
+    value: "MostTraded",
   },
   {
     id: 2,
     text: "Top Gainers",
-    value: "gains",
+    value: "MostGainer",
   },
   {
     id: 3,
     text: "Top Losers",
-    value: "losses",
+    value: "MostLoser",
   },
 ];
 
@@ -285,23 +285,23 @@ export const sidebarList: ISidebar[] = [
 export const stockManagerFilterList = [
   {
     id: 1,
-    text: "Top Searches",
-    value: "search",
+    text: "Top Traded",
+    value: "MostTraded",
   },
   {
     id: 2,
     text: "Top Gainers",
-    value: "gains",
+    value: "MostGainer",
   },
   {
     id: 3,
     text: "Top Losers",
-    value: "losses",
+    value: "MostLoser",
   },
   {
     id: 4,
     text: "Blacklisted",
-    value: "blacklisted",
+    value: "BlackListed",
   },
 ];
 

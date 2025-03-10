@@ -8,7 +8,6 @@ export const useTrendingAnalysis = (handleSuccess) => {
     mutationFn: (payload) =>
       httpService.postDataWithoutToken(payload, routes.blog()),
     onSuccess: (requestParams) => {
-      console.log(requestParams);
       const resData = requestParams?.result?.result || [];
       handleSuccess(resData);
     },

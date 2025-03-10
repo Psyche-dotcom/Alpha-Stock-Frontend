@@ -12,20 +12,15 @@ import { useEffect, useState } from "react";
 
 const Blog = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const card = {
-    id: "1",
-    title: "What do members of congress know about these stocks that we don’t?",
-    publishedDate: "August 2, 2024",
-    blogThumbnailUrl: "/assets/images/card-image.png",
-  };
+  const [blogsData, setBlogsData] = useState<any>([]);
 
   const { getBlogsData, getBlogsError, getBlogsIsLoading, getBlogsPayload } =
     useGetBlogs((res: any) => {});
   const splitArray = () => {
-    if (getBlogsData?.result?.length > 0) {
-      const firstBlog = getBlogsData?.result[0];
-      const SecondBlog = getBlogsData?.result.slice(1, 3);
-      const thirdBlog = getBlogsData?.result.slice(3);
+    if (blogsData?.result && blogsData?.result?.length > 0) {
+      const firstBlog = blogsData?.result[0];
+      const SecondBlog = blogsData?.result.slice(1, 3);
+      const thirdBlog = blogsData?.result.slice(3);
 
       return { firstBlog, SecondBlog, thirdBlog };
     }
@@ -47,12 +42,15 @@ const Blog = () => {
     getBlogsPayload(payload);
   }, [pageNumber]);
 
+  useEffect(() => {
+    if (getBlogsData?.result?.length > 0) {
+      setBlogsData(getBlogsData);
+    }
+  }, [getBlogsData]);
+
   const onPageChange = (page: number) => {
     setPageNumber(page);
   };
-
-  console.log(getBlogsData);
-
   return (
     <Box mt={8}>
       <Flex
@@ -125,7 +123,7 @@ const Blog = () => {
       <div>
         <Pagination
           currentPage={pageNumber}
-          totalPages={getBlogsData?.totalPages}
+          totalPages={blogsData?.totalPages || 0}
           onPageChange={onPageChange}
         />
       </div>

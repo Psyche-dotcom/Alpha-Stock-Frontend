@@ -98,9 +98,7 @@ function CountryDropdownComponent(
     },
     [onChange]
   );
-
-  console.log(countries);
-
+  
   const triggerClasses = cn(
     "flex h-14 w-full items-center justify-between whitespace-nowrap bg-[#F8F8F9] rounded-md border border-[#D1D5DB] px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
     slim === true && "w-20"

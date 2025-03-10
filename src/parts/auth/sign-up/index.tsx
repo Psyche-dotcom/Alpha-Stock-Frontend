@@ -27,7 +27,6 @@ const Signup: React.FC = () => {
   const { handlePush } = useHandlePush();
   const { signupData, signupIsLoading, signupPayload } = useSignup(
     (res: any) => {
-      console.log(res);
       handlePush(ROUTES.AUTH.CONFIRMEMAIL);
     }
   );

@@ -32,7 +32,6 @@ export const useUpdateProfile = (handleSuccess) => {
       handleSuccess(resData);
     },
     onError: (error) => {
-      console.log(error);
       showErrorAlert(error?.response?.data?.errorMessages[0]);
     },
   });

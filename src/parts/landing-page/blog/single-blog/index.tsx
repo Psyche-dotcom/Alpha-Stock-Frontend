@@ -38,7 +38,6 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
     };
     getBlogCommentsPayload(payload);
   }, [pageSize]);
-  console.log(getBlogCommentsData);
   const handleMoreClick = () => {
     if (getBlogCommentsData?.totalPages !== 1) setPageSize((prev) => prev + 5);
   };

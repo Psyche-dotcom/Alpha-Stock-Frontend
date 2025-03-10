@@ -1,5 +1,5 @@
 "use client";
-
+import { useCallback, useEffect, useState } from "react";
 import HeaderCard from "@/components/card/header-card";
 import StockCard from "@/components/card/stock-card";
 import ViewCard from "@/components/card/view-card";
@@ -15,7 +15,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useAboutMarket, useTrendingAnalysis } from "@/services/blog";
-import { useEffect } from "react";
 import SkeletonViewCard from "@/components/card/skeleton/view";
 
 const Home = () => {
@@ -56,6 +55,27 @@ const Home = () => {
     trendPayload(payload);
     aboutMarketPayload(aboutPayload);
   }, []);
+
+  useEffect(() => {
+    const eventSource = new EventSource(
+      "https://alphastock.onrender.com/api/stock/stream/market_performance?leaderType=MostTraded"
+    );
+
+    eventSource.onmessage = (event) => {
+      const stockPrice = event;
+      console.log("Stock Price event:", stockPrice);
+    };
+
+    eventSource.onerror = (err) => {
+      console.error("EventSource failed:", err);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
   return (
     <div>
       <header>

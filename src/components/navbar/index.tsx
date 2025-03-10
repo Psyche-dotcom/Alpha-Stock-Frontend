@@ -3,7 +3,6 @@
 import { navbarList } from "@/constants";
 import { BurgerIcon, CompanyIcon, SearchIcon } from "@/utils/icons";
 import Link from "next/link";
-import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 import { useState } from "react";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "../ui/button";
@@ -24,10 +23,9 @@ const Navbar = () => {
   async function onSubmit(values: SearchSchemaType) {
     console.warn(values);
   }
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   return (
-    <div className="bg-white py-[18.5px] px-4 rounded-[12px]">
+    <div className="bg-white py-[18.5px] px-4">
       <div className="flex items-center lg:gap-[64px] xl:gap-[96px] justify-between">
         <Link href={"/"} passHref>
           <CompanyIcon />

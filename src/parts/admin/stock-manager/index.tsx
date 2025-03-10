@@ -1,125 +1,83 @@
 "use client";
 
 import { ButtonIcon } from "@/components/button/button-icon";
+import { TableComponent } from "@/components/custom-table";
+import { Pagination } from "@/components/ui/pagination";
 import { stockManagerFilterList } from "@/constants";
 import { IButtonFilter } from "@/interface/button-filter";
+import { StockData } from "@/types";
 import { ShineIcon, ThreeDotsIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import Table, { ColumnsType } from "antd/es/table";
 import Image from "next/image";
 import { useState } from "react";
 
-interface DataType {
-  id: number;
-  url: string;
-  agent: string;
-  price: number;
-  change: {
-    value: number;
-    isProgressive: boolean;
-  };
-  changePercent: {
-    percent: number;
-    isProgressive: boolean;
-  };
-}
 const StockManager = () => {
-  const [marketFilter, setMarketFilter] = useState<string>("search");
-  const columns: ColumnsType<DataType> = [
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          SYMBOL
+  const [marketFilter, setMarketFilter] = useState<string>("MostGainer");
+  const [pageSize, setPageSize] = useState<number>(1);
+
+  const cellRenderers = {
+    agent: (record: StockData) => (
+      <Flex gap={2} alignItems={"center"}>
+        <Box h="24px" w="24px">
+          <Image
+            src={record?.url || "/assets/images/card-image.png"}
+            alt={record?.agent}
+            width={24}
+            height={24}
+            className="rounded-full object-cover h-full w-full"
+          />
+        </Box>
+        <Text fontWeight={600} fontSize={12} color="#111928">
+          {record?.agent}
         </Text>
-      ),
-      dataIndex: "",
-      key: "id",
-      render: (record: DataType) => {
-        return (
-          <Flex gap={2} alignItems={"center"}>
-            <Box h="24px" w="24px">
-              <Image
-                src={record?.url || "/assets/images/card-image.png"}
-                alt={record?.agent}
-                width={24}
-                height={24}
-                className="rounded-full object-cover h-full w-full"
-              />
-            </Box>
-            <Text fontWeight={600} fontSize={12} color="#111928">
-              {record?.agent}
-            </Text>
-          </Flex>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          LAST PRICE
-        </Text>
-      ),
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          CHANGE
-        </Text>
-      ),
-      dataIndex: "",
-      key: "id",
-      render: (record: DataType) => {
-        return (
-          <Text
-            fontWeight={400}
-            fontSize={14}
-            color={record?.change?.isProgressive ? "#0E9F6E" : "#E74694"}
-          >
-            {record?.change?.isProgressive ? "+" : "-"} {record?.change?.value}
-          </Text>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={600} fontSize={12}>
-          %CHANGE
-        </Text>
-      ),
-      dataIndex: "",
-      key: "id",
-      render: (record: DataType) => {
-        return (
-          <Text
-            fontWeight={400}
-            fontSize={14}
-            color={record?.changePercent?.isProgressive ? "#0E9F6E" : "#E74694"}
-          >
-            {record?.changePercent?.isProgressive ? "+" : "-"}
-            {record?.changePercent?.percent}
-          </Text>
-        );
-      },
-    },
-    {
-      title: (
-        <Text fontWeight={400} fontSize={12}>
-          ACTION
-        </Text>
-      ),
-      dataIndex: "id",
-      key: "id",
-      render: () => {
-        return (
-          <Box>
-            <ThreeDotsIcon />
-          </Box>
-        );
-      },
-    },
+      </Flex>
+    ),
+    price: (item: StockData) => (
+      <p className="font-semibold text-center">{item?.price}</p>
+    ),
+    change: (item: StockData) => (
+      <Text
+        fontWeight={400}
+        fontSize={14}
+        textAlign={"center"}
+        color={item?.changeisProgressive ? "#0E9F6E" : "#E74694"}
+      >
+        {item?.changeisProgressive ? "+" : "-"} {item?.changevalue}
+      </Text>
+    ),
+    changes: (item: StockData) => (
+      <Text
+        fontWeight={400}
+        fontSize={14}
+        textAlign={"center"}
+        color={item?.changePercentisProgressive ? "#0E9F6E" : "#E74694"}
+      >
+        {item?.changePercentisProgressive ? "+" : "-"}
+        {item?.changespercent}
+      </Text>
+    ),
+    action: (item: StockData) => (
+      <Box className="flex items-center justify-center">
+        <ThreeDotsIcon />
+      </Box>
+    ),
+  };
+
+  const columnOrder: (keyof StockData)[] = [
+    "agent",
+    "price",
+    "change",
+    "changes",
+    "action",
   ];
+
+  const columnLabels = {
+    agent: "Agent",
+    price: "Price",
+    change: "Change",
+    changes: "Change%",
+    action: "Action",
+  };
 
   const dataSources = [
     {
@@ -127,58 +85,16 @@ const StockManager = () => {
       url: "/assets/images/card-image.png",
       agent: "GFAI",
       price: 1.27,
-      change: {
-        value: 0.03,
-        isProgressive: true,
-      },
-      changePercent: {
-        percent: 0.16,
-        isProgressive: false,
-      },
-    },
-    {
-      id: 2,
-      url: "/assets/images/card-image.png",
-      agent: "ASML",
-      price: 386.46,
-      change: {
-        value: 0.02,
-        isProgressive: false,
-      },
-      changePercent: {
-        percent: 0.1,
-        isProgressive: true,
-      },
-    },
-    {
-      id: 3,
-      url: "/assets/images/card-image.png",
-      agent: "NVDIA",
-      price: 1.45,
-      change: {
-        value: 0.17,
-        isProgressive: true,
-      },
-      changePercent: {
-        percent: 0.32,
-        isProgressive: true,
-      },
-    },
-    {
-      id: 4,
-      url: "/assets/images/card-image.png",
-      agent: "LMPG",
-      price: 547.98,
-      change: {
-        value: 0.17,
-        isProgressive: true,
-      },
-      changePercent: {
-        percent: 0.01,
-        isProgressive: true,
-      },
+      changevalue: 0.03,
+      changeIsProgressive: true,
+      changespercent: 0.16,
+      changesisProgressive: false,
     },
   ];
+
+  const onPageChange = (page: number) => {
+    setPageSize(page);
+  };
 
   return (
     <Box bg="#fff" pt={4} mb={16}>
@@ -209,13 +125,21 @@ const StockManager = () => {
           </Flex>
         </Box>
       </Box>
-      <Table
-        className="custom-table"
-        dataSource={dataSources}
-        columns={columns}
-        //   loading={isLoading}
-        pagination={false}
-      />
+      <div className="mx-2">
+        <TableComponent<StockData>
+          tableData={dataSources}
+          cellRenderers={cellRenderers}
+          columnOrder={columnOrder}
+          columnLabels={columnLabels}
+        />
+        <div>
+          <Pagination
+            currentPage={pageSize}
+            totalPages={0}
+            onPageChange={onPageChange}
+          />
+        </div>
+      </div>
     </Box>
   );
 };

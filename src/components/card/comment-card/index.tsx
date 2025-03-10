@@ -76,7 +76,6 @@ const CommentCard: React.FC<ICommentProps> = ({
   };
 
   async function onSubmit(values: FormSchemaType) {}
-  console.log("Inner replies bro", getBlogCommentsCommentData);
   return (
     <Box
       bg="#FFFFFF"

@@ -19,7 +19,6 @@ import { useHandlePush } from "@/hooks/handlePush";
 const Login: React.FC = () => {
   const { handlePush } = useHandlePush();
   const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
-    console.log(res?.userRole[0]);
     if (res?.userRole[0].toLowerCase() === "user") {
       handlePush(ROUTES.USER.COMPANYINFO);
       return;

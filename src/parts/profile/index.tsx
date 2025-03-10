@@ -26,7 +26,6 @@ import { showSuccessAlert } from "@/utils/alert";
 const Profile: React.FC = () => {
   const { profileData } = useUserSession();
   const role = Storage.get("role").toLowerCase();
-  console.log(profileData);
   const { updateProfileIsLoading, updateProfilePayload } = useUpdateProfile(
     (res: ApiResponse) => {
       showSuccessAlert(res?.result);

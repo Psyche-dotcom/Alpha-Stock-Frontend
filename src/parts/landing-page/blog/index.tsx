@@ -50,9 +50,7 @@ const Blog = () => {
   const onPageChange = (page: number) => {
     setPageNumber(page);
   };
-
-  console.log(getBlogsData);
-
+  console.log(getBlogsData?.totalPages);
   return (
     <Box mt={8}>
       <Flex

@@ -47,7 +47,7 @@ const UserNavbar = () => {
   }
 
   return (
-    <div className="bg-white py-[18.5px] px-4 rounded-[12px] mb-8">
+    <div className="bg-white py-[18.5px] px-4 rounded-[12px] mb-8 sticky top-[18.5px] z-10">
       <div className="flex items-center justify-between lg:gap-[36px] xl:gap-[96px]">
         <Link href={"/"} passHref>
           <CompanyIcon />

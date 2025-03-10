@@ -2,10 +2,12 @@
 
 import { ButtonIcon } from "@/components/button/button-icon";
 import AreaChartComponent from "@/components/charts/area-graph";
+import { Pagination } from "@/components/ui/pagination";
+import { useGetUsers } from "@/services/user";
 import { ThreeDotsIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 interface DataType {
   id: number;
   username: string;
@@ -19,6 +21,10 @@ interface DataType {
 
 const Users = () => {
   const [filter, setFilter] = useState<string>("Failed");
+  const [pageSize, setPageSize] = useState<number>(1);
+  const per_page_size = 10;
+  const { getUsersData, getUsersIsLoading, refetchUsers, setUsersFilter } =
+    useGetUsers({ enabled: true });
   const columns: ColumnsType<DataType> = [
     {
       title: (
@@ -187,6 +193,7 @@ const Users = () => {
       date_registered: "Apr 23 ,2021",
     },
   ];
+
   const filterBtnList = [
     {
       id: 1,
@@ -205,6 +212,22 @@ const Users = () => {
       status: "Failed",
     },
   ];
+
+  useEffect(() => {
+    const params = {
+      sinceDate: "",
+      name: "",
+      filter: 0,
+    };
+    setUsersFilter({ params, per_page_size, page_number: pageSize });
+  }, [pageSize]);
+
+  const onPageChange = (page: number) => {
+    setPageSize(page);
+  };
+
+  console.log(getUsersData);
+
   return (
     <Box>
       <AreaChartComponent />
@@ -236,6 +259,13 @@ const Users = () => {
         columns={columns}
         //   loading={isLoading}
       />
+      <div>
+        <Pagination
+          currentPage={pageSize}
+          totalPages={getUsersData?.totalPages || 0}
+          onPageChange={onPageChange}
+        />
+      </div>
     </Box>
   );
 };

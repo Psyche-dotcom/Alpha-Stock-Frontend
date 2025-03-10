@@ -28,14 +28,14 @@ function adminAuth(
   const { pathname } = req.nextUrl;
 
   // Redirect if user is NOT logged in or is NOT an admin
-  if (!isLoggedIn || role !== "admin") {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
+  // if (!isLoggedIn || role !== "admin") {
+  //   return NextResponse.redirect(new URL("/login", req.url));
+  // }
 
   // If admin is already logged in and tries to access "/login", redirect to dashboard
-  if (pathname === "/login") {
-    return NextResponse.redirect(new URL("/admin/user", req.url));
-  }
+  // if (pathname === "/login") {
+  //   return NextResponse.redirect(new URL("/admin/user", req.url));
+  // }
 
   return response;
 }

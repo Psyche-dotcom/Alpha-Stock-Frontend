@@ -10,4 +10,8 @@ export const routes = {
   getSingleBlog: () => "/api/blog/post/retrieve/single",
   getSingleBlogComments: () => "/api/blog/comment/retrieve/all",
   getSingleBlogCommentsComment: () => "/api/blog/comment/reply/retrieve/all",
+  getAllUsers: (page_number, per_page_size, data) => {
+    const params = new URLSearchParams(data);
+    return `/api/all/${page_number}/${per_page_size}?${params}`;
+  },
 };

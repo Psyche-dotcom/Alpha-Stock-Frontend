@@ -16,7 +16,7 @@ export default function UserLayout({
   return (
     <>
       <UserSessionProvider>
-        <Box overflow={"scroll"}>
+        <Box>
           <UserNavbar />
           <>{children}</>
         </Box>

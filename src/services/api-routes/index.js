@@ -5,6 +5,7 @@ export const routes = {
   resetPassword: () => "/api/user/reset_password",
   confirmEmail: () => "/api/user/confirm-email",
   profile: () => "/api/user/info",
+  retrievePlans: () => "/api/subscription/retrieve/all",
   updateProfile: (email) => `/api/user/update_details/${email}`,
   blog: () => "/api/blog/post/retrieve/all",
   getSingleBlog: () => "/api/blog/post/retrieve/single",

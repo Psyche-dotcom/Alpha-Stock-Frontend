@@ -25,7 +25,6 @@ export function UserSessionProvider({ children }: Props) {
 
   React.useEffect(() => {
     if (profileError) {
-      alert(profileError);
       // Redirect to login page if there is an error with profile data
       router.push("/login");
     }

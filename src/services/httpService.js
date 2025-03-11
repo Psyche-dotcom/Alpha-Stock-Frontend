@@ -19,12 +19,6 @@ class HttpService {
     return axios.post(this.getServiceUrl(url), payload);
   }
 
-  async postDataWithGoogleToken(payload, url, token) {
-    return this.request.post(this.getServiceUrl(url), payload, {
-      headers: { "X-Firebase-Access-Token": token },
-    });
-  }
-
   async getData(url) {
     return this.request.get(this.getServiceUrl(url));
   }

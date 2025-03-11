@@ -3,64 +3,48 @@
 import { ButtonIcon } from "@/components/button/button-icon";
 import AreaChartComponent from "@/components/charts/area-graph";
 import { TableComponent } from "@/components/custom-table";
+import DeleteContent from "@/components/delete-content";
+import { DateFilter } from "@/components/filter/date-filter";
+import { InputFilter } from "@/components/filter/input-filter";
+import SuspendContent from "@/components/suspend-content";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Pagination } from "@/components/ui/pagination";
-import { useGetUsers } from "@/services/user";
+import UserDetails from "@/components/user-content";
+import { useDeleteUser, useGetUsers } from "@/services/user";
 import { UserData } from "@/types";
+import { formatDate } from "@/utils";
+import { DeleteIcon } from "@/utils/icons";
+import Storage from "@/utils/storage";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { EditIcon, EyeIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const Users = () => {
-  const [filter, setFilter] = useState<string>("Failed");
+  const [filter, setFilter] = useState<number>(0);
+  const [date, setDate] = useState<Date | any>();
+  const [name, setName] = useState<string>("");
   const [pageSize, setPageSize] = useState<number>(1);
+  const [option, setOption] = useState<string>("suspend");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [user, setUser] = useState<UserData | undefined>(undefined);
+
   const per_page_size = 10;
   const { getUsersData, getUsersIsLoading, refetchUsers, setUsersFilter } =
     useGetUsers({ enabled: true });
+  const { deleteUserData, deleteUserIsLoading, deleteUserPayload } =
+    useDeleteUser((res: any) => {
+      refetchUsers();
+      setIsOpen(false);
+    });
 
-  const dataSources: UserData[] = [
-    {
-      id: 1,
-      username: "@hungry_boss5",
-      fullname: "Marcus Wright",
-      status: "Completed",
-      country: "USA",
-      subscription: "Premium",
-      date_joined: "Apr 23 ,2021",
-      date_registered: "Apr 23 ,2021",
-    },
-    {
-      id: 2,
-      username: "@hungry_boss5",
-      fullname: "Marcus Wright",
-      status: "Pending",
-      date_joined: "Apr 23 ,2021",
-      date_registered: "Apr 23 ,2021",
-    },
-    {
-      id: 3,
-      username: "@hungry_boss5",
-      fullname: "Marcus Wright",
-      status: "Failed",
-      date_joined: "Apr 23 ,2021",
-      date_registered: "Apr 23 ,2021",
-    },
-    {
-      id: 4,
-      username: "@hungry_boss5",
-      fullname: "Marcus Wright",
-      status: "Completed",
-      country: "USA",
-      subscription: "Regular",
-      date_joined: "Apr 23 ,2021",
-      date_registered: "Apr 23 ,2021",
-    },
-  ];
   const cellRenderers = {
     fullname: (record: UserData) => (
       <div className="flex gap-2 items-center">
         <div className="h-6 w-6">
           <Image
-            src={"/assets/images/card-image.png"}
+            src={record?.profilePicture || "/assets/images/card-image.png"}
             alt={"Iser image"}
             width={24}
             height={24}
@@ -68,128 +52,207 @@ const Users = () => {
           />
         </div>
         <p className="font-semibold text-xs text-[#111928]">
-          {record?.fullname}
+          {record?.firstName + " " + record?.lastName}
         </p>
       </div>
     ),
-    username: (item: UserData) => (
-      <p className="font-semibold text-center">{item?.username}</p>
+    // userName: (record: UserData) => (
+    //   <p className="font-semibold text-center">{record?.userName}</p>
+    // ),
+    email: (record: UserData) => (
+      <p className="font-semibold text-center">{record?.email}</p>
     ),
-    country: (item: UserData) => (
-      <p className="font-semibold text-center">{item?.country}</p>
+    // phoneNumber: (record: UserData) => (
+    //   <p className="font-semibold text-center">{record?.phoneNumber}</p>
+    // ),
+    activeSubcriptionName: (record: UserData) => (
+      <p className="font-semibold text-center">
+        {record?.activeSubcriptionName}
+      </p>
     ),
-    subscription: (item: UserData) => (
-      <p className="font-semibold text-center">{item?.subscription}</p>
-    ),
-    status: (item: UserData) => (
+    // created: (record: UserData) => (
+    //   <p className="font-semibold text-center">{formatDate(record?.created)}</p>
+    // ),
+    isSubActive: (record: UserData) => (
       <Text
         py="2px"
         px={"10px"}
         mx={"auto"}
         textAlign={"center"}
-        bg={
-          item.status === "Completed"
-            ? "#DEF7EC"
-            : item.status === "Pending"
-            ? "#FCE6C3"
-            : item.status === "Not Started"
-            ? "#D7E9FD"
-            : "#FDE8E8"
-        }
+        bg={record?.isSubActive ? "#DEF7EC" : "#FDE8E8"}
         w="60%"
         borderRadius={"8px"}
-        color={
-          item.status === "Completed"
-            ? "#03543F"
-            : item.status === "Pending"
-            ? "#DB961E"
-            : item.status === "Not Started"
-            ? "#3090F8"
-            : "#9B1C1C"
-        }
+        color={record.isSubActive ? "#03543F" : "#9B1C1C"}
       >
-        {item.status}
+        {record.isSubActive ? "Active" : "Inactive"}
       </Text>
+    ),
+    isEmailConfirmed: (record: UserData) => (
+      <Text
+        py="2px"
+        px={"10px"}
+        mx={"auto"}
+        textAlign={"center"}
+        bg={record.isEmailConfirmed ? "#DEF7EC" : "#FDE8E8"}
+        borderRadius={"8px"}
+        color={record.isEmailConfirmed ? "#03543F" : "#9B1C1C"}
+      >
+        {record.isEmailConfirmed ? "Active" : "Inactive"}
+      </Text>
+    ),
+    action: (record: UserData) => (
+      <div className="flex items-center gap-3">
+        <div
+          onClick={() => {
+            setOption("view");
+            setUser(record);
+            setIsOpen(true);
+          }}
+        >
+          <EyeIcon size={20} />
+        </div>
+        <div
+          onClick={() => {
+            setOption("suspend");
+            setUser(record);
+            setIsOpen(true);
+          }}
+        >
+          <EditIcon size={20} />
+        </div>
+        <div
+          onClick={() => {
+            setOption("delete");
+            setUser(record);
+            setIsOpen(true);
+          }}
+        >
+          <DeleteIcon />
+        </div>
+      </div>
     ),
   };
 
   const columnOrder: (keyof UserData)[] = [
     "fullname",
-    "username",
-    "country",
-    "subscription",
-    "status",
+    "email",
+    "activeSubcriptionName",
+    "isSubActive",
+    "isEmailConfirmed",
+    "action",
   ];
 
   const columnLabels = {
     fullname: "Full Name",
-    username: "Username",
-    country: "Country",
-    subscription: "Subscription",
-    ststua: "Status",
+    email: "Email",
+    activeSubcriptionName: "Subscription Name",
+    isSubActive: "Subscription Status",
+    isEmailConfirmed: "Status",
+    action: "Action",
   };
 
   const filterBtnList = [
     {
+      id: 0,
+      status: "All",
+    },
+    {
       id: 1,
-      status: "Completed",
+      status: "Active",
     },
     {
       id: 2,
-      status: "Pending",
+      status: "Unverified",
     },
     {
       id: 3,
-      status: "Not Started",
-    },
-    {
-      id: 4,
-      status: "Failed",
+      status: "Suspended",
     },
   ];
 
   useEffect(() => {
     const params = {
-      sinceDate: "",
-      name: "",
-      filter: 0,
+      sinceDate: (date && date.toISOString().split("T")[0]) || "",
+      name,
+      filter,
     };
     setUsersFilter({ params, per_page_size, page_number: pageSize });
-  }, [pageSize]);
+  }, [pageSize, filter, name, date]);
 
   const onPageChange = (page: number) => {
     setPageSize(page);
   };
 
-  console.log(getUsersData);
+  const handleDelete = () => {
+    deleteUserPayload(user?.email);
+  };
+
+  const renderItem = () => {
+    switch (option) {
+      case "suspend":
+        return (
+          <SuspendContent
+            email={user?.email || ""}
+            username={user?.userName || ""}
+            isSuspended={user?.isSuspendUser || false}
+            setOpen={() => setIsOpen(false)}
+            handleSuccess={refetchUsers}
+          />
+        );
+      case "delete":
+        return (
+          <DeleteContent
+            setOpen={() => setIsOpen(false)}
+            header="Delete User"
+            description={`Are you sure you want to delete ${
+              user?.userName || ""
+            }?`}
+            handleDelete={handleDelete}
+            loading={deleteUserIsLoading}
+          />
+        );
+      case "view":
+        return <UserDetails user={user} setClose={() => setIsOpen(false)} />;
+      default:
+        return (
+          <SuspendContent
+            email={user?.email || ""}
+            username={user?.userName || ""}
+            isSuspended={user?.isSuspendUser || false}
+            setOpen={() => setIsOpen(false)}
+            handleSuccess={refetchUsers}
+          />
+        );
+    }
+  };
 
   return (
     <Box>
       <AreaChartComponent />
-      <Flex
-        mt={8}
-        gap={4}
-        bg="#fff"
-        p="10px"
-        borderRadius="8px"
-        w="fit-content"
-        mb={4}
-      >
-        {filterBtnList.map((filterBtn, index: number) => (
-          <ButtonIcon
-            key={index}
-            text={filterBtn?.status}
-            variant={filter === filterBtn?.status ? "solid" : "ghost"}
-            bg={filter === filterBtn?.status ? "#351F05" : ""}
-            fontWeight={500}
-            color={filter === filterBtn?.status ? "#ffffff" : "#6B7280"}
-            fontSize="18px"
-            p={filter === filterBtn?.status ? "12px 16px" : "0px"}
-          />
-        ))}
-      </Flex>
+      <div className="flex items-center gap-4 my-5">
+        <div className="flex gap-2 bg-white rounded-md px-3 py-1">
+          {filterBtnList.map((_, index: number) => (
+            <Button
+              variant={_?.id === filter ? "secondary" : "ghost"}
+              key={index}
+              btnText={_?.status}
+              onClick={() => setFilter(_?.id)}
+              className={`font-medium text-xs ${
+                _?.id === filter
+                  ? "bg-[#351F05] text-white py-2 px-4"
+                  : "p-0 text-[#6B7280]"
+              }`}
+            />
+          ))}
+        </div>
+        <InputFilter
+          setQuery={setName}
+          placeholder="Search by name, username"
+        />
+        <DateFilter date={date} setDate={setDate} />
+      </div>
       <TableComponent<UserData>
-        tableData={dataSources}
+        tableData={getUsersData?.user || []}
         cellRenderers={cellRenderers}
         columnOrder={columnOrder}
         columnLabels={columnLabels}
@@ -201,6 +264,17 @@ const Users = () => {
           onPageChange={onPageChange}
         />
       </div>
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
+        <DialogContent
+          className={`${
+            option === "view"
+              ? "right-0 p-8 w-[35.56rem] h-screen overflow-y-auto"
+              : "left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]"
+          } bg-white p-[2rem] pt-[3.5rem]`}
+        >
+          {renderItem()}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

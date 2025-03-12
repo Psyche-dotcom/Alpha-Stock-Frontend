@@ -56,23 +56,17 @@ const Users = () => {
         </p>
       </div>
     ),
-    // userName: (record: UserData) => (
-    //   <p className="font-semibold text-center">{record?.userName}</p>
-    // ),
+
     email: (record: UserData) => (
       <p className="font-semibold text-center">{record?.email}</p>
     ),
-    // phoneNumber: (record: UserData) => (
-    //   <p className="font-semibold text-center">{record?.phoneNumber}</p>
-    // ),
+
     activeSubcriptionName: (record: UserData) => (
       <p className="font-semibold text-center">
         {record?.activeSubcriptionName}
       </p>
     ),
-    // created: (record: UserData) => (
-    //   <p className="font-semibold text-center">{formatDate(record?.created)}</p>
-    // ),
+
     isSubActive: (record: UserData) => (
       <Text
         py="2px"

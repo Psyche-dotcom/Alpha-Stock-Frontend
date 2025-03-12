@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       handlePush(ROUTES.USER.COMPANYINFO);
       return;
     }
-    handlePush("/admin/user");
+    handlePush("/admin/users");
   });
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),

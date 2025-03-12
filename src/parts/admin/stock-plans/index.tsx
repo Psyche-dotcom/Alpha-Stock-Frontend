@@ -1,18 +1,34 @@
 "use client";
 
 import PlanCard from "@/components/card/plan-card";
-import { planList } from "@/constants";
-import { IPlan } from "@/interface/plan";
 import { Box, Flex } from "@chakra-ui/react";
 import AdminStockAnalyser from "./stock-analyzer";
 import AdminFinancialInsight from "./financial-insight";
 import { ButtonIcon } from "@/components/button/button-icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditPlanIcon, ViewPlanIcon } from "@/utils/icons";
 import AddStockPlan from "./add-stock-plan";
+import {
+  useGetSubscription,
+  useGetSubscriptions,
+} from "@/services/subscriptions";
+import { ISubscription } from "@/types";
 
 const StockPlans = () => {
   const [selectOption, setSelectOption] = useState<string>("view");
+  const [fetchSubscription, setFetchSubscription] = useState<boolean>(false);
+  const {
+    getSubscriptionsData,
+    getSubscriptionsIsLoading,
+    setSubscriptionsFilter,
+  } = useGetSubscriptions({ enabled: true });
+  const [selectedId, setSelectedId] = useState<string>("");
+
+  const {
+    getSubscriptionData,
+    setSubscriptionFilter,
+    getSubscriptionIsLoading,
+  } = useGetSubscription({ enabled: fetchSubscription });
 
   const btnOption = [
     {
@@ -34,6 +50,26 @@ const StockPlans = () => {
       icon: <ViewPlanIcon />,
     },
   ];
+
+  useEffect(() => {
+    if (selectedId) {
+      setSubscriptionFilter({ id: selectedId });
+      setFetchSubscription(true);
+    }
+  }, [selectedId]);
+
+  const groupedByCategory =
+    getSubscriptionData?.subscriptionFeatures &&
+    getSubscriptionData?.subscriptionFeatures?.reduce(
+      (acc: any, feature: any) => {
+        if (!acc[feature.category]) {
+          acc[feature.category] = [];
+        }
+        acc[feature.category].push(feature);
+        return acc;
+      },
+      {}
+    );
 
   return (
     <Box mt={8}>
@@ -69,13 +105,30 @@ const StockPlans = () => {
               ))}
             </Flex>
             <Flex gap={3}>
-              {planList?.map((plan: IPlan, index: number) => (
-                <PlanCard plan={plan} key={index} />
-              ))}
+              {getSubscriptionsData?.map(
+                (plan: ISubscription, index: number) => (
+                  <PlanCard
+                    plan={plan}
+                    key={index}
+                    selectedId={selectedId}
+                    setSelectedId={setSelectedId}
+                  />
+                )
+              )}
             </Flex>
           </Box>
-          <AdminStockAnalyser selectOption={selectOption} />
-          <AdminFinancialInsight selectOption={selectOption} />
+          {getSubscriptionData?.subscriptionFeatures && (
+            <div>
+              {Object.keys(groupedByCategory).map((category) => (
+                <AdminStockAnalyser
+                  key={category}
+                  selectOption={selectOption}
+                  title={category}
+                  datas={groupedByCategory[category]}
+                />
+              ))}
+            </div>
+          )}
         </Box>
       )}
     </Box>

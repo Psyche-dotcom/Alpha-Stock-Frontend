@@ -17,4 +17,7 @@ export const routes = {
   suspendUser: (email) => `/api/admin/suspend_user/${email}`,
   unSuspendUser: (email) => `/api/admin/unsuspend_user/${email}`,
   deleteUser: (email) => `/api/user/delete_user/${email}`,
+  getSubscriptions: () => "/api/subscription/retrieve/all",
+  getSubscription: (id) => `/api/subscription/info/${id}`,
+  createSubscription: () => `/api/subscription/create`,
 };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Box } from "@chakra-ui/react";
 import Sidebar from "@/components/sidebar";
 import Navbar from "@/components/navbar/admin";
+import { AdminSessionProvider } from "../context/admin-context";
 
 export const metadata: Metadata = {
   title: "Nvidia",
@@ -15,15 +16,17 @@ export default function AdminLayout({
 }>) {
   return (
     <>
-      <Box display="flex" gap="32px" height="100vh">
-        <Sidebar />
-        <Box flex="1" display="flex" flexDirection="column" height="100%">
-          <Navbar />
-          <Box flex="1" overflow="auto">
-            {children}
+      <AdminSessionProvider>
+        <Box display="flex" gap="32px" height="100vh">
+          <Sidebar />
+          <Box flex="1" display="flex" flexDirection="column" height="100%">
+            <Navbar />
+            <Box flex="1" overflow="auto">
+              {children}
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </AdminSessionProvider>
     </>
   );
 }

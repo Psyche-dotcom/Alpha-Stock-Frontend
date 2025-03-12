@@ -74,3 +74,31 @@ export interface IPaginationProps {
   totalPages: number;
   onPageChange: (page: number) => void;
 }
+
+export interface ISubscription {
+  amount: number;
+  billingInterval: string;
+  created: string;
+  dateUpdated: string | null;
+  discountRate: number;
+  id: string;
+  isDiscounted: boolean;
+  isDeleted: boolean;
+  name: string;
+  payments: any;
+  subscriptionFeatures: any;
+  subscriptionsUser: any;
+}
+
+export interface SubscriptionFeature extends DataItem {
+  id: string;
+  featureName?: string;
+  shortName?: string;
+  category: string;
+  subscriptionId: string;
+  subscription?: any | null;
+  currentState: string;
+  created: string;
+  dateUpdated?: string | null;
+  isDeleted: boolean;
+}

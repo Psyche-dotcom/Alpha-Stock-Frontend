@@ -5,7 +5,7 @@ import { UserSessionProvider } from "../context/user-context";
 
 export const metadata: Metadata = {
   title: "Nvidia",
-  description: "Uer page",
+  description: "User page",
 };
 
 export default function UserLayout({

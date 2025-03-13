@@ -17,7 +17,7 @@ const PlanCard: React.FC<IPlanProps> = ({
       bg={plan?.id === selectedId ? "#351F05" : "#fff"}
       borderRadius={"8px"}
       w={"100%"}
-      onClick={() => setSelectedId(plan?.id)}
+      onClick={() => setSelectedId(plan?.id || "")}
       cursor={"pointer"}
     >
       <Text

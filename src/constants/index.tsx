@@ -27,7 +27,7 @@ export const navbarList = [
 ];
 
 export const userNavbarList = [
-  { title: "Home", path: "/user" },
+  { title: "Home", path: ROUTES.USER.HOME },
   { title: "Market Kit", path: "#" },
   {
     title: "Plans",

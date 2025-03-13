@@ -76,15 +76,15 @@ export interface IPaginationProps {
 }
 
 export interface ISubscription {
-  amount?: number;
+  amount: number;
   billingInterval?: string;
   created?: string;
   dateUpdated?: string | null;
   discountRate?: number;
-  id?: string;
+  id: string;
   isDiscounted?: boolean;
   isDeleted?: boolean;
-  name?: string;
+  name: string;
   payments?: any;
   subscriptionFeatures?: any;
   subscriptionsUser?: any;

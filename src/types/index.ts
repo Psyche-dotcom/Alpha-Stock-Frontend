@@ -77,17 +77,17 @@ export interface IPaginationProps {
 
 export interface ISubscription {
   amount: number;
-  billingInterval: string;
-  created: string;
-  dateUpdated: string | null;
-  discountRate: number;
+  billingInterval?: string;
+  created?: string;
+  dateUpdated?: string | null;
+  discountRate?: number;
   id: string;
-  isDiscounted: boolean;
-  isDeleted: boolean;
+  isDiscounted?: boolean;
+  isDeleted?: boolean;
   name: string;
-  payments: any;
-  subscriptionFeatures: any;
-  subscriptionsUser: any;
+  payments?: any;
+  subscriptionFeatures?: any;
+  subscriptionsUser?: any;
 }
 
 export interface SubscriptionFeature extends DataItem {

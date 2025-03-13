@@ -222,19 +222,19 @@ export const communityMenuList = [
 
 export const planList = [
   {
-    header: "Free",
-    price: "$0.00",
-    isSelected: true,
+    name: "Free",
+    amount: 0,
+    id: "1",
   },
   {
-    header: "Regular",
-    price: "$70.00 Monthly",
-    isSelected: false,
+    name: "Regular",
+    amount: 90,
+    id: "2",
   },
   {
-    header: "Premium",
-    price: "$190.00 Monthly",
-    isSelected: false,
+    name: "Premium",
+    amount: 180,
+    id: "3",
   },
 ];
 

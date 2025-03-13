@@ -7,40 +7,28 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Box, Flex } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { useCreateSubscription } from "@/services/subscriptions";
-import { DialogTitle } from "@/components/ui/dialog";
+import { useEditSubscription } from "@/services/subscriptions";
 import { z } from "zod";
+import { DialogTitle } from "@/components/ui/dialog";
 
 interface IAddStockProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleSuccess: () => void;
+  selectedPlan?: any;
 }
 
-const AddStockPlan: React.FC<IAddStockProps> = ({
+const EditStockPlan: React.FC<IAddStockProps> = ({
   setIsOpen,
+  selectedPlan,
   handleSuccess,
 }) => {
   const [discounted, setDiscounted] = useState<boolean>(false);
-  const formData = {
-    name: "",
-    amount: "",
-    isDIscounted: false,
-    discountRate: "",
-  };
 
   const subscriptionSchema = z.object({
     name: z.string().min(3, { message: "Name must be at least 3 characters" }),
@@ -65,19 +53,25 @@ const AddStockPlan: React.FC<IAddStockProps> = ({
 
   const form = useForm<SubscriptionSchemaType>({
     resolver: zodResolver(subscriptionSchema),
-    defaultValues: formData,
+    defaultValues: {
+      name: selectedPlan?.name || "",
+      amount: selectedPlan?.amount.toString() || "",
+      isDIscounted: selectedPlan?.isDIscounted || false,
+      discountRate: selectedPlan?.discountRate.toString() || "",
+    },
   });
 
   const {
-    createSubscriptionData,
-    createSubscriptionIsLoading,
-    createSubscriptionPayload,
-  } = useCreateSubscription((res: any) => {
+    editSubscriptionData,
+    editSubscriptionIsLoading,
+    editSubscriptionPayload,
+  } = useEditSubscription((res: any) => {
     handleSuccess();
     setIsOpen(false);
   });
 
   const { watch } = form;
+
   let isDiscounted = watch("isDIscounted");
 
   useEffect(() => {
@@ -85,21 +79,22 @@ const AddStockPlan: React.FC<IAddStockProps> = ({
   }, [isDiscounted]);
 
   async function onSubmit(values: SubscriptionSchemaType) {
+    console.warn(values);
     const payload = {
+      subPlanId: selectedPlan.id,
       name: values.name,
       amount: values.amount,
       isDIscounted: values.isDIscounted,
-      discountRate: values.discountRate,
+      discountRate: isDiscounted ? values.discountRate : 0,
       billingInterval: "1",
     };
 
-    createSubscriptionPayload(payload);
+    editSubscriptionPayload(payload);
   }
-
   return (
     <>
       <DialogTitle className="pb-[17px] text-2xl font-bold text-center">
-        Create Plan
+        Edit Plan
       </DialogTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -170,7 +165,7 @@ const AddStockPlan: React.FC<IAddStockProps> = ({
               w="100%"
               p="10px"
               type="submit"
-              disabled={createSubscriptionIsLoading}
+              disabled={editSubscriptionIsLoading}
             />
           </Flex>
         </form>
@@ -179,4 +174,4 @@ const AddStockPlan: React.FC<IAddStockProps> = ({
   );
 };
 
-export default AddStockPlan;
+export default EditStockPlan;

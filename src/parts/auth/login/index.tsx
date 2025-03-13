@@ -20,7 +20,7 @@ const Login: React.FC = () => {
   const { handlePush } = useHandlePush();
   const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
     if (res?.userRole[0].toLowerCase() === "user") {
-      handlePush(ROUTES.USER.COMPANYINFO);
+      handlePush(ROUTES.USER.HOME);
       return;
     }
     handlePush("/admin/users");

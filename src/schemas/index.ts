@@ -92,17 +92,3 @@ export const updateDetailsSchema = z.object({
 });
 
 export type UpdateSchemaType = z.infer<typeof updateDetailsSchema>;
-
-export const subscriptionSchema = z.object({
-  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
-  amount: z.string().min(3, { message: "Amount cant be empty" }),
-  isDIscounted: z.boolean().default(false).optional(),
-  discountRate: z.string({
-    required_error: "Please select a discount rate.",
-  }),
-  billingInterval: z.string().min(1, {
-    message: "Please select an interval.",
-  }),
-});
-
-export type SubscriptionSchemaType = z.infer<typeof subscriptionSchema>;

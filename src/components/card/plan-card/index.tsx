@@ -16,7 +16,7 @@ const PlanCard: React.FC<IPlanProps> = ({
       p={6}
       bg={plan?.id === selectedId ? "#351F05" : "#fff"}
       borderRadius={"8px"}
-      w={223}
+      w={"100%"}
       onClick={() => setSelectedId(plan?.id)}
       cursor={"pointer"}
     >

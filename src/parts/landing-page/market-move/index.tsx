@@ -116,7 +116,7 @@ const MarketMoveContent = () => {
   };
 
   return (
-    <div className="bg-white pt-4 mb-[64px]">
+    <div className="bg-white pt-4">
       <div className="mb-4 mx-4">
         <div className="flex items-center mb-4 gap-3">
           <ShineIcon />

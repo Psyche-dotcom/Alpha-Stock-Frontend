@@ -1,6 +1,5 @@
 "use client";
 
-import { ButtonIcon } from "@/components/button/button-icon";
 import AreaChartComponent from "@/components/charts/area-graph";
 import { TableComponent } from "@/components/custom-table";
 import DeleteContent from "@/components/delete-content";
@@ -13,9 +12,7 @@ import { Pagination } from "@/components/ui/pagination";
 import UserDetails from "@/components/user-content";
 import { useDeleteUser, useGetUsers } from "@/services/user";
 import { UserData } from "@/types";
-import { formatDate } from "@/utils";
 import { DeleteIcon } from "@/utils/icons";
-import Storage from "@/utils/storage";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { EditIcon, EyeIcon } from "lucide-react";
 import Image from "next/image";

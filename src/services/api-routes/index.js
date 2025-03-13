@@ -20,4 +20,5 @@ export const routes = {
   getSubscriptions: () => "/api/subscription/retrieve/all",
   getSubscription: (id) => `/api/subscription/info/${id}`,
   createSubscription: () => `/api/subscription/create`,
+  editSubscription: () => `/api/subscription/update`,
 };

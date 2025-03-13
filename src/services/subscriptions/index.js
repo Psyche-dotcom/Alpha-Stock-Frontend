@@ -3,6 +3,7 @@ import { routes } from "../api-routes";
 import { ErrorHandler } from "../errorHandler";
 import httpService from "../httpService";
 import useFetchItem from "../useFetchItem";
+import useMutateItem from "../useMutateItem";
 
 export const useGetSubscriptions = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
@@ -59,5 +60,27 @@ export const useCreateSubscription = (handleSuccess) => {
     createSubscriptionError: ErrorHandler(error),
     createSubscriptionIsLoading: isPending,
     createSubscriptionPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useEditSubscription = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.putData(payload, routes.editSubscription()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      showSuccessAlert(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    editSubscriptionData: data,
+    editSubscriptionError: ErrorHandler(error),
+    editSubscriptionIsLoading: isPending,
+    editSubscriptionPayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };

@@ -22,6 +22,7 @@ const Watchlist: React.FC<iProp> = () => {
             setOpen={() => setIsOpen(false)}
             header="Delete Preference"
             description="Are you sure you want to delete preference?"
+            handleDelete={() => console.log("")}
           />
         );
       default:

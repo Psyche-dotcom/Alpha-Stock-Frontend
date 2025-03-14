@@ -39,7 +39,7 @@ const Navbar = () => {
             ))}
           </div>
           <div className="flex lg:gap-[32px] xl:gap-[64px] flex-1">
-            <Form {...form}>
+            {/* <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex gap-2.5 w-full"
@@ -56,7 +56,7 @@ const Navbar = () => {
                   className="flex items-center p-3"
                 />
               </form>
-            </Form>
+            </Form> */}
 
             <div>
               <div className="gap-4 items-center flex">
@@ -94,7 +94,7 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div className="flex gap-2.5 mb-3">
+          {/* <div className="flex gap-2.5 mb-3">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -107,7 +107,7 @@ const Navbar = () => {
                 />
               </form>
             </Form>
-          </div>
+          </div> */}
           <div className="gap-3 flex-col flex">
             <Button
               variant="outline"

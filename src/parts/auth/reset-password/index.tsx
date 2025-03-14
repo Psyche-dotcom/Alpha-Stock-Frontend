@@ -13,12 +13,14 @@ import { useHandlePush } from "@/hooks/handlePush";
 import { useResetPassword } from "@/services/auth";
 import { ROUTES } from "@/constants/routes";
 import Storage from "@/utils/storage";
+import { showSuccessAlert } from "@/utils/alert";
 
 const ResetPassword: React.FC = () => {
   const { handlePush } = useHandlePush();
   const email = Storage.get("email");
   const { resetPasswordData, resetPasswordIsLoading, resetPasswordPayload } =
     useResetPassword((res: any) => {
+      showSuccessAlert("Reset password successful");
       Storage.remove("email");
       handlePush(ROUTES.AUTH.LOGIN);
     });

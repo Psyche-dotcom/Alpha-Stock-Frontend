@@ -7,6 +7,7 @@ import {
   SavedIcon,
   ThreeDotsIcon,
   ThumbsIcon,
+  ThumbsOutlineIcon,
 } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import {
@@ -26,8 +27,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/utils";
-import { useGetBlogCommentsComment } from "@/services/blog";
+import {
+  useAddCommentReply,
+  useCommentLIkeUnlike,
+  useGetBlogCommentsComment,
+} from "@/services/blog";
 import InnerCommentSkeleton from "../skeleton/inner-comment";
+import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
+import { useUserSession } from "@/app/context/user-context";
 interface ICommentProps {
   comment: IComments;
   showOptions?: boolean;
@@ -40,7 +47,15 @@ const CommentCard: React.FC<ICommentProps> = ({
   showUpload = false,
 }) => {
   const [showReply, setShowReply] = useState<boolean>(false);
+  const { profileData } = useUserSession();
   const [pageSize, setPageSize] = useState<number>(5);
+  const [commentCount, setCommentCount] = useState<number>(
+    Number(comment.likeCount || 0)
+  );
+  const [commentLiked, setCommentLiked] = useState<boolean>(
+    comment?.isLiked || false
+  );
+
   const {
     getBlogCommentsCommentData,
     getBlogCommentsCommentIsLoading,
@@ -48,34 +63,72 @@ const CommentCard: React.FC<ICommentProps> = ({
     getBlogCommentsCommentError,
   } = useGetBlogCommentsComment((res: any) => {});
 
+  const payload = {
+    pageNumber: 1,
+    commentId: comment?.commentId,
+    perPageSize: pageSize,
+  };
+
+  const {
+    addCommentReplyData,
+    addCommentReplyIsLoading,
+    addCommentReplyPayload,
+  } = useAddCommentReply((res: any) => {
+    showSuccessAlert("Repl successfully submitted");
+  });
+
+  const { likeUnlikeData, likeUnlikePayload, likeUnlikeIsLoading } =
+    useCommentLIkeUnlike((res: any) => {
+      showSuccessAlert(res);
+      setCommentLiked((prev) => !prev);
+      setCommentCount((prev) => (commentLiked ? prev - 1 : prev + 1));
+    });
+
   const formSchema = z.object({
-    email: z.string(),
+    reply: z.string(),
   });
 
   type FormSchemaType = z.infer<typeof formSchema>;
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      reply: "",
     },
   });
+
   useEffect(() => {
-    const payload = {
-      pageNumber: 1,
-      commentId: comment?.commentId,
-      perPageSize: pageSize,
-    };
     if (showReply) {
       getBlogCommentsCommentPayload(payload);
     }
-  }, [pageSize, showReply]);
+  }, [pageSize, showReply, addCommentReplyData]);
 
   const handleMoreClick = () => {
     if (getBlogCommentsCommentData?.totalPages !== 1)
       setPageSize((prev) => prev + 5);
   };
 
-  async function onSubmit(values: FormSchemaType) {}
+  async function onSubmit(values: FormSchemaType) {
+    const payload = {
+      content: values.reply,
+      commentId: comment?.commentId,
+    };
+    addCommentReplyPayload(payload);
+  }
+
+  const handleReaction = () => {
+    if (likeUnlikeIsLoading) {
+      return;
+    }
+    if (!profileData) {
+      showErrorAlert("Please login!");
+      return;
+    }
+    const payload = {
+      commentId: comment?.commentId,
+    };
+    likeUnlikePayload(payload);
+  };
+
   return (
     <Box
       bg="#FFFFFF"
@@ -134,15 +187,36 @@ const CommentCard: React.FC<ICommentProps> = ({
             </Text>
             <ChatIcon />
           </Flex>
-          <Flex alignItems={"center"} gap="4px" cursor={"pointer"}>
-            <Text fontWeight={500} fontSize={14} color="#1F2A37">
-              Like
-            </Text>
-            <Box color={comment?.isLiked ? "#351F05" : ""}>
-              <ThumbsIcon />
-            </Box>
-          </Flex>
-          {comment.likeCount}
+          {commentLiked ? (
+            <Flex
+              alignItems={"center"}
+              gap="4px"
+              cursor={"pointer"}
+              onClick={handleReaction}
+            >
+              <Text fontWeight={500} fontSize={14} color="#1F2A37">
+                Unlike
+              </Text>
+              <Box color={comment?.isLiked ? "#351F05" : ""}>
+                <ThumbsIcon />
+              </Box>
+            </Flex>
+          ) : (
+            <Flex
+              alignItems={"center"}
+              gap="4px"
+              cursor={"pointer"}
+              onClick={handleReaction}
+            >
+              <Text fontWeight={500} fontSize={14} color="#1F2A37">
+                Like
+              </Text>
+              <Box color={comment?.isLiked ? "#351F05" : ""}>
+                <ThumbsOutlineIcon />
+              </Box>
+            </Flex>
+          )}
+          {commentCount}
           {showOptions && (
             <>
               <Flex alignItems={"center"} gap="4px" cursor={"pointer"}>
@@ -174,43 +248,51 @@ const CommentCard: React.FC<ICommentProps> = ({
           borderRadius={"8px"}
           mt="20px"
         >
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex gap-3 items-center"
-            >
-              {showUpload && (
-                <>
-                  <Button variant={"ghost"} size="xl">
-                    <FileUploadIcon />
-                  </Button>
-                  <Button variant={"ghost"} size="xl">
-                    <SmileyIcon />
-                  </Button>
-                </>
-              )}
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="flex-1 w-full">
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Type here ..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+          {profileData && profileData?.result?.id && (
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex gap-3 items-center"
+              >
+                {showUpload && (
+                  <>
+                    <Button variant={"ghost"} size="xl">
+                      <FileUploadIcon />
+                    </Button>
+                    <Button variant={"ghost"} size="xl">
+                      <SmileyIcon />
+                    </Button>
+                  </>
                 )}
-              />
 
-              <Button variant={"ghost"} size="xl">
-                <SendIcon />
-              </Button>
-            </form>
-          </Form>
+                <FormField
+                  control={form.control}
+                  name="reply"
+                  render={({ field }) => (
+                    <FormItem className="flex-1 w-full">
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Type here ..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  variant={"ghost"}
+                  size="xl"
+                  type={"submit"}
+                  disabled={addCommentReplyIsLoading}
+                >
+                  <SendIcon />
+                </Button>
+              </form>
+            </Form>
+          )}
           {getBlogCommentsCommentIsLoading ? (
             <Flex
               flexDirection={"column"}
@@ -258,19 +340,23 @@ const CommentCard: React.FC<ICommentProps> = ({
               )}
             </Flex>
           )}
-          <Box
-            display={"flex"}
-            justifyContent={"end"}
-            textDecoration={"underline"}
-            fontSize={"sm"}
-            color="#351F05"
-            fontWeight={600}
-            mt="24px"
-            cursor={"pointer"}
-            onClick={handleMoreClick}
-          >
-            view more comments
-          </Box>
+          {getBlogCommentsCommentData?.totalPages > 1 &&
+            getBlogCommentsCommentData?.currentPage !==
+              getBlogCommentsCommentData?.totalPages && (
+              <Box
+                display={"flex"}
+                justifyContent={"end"}
+                textDecoration={"underline"}
+                fontSize={"sm"}
+                color="#351F05"
+                fontWeight={600}
+                mt="24px"
+                cursor={"pointer"}
+                onClick={handleMoreClick}
+              >
+                view more comments
+              </Box>
+            )}
         </Box>
       )}
     </Box>

@@ -1,20 +1,61 @@
 "use client";
 
+import { useUserSession } from "@/app/context/user-context";
 import CommentCard from "@/components/card/comment-card";
 import CommentSkeleton from "@/components/card/skeleton/comment";
 import SingleCardSkeleton from "@/components/card/skeleton/single-view";
 import { IComments } from "@/interface/comment";
-import { useGetBlog, useGetBlogComments } from "@/services/blog";
+import {
+  useAddComment,
+  useBlogLikeUnlike,
+  useGetBlog,
+  useGetBlogComments,
+} from "@/services/blog";
 import { formatDate } from "@/utils";
-import { ArrowRightIcon, HomeIcon } from "@/utils/icons";
+import {
+  ArrowRightIcon,
+  HomeIcon,
+  SendIcon,
+  ThumbsIcon,
+  ThumbsOutlineIcon,
+} from "@/utils/icons";
 import { Box, Text, Flex } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
 
 const BlogDetails = ({ blogId }: { blogId: string }) => {
   const [pageSize, setPageSize] = useState<number>(5);
+  const { profileData } = useUserSession();
   const { getBlogData, getBlogError, getBlogIsLoading, getBlogPayload } =
     useGetBlog((res: any) => {});
+
+  const [commentLiked, setCommentLiked] = useState<boolean>(
+    getBlogData?.isLiked || false
+  );
+
+  const [commentCount, setCommentCount] = useState<number>(
+    Number(getBlogData.likeCount || 0)
+  );
+
+  const payload = {
+    userId: profileData?.result?.id || "",
+    blogPostId: blogId,
+    perPageSize: pageSize,
+  };
+
   const {
     getBlogCommentsData,
     getBlogCommentsError,
@@ -22,25 +63,71 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
     getBlogCommentsPayload,
   } = useGetBlogComments((res: any) => {});
 
+  const { likeUnlikeData, likeUnlikePayload, likeUnlikeIsLoading } =
+    useBlogLikeUnlike((res: any) => {
+      showSuccessAlert(res);
+      setCommentLiked((prev) => !prev);
+      setCommentCount((prev) => (commentLiked ? prev - 1 : prev + 1));
+    });
+
+  const { addCommentData, addCommentPayload, addCommentIsLoading } =
+    useAddComment((res: any) => {
+      showSuccessAlert("Comment added successfully");
+    });
+
   useEffect(() => {
     const payload = {
-      userId: "",
+      userId: profileData?.result?.id || "",
       blogPostId: blogId,
     };
     getBlogPayload(payload);
   }, []);
 
   useEffect(() => {
-    const payload = {
-      userId: "",
-      blogPostId: blogId,
-      perPageSize: pageSize,
-    };
     getBlogCommentsPayload(payload);
-  }, [pageSize]);
+  }, [pageSize, addCommentData]);
+
   const handleMoreClick = () => {
     if (getBlogCommentsData?.totalPages !== 1) setPageSize((prev) => prev + 5);
   };
+
+  const formSchema = z.object({
+    comment: z.string().min(3, {
+      message: "Comment must be at least 3 characters.",
+    }),
+  });
+
+  type FormSchemaType = z.infer<typeof formSchema>;
+
+  const form = useForm<FormSchemaType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      comment: "",
+    },
+  });
+
+  async function onSubmit(values: FormSchemaType) {
+    const payload = {
+      content: values.comment,
+      blogPostId: blogId,
+    };
+    addCommentPayload(payload);
+  }
+
+  const handleReaction = () => {
+    if (likeUnlikeIsLoading) {
+      return;
+    }
+    if (!profileData) {
+      showErrorAlert("Please login!");
+      return;
+    }
+    const payload = {
+      blogPostId: blogId,
+    };
+    likeUnlikePayload(payload);
+  };
+
   return (
     <Box mt={8}>
       <Flex
@@ -88,6 +175,38 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
                 getBlogData?.publishedDate || "2025-03-07T23:40:33.987571Z"
               )}
             </Text>
+            <Box className="flex items-center gap-3 mb-5">
+              {commentLiked ? (
+                <Flex
+                  alignItems={"center"}
+                  gap="4px"
+                  cursor={"pointer"}
+                  onClick={handleReaction}
+                >
+                  <Text fontWeight={500} fontSize={14} color="#1F2A37">
+                    Unlike
+                  </Text>
+                  <Box color={getBlogData?.isLiked ? "#351F05" : ""}>
+                    <ThumbsIcon />
+                  </Box>
+                </Flex>
+              ) : (
+                <Flex
+                  alignItems={"center"}
+                  gap="4px"
+                  cursor={"pointer"}
+                  onClick={handleReaction}
+                >
+                  <Text fontWeight={500} fontSize={14} color="#1F2A37">
+                    Like
+                  </Text>
+                  <Box color={getBlogData?.isLiked ? "#351F05" : ""}>
+                    <ThumbsOutlineIcon />
+                  </Box>
+                </Flex>
+              )}
+              {commentCount || 0}
+            </Box>
             <Box mb="32px">
               <Image
                 height={501}
@@ -107,7 +226,42 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
             />
           </Box>
         )}
+
         <Box>
+          {profileData && profileData?.result?.id && (
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex gap-3 items-start mb-3"
+              >
+                <FormField
+                  control={form.control}
+                  name="comment"
+                  render={({ field }) => (
+                    <FormItem className="flex-1 w-full">
+                      <FormControl>
+                        <Textarea
+                          placeholder="Type here"
+                          className="resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  size="xl"
+                  type="submit"
+                  className="p-2 px-4 text-xs font-medium rounded-md"
+                  disabled={addCommentIsLoading}
+                >
+                  Send
+                </Button>
+              </form>
+            </Form>
+          )}
           {getBlogCommentsIsLoading ? (
             <Flex
               flexDirection={"column"}
@@ -133,19 +287,26 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
               )}
             </Flex>
           )}
-          <Box
-            display={"flex"}
-            justifyContent={"end"}
-            textDecoration={"underline"}
-            fontSize={"sm"}
-            color="#351F05"
-            fontWeight={600}
-            mt="24px"
-            cursor={"pointer"}
-            onClick={handleMoreClick}
-          >
-            view more comments
-          </Box>
+
+          <>
+            {getBlogCommentsData?.totalPages > 1 &&
+              getBlogCommentsData?.currentPage !==
+                getBlogCommentsData?.totalPages && (
+                <Box
+                  display={"flex"}
+                  justifyContent={"end"}
+                  textDecoration={"underline"}
+                  fontSize={"sm"}
+                  color="#351F05"
+                  fontWeight={600}
+                  mt="24px"
+                  cursor={"pointer"}
+                  onClick={handleMoreClick}
+                >
+                  view more comments
+                </Box>
+              )}
+          </>
         </Box>
       </Flex>
     </Box>

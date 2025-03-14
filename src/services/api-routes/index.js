@@ -22,4 +22,8 @@ export const routes = {
   getSubscription: (id) => `/api/subscription/info/${id}`,
   createSubscription: () => `/api/subscription/create`,
   editSubscription: () => `/api/subscription/update`,
+  addBlogComment: () => `/api/blog/comment/add`,
+  addBlogCommentReply: () => `/api/blog/comment/reply/add`,
+  commentLikeUnlike: () => `/api/blog/comment/like_unlike`,
+  blogLikeUnlike: () => `/api/blog/like_unlike`,
 };

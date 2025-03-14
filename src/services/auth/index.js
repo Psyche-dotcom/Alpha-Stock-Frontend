@@ -80,7 +80,6 @@ export const useResetPassword = (handleSuccess) => {
     onSuccess: (requestParams) => {
       const resData = requestParams?.data?.result || {};
       handleSuccess(resData);
-      showSuccessAlert(resData);
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);

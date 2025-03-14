@@ -1,3 +1,4 @@
+import { showSuccessAlert } from "@/utils/alert";
 import { routes } from "../api-routes";
 import { ErrorHandler } from "../errorHandler";
 import httpService from "../httpService";
@@ -116,7 +117,7 @@ export const useGetBlogCommentsComment = (handleSuccess) => {
         routes.getSingleBlogCommentsComment()
       ),
     onSuccess: (requestParams) => {
-      const resData = requestParams?.result || {};
+      const resData = requestParams?.result || [];
       handleSuccess(resData);
     },
     onError: (error) => {
@@ -130,5 +131,89 @@ export const useGetBlogCommentsComment = (handleSuccess) => {
     getBlogCommentsCommentIsLoading: isPending,
     getBlogCommentsCommentPayload: (requestPayload) =>
       mutateAsync(requestPayload),
+  };
+};
+
+export const useAddComment = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.addBlogComment()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result;
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    addCommentData: data,
+    addCommentDataError: ErrorHandler(error),
+    addCommentIsLoading: isPending,
+    addCommentPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useAddCommentReply = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.addBlogCommentReply()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result;
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    addCommentReplyData: data,
+    addCommentReplyDataError: ErrorHandler(error),
+    addCommentReplyIsLoading: isPending,
+    addCommentReplyPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useCommentLIkeUnlike = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.commentLikeUnlike()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result;
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    likeUnlikeData: data,
+    likeUnlikeError: ErrorHandler(error),
+    likeUnlikeIsLoading: isPending,
+    likeUnlikePayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useBlogLikeUnlike = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.blogLikeUnlike()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result;
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    likeUnlikeData: data,
+    likeUnlikeError: ErrorHandler(error),
+    likeUnlikeIsLoading: isPending,
+    likeUnlikePayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };

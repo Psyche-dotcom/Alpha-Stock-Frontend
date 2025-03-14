@@ -35,26 +35,29 @@ export const userNavbarList = [
   },
   { title: "Community", path: "#" },
   { title: "Blog", path: "#" },
-  // {
-  //   title: "Company Info",
-  //   path: ROUTES.USER.COMPANYINFO,
-  // },
-  // {
-  //   title: "Metrics",
-  //   path: ROUTES.USER.METRICS,
-  // },
-  // {
-  //   title: "Financials",
-  //   path: ROUTES.USER.FINANCIALS,
-  // },
-  // {
-  //   title: "Fundamentals",
-  //   path: ROUTES.USER.FUNDAMENTALS,
-  // },
-  // {
-  //   title: "Stock Analyzer",
-  //   path: ROUTES.USER.STOCKANALYSERS,
-  // },
+];
+
+export const searchTab = [
+  {
+    title: "Company Info",
+    value: "company-info",
+  },
+  {
+    title: "Metrics",
+    value: "metrics",
+  },
+  {
+    title: "Financials",
+    value: "financials",
+  },
+  {
+    title: "Fundamentals",
+    value: "fundamentals",
+  },
+  {
+    title: "Stock Analyser",
+    value: "stock-analyser",
+  },
 ];
 
 export const trendingList = [

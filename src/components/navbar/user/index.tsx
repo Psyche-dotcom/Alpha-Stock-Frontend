@@ -115,11 +115,9 @@ const UserNavbar = () => {
                 </Flex>
               </MenuButton>
               <MenuList maxW={"60px"}>
-                {/* Dropdown menu items */}
                 <MenuItem onClick={() => handlePush(ROUTES.USER.PROFILE)}>
-                  Profile
+                  Settings
                 </MenuItem>
-                <MenuItem>Settings</MenuItem>
                 <MenuItem>Log out</MenuItem>
               </MenuList>
             </Menu>

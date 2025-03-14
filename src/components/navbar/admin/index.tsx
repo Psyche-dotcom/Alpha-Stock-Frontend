@@ -91,11 +91,9 @@ const Navbar = () => {
               </Flex>
             </MenuButton>
             <MenuList maxW={"60px"}>
-              {/* Dropdown menu items */}
               <MenuItem onClick={() => router.push(ROUTES.ADMIN.PROFILE)}>
-                Profile
+                Settings
               </MenuItem>
-              <MenuItem>Settings</MenuItem>
               <MenuItem>Log out</MenuItem>
             </MenuList>
           </Menu>

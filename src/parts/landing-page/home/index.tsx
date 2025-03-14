@@ -96,26 +96,7 @@ const Home = () => {
       <header>
         <Navbar />
       </header>
-      <div className="mt-4 flex gap-3">
-        <Button
-          asChild
-          variant="outline"
-          className="font-medium py-3 px-5 border border-[#3A2206] text-[#3A2206] w-fit-content"
-        >
-          <Link passHref href={ROUTES.ADMIN.USERS}>
-            Admin Page
-          </Link>
-        </Button>
-        <Button
-          asChild
-          variant="outline"
-          className="font-medium py-3 px-5 border border-[#3A2206] text-[#3A2206] w-fit-content"
-        >
-          <Link passHref href={ROUTES.USER.COMPANYINFO}>
-            User Page
-          </Link>
-        </Button>
-      </div>
+
       <div className="mb-4 flex gap-4 md:gap-8 py-4 md:py-8 flex-col lg:flex-row">
         <div className="h-auto items-center flex bg-white w-full p-8 rounded-[12px]">
           <div className="w-full">

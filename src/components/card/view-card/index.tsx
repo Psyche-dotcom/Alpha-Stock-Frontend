@@ -1,6 +1,5 @@
 "use client";
 
-import { useUserSession } from "@/app/context/user-context";
 import { IViewCard } from "@/interface/card-view";
 import { formatDate } from "@/utils";
 import { Box, Text } from "@chakra-ui/react";
@@ -9,19 +8,18 @@ import Link from "next/link";
 interface IViewProps {
   card: IViewCard;
   showAuthor?: boolean;
+  isAuth?: boolean;
 }
 
-const ViewCard: React.FC<IViewProps> = ({ card, showAuthor = false }) => {
-  const { profileData } = useUserSession();
-
+const ViewCard: React.FC<IViewProps> = ({
+  card,
+  showAuthor = false,
+  isAuth = false,
+}) => {
   return (
     <Link
       passHref
-      href={
-        profileData && profileData?.result?.id
-          ? `/user/blog/${card?.id}`
-          : `/blog/${card?.id}`
-      }
+      href={isAuth ? `/user/blog/${card?.id}` : `/blog/${card?.id}`}
     >
       <Box
         borderRadius="12px"

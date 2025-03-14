@@ -84,7 +84,7 @@ const Blog = () => {
               ))
             : SecondBlog.map((trend: IViewCard, index: number) => (
                 <Box key={index} flexGrow={1}>
-                  <ViewCard card={trend} showAuthor={true} />
+                  <ViewCard card={trend} showAuthor={true} isAuth={true} />
                 </Box>
               ))}
         </Flex>
@@ -116,7 +116,7 @@ const Blog = () => {
         >
           {thirdBlog.map((trend: IViewCard, index: number) => (
             <GridItem key={index}>
-              <ViewCard card={trend} />
+              <ViewCard card={trend} isAuth={true} />
             </GridItem>
           ))}
         </Grid>

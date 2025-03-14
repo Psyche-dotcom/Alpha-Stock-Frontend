@@ -94,7 +94,7 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* <div className="flex gap-2.5 mb-3">
+          <div className="flex gap-2.5 mb-3">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -107,7 +107,7 @@ const Navbar = () => {
                 />
               </form>
             </Form>
-          </div> */}
+          </div>
           <div className="gap-3 flex-col flex">
             <Button
               variant="outline"

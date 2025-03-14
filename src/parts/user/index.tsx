@@ -1,7 +1,6 @@
 "use client";
 
 import ViewCard from "@/components/card/view-card";
-import { marketList } from "@/constants";
 import { IViewCard } from "@/interface/card-view";
 import { Grid, GridItem } from "@chakra-ui/react";
 import MarketMoveContent from "../landing-page/market-move";
@@ -76,7 +75,7 @@ const User: React.FC = () => {
         >
           {getBlogsData?.result?.map((trend: IViewCard, index: number) => (
             <GridItem key={index}>
-              <ViewCard card={trend} />
+              <ViewCard card={trend} isAuth={true} />
             </GridItem>
           ))}
         </Grid>

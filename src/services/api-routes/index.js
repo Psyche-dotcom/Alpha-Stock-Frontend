@@ -16,10 +16,13 @@ export const routes = {
     return `/api/all/${per_page_size}/${page_number}?${params}`;
   },
   suspendUser: (email) => `/api/admin/suspend_user/${email}`,
+  buyPlan: (planid) => `/api/payment/create/buy_plan?plainid=${planid}`,
   unSuspendUser: (email) => `/api/admin/unsuspend_user/${email}`,
   deleteUser: (email) => `/api/user/delete_user/${email}`,
   getSubscriptions: () => "/api/subscription/retrieve/all",
   getSubscription: (id) => `/api/subscription/info/${id}`,
+  confirmSubscription: (token) =>
+    `/api/payment/webhook/confirm-payment?token=${token}`,
   createSubscription: () => `/api/subscription/create`,
   editSubscription: () => `/api/subscription/update`,
   addBlogComment: () => `/api/blog/comment/add`,

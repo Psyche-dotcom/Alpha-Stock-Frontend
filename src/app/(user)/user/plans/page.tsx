@@ -1,6 +1,6 @@
-import Plans from "@/parts/user/plans";
+import Plans from "@/parts/user/stock-plans";
 
-export default function PLanPage() {
+export default function UserPlanPage() {
   return (
     <>
       <Plans />

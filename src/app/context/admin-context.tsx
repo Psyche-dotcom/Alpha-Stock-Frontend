@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useUserSessionData } from "../sessions";
+import SpinnerFill from "@/components/spinner";
 
 interface AdminSessionContextType {
   profileData: any;
@@ -31,12 +32,7 @@ export function AdminSessionProvider({ children }: Props) {
   }, [profileError, router]);
 
   if (isProfileLoading) {
-    return (
-      <div className="loading">
-        {/* Add a spinner or some other loading animation */}
-        <p>Loading your profile...</p>
-      </div>
-    );
+    return <SpinnerFill />;
   }
 
   return (

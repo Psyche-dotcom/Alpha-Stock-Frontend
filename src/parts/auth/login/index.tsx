@@ -19,12 +19,13 @@ import { setCookie } from "cookies-next";
 const Login: React.FC = () => {
   const { handlePush } = useHandlePush();
   const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
+    setCookie("token", res?.jwt);
     if (res?.userRole[0].toLowerCase() === "user") {
-
       handlePush(ROUTES.USER.HOME);
 
       return;
     }
+
     handlePush("/admin/users");
   });
   const form = useForm<LoginSchemaType>({

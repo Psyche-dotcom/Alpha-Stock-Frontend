@@ -1,4 +1,4 @@
-import BlogDetails from "@/parts/landing-page/blog/single-blog";
+import BlogDetails from "@/parts/user/blog/single-blog";
 
 export default function BlogDetailsPage({
   params,

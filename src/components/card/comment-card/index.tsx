@@ -34,20 +34,20 @@ import {
 } from "@/services/blog";
 import InnerCommentSkeleton from "../skeleton/inner-comment";
 import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
-import { useUserSession } from "@/app/context/user-context";
 interface ICommentProps {
   comment: IComments;
   showOptions?: boolean;
   showUpload?: boolean;
+  isAuth?: boolean;
 }
 
 const CommentCard: React.FC<ICommentProps> = ({
   comment,
   showOptions = false,
   showUpload = false,
+  isAuth = false,
 }) => {
   const [showReply, setShowReply] = useState<boolean>(false);
-  const { profileData } = useUserSession();
   const [pageSize, setPageSize] = useState<number>(5);
   const [commentCount, setCommentCount] = useState<number>(
     Number(comment.likeCount || 0)
@@ -119,7 +119,7 @@ const CommentCard: React.FC<ICommentProps> = ({
     if (likeUnlikeIsLoading) {
       return;
     }
-    if (!profileData) {
+    if (!isAuth) {
       showErrorAlert("Please login!");
       return;
     }
@@ -248,7 +248,7 @@ const CommentCard: React.FC<ICommentProps> = ({
           borderRadius={"8px"}
           mt="20px"
         >
-          {profileData && profileData?.result?.id && (
+          {isAuth && (
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}

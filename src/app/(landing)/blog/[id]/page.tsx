@@ -1,6 +1,3 @@
-"use client";
-
-import { UserSessionProvider } from "@/app/context/user-context";
 import BlogDetails from "@/parts/landing-page/blog/single-blog";
 
 export default function BlogDetailsPage({
@@ -10,9 +7,7 @@ export default function BlogDetailsPage({
 }) {
   return (
     <>
-      <UserSessionProvider>
-        <BlogDetails blogId={params.id} />
-      </UserSessionProvider>
+      <BlogDetails blogId={params.id} />
     </>
   );
 }

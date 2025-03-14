@@ -1,4 +1,4 @@
-import Blog from "@/parts/landing-page/blog";
+import Blog from "@/parts/user/blog";
 
 export default function BlogPage() {
   return (

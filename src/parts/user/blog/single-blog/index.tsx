@@ -1,5 +1,6 @@
 "use client";
 
+import { useUserSession } from "@/app/context/user-context";
 import CommentCard from "@/components/card/comment-card";
 import CommentSkeleton from "@/components/card/skeleton/comment";
 import SingleCardSkeleton from "@/components/card/skeleton/single-view";
@@ -14,6 +15,7 @@ import { formatDate } from "@/utils";
 import {
   ArrowRightIcon,
   HomeIcon,
+  SendIcon,
   ThumbsIcon,
   ThumbsOutlineIcon,
 } from "@/utils/icons";
@@ -23,10 +25,20 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
 
 const BlogDetails = ({ blogId }: { blogId: string }) => {
   const [pageSize, setPageSize] = useState<number>(5);
+  const { profileData } = useUserSession();
   const { getBlogData, getBlogError, getBlogIsLoading, getBlogPayload } =
     useGetBlog((res: any) => {});
 
@@ -39,7 +51,7 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
   );
 
   const payload = {
-    userId: "",
+    userId: profileData?.result?.id || "",
     blogPostId: blogId,
     perPageSize: pageSize,
   };
@@ -65,7 +77,7 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
 
   useEffect(() => {
     const payload = {
-      userId: "",
+      userId: profileData?.result?.id || "",
       blogPostId: blogId,
     };
     getBlogPayload(payload);
@@ -103,7 +115,17 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
   }
 
   const handleReaction = () => {
-    showErrorAlert("Please login!");
+    if (likeUnlikeIsLoading) {
+      return;
+    }
+    if (!profileData) {
+      showErrorAlert("Please login!");
+      return;
+    }
+    const payload = {
+      blogPostId: blogId,
+    };
+    likeUnlikePayload(payload);
   };
 
   return (
@@ -206,6 +228,40 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
         )}
 
         <Box>
+          {profileData && profileData?.result?.id && (
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex gap-3 items-start mb-3"
+              >
+                <FormField
+                  control={form.control}
+                  name="comment"
+                  render={({ field }) => (
+                    <FormItem className="flex-1 w-full">
+                      <FormControl>
+                        <Textarea
+                          placeholder="Type here"
+                          className="resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  size="xl"
+                  type="submit"
+                  className="p-2 px-4 text-xs font-medium rounded-md"
+                  disabled={addCommentIsLoading}
+                >
+                  Send
+                </Button>
+              </form>
+            </Form>
+          )}
           {getBlogCommentsIsLoading ? (
             <Flex
               flexDirection={"column"}
@@ -226,7 +282,7 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
             >
               {getBlogCommentsData?.result?.map(
                 (comment: IComments, index: number) => (
-                  <CommentCard comment={comment} key={index} isAuth={false} />
+                  <CommentCard comment={comment} key={index} isAuth={true} />
                 )
               )}
             </Flex>

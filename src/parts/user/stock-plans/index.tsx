@@ -7,6 +7,7 @@ import { ButtonIcon } from "@/components/button/button-icon";
 import { useEffect, useState } from "react";
 import { ViewPlanIcon } from "@/utils/icons";
 import {
+  useBuySubscription,
   useGetSubscription,
   useGetSubscriptions,
 } from "@/services/subscriptions";
@@ -31,7 +32,13 @@ const Plans = () => {
     setSubscriptionFilter,
     getSubscriptionIsLoading,
   } = useGetSubscription({ enabled: fetchSubscription });
-
+  const {
+    buySubscriptionData,
+    buySubscriptionIsLoading,
+    buySubscriptionPayload,
+  } = useBuySubscription((res: any) => {
+    window.location.href = res;
+  });
   useEffect(() => {
     if (selectedId) {
       setSubscriptionFilter({ id: selectedId });
@@ -54,6 +61,10 @@ const Plans = () => {
 
   const handleMakePayment = () => {
     console.log(selectedId);
+    const data = {
+      Id: selectedId,
+    };
+    buySubscriptionPayload(data);
   };
   return (
     <>

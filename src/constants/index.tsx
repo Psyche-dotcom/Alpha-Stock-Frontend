@@ -20,10 +20,6 @@ export const navbarList = [
     title: "Blog",
     path: ROUTES.BLOG,
   },
-  {
-    title: "Plans",
-    path: ROUTES.USER.PLAN,
-  },
 ];
 
 export const userNavbarList = [

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import { Box } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
   title: "Nvidia",
@@ -17,7 +18,7 @@ export default function LandingLayout({
       <header>
         <Navbar />
       </header>
-      <div className="px-8">{children}</div>
+      <Box className="px-4 md:px-6 lg:px-8">{children}</Box>
       <Footer />
     </>
   );

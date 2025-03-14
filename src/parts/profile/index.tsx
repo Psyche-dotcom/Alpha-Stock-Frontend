@@ -5,7 +5,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { UploadIcon } from "@/utils/icons";
-import { useUserSession } from "@/app/context/user-context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UpdateSchemaType, updateDetailsSchema } from "@/schemas";
 import {
@@ -22,9 +21,10 @@ import Storage from "@/utils/storage";
 import { capitalizeFirstLetter } from "@/utils";
 import { ApiResponse } from "@/types";
 import { showSuccessAlert } from "@/utils/alert";
+import { useAdminSession } from "@/app/context/admin-context";
 
 const Profile: React.FC = async () => {
-  const { profileData } = useUserSession();
+  const { profileData } = useAdminSession();
   const role = (await Storage.get("role"))?.toLowerCase();
   const { updateProfileIsLoading, updateProfilePayload } = useUpdateProfile(
     (res: ApiResponse) => {

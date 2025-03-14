@@ -23,9 +23,9 @@ import { capitalizeFirstLetter } from "@/utils";
 import { ApiResponse } from "@/types";
 import { showSuccessAlert } from "@/utils/alert";
 
-const Profile: React.FC = () => {
+const Profile: React.FC = async () => {
   const { profileData } = useUserSession();
-  const role = Storage.get("role").toLowerCase();
+  const role = (await Storage.get("role"))?.toLowerCase();
   const { updateProfileIsLoading, updateProfilePayload } = useUpdateProfile(
     (res: ApiResponse) => {
       showSuccessAlert(res?.result);
@@ -116,7 +116,7 @@ const Profile: React.FC = () => {
             color="#6B7280"
             textAlign="center"
           >
-            Platform {capitalizeFirstLetter(role)}
+            Platform {capitalizeFirstLetter(role || "")}
           </Text>
         )}
         <Form {...form}>

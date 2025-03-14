@@ -4,13 +4,13 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useUserSessionData } from "../sessions";
 
-interface UserSessionContextType {
+interface AdminSessionContextType {
   profileData: any;
   profileError: any;
   isProfileLoading: boolean;
 }
 
-const UserSessionContext = React.createContext<UserSessionContextType | null>(
+const AdminSessionContext = React.createContext<AdminSessionContextType | null>(
   null
 );
 
@@ -18,7 +18,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export function UserSessionProvider({ children }: Props) {
+export function AdminSessionProvider({ children }: Props) {
   const router = useRouter();
 
   const { profileData, isProfileLoading, profileError } = useUserSessionData();
@@ -40,22 +40,22 @@ export function UserSessionProvider({ children }: Props) {
   }
 
   return (
-    <UserSessionContext.Provider
+    <AdminSessionContext.Provider
       value={{ profileData, profileError, isProfileLoading }}
     >
       {children}
-    </UserSessionContext.Provider>
+    </AdminSessionContext.Provider>
   );
 }
 
-export function useUserSession() {
-  const userSessionContent = React.useContext(UserSessionContext);
+export function useAdminSession() {
+  const adminSessionContent = React.useContext(AdminSessionContext);
 
-  if (!userSessionContent) {
+  if (!adminSessionContent) {
     throw new Error(
-      "useUserSession has to be used within <UserSessionContext.Provider>"
+      "useAdminSession has to be used within <AdminSessionContext.Provider>"
     );
   }
 
-  return userSessionContent;
+  return adminSessionContent;
 }

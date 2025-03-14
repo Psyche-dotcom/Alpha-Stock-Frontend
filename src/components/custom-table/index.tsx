@@ -11,7 +11,6 @@ import {
 import { cn } from "@/lib/utils";
 import { DataItem, ITableProps } from "@/types";
 import { ReactNode } from "react";
-// import { Pagination } from "../pagination";
 
 type CellRenderer<T> = (item: T, column: keyof T) => ReactNode;
 
@@ -89,11 +88,6 @@ export function TableComponent<T extends DataItem>({
           </TableBody>
         </Table>
       </div>
-      {/* <Pagination
-        currentPage={currentPage}
-        onPageChange={onPageChange}
-        totalPages={totalPages}
-      /> */}
     </div>
   );
 }

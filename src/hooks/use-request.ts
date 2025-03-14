@@ -37,7 +37,6 @@ export function useRequest(): AxiosInstance {
     async (error) => {
       const originalRequest = error.config;
       const refreshToken = await Storage.get("token-refresh");
-      alert(originalRequest);
       console.log("Original Request:", originalRequest); // Check config object
       console.log("Refresh Token:", refreshToken); // Check if token exists
       console.log("Response Status:", error.response?.status); // Check response status

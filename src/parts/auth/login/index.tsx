@@ -20,11 +20,12 @@ const Login: React.FC = () => {
   const { handlePush } = useHandlePush();
   const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
     if (res?.userRole[0].toLowerCase() === "user") {
-      setCookie("token", res?.jwt);
-      handlePush(ROUTES.USER.COMPANYINFO);
+
+      handlePush(ROUTES.USER.HOME);
+
       return;
     }
-    handlePush("/admin/user");
+    handlePush("/admin/users");
   });
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),

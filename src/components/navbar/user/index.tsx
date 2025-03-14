@@ -49,7 +49,7 @@ const UserNavbar = () => {
   return (
     <div className="bg-white px-4 rounded-[12px] mb-8 sticky py-[18.5px] z-10">
       <div className="flex items-center justify-between lg:gap-[36px] xl:gap-[96px]">
-        <Link href={"/"} passHref>
+        <Link href={ROUTES.USER.HOME} passHref>
           <CompanyIcon />
         </Link>
         <div className="lg:hidden" onClick={() => setShowNavbar(!showNavbar)}>

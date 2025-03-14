@@ -12,6 +12,7 @@ export interface DataItem {
   [key: string]: CellValue;
   id?: string | number;
   route?: string;
+  isLoading?: boolean;
 }
 
 export interface ITableProps<T extends DataItem> {
@@ -36,13 +37,18 @@ export interface MarketMove extends DataItem {
   changePercentProgress: boolean;
 }
 export interface UserData extends DataItem {
-  id: number;
-  username: string;
-  fullname: string;
-  status: string;
-  country?: string;
-  subscription?: string;
-  date_registered: string;
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  activeSubcriptionName?: string;
+  profilePicture?: string;
+  isEmailConfirmed: boolean;
+  email: string;
+  phoneNumber: string;
+  userName: string;
+  isSuspendUser: boolean;
+  isSubActive: boolean;
+  created: string;
 }
 
 export interface StockData extends DataItem {
@@ -67,4 +73,32 @@ export interface IPaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+}
+
+export interface ISubscription {
+  amount: number;
+  billingInterval?: string;
+  created?: string;
+  dateUpdated?: string | null;
+  discountRate?: number;
+  id: string;
+  isDiscounted?: boolean;
+  isDeleted?: boolean;
+  name: string;
+  payments?: any;
+  subscriptionFeatures?: any;
+  subscriptionsUser?: any;
+}
+
+export interface SubscriptionFeature extends DataItem {
+  id: string;
+  featureName?: string;
+  shortName?: string;
+  category: string;
+  subscriptionId: string;
+  subscription?: any | null;
+  currentState: string;
+  created: string;
+  dateUpdated?: string | null;
+  isDeleted: boolean;
 }

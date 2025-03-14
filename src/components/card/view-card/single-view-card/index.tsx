@@ -4,13 +4,12 @@ import { IViewCard } from "@/interface/card-view";
 import { formatDate } from "@/utils";
 import { Box, Text } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
 interface IViewProps {
   card: IViewCard;
+  isAuth?: boolean;
 }
 
-const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
-  const { profileData } = useUserSession();
+const SingleViewCard: React.FC<IViewProps> = ({ card, isAuth = false }) => {
   const { handlePush } = useHandlePush();
   return (
     <Box
@@ -24,11 +23,7 @@ const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
       bgRepeat="no-repeat"
       flex={1}
       onClick={() =>
-        handlePush(
-          profileData && profileData?.result?.id
-            ? `/user/blog/${card?.id}`
-            : `/blog/${card?.id}`
-        )
+        handlePush(isAuth ? `/user/blog/${card?.id}` : `/blog/${card?.id}`)
       }
     >
       <Box

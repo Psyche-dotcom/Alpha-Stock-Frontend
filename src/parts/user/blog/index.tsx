@@ -63,7 +63,7 @@ const Blog = () => {
         {getBlogsIsLoading ? (
           <SingleCardSkeleton />
         ) : (
-          <SingleViewCard card={firstBlog} />
+          <SingleViewCard card={firstBlog} isAuth={true} />
         )}
 
         <Flex

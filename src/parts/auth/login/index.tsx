@@ -15,12 +15,14 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { useLogin } from "@/services/auth";
 import { useHandlePush } from "@/hooks/handlePush";
-
+import { setCookie } from "cookies-next";
 const Login: React.FC = () => {
   const { handlePush } = useHandlePush();
   const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
     if (res?.userRole[0].toLowerCase() === "user") {
+
       handlePush(ROUTES.USER.HOME);
+
       return;
     }
     handlePush("/admin/users");

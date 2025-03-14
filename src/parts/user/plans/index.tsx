@@ -1,5 +1,6 @@
 "use client";
 
+
 import PlanCard from "@/components/card/plan-card";
 import { planList } from "@/constants";
 import { Box, Flex } from "@chakra-ui/react";

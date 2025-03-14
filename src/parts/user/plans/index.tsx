@@ -12,6 +12,7 @@ const Plans = () => {
     useGetAllSubPlan({
       enabled: true,
     });
+
   return (
     <Box mt={8}>
       {isPlanLoading ? (

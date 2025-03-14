@@ -4,63 +4,50 @@ import { TableComponent } from "@/components/custom-table";
 import { Button } from "@/components/ui/button";
 import { marketMoveFilterList } from "@/constants";
 import { IButtonFilter } from "@/interface/button-filter";
+import { IStock, IStockData } from "@/interface/stock-view";
 import { MarketMove } from "@/types";
 import { ShineIcon } from "@/utils/icons";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const MarketMoveContent = () => {
-  const [marketFilter, setMarketFilter] = useState<string>("search");
+  const [marketFilter, setMarketFilter] = useState<string>("MostTraded");
+  const [stockNewData, setNewStockData] = useState<MarketMove[]>([]);
+  useEffect(() => {
+    const eventSource = new EventSource(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/stock/stream/market_performance?leaderType=${marketFilter}`
+    );
 
-  const dataSources: MarketMove[] = [
-    {
-      id: 1,
-      url: "/assets/images/card-image.png",
-      agent: "GFAI",
-      price: 1.27,
+    eventSource.onmessage = (event) => {
+      const stockPrice = event;
+      const parsedData: any = JSON.parse(stockPrice.data);
+      const parsedCompleteData: IStockData[] = JSON.parse(parsedData);
+      console.log("Parsed Data", parsedCompleteData);
+      const transformedData: MarketMove[] = parsedCompleteData
+        .slice(0, 5)
+        .map((stock: any) => ({
+          id: stock.symbol,
+          url: "/assets/images/card-image.png",
+          agent: stock.symbol,
+          price: stock.price.toFixed(2),
+          changeValue: stock.change,
+          changeProgress: stock.change > 0,
+          changePercent: stock.changesPercentage,
+          changePercentProgress: stock.change > 0,
+        }));
 
-      changeValue: 0.17,
-      changeProgress: true,
-      changePercent: 0.32,
-      changePercentProgress: false,
-    },
-    {
-      id: 2,
-      url: "/assets/images/card-image.png",
-      agent: "ASML",
-      price: 386.46,
+      setNewStockData(transformedData);
+    };
 
-      changeValue: 0.17,
-      changeProgress: false,
+    eventSource.onerror = (err) => {
+      console.error("EventSource failed:", err);
+      eventSource.close();
+    };
 
-      changePercent: 0.32,
-      changePercentProgress: true,
-    },
-    {
-      id: 3,
-      url: "/assets/images/card-image.png",
-      agent: "NVDIA",
-      price: 1.45,
-
-      changeValue: 0.17,
-      changeProgress: true,
-
-      changePercent: 0.32,
-      changePercentProgress: true,
-    },
-    {
-      id: 4,
-      url: "/assets/images/card-image.png",
-      agent: "LMPG",
-      price: 547.98,
-
-      changeValue: 0.17,
-      changeProgress: true,
-
-      changePercent: 0.01,
-      changePercentProgress: true,
-    },
-  ];
+    return () => {
+      eventSource.close();
+    };
+  }, [marketFilter]);
 
   const cellRenderers = {
     symbol: (record: MarketMove) => (
@@ -141,7 +128,7 @@ const MarketMoveContent = () => {
         </div>
       </div>
       <TableComponent<MarketMove>
-        tableData={dataSources}
+        tableData={stockNewData}
         cellRenderers={cellRenderers}
         columnOrder={columnOrder}
         columnLabels={columnLabels}

@@ -5,3 +5,11 @@ export interface IStock {
   percent: number;
   isProgressive: boolean;
 }
+export interface IStockData {
+  symbol: string;
+  price: number;
+  name: string;
+  change: number;
+  changesPercentage: number;
+  exchange: string;
+}

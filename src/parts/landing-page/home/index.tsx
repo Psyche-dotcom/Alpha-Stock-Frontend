@@ -5,7 +5,7 @@ import StockCard from "@/components/card/stock-card";
 import ViewCard from "@/components/card/view-card";
 import { marketList, stockList } from "@/constants";
 import { IViewCard } from "@/interface/card-view";
-import { IStock } from "@/interface/stock-view";
+import { IStock, IStockData } from "@/interface/stock-view";
 import MarketMoveContent from "../market-move";
 import TradeDecision from "../trade-decision";
 import Navbar from "@/components/navbar";
@@ -16,8 +16,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useAboutMarket, useTrendingAnalysis } from "@/services/blog";
 import SkeletonViewCard from "@/components/card/skeleton/view";
+import StockCardSkeleton from "@/components/card/skeleton/StockCardSkeleton";
 
 const Home = () => {
+  const [stockData, setStockData] = useState<IStock[]>([]);
   const {
     trendPayload,
     getTrendingData,
@@ -35,7 +37,7 @@ const Home = () => {
   useEffect(() => {
     const payload = {
       pageNumber: 1,
-      perPageSize: 5,
+      perPageSize: 4,
       category: "TS",
       status: "Published",
       userId: "",
@@ -44,7 +46,7 @@ const Home = () => {
     };
     const aboutPayload = {
       pageNumber: 1,
-      perPageSize: 5,
+      perPageSize: 4,
       category: "LM",
       status: "Published",
       userId: "",
@@ -58,12 +60,25 @@ const Home = () => {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      "https://alphastock.onrender.com/api/stock/stream/market_performance?leaderType=MostTraded"
+      `${process.env.NEXT_PUBLIC_API_URL}/api/stock/stream/market_performance?leaderType=MostTraded`
     );
 
     eventSource.onmessage = (event) => {
       const stockPrice = event;
-      console.log("Stock Price event:", stockPrice);
+      const parsedData: any = JSON.parse(stockPrice.data);
+      const parsedCompleteData: IStockData[] = JSON.parse(parsedData);
+      console.log("Parsed Data", parsedCompleteData);
+      const transformedData: IStock[] = parsedCompleteData
+        .slice(0, 4)
+        .map((stock: any) => ({
+          title: stock.symbol,
+          total: stock.price.toFixed(2),
+          value: stock.change,
+          percent: stock.changesPercentage,
+          isProgressive: stock.change > 0,
+        }));
+
+      setStockData(transformedData);
     };
 
     eventSource.onerror = (err) => {
@@ -75,7 +90,7 @@ const Home = () => {
       eventSource.close();
     };
   }, []);
-
+  console.log("first", stockData);
   return (
     <div>
       <header>
@@ -128,11 +143,17 @@ const Home = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
-        {stockList.map((stock: IStock, index: number) => (
-          <div key={index}>
-            <StockCard stock={stock} />
-          </div>
-        ))}
+        {stockData.length == 0
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <div key={index}>
+                <StockCardSkeleton />
+              </div>
+            ))
+          : stockData?.map((stock, index) => (
+              <div key={index}>
+                <StockCard stock={stock} />
+              </div>
+            ))}
       </div>
       <div className="mb-[64px]">
         <HeaderCard text="Trending Analysis" href="#" />

@@ -51,6 +51,7 @@ const Blog = () => {
   const onPageChange = (page: number) => {
     setPageNumber(page);
   };
+
   return (
     <Box mt={8}>
       <Flex

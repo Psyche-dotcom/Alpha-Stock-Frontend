@@ -28,8 +28,6 @@ const User: React.FC = () => {
     getBlogsPayload(payload);
   }, [profileData?.results?.id]);
 
-  console.log(getBlogsData);
-
   return (
     <div className="xl:flex gap-4 h-full">
       <div className="flex-1">

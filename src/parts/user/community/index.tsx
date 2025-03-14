@@ -1,3 +1,5 @@
+"use client";
+
 import { Box } from "@chakra-ui/react";
 import CommunityLeftContent from "./left-content";
 import CommunityMain from "./main";

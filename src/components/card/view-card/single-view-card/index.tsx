@@ -1,12 +1,17 @@
+import { useUserSession } from "@/app/context/user-context";
+import { useHandlePush } from "@/hooks/handlePush";
 import { IViewCard } from "@/interface/card-view";
 import { formatDate } from "@/utils";
 import { Box, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import Link from "next/link";
 interface IViewProps {
   card: IViewCard;
 }
 
 const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
+  const { profileData } = useUserSession();
+  const { handlePush } = useHandlePush();
   return (
     <Box
       borderRadius="12px"
@@ -18,6 +23,13 @@ const SingleViewCard: React.FC<IViewProps> = ({ card }) => {
       bgPosition="center"
       bgRepeat="no-repeat"
       flex={1}
+      onClick={() =>
+        handlePush(
+          profileData && profileData?.result?.id
+            ? `/user/blog/${card?.id}`
+            : `/blog/${card?.id}`
+        )
+      }
     >
       <Box
         borderRadius={12}

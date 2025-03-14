@@ -19,6 +19,7 @@ export const ROUTES = {
     STOCKANALYSERS: "/user/stock-analyzer",
     PROFILE: "/user/profile",
     PLANS: "/user/plans",
+    BLOGS: "/user/blog",
   },
   ADMIN: {
     USERS: "/admin/users",

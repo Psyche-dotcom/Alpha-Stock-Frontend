@@ -23,6 +23,9 @@ const nextConfig = {
       {
         hostname: "moneyexcel.com",
       },
+      {
+        hostname: "images.financialmodelingprep.com",
+      },
     ],
   },
 };

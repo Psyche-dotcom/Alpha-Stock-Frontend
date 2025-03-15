@@ -310,12 +310,14 @@ export const CompanyAnalysisList = [
     count: "+16.20",
     isProgressive: true,
     value: 6.2,
+    isOpen: false,
   },
   {
     id: 2,
     count: "+16.20",
     isProgressive: false,
     value: 4.2,
+    isOpen: true,
   },
 ];
 

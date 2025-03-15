@@ -21,18 +21,18 @@ const Company: React.FC<iProps> = ({ symbol }) => {
   const renderItem = () => {
     switch (activeTab) {
       case "company-info":
-        return <CompanyInfo />;
+        return <CompanyInfo symbol={symbol} />;
       case "metrics":
         return <Metrics />;
       case "financials":
-        return <Financials />;
+        return <Financials symbol={symbol} />;
       case "fundamentals":
         return <Fundamentals />;
       case "stock-analyser":
         return <Analyzer />;
 
       default:
-        return <CompanyInfo />;
+        return <CompanyInfo symbol={symbol} />;
     }
   };
 

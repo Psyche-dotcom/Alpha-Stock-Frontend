@@ -10,7 +10,6 @@ const CompanyStockCard: React.FC<ICompanyStockProp> = ({ company }) => {
     <Box border="1px solid #C2BAB2" px={4} py={2} borderRadius="12px">
       <Box display="flex" justifyContent={"space-between"}>
         <Box className="flex items-center gap-[10px] mb-2.5">
-          <MetaIcon />
           <h2 className="text-[20px] font-bold text-[#111928]">
             {company?.name}
           </h2>
@@ -29,7 +28,7 @@ const CompanyStockCard: React.FC<ICompanyStockProp> = ({ company }) => {
         alignItems={"center"}
       >
         <Text color={company?.isProgressive ? "#0E9F6E" : "#E74694"}>
-          %{company?.value}
+          {company?.value}%
         </Text>
         <Box>
           {company?.isProgressive ? <StockRiseIcon /> : <StockFallIcon />}

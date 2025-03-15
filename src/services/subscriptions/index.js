@@ -5,23 +5,6 @@ import httpService from "../httpService";
 import useFetchItem from "../useFetchItem";
 import useMutateItem from "../useMutateItem";
 
-export const useGetSubscriptions = ({ enabled = false }) => {
-  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
-    queryKey: ["fetchSubscriptions"],
-    queryFn: () => httpService.getData(routes.getSubscriptions()),
-    enabled,
-    retry: 1,
-  });
-
-  return {
-    getSubscriptionsIsLoading: isLoading,
-    getSubscriptionsData: data?.data?.result || [],
-    getSubscriptionsFilter: filter,
-    getSubscriptionsError: ErrorHandler(error),
-    refetchSubscriptions: refetch,
-    setSubscriptionsFilter: setFilter,
-  };
-};
 export const useConfirmSubscriptionsPayment = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
     queryKey: ["confirmSubscriptions"],
@@ -38,6 +21,23 @@ export const useConfirmSubscriptionsPayment = ({ enabled = false }) => {
     confirmSubscriptionsError: ErrorHandler(error),
     refetchConfirmSubscriptions: refetch,
     setConfirmSubscriptionsFilter: setFilter,
+  };
+};
+export const useGetSubscriptions = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["fetchSubscriptions"],
+    queryFn: () => httpService.getData(routes.getSubscriptions()),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getSubscriptionsIsLoading: isLoading,
+    getSubscriptionsData: data?.data?.result || [],
+    getSubscriptionsFilter: filter,
+    getSubscriptionsError: ErrorHandler(error),
+    refetchSubscriptions: refetch,
+    setSubscriptionsFilter: setFilter,
   };
 };
 

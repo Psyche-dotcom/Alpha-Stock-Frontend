@@ -4,6 +4,8 @@ import { ButtonIcon } from "@/components/button/button-icon";
 import { TableComponent } from "@/components/custom-table";
 import { marketMoveFilterList } from "@/constants";
 import { IButtonFilter } from "@/interface/button-filter";
+import { IStockComponent } from "@/interface/stock";
+import { useGetIncomeStatement } from "@/services/stock";
 import { DataItem } from "@/types";
 import { ShineIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -20,9 +22,16 @@ interface DataType extends DataItem {
   title: string;
 }
 
-const Financials = () => {
+const Financials: React.FC<IStockComponent> = ({ symbol }) => {
+  const {
+    getIncomeStatementData,
+    getIncomeStatementFilter,
+    getIncomeStatementIsLoading,
+    setGetIncomeStatementFilter,
+    getIncomeStatementError,
+  } = useGetIncomeStatement({ enabled: true });
   const [btnFilter, setBtnFilter] = useState<string>("income-statements");
-
+  const [incomeStatementData, setincomeStatementData] = useState<any>([]);
   const dataSources = [
     {
       id: 1,

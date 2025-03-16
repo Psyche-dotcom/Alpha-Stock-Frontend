@@ -6,6 +6,7 @@ import DeleteContent from "@/components/delete-content";
 import { DateFilter } from "@/components/filter/date-filter";
 import { InputFilter } from "@/components/filter/input-filter";
 import SuspendContent from "@/components/suspend-content";
+import TableSkeleton from "@/components/table-skeleton";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Pagination } from "@/components/ui/pagination";
@@ -242,19 +243,25 @@ const Users = () => {
         />
         <DateFilter date={date} setDate={setDate} />
       </div>
-      <TableComponent<UserData>
-        tableData={getUsersData?.user || []}
-        cellRenderers={cellRenderers}
-        columnOrder={columnOrder}
-        columnLabels={columnLabels}
-      />
-      <div>
-        <Pagination
-          currentPage={pageSize}
-          totalPages={getUsersData?.totalPages || 0}
-          onPageChange={onPageChange}
-        />
-      </div>
+      {getUsersIsLoading ? (
+        <TableSkeleton />
+      ) : (
+        <>
+          <TableComponent<UserData>
+            tableData={getUsersData?.user || []}
+            cellRenderers={cellRenderers}
+            columnOrder={columnOrder}
+            columnLabels={columnLabels}
+          />
+          <div>
+            <Pagination
+              currentPage={pageSize}
+              totalPages={getUsersData?.totalPages || 0}
+              onPageChange={onPageChange}
+            />
+          </div>
+        </>
+      )}
       <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
         <DialogContent
           className={`${

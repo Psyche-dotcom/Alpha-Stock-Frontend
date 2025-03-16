@@ -9,6 +9,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import EditPreference from "./edit-preference";
 import DeleteContent from "@/components/delete-content";
 interface iProp {}
+
 const Watchlist: React.FC<iProp> = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [option, setOption] = useState<string>("edit");
@@ -29,6 +30,7 @@ const Watchlist: React.FC<iProp> = () => {
         return <EditPreference />;
     }
   };
+
   return (
     <Box>
       <Grid

@@ -14,6 +14,8 @@ import {
 } from "@/services/subscriptions";
 import { ISubscription } from "@/types";
 import EditStockPlan from "./edit-stock";
+import TableSkeleton from "@/components/table-skeleton";
+import PlanSkeleton from "@/components/card/skeleton/plan";
 
 const StockPlans = () => {
   const [selectOption, setSelectOption] = useState<string>("view");
@@ -106,20 +108,30 @@ const StockPlans = () => {
         <div className="mt-10">
           <Box>
             <Grid gap={3} gridTemplateColumns={"repeat(4, 1fr)"}>
-              {getSubscriptionsData?.map(
-                (plan: ISubscription, index: number) => (
-                  <GridItem
-                    key={index}
-                    className="w-full"
-                    onClick={() => setSelectedPlan(plan || null)}
-                  >
-                    <PlanCard
-                      plan={plan}
-                      selectedId={selectedId}
-                      setSelectedId={setSelectedId}
-                    />
-                  </GridItem>
-                )
+              {getSubscriptionsIsLoading ? (
+                <>
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <PlanSkeleton />
+                  ))}
+                </>
+              ) : (
+                <>
+                  {getSubscriptionsData?.map(
+                    (plan: ISubscription, index: number) => (
+                      <GridItem
+                        key={index}
+                        className="w-full"
+                        onClick={() => setSelectedPlan(plan || null)}
+                      >
+                        <PlanCard
+                          plan={plan}
+                          selectedId={selectedId}
+                          setSelectedId={setSelectedId}
+                        />
+                      </GridItem>
+                    )
+                  )}
+                </>
               )}
             </Grid>
             {selectedId && (
@@ -143,17 +155,23 @@ const StockPlans = () => {
                 />
               </div>
             )}
-            {getSubscriptionData?.subscriptionFeatures && (
-              <div>
-                {Object.keys(groupedByCategory).map((category) => (
-                  <AdminStockAnalyser
-                    key={category}
-                    selectOption={selectOption}
-                    title={category}
-                    datas={groupedByCategory[category]}
-                  />
-                ))}
-              </div>
+            {getSubscriptionIsLoading ? (
+              <TableSkeleton />
+            ) : (
+              <>
+                {getSubscriptionData?.subscriptionFeatures && (
+                  <div>
+                    {Object.keys(groupedByCategory).map((category) => (
+                      <AdminStockAnalyser
+                        key={category}
+                        selectOption={selectOption}
+                        title={category}
+                        datas={groupedByCategory[category]}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </Box>
         </div>

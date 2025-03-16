@@ -23,6 +23,15 @@ export const routes = {
   getSubscription: (id) => `/api/subscription/info/${id}`,
   confirmSubscription: (token) =>
     `/api/payment/webhook/confirm-payment?token=${token}`,
+  getStockInfo: (symbol) => `/api/stock/info/profile?symbol=${symbol}`,
+  getStockInfoEod: (symbol, startdate, endDate) =>
+    `/api/stock/historical/eod?symbol=${symbol}&startDate=${startdate}&endDate=${endDate}`,
+  getStockIncomeStatementUrl: (symbol, period) =>
+    `/api/stock/income-statement?symbol=${symbol}&period=${period}`,
+  balanceSheetUrl: (symbol, period) =>
+    `/api/stock/balance-sheet?symbol=${symbol}&period=${period}`,
+  cashFlowUrl: (symbol, period) =>
+    `/api/stock/cash-flow?symbol=${symbol}&period=${period}`,
   createSubscription: () => `/api/subscription/create`,
   editSubscription: () => `/api/subscription/update`,
   addBlogComment: () => `/api/blog/comment/add`,

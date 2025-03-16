@@ -134,13 +134,13 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
             <>
               <CompanyAnalysisCard
                 count={getStockInfoEodData[1]?.close}
-                isProgressive={getStockInfoEodData[1].change > 0}
+                isProgressive={getStockInfoEodData[1]?.change > 0}
                 value={getStockInfoEodData[1]?.changePercent.toFixed(2)}
                 isOpen={true}
               />
               <CompanyAnalysisCard
                 count={getStockInfoEodData[0]?.close}
-                isProgressive={getStockInfoEodData[0].change > 0}
+                isProgressive={getStockInfoEodData[0]?.change > 0}
                 value={getStockInfoEodData[0]?.changePercent.toFixed(2)}
                 isOpen={false}
               />

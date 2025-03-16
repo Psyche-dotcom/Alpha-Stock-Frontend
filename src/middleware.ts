@@ -9,7 +9,7 @@ export function middleware(req: NextRequest, event: NextFetchEvent) {
   const { pathname } = req.nextUrl;
   const response = NextResponse.next();
 
-  const role = req.cookies.get("role")?.value?.toLowerCase(); // Ensure lowercase comparison
+  const role = req.cookies.get("role")?.value?.toLowerCase();
   const isLoggedIn = req.cookies.get("token")?.value;
 
   if (pathname.startsWith("/admin")) {

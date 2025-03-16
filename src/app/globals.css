@@ -53,3 +53,23 @@
     transform: rotate(360deg);
   }
 }
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-input {
+  border: 1px solid #e5e7eb;
+  background: #f8f8f9;
+  padding: 8px 12px;
+}
+
+.custom-input:focus {
+  border: 1px solid #e5e7eb !important;
+  outline: none;
+}

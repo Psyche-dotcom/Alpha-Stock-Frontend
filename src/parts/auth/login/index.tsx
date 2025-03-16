@@ -21,12 +21,13 @@ const Login: React.FC = () => {
   const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
     setCookie("token", res?.jwt);
     if (res?.userRole[0].toLowerCase() === "user") {
-      handlePush(ROUTES.USER.HOME);
+      // handlePush(ROUTES.USER.HOME);
+      window.location.href = ROUTES.USER.HOME;
 
       return;
     }
-
-    handlePush("/admin/users");
+    window.location.href = "/admin/users";
+    // handlePush("/admin/users");
   });
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),

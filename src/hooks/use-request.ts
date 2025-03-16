@@ -4,7 +4,6 @@ import Storage from "@/utils/storage";
 /* eslint-disable style/quote-props */
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
-import { getCookie, setCookie } from "cookies-next";
 
 export type AxiosConfig = Partial<AxiosRequestConfig> & {
   url?: string;
@@ -16,7 +15,7 @@ export type AxiosConfig = Partial<AxiosRequestConfig> & {
 };
 
 export function useRequest(): AxiosInstance {
-  const token = getCookie("token");
+  const token = Storage.get("token");
 
   const request = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,

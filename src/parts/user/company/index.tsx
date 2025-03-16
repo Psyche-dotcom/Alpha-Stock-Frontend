@@ -38,7 +38,7 @@ const Company: React.FC<iProps> = ({ symbol }) => {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex mt-5">
         <div className="flex gap-2 mb-8 bg-white rounded-lg py-2 md:px-4 px-2">
           {searchTab.map((tab, index: number) => (
             <Button

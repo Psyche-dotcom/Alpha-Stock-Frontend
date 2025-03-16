@@ -10,9 +10,10 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { CheckCircleIcon, MessageCircleWarningIcon } from "lucide-react";
 import { useConfirmSubscriptionsPayment } from "@/services/subscriptions";
+import { useHandlePush } from "@/hooks/handlePush";
 
 const ConfirmPaymentPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -21,7 +22,7 @@ const ConfirmPaymentPage: React.FC = () => {
   const [status, setStatus] = useState<"loading" | "success" | "fail">(
     "loading"
   );
-  const router = useRouter();
+  const { handlePush } = useHandlePush();
   const {
     confirmSubscriptionsData,
     confirmSubscriptionsFilter,
@@ -37,7 +38,6 @@ const ConfirmPaymentPage: React.FC = () => {
   }, []);
   useEffect(() => {
     if (confirmSubscriptionsData) {
-      console.log("response", confirmSubscriptionsData);
       if (confirmSubscriptionsData.statusCode == 200) {
         setStatus("success");
       }
@@ -47,7 +47,7 @@ const ConfirmPaymentPage: React.FC = () => {
   }, [confirmSubscriptionsData]);
 
   const handleBackToDashboard = () => {
-    router.push("/user");
+    handlePush("/user");
   };
 
   return (

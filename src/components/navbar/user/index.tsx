@@ -29,22 +29,12 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useUserSession } from "@/app/context/user-context";
 import { useHandlePush } from "@/hooks/handlePush";
+import SearchDropdown from "@/components/search-dropdown";
 
 const UserNavbar = () => {
   const { profileData } = useUserSession();
   const { handlePush } = useHandlePush();
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
-  const form = useForm<SearchSchemaType>({
-    resolver: zodResolver(searchSchema),
-    defaultValues: {
-      search: "",
-    },
-  });
-
-  async function onSubmit(values: SearchSchemaType) {
-    console.warn(values);
-  }
 
   return (
     <div className="bg-white px-4 rounded-[12px] mb-8 sticky py-[18.5px] z-10">
@@ -65,23 +55,7 @@ const UserNavbar = () => {
           </div>
           <div className="flex-end flex items-center gap-8">
             <div className="flex gap-2.5 flex-1">
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="flex gap-2.5 w-full"
-                >
-                  <InputForm
-                    form={form}
-                    name="search"
-                    className="h-10 w-full"
-                  />
-                  <Button
-                    icon={<SearchIcon color="#fff" />}
-                    size={"xl"}
-                    className="flex items-center p-3 rounded-lg"
-                  />
-                </form>
-              </Form>
+              <SearchDropdown isAuth={true} />
             </div>
 
             <Menu>
@@ -134,19 +108,7 @@ const UserNavbar = () => {
             ))}
           </div>
 
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex gap-2.5 w-full mt-3"
-            >
-              <InputForm form={form} name="search" className="h-10 w-full" />
-              <Button
-                icon={<SearchIcon color="#fff" />}
-                variant={"secondary"}
-                className="flex items-center p-3"
-              />
-            </form>
-          </Form>
+          <SearchDropdown />
         </div>
       )}
     </div>

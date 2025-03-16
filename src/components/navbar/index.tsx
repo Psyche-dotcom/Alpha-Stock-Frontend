@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { SearchSchemaType, searchSchema } from "@/schemas";
 import { Form } from "../ui/form";
 import InputForm from "../form/InputForm";
+import SearchDropdown from "../search-dropdown";
 
 const Navbar = () => {
   const form = useForm<SearchSchemaType>({
@@ -20,9 +21,6 @@ const Navbar = () => {
     },
   });
 
-  async function onSubmit(values: SearchSchemaType) {
-    console.warn(values);
-  }
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   return (
     <div className="bg-white py-[18.5px] px-4">
@@ -39,24 +37,7 @@ const Navbar = () => {
             ))}
           </div>
           <div className="flex lg:gap-[32px] xl:gap-[64px] flex-1">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex gap-2.5 w-full"
-              >
-                <InputForm
-                  form={form}
-                  name="search"
-                  className="h-10 w-full"
-                  type="search"
-                />
-                <Button
-                  icon={<SearchIcon color="#fff" />}
-                  variant={"secondary"}
-                  className="flex items-center p-3"
-                />
-              </form>
-            </Form>
+            <SearchDropdown />
 
             <div>
               <div className="gap-4 items-center flex">
@@ -95,18 +76,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex gap-2.5 mb-3">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex gap-2.5 w-full"
-              >
-                <InputForm form={form} name="search" className="h-10 w-full" />
-                <Button
-                  icon={<SearchIcon color="#fff" />}
-                  className="flex items-center p-3"
-                />
-              </form>
-            </Form>
+            <SearchDropdown />
           </div>
           <div className="gap-3 flex-col flex">
             <Button

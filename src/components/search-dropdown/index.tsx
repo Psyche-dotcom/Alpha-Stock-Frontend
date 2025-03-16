@@ -1,6 +1,5 @@
 "use client";
 
-import { useHandlePush } from "@/hooks/handlePush";
 import { useEffect, useRef, useState } from "react";
 import { Spinner } from "@chakra-ui/react";
 import Link from "next/link";
@@ -50,8 +49,6 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
     setSearchQuery("");
     setShowDropdown(false);
   };
-
-  console.log(companiesData);
 
   useEffect(() => {
     if (companiesData && searchQuery.length > 1) {

@@ -62,11 +62,9 @@ const UserNavbar = () => {
               <MenuButton
                 px={2}
                 py={1}
-                // rightIcon={<ArrowDownIcon />}
                 border="1px solid #D1D5DB"
                 borderRadius={"6px"}
               >
-                {/* Avatar display on button */}
                 <Flex gap="4px" alignItems="center">
                   <div className="w-[30px] h-[30px] rounded-full">
                     <Image
@@ -108,7 +106,7 @@ const UserNavbar = () => {
             ))}
           </div>
 
-          <SearchDropdown />
+          <SearchDropdown isAuth={true} />
         </div>
       )}
     </div>

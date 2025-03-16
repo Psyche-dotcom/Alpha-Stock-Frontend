@@ -9,8 +9,6 @@ import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SearchSchemaType, searchSchema } from "@/schemas";
-import { Form } from "../ui/form";
-import InputForm from "../form/InputForm";
 import SearchDropdown from "../search-dropdown";
 
 const Navbar = () => {

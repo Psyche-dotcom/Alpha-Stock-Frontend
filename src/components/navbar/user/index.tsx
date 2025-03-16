@@ -45,15 +45,15 @@ const UserNavbar = () => {
         <div className="lg:hidden" onClick={() => setShowNavbar(!showNavbar)}>
           <BurgerIcon />
         </div>
-        <div className="flex-1 flex justify-between  lg:flex hidden  lg:flex hidden">
-          <div className="justify-between items-center gap-2 me-auto flex">
+        <div className="flex-1 flex justify-between  lg:flex hidden gap-5 lg:flex hidden">
+          <div className="justify-between items-center gap-2 flex">
             {userNavbarList.map((nav, index) => (
               <Link href={nav.path} key={index} passHref>
                 <div className="text-sm p-1 font-medium">{nav.title}</div>
               </Link>
             ))}
           </div>
-          <div className="flex-end flex items-center gap-8">
+          <div className="flex-end flex items-center gap-8 flex-1">
             <div className="flex gap-2.5 flex-1">
               <SearchDropdown isAuth={true} />
             </div>

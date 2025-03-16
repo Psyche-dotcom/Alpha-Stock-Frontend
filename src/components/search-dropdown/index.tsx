@@ -101,8 +101,8 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
                                 <Link
                                   href={
                                     isAuth
-                                      ? `/user/company/${result.symbol}`
-                                      : `/company/${result.symbol}`
+                                      ? `/user/company/${result.symbol}?tab=company-info`
+                                      : `/company/${result.symbol}?tab=company-info`
                                   }
                                   passHref
                                 >

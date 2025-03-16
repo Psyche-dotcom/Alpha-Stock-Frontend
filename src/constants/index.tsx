@@ -264,7 +264,6 @@ export const sidebarList: ISidebar[] = [
     path: ROUTES.ADMIN.FORUM,
     icon: <MessageIcon />,
   },
-
   {
     title: "Reports",
     path: ROUTES.ADMIN.REPORTSANDFEEDBACKS,

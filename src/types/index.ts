@@ -8,6 +8,7 @@ export type CellValue =
   | null
   | undefined
   | ReactNode;
+
 export interface DataItem {
   [key: string]: CellValue;
   id?: string | number;
@@ -36,6 +37,7 @@ export interface MarketMove extends DataItem {
   changePercent: number;
   changePercentProgress: boolean;
 }
+
 export interface UserData extends DataItem {
   id: string;
   firstName?: string;
@@ -101,4 +103,29 @@ export interface SubscriptionFeature extends DataItem {
   created: string;
   dateUpdated?: string | null;
   isDeleted: boolean;
+}
+
+export interface PaymentData extends DataItem {
+  invoice: string;
+  duration: string;
+  paymentStatus: string;
+  downloadInvoice: string;
+  paymentId: string;
+  amount?: string | number;
+  subscriptionTypeName?: string;
+  paymentType?: string;
+  completePaymentTime?: string;
+}
+
+export interface BlogData extends DataItem {
+  blogThumbnailUrl: string;
+  category: string;
+  id: string;
+  likeCount: number;
+  publishedDate: string;
+  publisherImgUrl: string;
+  publisherName: string;
+  publisherUsername: string;
+  status: string;
+  title: string;
 }

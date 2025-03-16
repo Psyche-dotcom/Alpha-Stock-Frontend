@@ -12,3 +12,22 @@ export function formatDate(utcDate: string): string {
 
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }
+
+export const formatDateTime = (dateString: string): string => {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return "Invalid Date";
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "long", // "Monday"
+    year: "numeric", // "2025"
+    month: "long", // "August"
+    day: "numeric", // "31"
+    hour: "2-digit", // "01"
+    minute: "2-digit", // "45"
+    second: "2-digit", // "30"
+    hour12: true, // AM/PM format
+  }).format(date);
+};

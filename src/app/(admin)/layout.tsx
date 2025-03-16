@@ -21,7 +21,7 @@ export default function AdminLayout({
           <Sidebar />
           <Box flex="1" display="flex" flexDirection="column" height="100%">
             <Navbar />
-            <Box flex="1" overflow="auto">
+            <Box flex="1" overflow="auto" className="pe-4 md:pe-6">
               {children}
             </Box>
           </Box>

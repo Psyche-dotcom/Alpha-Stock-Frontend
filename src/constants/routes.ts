@@ -20,6 +20,8 @@ export const ROUTES = {
     PROFILE: "/user/profile",
     PLANS: "/user/plans",
     BLOGS: "/user/blog",
+    SUBSCRIPTION: "/user/subscription",
+    WATCHLIST: "/user/watchlist",
   },
   ADMIN: {
     USERS: "/admin/users",

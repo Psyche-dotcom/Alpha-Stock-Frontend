@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { DataItem, ITableProps } from "@/types";
+import { Folder } from "lucide-react";
 import { ReactNode } from "react";
 
 type CellRenderer<T> = (item: T, column: keyof T) => ReactNode;
@@ -29,7 +30,20 @@ export function TableComponent<T extends DataItem>({
   columnOrder,
   columnLabels = {},
 }: EnhancedTableProps<T>) {
-  if (tableData.length === 0) return <div>No data available</div>;
+  if (tableData.length === 0)
+    return (
+      <div
+        className="flex items-center justify-center"
+        style={{ height: "50vh" }}
+      >
+        <div className="text-center">
+          <Folder size={60} className="mx-auto mb-4 text-gray-500" />
+          <div className="text-lg font-medium text-gray-600">
+            No data available
+          </div>
+        </div>
+      </div>
+    );
 
   const columns = columnOrder || (Object.keys(tableData[0]) as (keyof T)[]);
 

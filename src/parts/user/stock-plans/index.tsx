@@ -12,6 +12,7 @@ import {
   useGetSubscriptions,
 } from "@/services/subscriptions";
 import { ISubscription } from "@/types";
+import PlanSkeleton from "@/components/card/skeleton/plan";
 
 const Plans = () => {
   const [selectOption, setSelectOption] = useState<string>("view");
@@ -60,7 +61,6 @@ const Plans = () => {
     );
 
   const handleMakePayment = () => {
-    console.log(selectedId);
     const data = {
       Id: selectedId,
     };
@@ -72,20 +72,30 @@ const Plans = () => {
         <div className="mt-10">
           <Box>
             <Grid gap={3} gridTemplateColumns={"repeat(4, 1fr)"}>
-              {getSubscriptionsData?.map(
-                (plan: ISubscription, index: number) => (
-                  <GridItem
-                    key={index}
-                    className="w-full"
-                    onClick={() => setSelectedPlan(plan || null)}
-                  >
-                    <PlanCard
-                      plan={plan}
-                      selectedId={selectedId}
-                      setSelectedId={setSelectedId}
-                    />
-                  </GridItem>
-                )
+              {getSubscriptionsIsLoading ? (
+                <>
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <PlanSkeleton />
+                  ))}
+                </>
+              ) : (
+                <>
+                  {getSubscriptionsData?.map(
+                    (plan: ISubscription, index: number) => (
+                      <GridItem
+                        key={index}
+                        className="w-full"
+                        onClick={() => setSelectedPlan(plan || null)}
+                      >
+                        <PlanCard
+                          plan={plan}
+                          selectedId={selectedId}
+                          setSelectedId={setSelectedId}
+                        />
+                      </GridItem>
+                    )
+                  )}
+                </>
               )}
             </Grid>
             {selectedId && (

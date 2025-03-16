@@ -1,10 +1,20 @@
 "use client";
 
 import { LinkButton } from "@/components/button/link-button";
+import { TableComponent } from "@/components/custom-table";
+import { DateFilter } from "@/components/filter/date-filter";
+import { InputFilter } from "@/components/filter/input-filter";
+import TableSkeleton from "@/components/table-skeleton";
+import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/ui/pagination";
 import { ROUTES } from "@/constants/routes";
+import { useGetBlogs } from "@/services/blog";
+import { BlogData } from "@/types";
+import { formatDateTime } from "@/utils";
 import { ThreeDotsIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
+import { useEffect, useState } from "react";
 interface DataType {
   id: number;
   publisher: string;
@@ -15,136 +25,112 @@ interface DataType {
 }
 
 const BlogManager = () => {
-  const columns: ColumnsType<DataType> = [
-    {
-      title: (
-        <Text fontWeight={400} fontSize={14}>
-          PUBLISHERS
-        </Text>
-      ),
-      dataIndex: "publisher",
-      key: "publisher",
-    },
-    {
-      title: (
-        <Text fontWeight={400} fontSize={14}>
-          TITLE
-        </Text>
-      ),
-      dataIndex: "title",
-      key: "title",
-    },
+  const [blogsData, setBlogsData] = useState<any>([]);
+  const [date, setDate] = useState<Date | any>();
+  const [name, setName] = useState<string>("");
+  const [pageSize, setPageSize] = useState<number>(1);
+  const [filterStatus, setFilterStatus] = useState<string>("All");
 
-    {
-      title: (
-        <Text fontWeight={400} fontSize={14}>
-          READERS
-        </Text>
-      ),
-      dataIndex: "readers",
-      key: "readers",
-    },
+  const { getBlogsData, getBlogsError, getBlogsIsLoading, getBlogsPayload } =
+    useGetBlogs((res: any) => {});
 
-    {
-      title: (
-        <Text fontWeight={400} fontSize={12}>
-          PUBLISHED ON
-        </Text>
-      ),
-      dataIndex: "published_date",
-      key: "published_date",
-    },
+  useEffect(() => {
+    const payload = {
+      pageNumber: pageSize,
+      perPageSize: 10,
+      category: "All",
+      status: filterStatus,
+      userId: "",
+      sinceDate: date,
+      search: name,
+    };
 
-    {
-      title: (
-        <Text fontWeight={400} fontSize={12}>
-          STATUS
-        </Text>
-      ),
-      dataIndex: "status",
-      key: "status",
-      render: (status) => {
-        return (
-          <Text
-            py="2px"
-            px={"10px"}
-            bg={
-              status === "Published"
-                ? "#DEF7EC"
-                : status === "Pending"
-                ? "#FDF6B2"
-                : "#F3F4F6"
-            }
-            w="fit-content"
-            borderRadius={"8px"}
-            color={
-              status === "Published"
-                ? "#03543F"
-                : status === "Pending"
-                ? "#723B13"
-                : "#111928"
-            }
-          >
-            {status}
-          </Text>
-        );
-      },
-    },
+    getBlogsPayload(payload);
+  }, [pageSize, date, name, filterStatus]);
 
-    {
-      title: (
-        <Text fontWeight={400} fontSize={12}>
-          ACTION
-        </Text>
-      ),
-      dataIndex: "id",
-      key: "id",
-      render: () => {
-        return (
-          <Box>
-            <ThreeDotsIcon />
-          </Box>
-        );
-      },
-    },
+  useEffect(() => {
+    if (getBlogsData?.result?.length > 0) {
+      setBlogsData(getBlogsData);
+    }
+  }, [getBlogsData]);
+
+  const cellRenderers = {
+    publisherName: (record: BlogData) => (
+      <p className="font-semibold text-xs text-[#111928]">
+        {record?.publisherName}
+      </p>
+    ),
+    title: (record: BlogData) => (
+      <p className="font-semibold text-xs text-[#111928]">{record?.title}</p>
+    ),
+    createdOn: (record: BlogData) => (
+      <p className="font-semibold text-center">
+        {formatDateTime(record?.publishedDate || "0001-01-01T00:00:00")}
+      </p>
+    ),
+    status: (record: BlogData) => (
+      <Text
+        py="2px"
+        px={"10px"}
+        bg={
+          status === "Published"
+            ? "#DEF7EC"
+            : status === "Pending"
+            ? "#FDF6B2"
+            : "#F3F4F6"
+        }
+        w="fit-content"
+        borderRadius={"8px"}
+        color={
+          status === "Published"
+            ? "#03543F"
+            : status === "Pending"
+            ? "#723B13"
+            : "#111928"
+        }
+      >
+        {record?.status}
+      </Text>
+    ),
+    action: () => (
+      <Box>
+        <ThreeDotsIcon />
+      </Box>
+    ),
+  };
+
+  const columnOrder: (keyof BlogData)[] = [
+    "publisherName",
+    "title",
+    "createdOn",
+    "status",
+    "action",
   ];
 
-  const dataSources = [
+  const columnLabels = {
+    publisherName: "Publisher Name",
+    title: "Title",
+    createdOn: "Creaded On",
+    status: "Status",
+    action: "Action",
+  };
+
+  const onPageChange = (page: number) => {
+    setPageSize(page);
+  };
+
+  const filterBtnList = [
     {
-      id: 1,
-      publisher: "@hungry_boss5",
-      title:
-        "What do members of congress know about these stocks that we don’t?",
-      status: "Pending",
-      readers: "USA",
-      published_date: "Apr 23 ,2021",
+      status: "All",
     },
     {
-      id: 2,
-      publisher: "@hungry_boss5",
-      title:
-        "What do members of congress know about these stocks that we don’t?",
-      status: "Archived",
-      readers: "USA",
-      published_date: "Apr 23 ,2021",
-    },
-    {
-      id: 3,
-      publisher: "@hungry_boss5",
-      title:
-        "What do members of congress know about these stocks that we don’t?",
       status: "Published",
-      readers: "USA",
-      published_date: "Apr 23 ,2021",
     },
     {
-      id: 4,
-      publisher: "@hungry_boss5",
-      title:
-        "What do members of congress know about these stocks that we don’t?",
-      status: "Pending",
-      readers: "USA",
-      published_date: "Apr 23 ,2021",
+      status: "Archived",
+    },
+    {
+      status: "Decline",
     },
   ];
 
@@ -160,18 +146,52 @@ const BlogManager = () => {
         fontWeight={500}
         w={"fit-content"}
       />
-      <Box bg="#fff" borderRadius={"8px"} pt={4} mt={4}>
-        <Box m={4} mt={0}>
+      <Box bg="#fff" mt={6} borderRadius={"12px"}>
+        <Box m={4} pt={4}>
           <Text fontWeight={600} fontSize="18px" color="#111928">
             Articles
           </Text>
         </Box>
-        <Table
-          className="custom-table"
-          dataSource={dataSources}
-          columns={columns}
-          //   loading={isLoading}
-        />
+        <div className="flex items-center gap-4 mt-5 pb-5">
+          <div className="flex gap-3 bg-white rounded-md px-3 py-1">
+            {filterBtnList.map((_, index: number) => (
+              <Button
+                variant={_?.status === filterStatus ? "secondary" : "ghost"}
+                key={index}
+                btnText={_?.status}
+                onClick={() => setFilterStatus(_?.status)}
+                className={`font-medium text-sm ${
+                  _?.status === filterStatus
+                    ? "bg-[#351F05] text-white py-2 px-4"
+                    : "p-0 text-[#6B7280]"
+                }`}
+              />
+            ))}
+          </div>
+          <InputFilter setQuery={setName} placeholder="Search by article" />
+          <DateFilter date={date} setDate={setDate} />
+        </div>
+        {getBlogsIsLoading ? (
+          <TableSkeleton />
+        ) : (
+          <>
+            <TableComponent<BlogData>
+              tableData={getBlogsData?.result || []}
+              cellRenderers={cellRenderers}
+              columnOrder={columnOrder}
+              columnLabels={columnLabels}
+            />
+            {blogsData?.totalPages > 0 && (
+              <div className="px-5">
+                <Pagination
+                  currentPage={blogsData?.currentPage}
+                  totalPages={blogsData?.totalPages || 0}
+                  onPageChange={onPageChange}
+                />
+              </div>
+            )}
+          </>
+        )}
       </Box>
     </Box>
   );

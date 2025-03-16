@@ -28,5 +28,9 @@ export const routes = {
   addBlogComment: () => `/api/blog/comment/add`,
   addBlogCommentReply: () => `/api/blog/comment/reply/add`,
   commentLikeUnlike: () => `/api/blog/comment/like_unlike`,
-  blogLikeUnlike: () => `/api/blog/like_unlike`,
+  blogLikeUnlike: () => `/api/payment/user/all`,
+  getUserPayment: (perPageSize, pageNumber, user_id) =>
+    `/api/payment/user/all/${user_id}/${perPageSize}/${pageNumber}`,
+  getAllPayments: (perPageSize, pageNumber) =>
+    `/api/payment/user/all/${perPageSize}/${pageNumber}`,
 };

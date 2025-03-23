@@ -41,6 +41,25 @@ export const useGetIncomeStatement = ({ enabled = false }) => {
   };
 };
 
+export const useGetMetrics = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["get-metrics"],
+    queryFn: ({ symbol, period }) =>
+      httpService.getData(routes.getStockMetricsUrl(symbol, period)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getMetricsIsLoading: isLoading,
+    getMetricsData: data?.data?.result || [],
+    getMetricsFilter: filter,
+    getMetricsError: ErrorHandler(error),
+    refetchGetMetrics: refetch,
+    setMetricsFilter: setFilter,
+  };
+};
+
 export const useGetBalanceSheet = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
     queryKey: ["balance-sheet"],
@@ -77,9 +96,12 @@ export const useGetCashFlow = ({ enabled = false }) => {
     setGetCashFlowFilter: setFilter,
   };
 };
-export const useGetStockInfoEod = ({ enabled = false }) => {
+export const useGetStockInfoEod = ({
+  enabled = false,
+  queryKey = "stockInfo-Performance",
+}) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
-    queryKey: ["stockInfo-Performance"],
+    queryKey: [queryKey],
     queryFn: ({ symbol, startDate, endDate }) =>
       httpService.getData(routes.getStockInfoEod(symbol, startDate, endDate)),
     enabled,

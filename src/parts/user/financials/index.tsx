@@ -8,7 +8,7 @@ import {
   formatDateToHumanReadable,
 } from "@/components/util";
 
-import { IButtonFilter } from "@/interface/button-filter";
+import { IButtonFilter, IButtonFilter2 } from "@/interface/button-filter";
 import { IStockComponent } from "@/interface/stock";
 import {
   useGetBalanceSheet,
@@ -177,7 +177,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         </Text>
         <Flex justifyContent="space-between" gap="2">
           <Flex gap={2}>
-            {btnList.map((filter: IButtonFilter, index: number) => (
+            {btnList.map((filter: IButtonFilter2, index: number) => (
               <ButtonIcon
                 key={index}
                 text={filter?.text}

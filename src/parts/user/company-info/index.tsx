@@ -3,20 +3,13 @@
 import CompanyAnalysisCard from "@/components/card/company-analysis-card";
 import CompanyCard from "@/components/card/company-card";
 import CompanyStockCard from "@/components/card/company-stock-card";
-import AreaChartComponent from "@/components/charts/area-graph";
+
 import { Button } from "@/components/ui/button";
 import { IButtonFilter } from "@/interface/button-filter";
 import { ICompanyStockCard } from "@/interface/company-stock-card";
 import { IStockComponent } from "@/interface/stock";
 import { ArrowNarrowRight } from "@/utils/icons";
-import {
-  Box,
-  Flex,
-  Grid,
-  Skeleton,
-  SkeletonText,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Grid, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useGetStockInfo, useGetStockInfoEod } from "@/services/stock";
 import CompanyCardSkeleton from "@/components/card/skeleton/CompanyCardSkeleton";
@@ -24,33 +17,59 @@ import { IStockData } from "@/interface/stock-view";
 import CompanyStockCardSkeleton from "@/components/card/skeleton/CompanyStockCardSkeleton";
 import CompanyAnalysisCardSkeleton from "@/components/card/skeleton/CompanyAnalysisCardSkeleton ";
 
+import StockChartSwitcher from "@/components/charts/stockchart";
+
 const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
-  const [btnFilter, setBtnFilter] = useState<string>("daily");
+  const [btnFilter, setBtnFilter] = useState<number>(1);
   const [stockNewData, setNewStockData] = useState<ICompanyStockCard[]>([]);
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+
+  const [from, setFrom] = useState(yesterday.toISOString().split("T")[0]);
+  const [to, setTo] = useState(today.toISOString().split("T")[0]);
 
   const filterBtn = [
-    { text: "Daily", value: "daily" },
+    { text: "1D", value: 1 },
     {
-      text: "Weekly",
-      value: "weekly",
+      text: "5D",
+      value: 5,
     },
     {
-      text: "Monthly",
-      value: "monthly",
+      text: "1M",
+      value: 30,
     },
     {
-      text: "Yearly",
-      value: "yearly",
+      text: "3M",
+      value: 90,
+    },
+    {
+      text: "6M",
+      value: 180,
+    },
+    {
+      text: "1Y",
+      value: 365,
     },
   ];
   const currentDate = new Date();
-  const oneDayBefore = new Date(currentDate);
-  oneDayBefore.setDate(currentDate.getDate() - 1);
 
-  const twoDaysBefore = new Date(currentDate);
-  twoDaysBefore.setDate(currentDate.getDate() - 2);
+  const getPreviousTradingDay = (date: Date, daysBack: number): Date => {
+    let previousDate = new Date(date);
+    while (daysBack > 0) {
+      previousDate.setDate(previousDate.getDate() - 1);
+
+      if (previousDate.getDay() !== 0 && previousDate.getDay() !== 6) {
+        daysBack--;
+      }
+    }
+    return previousDate;
+  };
 
   const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
+  const oneDayBefore = getPreviousTradingDay(currentDate, 1);
+  const twoDaysBefore = getPreviousTradingDay(currentDate, 2);
 
   const oneDayBeforeFormatted = formatDate(oneDayBefore);
   const twoDaysBeforeFormatted = formatDate(twoDaysBefore);
@@ -68,8 +87,14 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
     getStockInfoEodIsLoading,
     setGetStockInfoEodFilter,
     getStockInfoEodError,
-  } = useGetStockInfoEod({ enabled: true });
-
+  } = useGetStockInfoEod({ enabled: true, queryKey: "stockInfo" });
+  const {
+    getStockInfoEodData: getStockInfoEodDataChart,
+    getStockInfoEodFilter: getStockInfoEodFilterChart,
+    getStockInfoEodIsLoading: getStockInfoEodIsLoadingChart,
+    setGetStockInfoEodFilter: setGetStockInfoEodFilterChart,
+    getStockInfoEodError: getStockInfoEodErrorChart,
+  } = useGetStockInfoEod({ enabled: true, queryKey: "stockInfo-chart" });
   useEffect(() => {
     setGetStockInfoFilter({ symbol: symbol });
     setGetStockInfoEodFilter({
@@ -107,6 +132,18 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
       eventSource.close();
     };
   }, []);
+  const handleFilterClick = (days: number) => {
+    const newFrom = new Date();
+    newFrom.setDate(today.getDate() - days);
+    setFrom(newFrom.toISOString().split("T")[0]);
+  };
+  useEffect(() => {
+    setGetStockInfoEodFilterChart({
+      symbol: symbol,
+      endDate: to,
+      startDate: from,
+    });
+  }, [from, to]);
 
   return (
     <div>
@@ -154,12 +191,15 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
           <ArrowNarrowRight />
         </div>
       </div>
-      <div className="bg-white p-4 rounded-[12px] mb-4">
+      <div className="bg-white p-4 rounded-[12px] mb-4 lg:flex justify-between gap-4">
         <div className="flex gap-2">
           {filterBtn.map((filter: IButtonFilter, index: number) => (
             <Button
               variant={filter?.value === btnFilter ? "secondary" : "ghost"}
-              onClick={() => setBtnFilter(filter?.value)}
+              onClick={() => {
+                setBtnFilter(filter?.value);
+                handleFilterClick(filter?.value);
+              }}
               className={`${
                 filter?.value === btnFilter
                   ? "text-white bg-[#351F05] py-3 px-4"
@@ -170,8 +210,44 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
             />
           ))}
         </div>
+        <div className="flex flex-col md:flex-row items-center gap-6">
+          <div className="flex gap-2 items-center">
+            <label htmlFor="from" className="text-sm font-medium text-gray-700">
+              From:
+            </label>
+            <input
+              type="date"
+              id="from"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              className="border border-gray-300 rounded-md p-2"
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <label htmlFor="to" className="text-sm font-medium text-gray-700">
+              To:
+            </label>
+            <input
+              type="date"
+              id="to"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              className="border border-gray-300 rounded-md p-2"
+            />
+          </div>
+        </div>
       </div>
-      <AreaChartComponent />
+      <div className="bg-white p-4 rounded-[12px]">
+        {getStockInfoEodIsLoadingChart ? null : getStockInfoEodIsLoadingChart ==
+            false && getStockInfoEodDataChart.length < 1 ? (
+          <p className=" text-center">
+            There is no EOD chart data for the date range selected
+          </p>
+        ) : (
+          <StockChartSwitcher stockData={getStockInfoEodDataChart} />
+        )}
+      </div>
+
       <div className="mt-8 lg:flex gap-4">
         <div className="rounded-[12px] p-2.5 bg-white w-full">
           {getStockInfoIsLoading ? (

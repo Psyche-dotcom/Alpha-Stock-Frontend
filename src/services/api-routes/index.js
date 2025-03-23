@@ -28,6 +28,8 @@ export const routes = {
     `/api/stock/historical/eod?symbol=${symbol}&startDate=${startdate}&endDate=${endDate}`,
   getStockIncomeStatementUrl: (symbol, period) =>
     `/api/stock/income-statement?symbol=${symbol}&period=${period}`,
+  getStockMetricsUrl: (symbol, period) =>
+    `/api/stock/fundamental-metric?symbol=${symbol}&period=${period}`,
   balanceSheetUrl: (symbol, period) =>
     `/api/stock/balance-sheet?symbol=${symbol}&period=${period}`,
   cashFlowUrl: (symbol, period) =>

@@ -3,7 +3,7 @@
 import { TableComponent } from "@/components/custom-table";
 import { Button } from "@/components/ui/button";
 import { marketMoveFilterList } from "@/constants";
-import { IButtonFilter } from "@/interface/button-filter";
+import { IButtonFilter2 } from "@/interface/button-filter";
 import { IStock, IStockData } from "@/interface/stock-view";
 import { MarketMove } from "@/types";
 import { ShineIcon } from "@/utils/icons";
@@ -112,7 +112,7 @@ const MarketMoveContent = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          {marketMoveFilterList.map((filter: IButtonFilter, index: number) => (
+          {marketMoveFilterList.map((filter: IButtonFilter2, index: number) => (
             <Button
               variant={filter?.value === marketFilter ? "secondary" : "ghost"}
               key={index}

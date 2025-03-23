@@ -2,7 +2,7 @@
 import { ButtonIcon } from "@/components/button/button-icon";
 import FundamentalsCard from "@/components/card/fundamentals-card";
 import { FundamentalsList, metricsList } from "@/constants";
-import { IButtonFilter } from "@/interface/button-filter";
+import { IButtonFilter2 } from "@/interface/button-filter";
 import { IFundamentalCard } from "@/interface/fundamental-card";
 import { InformationIcon } from "@/utils/icons";
 import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
@@ -21,7 +21,7 @@ const Fundamentals: React.FC = () => {
     <Box>
       <Box bg={"#fff"} p={4} borderRadius={"12px"} mb={4}>
         <Flex gap={2}>
-          {filterBtn.map((filter: IButtonFilter, index: number) => (
+          {filterBtn.map((filter: IButtonFilter2, index: number) => (
             <ButtonIcon
               key={index}
               text={filter?.text}

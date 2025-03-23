@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonIcon } from "@/components/button/button-icon";
-import { IButtonFilter } from "@/interface/button-filter";
+import { IButtonFilter2 } from "@/interface/button-filter";
 import Profile from "@/parts/profile";
 import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
@@ -39,7 +39,7 @@ const Profiles: React.FC = () => {
     <Box>
       <Box bg={"#fff"} p={4} borderRadius={"12px"} mb={4}>
         <Flex gap={2}>
-          {filterBtn.map((filter: IButtonFilter, index: number) => (
+          {filterBtn.map((filter: IButtonFilter2, index: number) => (
             <ButtonIcon
               key={index}
               text={filter?.text}

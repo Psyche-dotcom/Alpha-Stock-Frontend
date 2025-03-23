@@ -4,7 +4,7 @@ import { ButtonIcon } from "@/components/button/button-icon";
 import { TableComponent } from "@/components/custom-table";
 import { Pagination } from "@/components/ui/pagination";
 import { stockManagerFilterList } from "@/constants";
-import { IButtonFilter } from "@/interface/button-filter";
+import { IButtonFilter2 } from "@/interface/button-filter";
 import { StockData } from "@/types";
 import { ShineIcon, ThreeDotsIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -108,7 +108,7 @@ const StockManager = () => {
         <Box display="flex" justifyContent={"end"} mb={4}>
           <Flex gap={2}>
             {stockManagerFilterList?.map(
-              (filter: IButtonFilter, index: number) => (
+              (filter: IButtonFilter2, index: number) => (
                 <ButtonIcon
                   key={index}
                   text={filter?.text}

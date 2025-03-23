@@ -8,7 +8,7 @@ import {
   formatDateToHumanReadable,
 } from "@/components/util";
 
-import { IButtonFilter, IButtonFilter2 } from "@/interface/button-filter";
+import { IButtonFilter2 } from "@/interface/button-filter";
 import { IStockComponent } from "@/interface/stock";
 import {
   useGetBalanceSheet,

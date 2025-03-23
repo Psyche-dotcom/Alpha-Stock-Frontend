@@ -8,6 +8,7 @@ import { RightArrowLong } from "@/utils/icons";
 import { useGetBlogs } from "@/services/blog";
 import { useEffect } from "react";
 import { useUserSession } from "@/app/context/user-context";
+import Link from "next/link";
 
 const User: React.FC = () => {
   const { profileData } = useUserSession();
@@ -34,14 +35,18 @@ const User: React.FC = () => {
           <div className="mb-8 flex gap-4 h-ful md:h-auto flex-1">
             <div className="flex flex-col gap-4 h-[215px]">
               <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
-                <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">
-                  Fundamentals Toolkit <RightArrowLong />
-                </h6>
+                <Link href={"/user/company/aapl?tab=company-info"}>
+                  <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">
+                    Fundamentals Toolkit <RightArrowLong />
+                  </h6>
+                </Link>
               </div>
               <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
-                <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
-                  Metrics <RightArrowLong />
-                </h6>
+                <Link href={"/user/company/aapl?tab=metrics"}>
+                  <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
+                    Metrics <RightArrowLong />
+                  </h6>
+                </Link>
                 <p className="font-normal text-sm text-[#614E38]">
                   Get visual insights to help inform your next investment
                   strategy.
@@ -50,9 +55,11 @@ const User: React.FC = () => {
             </div>
             <div className="flex flex-col gap-4">
               <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
-                <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
-                  FInancials <RightArrowLong />
-                </h6>
+                <Link href={"/user/company/aapl?tab=financials"}>
+                  <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
+                    FInancials <RightArrowLong />
+                  </h6>
+                </Link>
               </div>
               <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
                 <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">

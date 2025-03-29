@@ -9,6 +9,15 @@ import { DataItem } from "@/types";
 import { CautionIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { InputFilter } from "@/components/filter/input-filter";
+import ShowAnalysisHistory from "./show-analysis-history";
 
 interface DataType extends DataItem {
   id: number;
@@ -16,10 +25,17 @@ interface DataType extends DataItem {
   year1?: number;
   year5?: number;
   year10?: number;
+  low?: number;
+  medium?: number;
+  high?: number;
 }
 
 const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const [isFetchStats, setIsFetchStats] = useState<boolean>(false);
+  const [showAnalysisResult, setShowAnalysisResult] = useState<boolean>(false);
+  const [showAnalysisHistory, setShowAnalysisHistory] =
+    useState<boolean>(false);
+  const [queryHistory, setQueryHistory] = useState<string>("");
 
   const {
     getStockAnalysisStatData,
@@ -72,6 +88,17 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       <Box className="flex justify-center">
         <Input name="high" className="h-8 w-[10.6rem]" />
       </Box>
+    ),
+  };
+
+  const cellRunRenderer = {
+    feature: (item: DataType) => <p className="flex">{item?.feature}</p>,
+    low: (item: DataType) => <p className="flex justify-center">{item?.low}</p>,
+    medium: (item: DataType) => (
+      <p className="flex justify-center">{item?.medium}</p>
+    ),
+    high: (item: DataType) => (
+      <p className="flex justify-center">{item?.high}</p>
     ),
   };
 
@@ -137,9 +164,96 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     },
   ];
 
+  const dataSource = [
+    {
+      feature: "Multiples of Earnings Value",
+      low: 117.83,
+      medium: 117.83,
+      high: 117.83,
+      id: 1,
+    },
+    {
+      feature: "Discounted Cash Flow Value",
+      low: 117.83,
+      medium: 117.83,
+      high: 117.83,
+      id: 2,
+    },
+    {
+      feature: "Current Price Return",
+      low: 117.83,
+      medium: 117.83,
+      high: 117.83,
+      id: 3,
+    },
+  ];
+
+  const columnRunOrder: (keyof DataType)[] = [
+    "feature",
+    "low",
+    "medium",
+    "high",
+  ];
+
+  const columnRunLabel = {
+    feature: "Feature",
+
+    low: "Low",
+    medium: "Medium",
+    high: "High",
+  };
+
+  const analysisHistory = [
+    {
+      date: "12/03/2025",
+      symbol: "AAPL",
+      company: "Apple",
+      years: 10,
+      entries: 3,
+      time: "5:30",
+    },
+    {
+      date: "12/03/2025",
+      symbol: "AAPL",
+      company: "Apple",
+      years: 10,
+      entries: 3,
+      time: "5:30",
+    },
+    {
+      date: "12/03/2025",
+      symbol: "AAPL",
+      company: "Apple",
+      years: 10,
+      entries: 3,
+      time: "5:30",
+    },
+    {
+      date: "12/03/2025",
+      symbol: "AAPL",
+      company: "Apple",
+      years: 10,
+      entries: 3,
+    },
+    {
+      date: "12/03/2025",
+      symbol: "AAPL",
+      company: "Apple",
+      years: 10,
+      entries: 3,
+    },
+    {
+      date: "12/03/2025",
+      symbol: "AAPL",
+      company: "Apple",
+      years: 10,
+      entries: 3,
+    },
+  ];
+
   return (
-    <Box pt={4}>
-      <Box bg="#fff" borderRadius="8px">
+    <Box py={4}>
+      <Box bg="#fff" borderRadius="8px" pt={4}>
         <Box
           display="flex"
           justifyContent={"space-between"}
@@ -153,7 +267,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           <Button
             className="border-[#351F05] px-3 py-2 font-medium text-[#351F05] text-xs"
             variant={"outline"}
-            asChild
+            onClick={() => setShowAnalysisHistory(!showAnalysisHistory)}
           >
             Analysis History
           </Button>
@@ -177,6 +291,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
         <Button
           className="bg-[#291804] text-white px-3 py-3 font-medium text-base me-auto"
           variant={"secondary"}
+          onClick={() => setShowAnalysisResult(!showAnalysisResult)}
         >
           Run Analysis
         </Button>
@@ -187,6 +302,28 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           Save Analysis
         </Button>
       </Box>
+      {showAnalysisResult && (
+        <Box className="my-5 bg-white rounded-lg">
+          <Box
+            display="flex"
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            mb={7}
+            mx={4}
+            pt={4}
+          >
+            <Text fontWeight={400} fontSize={18} color="#111928">
+              Analysis Result
+            </Text>
+          </Box>
+          <TableComponent<DataType>
+            tableData={dataSource}
+            cellRenderers={cellRunRenderer}
+            columnOrder={columnRunOrder}
+            columnLabels={columnRunLabel}
+          />
+        </Box>
+      )}
       <Box className="p-4 rounded-[6px] bg-white flex gap-4">
         <CautionIcon />
         <Box className="text-[#3A2206] flex-1">
@@ -206,6 +343,30 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           </Text>
         </Box>
       </Box>
+      <Dialog
+        open={showAnalysisHistory}
+        onOpenChange={() => setShowAnalysisHistory(!showAnalysisHistory)}
+      >
+        <DialogContent className="pt-0 bg-white right-0 h-screen max-w-[500px] w-full pb-[46px]">
+          <DialogHeader className="sticky top-0 z-1 bg-white mb-5 pt-5">
+            <DialogTitle className="mb-6 border-b border-[#E5E7EB] pb-[17px] text-2xl font-bold text-primary-green-dark">
+              History
+            </DialogTitle>
+            <div className="border-b border-[#E5E7EB] pb-5">
+              <InputFilter
+                setQuery={setQueryHistory}
+                placeholder="Search by history"
+                className="!w-full"
+              />
+            </div>
+          </DialogHeader>
+          <div className="flex flex-col gap-5 h-full overflow-y-scroll">
+            {analysisHistory?.map((analysis, index: number) => (
+              <ShowAnalysisHistory item={analysis} key={index} />
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

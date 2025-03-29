@@ -60,8 +60,8 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
     } else {
       setQueryResults([]);
     }
-  }, [companiesData, searchQuery]);
-
+  }, []);
+  // companiesData, searchQuery
   return (
     <>
       <div className="flex-1 flex justify-end md:justify-between items-center gap-3 lg:gap-6">

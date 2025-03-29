@@ -31,7 +31,20 @@ interface DataType extends DataItem {
   low?: number;
   medium?: number;
   high?: number;
+  category: string;
 }
+interface DataTypes extends DataItem {
+  id: number;
+  feature: string;
+  year1?: number;
+  year5?: number;
+  year10?: number;
+  low?: number;
+  medium?: number;
+  high?: number;
+}
+
+type RangeKey = "low" | "mid" | "high";
 
 const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const [isFetchStats, setIsFetchStats] = useState<boolean>(false);
@@ -40,6 +53,17 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const [showAnalysisHistory, setShowAnalysisHistory] =
     useState<boolean>(false);
   const [queryHistory, setQueryHistory] = useState<string>("");
+  const [tableState, setTableState] = useState<
+    Record<string, Record<RangeKey, number>>
+  >({
+    roic: { low: 0, mid: 0, high: 0 },
+    // desiredAnnReturn: { low: 0, mid: 0, high: 0 },
+    revGrowth: { low: 0, mid: 0, high: 0 },
+    profitMargin: { low: 0, mid: 0, high: 0 },
+    freeCashFlowMargin: { low: 0, mid: 0, high: 0 },
+    peRatio: { low: 0, mid: 0, high: 0 },
+    pfcf: { low: 0, mid: 0, high: 0 },
+  });
   const handleDropdownChange = (value: number) => {
     setYear(value);
   };
@@ -62,7 +86,19 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     setIsFetchStats(true);
   }, [symbol]);
 
-  console.log("stockData", getStockAnalysisStatData);
+  const handleInputChange = (
+    category: string,
+    range: RangeKey,
+    value: number
+  ) => {
+    setTableState((prevState) => ({
+      ...prevState,
+      [category]: {
+        ...prevState[category],
+        [range]: value,
+      },
+    }));
+  };
 
   const cellRenderers = {
     feature: (item: DataType) => (
@@ -86,30 +122,52 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       </Text>
     ),
 
-    low: () => (
+    low: (item: DataType) => (
       <Box className="flex justify-center">
-        <Input name="low" className="h-8 w-[10.6rem]" />
+        <Input
+          name="low"
+          value={tableState[item.category!]?.low || 0}
+          onChange={(e) =>
+            handleInputChange(item.category!, "low", Number(e.target.value))
+          }
+          className="h-8 w-[10.6rem]"
+        />
       </Box>
     ),
-    medium: () => (
+    medium: (item: DataType) => (
       <Box className="flex justify-center">
-        <Input name="medium" className="h-8 w-[10.6rem]" />
+        <Input
+          name="mid"
+          value={tableState[item.category!]?.mid || 0}
+          onChange={(e) =>
+            handleInputChange(item.category!, "mid", Number(e.target.value))
+          }
+          className="h-8 w-[10.6rem]"
+        />
       </Box>
     ),
-    high: () => (
+    high: (item: DataType) => (
       <Box className="flex justify-center">
-        <Input name="high" className="h-8 w-[10.6rem]" />
+        <Input
+          name="high"
+          value={tableState[item.category!]?.high || 0}
+          onChange={(e) =>
+            handleInputChange(item.category!, "high", Number(e.target.value))
+          }
+          className="h-8 w-[10.6rem]"
+        />
       </Box>
     ),
   };
-
   const cellRunRenderer = {
-    feature: (item: DataType) => <p className="flex">{item?.feature}</p>,
-    low: (item: DataType) => <p className="flex justify-center">{item?.low}</p>,
-    medium: (item: DataType) => (
+    feature: (item: DataTypes) => <p className="flex">{item?.feature}</p>,
+    low: (item: DataTypes) => (
+      <p className="flex justify-center">{item?.low}</p>
+    ),
+    medium: (item: DataTypes) => (
       <p className="flex justify-center">{item?.medium}</p>
     ),
-    high: (item: DataType) => (
+    high: (item: DataTypes) => (
       <p className="flex justify-center">{item?.high}</p>
     ),
   };
@@ -158,7 +216,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     },
   ];
 
-  const columnRunOrder: (keyof DataType)[] = [
+  const columnRunOrder: (keyof DataTypes)[] = [
     "feature",
     "low",
     "medium",
@@ -220,14 +278,15 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       entries: 3,
     },
   ];
+
   const RunAnalysis = () => {
     const payload = {
       symbol: symbol,
       years: year,
       roic: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.roic?.low || 0,
+        mid: tableState?.roic?.mid || 0,
+        high: tableState?.roic?.high || 0,
       },
       desiredAnnReturn: {
         low: 0,
@@ -235,33 +294,35 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
         high: 0,
       },
       revGrowth: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.revGrowth?.low || 0,
+        mid: tableState?.revGrowth?.mid || 0,
+        high: tableState?.revGrowth?.high || 0,
       },
       profitMargin: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.profitMargin?.mid || 0,
+        mid: tableState?.profitMargin?.mid || 0,
+        high: tableState?.profitMargin?.mid || 0,
       },
       freeCashFlowMargin: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.profitMargin?.mid || 0,
+        mid: tableState?.freeCashFlowMargin?.mid || 0,
+        high: tableState?.freeCashFlowMargin?.mid || 0,
       },
       peRatio: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.peRatio?.mid || 0,
+        mid: tableState?.peRatio?.mid || 0,
+        high: tableState?.peRatio?.mid || 0,
       },
       pfcf: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.pfcf?.mid || 0,
+        mid: tableState?.pfcf?.mid || 0,
+        high: tableState?.pfcf?.mid || 0,
       },
     };
     //predictStockPayload(payload);
+    console.log(tableState);
   };
+
   return (
     <Box py={4}>
       <Box bg="#fff" borderRadius="8px" pt={4}>
@@ -333,7 +394,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
             </Text>
           </Box>
 
-          <TableComponent<DataType>
+          <TableComponent<DataTypes>
             tableData={dataSource}
             cellRenderers={cellRunRenderer}
             columnOrder={columnRunOrder}

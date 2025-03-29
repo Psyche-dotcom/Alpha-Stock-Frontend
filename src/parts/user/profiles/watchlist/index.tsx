@@ -62,7 +62,7 @@ const Watchlist: React.FC<iProp> = () => {
         ))}
       </Grid>
       <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
-        <DialogContent className="bg-white p-[2rem] pt-[3.5rem]">
+        <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
           {renderItem()}
         </DialogContent>
       </Dialog>

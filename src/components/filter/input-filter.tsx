@@ -8,10 +8,12 @@ export function InputFilter({
   placeholder = "Search by name or email",
   setQuery,
   className,
+  name,
 }: {
   placeholder?: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
+  name?: string;
 }) {
   return (
     <Input
@@ -21,6 +23,7 @@ export function InputFilter({
       }
       type="search"
       className={cn("h-12 w-[280px]", className)}
+      name={name}
     />
   );
 }

@@ -11,6 +11,7 @@ export const ErrorHandler = (error, useMessage = false) => {
         : error?.response?.data?.validationMessages?.[0] ||
           error?.response?.data?.userMessage ||
           error?.response?.data?.message ||
+          error?.response?.message ||
           error?.response?.data?.Message ||
           error?.response?.data?.responseDescription ||
           error?.response?.data?.error ||

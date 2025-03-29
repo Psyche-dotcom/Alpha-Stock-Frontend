@@ -167,7 +167,6 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   ];
   const handleDropdownChange = (value: string) => {
     setPeriod(value);
-    console.log("Selected value:", value);
   };
   return (
     <Box bg="#fff" pt={4} mb={16}>

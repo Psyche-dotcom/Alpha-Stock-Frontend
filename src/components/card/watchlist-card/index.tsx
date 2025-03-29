@@ -1,4 +1,7 @@
-import { ICompanyStockCard } from "@/interface/company-stock-card";
+import {
+  ICompanyStockCard,
+  IWatchlistData,
+} from "@/interface/company-stock-card";
 import {
   AlarmIcon,
   ArrowDownIcon,
@@ -9,8 +12,9 @@ import {
   StockRiseIcon,
 } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
+import Image from "next/image";
 interface IWatchlistProp {
-  watchlist: ICompanyStockCard;
+  watchlist: IWatchlistData;
   handlePreference: () => void;
   handleDelete: () => void;
 }
@@ -29,7 +33,7 @@ const WatchlistCard: React.FC<IWatchlistProp> = ({
         mb={4}
       >
         <Text color={watchlist?.isProgressive ? "#0E9F6E" : "#E74694"}>
-          %{watchlist?.value}
+          {watchlist?.price}%
         </Text>
         <Box>
           {watchlist?.isProgressive ? <StockRiseIcon /> : <StockFallIcon />}
@@ -37,23 +41,35 @@ const WatchlistCard: React.FC<IWatchlistProp> = ({
       </Box>
       <Box display="flex" justifyContent={"space-between"} mb={4}>
         <Box className="flex items-center gap-[10px] mb-2.5">
-          <MetaIcon />
+          <div className="w-10 h-10">
+            <Image
+              width={40}
+              height={40}
+              alt="Company icon"
+              src={watchlist?.imgUrl}
+              className="rounded-full"
+            />
+          </div>
           <h2 className="text-[20px] font-bold text-[#111928]">
-            {watchlist?.name}
+            {watchlist?.stockSymbols}
           </h2>
         </Box>
         <Text color="#6B7280" fontSize="30px" fontWeight={600}>
-          ${watchlist?.amount}
+          ${watchlist?.price}
         </Text>
       </Box>
       <Box display="flex" justifyContent={"space-between"} mb={4}>
         <Box className="flex items-center gap-[10px] mb-2.5">
           <ArrowUpIcon />
-          <h2 className="text-base font-semibold text-[#6B7280]">$180.90</h2>
+          <h2 className="text-base font-semibold text-[#6B7280]">
+            ${watchlist?.upperLimit}
+          </h2>
         </Box>
         <Box className="flex items-center gap-[10px] mb-2.5">
           <ArrowDownIcon />
-          <h2 className="text-base font-semibold text-[#6B7280]">$180.90</h2>
+          <h2 className="text-base font-semibold text-[#6B7280]">
+            ${watchlist?.lowerLimit}
+          </h2>
         </Box>
       </Box>
       <Box display="flex" justifyContent={"space-between"}>

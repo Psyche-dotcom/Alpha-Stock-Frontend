@@ -11,29 +11,62 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { IWatchlistData } from "@/interface/company-stock-card";
+import { useUpdateWatchlist } from "@/services/wishlist";
+import { showSuccessAlert } from "@/utils/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  upperlimit: z.string().min(5, "Name must be greater 4"),
-  lowerlimit: z.string().min(5, "Name must be greater 4"),
+  upperLimit: z
+    .string()
+    .regex(/^\d+(\.\d+)?$/, "Must be a valid number")
+    .min(1, "Upper Limit is required"),
+  lowerLimit: z
+    .string()
+    .regex(/^\d+(\.\d+)?$/, "Must be a valid number")
+    .min(1, "Lower Limit is required"),
 });
 
 type FormSchemaType = z.infer<typeof formSchema>;
+interface iProps {
+  id: string;
+  refetchWishlist: any;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedWatchlist: IWatchlistData | null;
+}
 
-const EditPreference: React.FC = () => {
+const EditPreference: React.FC<iProps> = ({
+  id,
+  refetchWishlist,
+  setIsOpen,
+  selectedWatchlist,
+}) => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      upperlimit: "",
-      lowerlimit: "",
+      upperLimit: selectedWatchlist?.upperLimit.toString() || "",
+      lowerLimit: selectedWatchlist?.lowerLimit.toString() || "",
     },
   });
+  const { reset } = form;
+  const { updateWishlistData, updateWishlistIsLoading, updateWishlistPayload } =
+    useUpdateWatchlist((res: any) => {
+      refetchWishlist();
+      setIsOpen(false);
+      showSuccessAlert(res?.result);
+      reset();
+    });
 
   async function onSubmit(values: FormSchemaType) {
     await Promise.resolve(true);
-    console.warn(values);
+    const payload = {
+      upperLimit: Number(values.upperLimit),
+      lowerLimit: Number(values.lowerLimit),
+      stockwishlistId: id,
+    };
+    updateWishlistPayload(payload);
   }
 
   return (
@@ -47,7 +80,7 @@ const EditPreference: React.FC = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="mb-8">
           <FormField
             control={form.control}
-            name="upperlimit"
+            name="upperLimit"
             render={({ field }) => (
               <FormItem className="mb-4">
                 <FormLabel>Upper limit</FormLabel>
@@ -65,7 +98,7 @@ const EditPreference: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="lowerlimit"
+            name="lowerLimit"
             render={({ field }) => (
               <FormItem className="mb-8">
                 <FormLabel>Lower limit</FormLabel>
@@ -86,6 +119,7 @@ const EditPreference: React.FC = () => {
             className="w-full rounded-lg py-4 text-sm font-medium bg-[#291804] text-white"
             variant="default"
             size="xl"
+            disabled={updateWishlistIsLoading}
           />
         </form>
       </Form>

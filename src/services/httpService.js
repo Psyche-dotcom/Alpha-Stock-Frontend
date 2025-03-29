@@ -46,6 +46,11 @@ class HttpService {
   async deleteData(url) {
     return this.request.delete(this.getServiceUrl(url));
   }
+  async deleteDataPayload(payload, url) {
+    return this.request.delete(this.getServiceUrl(url), {
+      data: payload,
+    });
+  }
 }
 
 export default new HttpService();

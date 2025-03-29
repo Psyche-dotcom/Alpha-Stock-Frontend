@@ -278,14 +278,15 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       entries: 3,
     },
   ];
+
   const RunAnalysis = () => {
     const payload = {
       symbol: symbol,
       years: year,
       roic: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.roic?.low || 0,
+        mid: tableState?.roic?.mid || 0,
+        high: tableState?.roic?.high || 0,
       },
       desiredAnnReturn: {
         low: 0,
@@ -293,34 +294,35 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
         high: 0,
       },
       revGrowth: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.revGrowth?.low || 0,
+        mid: tableState?.revGrowth?.mid || 0,
+        high: tableState?.revGrowth?.high || 0,
       },
       profitMargin: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.profitMargin?.mid || 0,
+        mid: tableState?.profitMargin?.mid || 0,
+        high: tableState?.profitMargin?.mid || 0,
       },
       freeCashFlowMargin: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.profitMargin?.mid || 0,
+        mid: tableState?.freeCashFlowMargin?.mid || 0,
+        high: tableState?.freeCashFlowMargin?.mid || 0,
       },
       peRatio: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.peRatio?.mid || 0,
+        mid: tableState?.peRatio?.mid || 0,
+        high: tableState?.peRatio?.mid || 0,
       },
       pfcf: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.pfcf?.mid || 0,
+        mid: tableState?.pfcf?.mid || 0,
+        high: tableState?.pfcf?.mid || 0,
       },
     };
     //predictStockPayload(payload);
     console.log(tableState);
   };
+
   return (
     <Box py={4}>
       <Box bg="#fff" borderRadius="8px" pt={4}>

@@ -3,9 +3,12 @@
 import { TableComponent } from "@/components/custom-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { IStockComponent } from "@/interface/stock";
+import { useGetStockAnalysisStat } from "@/services/stock";
 import { DataItem } from "@/types";
 import { CautionIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 interface DataType extends DataItem {
   id: number;
@@ -15,7 +18,25 @@ interface DataType extends DataItem {
   year10?: number;
 }
 
-const Analyzer = () => {
+const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
+  const [isFetchStats, setIsFetchStats] = useState<boolean>(false);
+
+  const {
+    getStockAnalysisStatData,
+    getStockAnalysisStatFilter,
+    getStockAnalysisStatIsLoading,
+    setGetStockAnalysisStatFilter,
+    getStockAnalysisStatError,
+  } = useGetStockAnalysisStat({ enabled: isFetchStats });
+
+  useEffect(() => {
+    setGetStockAnalysisStatFilter({
+      symbol: symbol,
+      period: "annual",
+    });
+    setIsFetchStats(true);
+  }, [symbol]);
+
   const cellRenderers = {
     feature: (item: DataType) => (
       <Text fontWeight={400} fontSize={14} color="#111928">

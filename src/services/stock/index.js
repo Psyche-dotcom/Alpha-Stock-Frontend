@@ -96,6 +96,25 @@ export const useGetCashFlow = ({ enabled = false }) => {
     setGetCashFlowFilter: setFilter,
   };
 };
+
+export const useGetStockAnalysisStat = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["stock-analysis-stats"],
+    queryFn: ({ symbol, period }) =>
+      httpService.getData(routes.stockAnalysisStatsUrl(symbol, period)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getStockAnalysisStatIsLoading: isLoading,
+    getStockAnalysisStatData: data?.data?.result || [],
+    getStockAnalysisStatFilter: filter,
+    getStockAnalysisStatError: ErrorHandler(error),
+    refetchGetStockAnalysisStat: refetch,
+    setGetStockAnalysisStatFilter: setFilter,
+  };
+};
 export const useGetStockInfoEod = ({
   enabled = false,
   queryKey = "stockInfo-Performance",

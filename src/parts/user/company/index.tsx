@@ -29,7 +29,7 @@ const Company: React.FC<iProps> = ({ symbol }) => {
       case "fundamentals":
         return <Fundamentals />;
       case "stock-analyser":
-        return <Analyzer />;
+        return <Analyzer symbol={symbol} />;
 
       default:
         return <CompanyInfo symbol={symbol} />;

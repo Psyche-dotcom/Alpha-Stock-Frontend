@@ -34,6 +34,8 @@ export const routes = {
     `/api/stock/balance-sheet?symbol=${symbol}&period=${period}`,
   cashFlowUrl: (symbol, period) =>
     `/api/stock/cash-flow?symbol=${symbol}&period=${period}`,
+  stockAnalysisStatsUrl: (symbol, period) =>
+    `/api/stock/stock-analyer-stats?symbol=${symbol}&period=${period}`,
   createSubscription: () => `/api/subscription/create`,
   editSubscription: () => `/api/subscription/update`,
   addBlogComment: () => `/api/blog/comment/add`,

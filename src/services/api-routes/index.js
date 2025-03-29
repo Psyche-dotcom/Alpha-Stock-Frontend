@@ -37,6 +37,7 @@ export const routes = {
   stockAnalysisStatsUrl: (symbol, period) =>
     `/api/stock/stock-analyer-stats?symbol=${symbol}&period=${period}`,
   createSubscription: () => `/api/subscription/create`,
+  stockAnalyzerUrlpredict: () => `/api/stock/stock-analyer-stats/predict`,
   editSubscription: () => `/api/subscription/update`,
   addBlogComment: () => `/api/blog/comment/add`,
   addBlogCommentReply: () => `/api/blog/comment/reply/add`,

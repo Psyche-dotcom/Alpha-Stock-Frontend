@@ -136,3 +136,24 @@ export const useGetStockInfoEod = ({
     setGetStockInfoEodFilter: setFilter,
   };
 };
+export const usePredictStock = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.stockAnalyzerUrlpredict()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      showSuccessAlert(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    predictStockData: data,
+    predictStockError: ErrorHandler(error),
+    predictStockIsLoading: isPending,
+    predictStockPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};

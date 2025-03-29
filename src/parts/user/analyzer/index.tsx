@@ -4,7 +4,7 @@ import { TableComponent } from "@/components/custom-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { IStockComponent } from "@/interface/stock";
-import { useGetStockAnalysisStat } from "@/services/stock";
+import { useGetStockAnalysisStat, usePredictStock } from "@/services/stock";
 import { DataItem } from "@/types";
 import { CautionIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/dialog";
 import { InputFilter } from "@/components/filter/input-filter";
 import ShowAnalysisHistory from "./show-analysis-history";
+import { DataSourceAnalyzer } from "@/components/util";
+import DropdownSelect from "@/components/DropdownSelect";
+import YearDropdownSelect from "@/components/yearSelectdropdown";
 
 interface DataType extends DataItem {
   id: number;
@@ -33,10 +36,13 @@ interface DataType extends DataItem {
 const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const [isFetchStats, setIsFetchStats] = useState<boolean>(false);
   const [showAnalysisResult, setShowAnalysisResult] = useState<boolean>(false);
+  const [year, setYear] = useState<number>(1);
   const [showAnalysisHistory, setShowAnalysisHistory] =
     useState<boolean>(false);
   const [queryHistory, setQueryHistory] = useState<string>("");
-
+  const handleDropdownChange = (value: number) => {
+    setYear(value);
+  };
   const {
     getStockAnalysisStatData,
     getStockAnalysisStatFilter,
@@ -44,7 +50,10 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     setGetStockAnalysisStatFilter,
     getStockAnalysisStatError,
   } = useGetStockAnalysisStat({ enabled: isFetchStats });
-
+  const { predictStockData, predictStockIsLoading, predictStockPayload } =
+    usePredictStock((res: any) => {
+      setShowAnalysisResult(!showAnalysisResult);
+    });
   useEffect(() => {
     setGetStockAnalysisStatFilter({
       symbol: symbol,
@@ -52,6 +61,8 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     });
     setIsFetchStats(true);
   }, [symbol]);
+
+  console.log("stockData", getStockAnalysisStatData);
 
   const cellRenderers = {
     feature: (item: DataType) => (
@@ -61,19 +72,20 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     ),
     year1: (item: DataType) => (
       <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year1} {item?.year1 && "%"}
+        {item?.year1 ? parseFloat(String(item.year1)).toFixed(2) : "-"}
       </Text>
     ),
     year5: (item: DataType) => (
       <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year5} {item?.year5 && "%"}
+        {item?.year5 ? parseFloat(String(item.year5)).toFixed(2) : "-"}
       </Text>
     ),
     year10: (item: DataType) => (
       <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year10} {item?.year10 && "%"}
+        {item?.year10 ? parseFloat(String(item.year10)).toFixed(2) : "-"}
       </Text>
     ),
+
     low: () => (
       <Box className="flex justify-center">
         <Input name="low" className="h-8 w-[10.6rem]" />
@@ -121,48 +133,6 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     medium: "MID",
     high: "HIGH",
   };
-
-  const dataSources = [
-    {
-      id: 1,
-      year1: 10.67,
-      year10: 20.5,
-      year5: 30.2,
-      feature: "ROIC",
-    },
-    {
-      id: 2,
-      year1: 10.67,
-      year10: 20.5,
-      year5: 30.2,
-      feature: "Rev. Growth %",
-    },
-    {
-      id: 3,
-      year1: 10.67,
-      year10: 20.5,
-      year5: 30.2,
-      feature: "Profit Margin",
-    },
-    {
-      id: 4,
-      year1: 10.67,
-      year10: 20.5,
-      year5: 30.2,
-      feature: "Free Cash Flow Margin",
-    },
-    {
-      id: 5,
-      year1: 10.67,
-      year10: 20.5,
-      feature: "P/E",
-    },
-    {
-      id: 6,
-      year1: 10.67,
-      feature: "P/FCF",
-    },
-  ];
 
   const dataSource = [
     {
@@ -250,7 +220,48 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       entries: 3,
     },
   ];
-
+  const RunAnalysis = () => {
+    const payload = {
+      symbol: symbol,
+      years: year,
+      roic: {
+        low: 0,
+        mid: 0,
+        high: 0,
+      },
+      desiredAnnReturn: {
+        low: 0,
+        mid: 0,
+        high: 0,
+      },
+      revGrowth: {
+        low: 0,
+        mid: 0,
+        high: 0,
+      },
+      profitMargin: {
+        low: 0,
+        mid: 0,
+        high: 0,
+      },
+      freeCashFlowMargin: {
+        low: 0,
+        mid: 0,
+        high: 0,
+      },
+      peRatio: {
+        low: 0,
+        mid: 0,
+        high: 0,
+      },
+      pfcf: {
+        low: 0,
+        mid: 0,
+        high: 0,
+      },
+    };
+    //predictStockPayload(payload);
+  };
   return (
     <Box py={4}>
       <Box bg="#fff" borderRadius="8px" pt={4}>
@@ -264,6 +275,10 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           <Text fontWeight={400} fontSize={18} color="#111928">
             Stock Analyser
           </Text>
+
+          <Box>
+            <YearDropdownSelect value={year} onChange={handleDropdownChange} />
+          </Box>
           <Button
             className="border-[#351F05] px-3 py-2 font-medium text-[#351F05] text-xs"
             variant={"outline"}
@@ -272,8 +287,9 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
             Analysis History
           </Button>
         </Box>
+
         <TableComponent<DataType>
-          tableData={dataSources}
+          tableData={DataSourceAnalyzer(getStockAnalysisStatData)}
           cellRenderers={cellRenderers}
           columnOrder={columnOrder}
           columnLabels={columnLabels}
@@ -291,7 +307,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
         <Button
           className="bg-[#291804] text-white px-3 py-3 font-medium text-base me-auto"
           variant={"secondary"}
-          onClick={() => setShowAnalysisResult(!showAnalysisResult)}
+          onClick={RunAnalysis}
         >
           Run Analysis
         </Button>
@@ -316,6 +332,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
               Analysis Result
             </Text>
           </Box>
+
           <TableComponent<DataType>
             tableData={dataSource}
             cellRenderers={cellRunRenderer}

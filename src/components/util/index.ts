@@ -1297,6 +1297,55 @@ export const AlldataSourceFinance = (filter: string, Data: any[]) => {
   }
   return dataSources;
 };
+
+export const DataSourceAnalyzer = (Data: any) => {
+  const dataSources = [
+    {
+      id: 1,
+      year1: Data?.roic?.first,
+      year10: Data?.roic?.ten,
+      year5: Data?.roic?.fifth,
+      feature: "ROIC",
+    },
+    {
+      id: 2,
+      year1: Data?.revGrowth?.first,
+      year10: Data?.revGrowth?.ten,
+      year5: Data?.revGrowth?.fifth,
+      feature: "Rev. Growth %",
+    },
+    {
+      id: 3,
+      year1: Data?.profitMargin?.first,
+      year10: Data?.profitMargin?.ten,
+      year5: Data?.profitMargin?.fifth,
+      feature: "Profit Margin",
+    },
+    {
+      id: 4,
+      year1: Data?.freeCashFlowMargin?.first,
+      year10: Data?.freeCashFlowMargin?.ten,
+      year5: Data?.freeCashFlowMargin?.fifth,
+      feature: "Free Cash Flow Margin",
+    },
+    {
+      id: 5,
+      year1: Data?.peRatio?.first,
+      year10: Data?.peRatio?.ten,
+      year5: Data?.peRatio?.fifth,
+      feature: "P/E",
+    },
+    {
+      id: 6,
+      year1: Data?.pfcf?.first,
+      year10: Data?.pfcf?.ten,
+      year5: Data?.pfcf?.fifth,
+      feature: "P/FCF",
+    },
+  ];
+  return dataSources;
+};
+
 /**
  * Converts an ISO date string to a human-readable date string.
  * @param isoDateString - The ISO date string (e.g., "2024-04-16T16:33:17").

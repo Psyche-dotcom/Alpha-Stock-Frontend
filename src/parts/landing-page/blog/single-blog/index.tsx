@@ -51,18 +51,6 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
     getBlogCommentsPayload,
   } = useGetBlogComments((res: any) => {});
 
-  const { likeUnlikeData, likeUnlikePayload, likeUnlikeIsLoading } =
-    useBlogLikeUnlike((res: any) => {
-      showSuccessAlert(res);
-      setCommentLiked((prev) => !prev);
-      setCommentCount((prev) => (commentLiked ? prev - 1 : prev + 1));
-    });
-
-  const { addCommentData, addCommentPayload, addCommentIsLoading } =
-    useAddComment((res: any) => {
-      showSuccessAlert("Comment added successfully");
-    });
-
   useEffect(() => {
     const payload = {
       userId: "",
@@ -73,7 +61,7 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
 
   useEffect(() => {
     getBlogCommentsPayload(payload);
-  }, [pageSize, addCommentData]);
+  }, [pageSize]);
 
   const handleMoreClick = () => {
     if (getBlogCommentsData?.totalPages !== 1) setPageSize((prev) => prev + 5);
@@ -93,14 +81,6 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
       comment: "",
     },
   });
-
-  async function onSubmit(values: FormSchemaType) {
-    const payload = {
-      content: values.comment,
-      blogPostId: blogId,
-    };
-    addCommentPayload(payload);
-  }
 
   const handleReaction = () => {
     showErrorAlert("Please login!");

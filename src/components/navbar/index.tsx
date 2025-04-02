@@ -6,22 +6,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "../ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { SearchSchemaType, searchSchema } from "@/schemas";
-import SearchDropdown from "../search-dropdown";
+import { Box } from "@chakra-ui/react";
+import { useHandlePush } from "@/hooks/handlePush";
 
 const Navbar = () => {
-  const form = useForm<SearchSchemaType>({
-    resolver: zodResolver(searchSchema),
-    defaultValues: {
-      search: "",
-    },
-  });
-
+  const { handlePush } = useHandlePush();
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   return (
-    <div className="bg-white py-[18.5px] px-4">
+    <div className="bg-white px-4">
       <div className="flex items-center lg:gap-[64px] xl:gap-[96px] justify-between">
         <Link href={"/"} passHref>
           <CompanyIcon />
@@ -35,8 +27,21 @@ const Navbar = () => {
             ))}
           </div>
           <div className="flex lg:gap-[32px] xl:gap-[64px] flex-1">
-            <SearchDropdown />
-
+            <Box
+              display={"flex"}
+              gap="10px"
+              flex={1}
+              onClick={() => handlePush("/login")}
+              border={"1px solid #D1D5DB"}
+              h={10}
+              justifyContent={"space-between"}
+              borderRadius={"12px"}
+              alignItems={"center"}
+              pl={3}
+              cursor={"pointer"}
+            >
+              <SearchIcon />
+            </Box>
             <div>
               <div className="gap-4 items-center flex">
                 <Button
@@ -59,12 +64,15 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <div className="lg:hidden" onClick={() => setShowNavbar(!showNavbar)}>
+        <div
+          className="lg:hidden cursor-pointer"
+          onClick={() => setShowNavbar(!showNavbar)}
+        >
           <BurgerIcon />
         </div>
       </div>
       {showNavbar && (
-        <div className="block lg:hidden mt-2">
+        <div className="block lg:hidden mt-2 pb-3">
           <div className="flex flex-col">
             {navbarList.map((nav, index) => (
               <Link href={nav.path} key={index} passHref>
@@ -74,7 +82,21 @@ const Navbar = () => {
           </div>
 
           <div className="flex gap-2.5 mb-3">
-            <SearchDropdown />
+            <Box
+              display={"flex"}
+              gap="10px"
+              flex={1}
+              onClick={() => handlePush("/login")}
+              border={"1px solid #D1D5DB"}
+              h={10}
+              justifyContent={"space-between"}
+              borderRadius={"12px"}
+              alignItems={"center"}
+              pl={3}
+              cursor={"pointer"}
+            >
+              <SearchIcon />
+            </Box>
           </div>
           <div className="gap-3 flex-col flex">
             <Button

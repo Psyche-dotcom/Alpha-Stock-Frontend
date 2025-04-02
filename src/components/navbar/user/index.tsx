@@ -20,21 +20,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { ROUTES } from "@/constants/routes";
 import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { SearchSchemaType, searchSchema } from "@/schemas";
-import { Form } from "../../ui/form";
-import InputForm from "../../form/InputForm";
-import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useUserSession } from "@/app/context/user-context";
 import { useHandlePush } from "@/hooks/handlePush";
 import SearchDropdown from "@/components/search-dropdown";
+import Logout from "@/components/logout";
 
 const UserNavbar = () => {
   const { profileData } = useUserSession();
   const { handlePush } = useHandlePush();
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <div className="bg-white px-4 rounded-[12px] mb-8 sticky py-[18.5px] z-10">
@@ -68,7 +64,10 @@ const UserNavbar = () => {
                 <Flex gap="4px" alignItems="center">
                   <div className="w-[30px] h-[30px] rounded-full">
                     <Image
-                      src="/assets/images/card-image.png"
+                      src={
+                        profileData?.result?.profilePicture ||
+                        "/assets/images/card-image.png"
+                      }
                       width={30}
                       height={30}
                       alt="Avatar icon"
@@ -90,7 +89,7 @@ const UserNavbar = () => {
                 <MenuItem onClick={() => handlePush(ROUTES.USER.SETTINGS)}>
                   Settings
                 </MenuItem>
-                <MenuItem>Log out</MenuItem>
+                <MenuItem onClick={() => setOpen(true)}>Log out</MenuItem>
               </MenuList>
             </Menu>
           </div>
@@ -109,6 +108,7 @@ const UserNavbar = () => {
           <SearchDropdown isAuth={true} />
         </div>
       )}
+      <Logout open={open} setOpen={setOpen} />
     </div>
   );
 };

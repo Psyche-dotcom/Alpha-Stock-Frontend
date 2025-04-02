@@ -17,10 +17,16 @@ import { ButtonIcon } from "@/components/button/button-icon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import Logout from "@/components/logout";
+import { useAdminSession } from "@/app/context/admin-context";
+import { capitalizeFirstLetter } from "@/utils";
 
 const Navbar = () => {
   const router = useRouter();
+  const { profileData } = useAdminSession();
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
     <Box>
       <Flex
@@ -69,11 +75,13 @@ const Navbar = () => {
               as={Button}
               border="1px solid #D1D5DB"
             >
-              {/* Avatar display on button */}
               <Flex gap="4px" alignItems="center">
                 <Box w="30px" h="30px" borderRadius="50%">
                   <Image
-                    src="/assets/images/card-image.png"
+                    src={
+                      profileData?.result?.profilePicture ||
+                      "/assets/images/card-image.png"
+                    }
                     width={30}
                     height={30}
                     alt="Avatar icon"
@@ -82,7 +90,9 @@ const Navbar = () => {
                 </Box>
                 <Box textAlign={"start"}>
                   <Text color="#111928" fontWeight={600} fontSize="12px">
-                    Jese Leos
+                    {capitalizeFirstLetter(
+                      profileData?.result?.firstName.toLowerCase() || ""
+                    )}
                   </Text>
                   <Text color="#6B7280" fontWeight={400} fontSize="12px">
                     Admin
@@ -94,11 +104,12 @@ const Navbar = () => {
               <MenuItem onClick={() => router.push(ROUTES.ADMIN.PROFILE)}>
                 Settings
               </MenuItem>
-              <MenuItem>Log out</MenuItem>
+              <MenuItem onClick={() => setOpen(true)}>Log out</MenuItem>
             </MenuList>
           </Menu>
         </Box>
       </Flex>
+      <Logout open={open} setOpen={setOpen} />
     </Box>
   );
 };

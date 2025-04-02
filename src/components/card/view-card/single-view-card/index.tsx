@@ -21,6 +21,7 @@ const SingleViewCard: React.FC<IViewProps> = ({ card, isAuth = false }) => {
       bgPosition="center"
       bgRepeat="no-repeat"
       flex={1}
+      cursor={"pointer"}
       onClick={() =>
         handlePush(isAuth ? `/user/blog/${card?.id}` : `/blog/${card?.id}`)
       }

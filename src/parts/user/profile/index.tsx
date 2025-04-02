@@ -22,13 +22,16 @@ import { capitalizeFirstLetter } from "@/utils";
 import { ApiResponse } from "@/types";
 import { showSuccessAlert } from "@/utils/alert";
 import { useUserSession } from "@/app/context/user-context";
+import { Button } from "@/components/ui/button";
 
-const UserProfile: React.FC = async () => {
+const UserProfile: React.FC = () => {
   const { profileData } = useUserSession();
-  const role = (await Storage.get("role"))?.toLowerCase();
+  const role = Storage.get("role") as string | undefined;
+  const formattedRole = role?.toLowerCase() || "";
   const { updateProfileIsLoading, updateProfilePayload } = useUpdateProfile(
     (res: ApiResponse) => {
       showSuccessAlert(res?.result);
+      window.location.reload();
     }
   );
   const form = useForm<UpdateSchemaType>({
@@ -108,7 +111,7 @@ const UserProfile: React.FC = async () => {
         >
           {profileData?.result?.firstName + " " + profileData?.result?.lastName}
         </Text>
-        {role !== "user" && (
+        {formattedRole !== "user" && (
           <Text
             mb={"65px"}
             fontWeight={400}
@@ -116,7 +119,7 @@ const UserProfile: React.FC = async () => {
             color="#6B7280"
             textAlign="center"
           >
-            Platform {capitalizeFirstLetter(role || "")}
+            Platform {capitalizeFirstLetter(formattedRole || "")}
           </Text>
         )}
         <Form {...form}>
@@ -179,25 +182,13 @@ const UserProfile: React.FC = async () => {
               />
             </div>
             <Flex gap={8}>
-              <ButtonIcon
-                text="Cancel"
-                variant="outline"
-                color="#7B6B58"
-                border="1px solid #7B6B58"
-                w="87px"
-                p="16px"
-                type="button"
-              />
-              <ButtonIcon
-                text="Save"
-                bg="#291804"
-                variant="solid"
-                color="#ffffff"
-                w="100%"
-                p="16px"
-                type="submit"
+              <Button
+                variant="secondary"
+                className="w-full py-2.5 font-medium text-sm h-12"
                 disabled={updateProfileIsLoading}
-              />
+              >
+                Save
+              </Button>
             </Flex>
           </form>
         </Form>

@@ -18,6 +18,7 @@ export const ROUTES = {
     FUNDAMENTALS: "/user/fundamentals",
     STOCKANALYSERS: "/user/stock-analyzer",
     PROFILE: "/user/profile",
+    SETTINGS: "/user/settings",
     PLANS: "/user/plans",
     BLOGS: "/user/blog",
     SUBSCRIPTION: "/user/subscription",

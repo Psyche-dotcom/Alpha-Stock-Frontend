@@ -15,7 +15,7 @@ export default function LandingLayout({
 }>) {
   return (
     <>
-      <header>
+      <header className="sticky top-0 z-10 shadow-lg">
         <Navbar />
       </header>
       <Box className="px-4 md:px-6 lg:px-8">{children}</Box>

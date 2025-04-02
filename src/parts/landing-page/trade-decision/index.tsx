@@ -89,7 +89,7 @@ const TradeDecision = () => {
   };
 
   return (
-    <div className="gap-4 lg:gap-8 h-full flex-col lg:flex-row flex">
+    <div className="gap-4 lg:gap-8 h-full flex-col lg:flex-row flex mt-4">
       <div className="py-5 sm:py-6 md:py-8 lg:py-[64px] xl:py-[84px] rounded-[12px] w-full bg-[#180E03] px-5 sm:px-6 md:px-8">
         <p className="mb-4 font-semibold leading-[43.2px] md:leading-[50px] lg:leading-[59px] text-[#EBE9E6] text-[30px] sm:text-[36px] md:text-[48px] xl:text-[60px]">
           Make informed trade decisions after analysing your ROI

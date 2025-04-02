@@ -30,7 +30,7 @@ const LinkButton: FC<ILinkButton> = ({
   gap,
   icon,
   showText = true,
-  w = "100%",
+  w = "auto",
 }) => {
   return (
     <Link href={href} passHref>

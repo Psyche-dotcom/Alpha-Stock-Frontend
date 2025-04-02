@@ -21,11 +21,11 @@ import Storage from "@/utils/storage";
 import { capitalizeFirstLetter } from "@/utils";
 import { ApiResponse } from "@/types";
 import { showSuccessAlert } from "@/utils/alert";
-import { useAdminSession } from "@/app/context/admin-context";
+import { useUserSession } from "@/app/context/user-context";
 import { Button } from "@/components/ui/button";
 
-const Profile: React.FC = () => {
-  const { profileData } = useAdminSession();
+const UserProfile: React.FC = () => {
+  const { profileData } = useUserSession();
   const role = Storage.get("role") as string | undefined;
   const formattedRole = role?.toLowerCase() || "";
   const { updateProfileIsLoading, updateProfilePayload } = useUpdateProfile(
@@ -197,4 +197,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default UserProfile;

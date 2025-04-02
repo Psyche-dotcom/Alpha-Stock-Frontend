@@ -1348,6 +1348,40 @@ export const DataSourceAnalyzer = (Data: any) => {
       feature: "P/FCF",
       category: "pfcf",
     },
+    {
+      id: 6,
+      year1: 0,
+      year10: 0,
+      year5: 0,
+      feature: "Desired Annual Return",
+      category: "desiredAnnReturn",
+    },
+  ];
+  return dataSources;
+};
+export const DataSourceAnalyzerResult = (Data: any) => {
+  const dataSources = [
+    {
+      feature: "Discounted Earnings Value",
+      low: Data?.discountedEarningsValue.low,
+      medium: Data?.discountedEarningsValue.mid,
+      high: Data?.discountedEarningsValue.high,
+      id: 1,
+    },
+    {
+      feature: "Discounted Free Cash Flow Value",
+      low: Data?.discountedFreeCashFlowValue.low,
+      medium: Data?.discountedFreeCashFlowValue.mid,
+      high: Data?.discountedFreeCashFlowValue.high,
+      id: 2,
+    },
+    {
+      feature: "Current Price Return",
+      low: 117.83,
+      medium: 117.83,
+      high: 117.83,
+      id: 3,
+    },
   ];
   return dataSources;
 };

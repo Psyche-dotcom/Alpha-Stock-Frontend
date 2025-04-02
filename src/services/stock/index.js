@@ -141,9 +141,9 @@ export const usePredictStock = (handleSuccess) => {
     mutationFn: (payload) =>
       httpService.postData(payload, routes.stockAnalyzerUrlpredict()),
     onSuccess: (requestParams) => {
-      const resData = requestParams?.data?.result || {};
+      const resData = requestParams?.data || {};
       handleSuccess(resData);
-      showSuccessAlert(resData);
+      showSuccessAlert("Stock prediction data fetched successfully.");
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);
@@ -151,7 +151,7 @@ export const usePredictStock = (handleSuccess) => {
   });
 
   return {
-    predictStockData: data,
+    predictStockData: data?.data,
     predictStockError: ErrorHandler(error),
     predictStockIsLoading: isPending,
     predictStockPayload: (requestPayload) => mutateAsync(requestPayload),

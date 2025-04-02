@@ -4,7 +4,11 @@ import { TableComponent } from "@/components/custom-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { IStockComponent } from "@/interface/stock";
-import { useGetStockAnalysisStat, usePredictStock } from "@/services/stock";
+import {
+  useGetStockAnalysisStat,
+  useGetStockInfo,
+  usePredictStock,
+} from "@/services/stock";
 import { DataItem } from "@/types";
 import { CautionIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
@@ -18,7 +22,10 @@ import {
 } from "@/components/ui/dialog";
 import { InputFilter } from "@/components/filter/input-filter";
 import ShowAnalysisHistory from "./show-analysis-history";
-import { DataSourceAnalyzer } from "@/components/util";
+import {
+  DataSourceAnalyzer,
+  DataSourceAnalyzerResult,
+} from "@/components/util";
 import DropdownSelect from "@/components/DropdownSelect";
 import YearDropdownSelect from "@/components/yearSelectdropdown";
 
@@ -48,6 +55,7 @@ type RangeKey = "low" | "mid" | "high";
 
 const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const [isFetchStats, setIsFetchStats] = useState<boolean>(false);
+  const [isFetchStock, setIsFetchStock] = useState<boolean>(false);
   const [showAnalysisResult, setShowAnalysisResult] = useState<boolean>(false);
   const [year, setYear] = useState<number>(1);
   const [showAnalysisHistory, setShowAnalysisHistory] =
@@ -57,7 +65,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     Record<string, Record<RangeKey, number>>
   >({
     roic: { low: 0, mid: 0, high: 0 },
-    // desiredAnnReturn: { low: 0, mid: 0, high: 0 },
+    desiredAnnReturn: { low: 0, mid: 0, high: 0 },
     revGrowth: { low: 0, mid: 0, high: 0 },
     profitMargin: { low: 0, mid: 0, high: 0 },
     freeCashFlowMargin: { low: 0, mid: 0, high: 0 },
@@ -67,6 +75,14 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const handleDropdownChange = (value: number) => {
     setYear(value);
   };
+
+  const {
+    getStockInfoData,
+    getStockInfoFilter,
+    getStockInfoIsLoading,
+    setGetStockInfoFilter,
+    getStockInfoError,
+  } = useGetStockInfo({ enabled: isFetchStock });
   const {
     getStockAnalysisStatData,
     getStockAnalysisStatFilter,
@@ -75,14 +91,23 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     getStockAnalysisStatError,
   } = useGetStockAnalysisStat({ enabled: isFetchStats });
   const { predictStockData, predictStockIsLoading, predictStockPayload } =
-    usePredictStock((res: any) => {
-      setShowAnalysisResult(!showAnalysisResult);
-    });
+    usePredictStock((res: { statusCode: number; result: any }) => {
+      console.log("res", res);
+      if (res.statusCode == 200) {
+        setShowAnalysisResult(true);
+      }
+    }) as {
+      predictStockData: { result: any } | null;
+      predictStockIsLoading: boolean;
+      predictStockPayload: (payload: any) => void;
+    };
   useEffect(() => {
+    setGetStockInfoFilter({ symbol: symbol });
     setGetStockAnalysisStatFilter({
       symbol: symbol,
       period: "annual",
     });
+    setIsFetchStock(true);
     setIsFetchStats(true);
   }, [symbol]);
 
@@ -162,13 +187,19 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const cellRunRenderer = {
     feature: (item: DataTypes) => <p className="flex">{item?.feature}</p>,
     low: (item: DataTypes) => (
-      <p className="flex justify-center">{item?.low}</p>
+      <p className="flex justify-center">
+        {item?.low ? parseFloat(String(item.low)).toFixed(2) : "-"}
+      </p>
     ),
     medium: (item: DataTypes) => (
-      <p className="flex justify-center">{item?.medium}</p>
+      <p className="flex justify-center">
+        {item?.medium ? parseFloat(String(item.medium)).toFixed(2) : "-"}
+      </p>
     ),
     high: (item: DataTypes) => (
-      <p className="flex justify-center">{item?.high}</p>
+      <p className="flex justify-center">
+        {item?.high ? parseFloat(String(item.high)).toFixed(2) : "-"}
+      </p>
     ),
   };
 
@@ -191,30 +222,6 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     medium: "MID",
     high: "HIGH",
   };
-
-  const dataSource = [
-    {
-      feature: "Multiples of Earnings Value",
-      low: 117.83,
-      medium: 117.83,
-      high: 117.83,
-      id: 1,
-    },
-    {
-      feature: "Discounted Cash Flow Value",
-      low: 117.83,
-      medium: 117.83,
-      high: 117.83,
-      id: 2,
-    },
-    {
-      feature: "Current Price Return",
-      low: 117.83,
-      medium: 117.83,
-      high: 117.83,
-      id: 3,
-    },
-  ];
 
   const columnRunOrder: (keyof DataTypes)[] = [
     "feature",
@@ -289,9 +296,9 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
         high: tableState?.roic?.high || 0,
       },
       desiredAnnReturn: {
-        low: 0,
-        mid: 0,
-        high: 0,
+        low: tableState?.desiredAnnReturn?.low || 0,
+        mid: tableState?.desiredAnnReturn?.mid || 0,
+        high: tableState?.desiredAnnReturn?.high || 0,
       },
       revGrowth: {
         low: tableState?.revGrowth?.low || 0,
@@ -319,10 +326,11 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
         high: tableState?.pfcf?.mid || 0,
       },
     };
-    //predictStockPayload(payload);
-    console.log(tableState);
-  };
+    predictStockPayload(payload);
 
+    setShowAnalysisResult(true);
+  };
+  console.log("stockada", predictStockData);
   return (
     <Box py={4}>
       <Box bg="#fff" borderRadius="8px" pt={4}>
@@ -363,7 +371,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           asChild
         >
           Current Price:
-          <p className="font-bold ">US$78.34</p>
+          <p className="font-bold ">US${getStockInfoData[0]?.price}</p>
         </Button>
         <Button
           className="bg-[#291804] text-white px-3 py-3 font-medium text-base me-auto"
@@ -395,7 +403,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           </Box>
 
           <TableComponent<DataTypes>
-            tableData={dataSource}
+            tableData={DataSourceAnalyzerResult(predictStockData?.result)}
             cellRenderers={cellRunRenderer}
             columnOrder={columnRunOrder}
             columnLabels={columnRunLabel}

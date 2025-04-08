@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Pagination } from "@/components/ui/pagination";
 import UserDetails from "@/components/user-content";
-import { useDeleteUser, useGetUsers } from "@/services/user";
+import { useDeleteUser, useGetUsers, useGetUsersStats } from "@/services/user";
 import { UserData } from "@/types";
 import { DeleteIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -36,6 +36,8 @@ const Users = () => {
       refetchUsers();
       setIsOpen(false);
     });
+  const { isUserStatsFetching, userStatsData, isUserStatsLoading } =
+    useGetUsersStats();
 
   const cellRenderers = {
     fullname: (record: UserData) => (
@@ -220,7 +222,7 @@ const Users = () => {
 
   return (
     <Box>
-      <AreaChartComponent />
+      <AreaChartComponent data={userStatsData?.userStatistics || []} />
       <div className="flex items-center gap-4 my-5">
         <div className="flex gap-2 bg-white rounded-md px-3 py-1">
           {filterBtnList.map((_, index: number) => (

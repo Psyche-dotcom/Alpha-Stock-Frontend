@@ -1,3 +1,5 @@
+import { jsPDF } from "jspdf";
+
 export function capitalizeFirstLetter(letter: string): string {
   return letter.charAt(0).toUpperCase() + letter.slice(1);
 }
@@ -30,4 +32,18 @@ export const formatDateTime = (dateString: string): string => {
     second: "2-digit", // "30"
     hour12: true, // AM/PM format
   }).format(date);
+};
+
+export const downloadPaymentPDF = (data: any) => {
+  const doc = new jsPDF();
+  doc.setFontSize(14);
+  doc.text("Payment Details", 20, 20);
+
+  let y = 30;
+  for (const [key, value] of Object.entries(data)) {
+    doc.text(`${key}: ${value}`, 20, y);
+    y += 10;
+  }
+
+  doc.save("payment-details.pdf");
 };

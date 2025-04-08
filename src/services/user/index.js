@@ -32,7 +32,6 @@ export const useSuspendUser = (handleSuccess) => {
       httpService.postData({}, routes.suspendUser(email)),
     onSuccess: (requestParams) => {
       const resData = requestParams?.data?.result || {};
-      console.log(resData);
       handleSuccess(resData);
       showSuccessAlert(resData);
     },
@@ -55,7 +54,6 @@ export const useUnsuspendUser = (handleSuccess) => {
       httpService.postData({}, routes.unSuspendUser(email)),
     onSuccess: (requestParams) => {
       const resData = requestParams?.data?.result || {};
-      console.log(resData);
       handleSuccess(resData);
       showSuccessAlert(resData);
     },
@@ -90,5 +88,23 @@ export const useDeleteUser = (handleSuccess) => {
     deleteUserDataError: ErrorHandler(error),
     deleteUserIsLoading: isPending,
     deleteUserPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useGetUsersStats = () => {
+  const { isFetched, isLoading, error, data, refetch, isFetching, setFilter } =
+    useFetchItem({
+      queryKey: ["userstats"],
+      queryFn: () => {
+        return httpService.getData(routes.userStats());
+      },
+      retry: 2,
+    });
+  return {
+    isUserStatsFetching: isFetching,
+    isUserStatsLoading: isLoading,
+    userStatsData: data?.data?.result || {},
+    userStatsError: ErrorHandler(error),
+    refetchUserStatsData: refetch,
   };
 };

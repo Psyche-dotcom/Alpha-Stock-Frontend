@@ -7,6 +7,7 @@ export const AlldataSourceFinance = (filter: string, Data: any[]) => {
     row3?: any;
     row4?: any;
     row5?: any;
+    category?: string;
   }[] = [];
 
   if (filter == "income-statements") {
@@ -82,6 +83,7 @@ export const AlldataSourceFinance = (filter: string, Data: any[]) => {
         row3: Data[2]?.eps,
         row4: Data[3]?.eps,
         row5: Data[4]?.eps,
+        category: "Basic Eps",
       },
       {
         id: 30,
@@ -91,6 +93,7 @@ export const AlldataSourceFinance = (filter: string, Data: any[]) => {
         row3: Data[2]?.epsDiluted,
         row4: Data[3]?.epsDiluted,
         row5: Data[4]?.epsDiluted,
+        category: "Diluted Eps",
       },
       {
         id: 33,
@@ -343,6 +346,7 @@ export const AlldataSourceFinance = (filter: string, Data: any[]) => {
         row3: Data[2]?.weightedAverageShsOut,
         row4: Data[3]?.weightedAverageShsOut,
         row5: Data[4]?.weightedAverageShsOut,
+        category: "Shares Data",
       },
       {
         id: 32,
@@ -352,6 +356,7 @@ export const AlldataSourceFinance = (filter: string, Data: any[]) => {
         row3: Data[2]?.weightedAverageShsOutDil,
         row4: Data[3]?.weightedAverageShsOutDil,
         row5: Data[4]?.weightedAverageShsOutDil,
+        category: "Shares Data",
       },
     ];
   } else if (filter == "balance-sheet") {

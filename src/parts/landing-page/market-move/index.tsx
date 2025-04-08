@@ -22,7 +22,6 @@ const MarketMoveContent = () => {
       const stockPrice = event;
       const parsedData: any = JSON.parse(stockPrice.data);
       const parsedCompleteData: IStockData[] = JSON.parse(parsedData);
-      console.log("Parsed Data", parsedCompleteData);
       const transformedData: MarketMove[] = parsedCompleteData
         .slice(0, 5)
         .map((stock: any) => ({
@@ -40,7 +39,6 @@ const MarketMoveContent = () => {
     };
 
     eventSource.onerror = (err) => {
-      console.error("EventSource failed:", err);
       eventSource.close();
     };
 

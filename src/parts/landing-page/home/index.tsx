@@ -77,7 +77,6 @@ const Home = () => {
     };
 
     eventSource.onerror = (err) => {
-      console.error("EventSource failed:", err);
       eventSource.close();
     };
 

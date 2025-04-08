@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import { useGetAllPayments } from "@/services/payment";
 import { PaymentData } from "@/types";
-import { formatDateTime } from "@/utils";
+import { downloadPaymentPDF, formatDateTime } from "@/utils";
 import { DownloadIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
@@ -71,8 +71,8 @@ const TransactionsAnalytics = () => {
         {record?.paymentStatus}
       </Text>
     ),
-    action: () => (
-      <Box>
+    action: (record: PaymentData) => (
+      <Box onClick={() => downloadPaymentPDF(record)}>
         <DownloadIcon />
       </Box>
     ),
@@ -135,7 +135,7 @@ const TransactionsAnalytics = () => {
 
   return (
     <Box>
-      <AreaChartComponent />
+      {/* <AreaChartComponent /> */}
       <Box bg="#fff" mt={5} pt={4} borderRadius={"12px"}>
         {/* <div className="flex gap-3 bg-white rounded-md px-3 mb-4">
           {filterBtnList.map((_, index: number) => (

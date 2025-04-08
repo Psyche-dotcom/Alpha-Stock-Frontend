@@ -76,10 +76,8 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     if (btnFilter == "income-statements") {
       setData(getIncomeStatementData);
     } else if (btnFilter == "balance-sheet") {
-      console.log("balance shet set");
       setData(getBalanceSheetData);
     } else if (btnFilter == "cashflow") {
-      console.log("cashflowset");
       setData(getCashFlowData);
     }
   }, [
@@ -89,8 +87,6 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     btnFilter,
     period,
   ]);
-
-  console.log("all data", Data);
 
   const cellRenderers = {
     title: (item: DataType) => (
@@ -195,6 +191,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
           </Box>
         </Flex>
       </Box>
+      <TableComponent<DataType>
+        //@ts-ignore
+        tableData={AlldataSourceFinance(btnFilter, Data)}
+        cellRenderers={cellRenderers}
+        columnOrder={columnOrder}
+        columnLabels={columnLabels}
+      />
       <TableComponent<DataType>
         //@ts-ignore
         tableData={AlldataSourceFinance(btnFilter, Data)}

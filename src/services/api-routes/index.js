@@ -47,9 +47,9 @@ export const routes = {
     `/api/payment/user/all/${user_id}/${perPageSize}/${pageNumber}`,
   getAllPayments: (perPageSize, pageNumber) =>
     `/api/payment/user/all/${perPageSize}/${pageNumber}`,
-  getCompanies: () =>
-    `https://financialmodelingprep.com/stable/stock-list?apikey=${process.env.NEXT_PUBLIC_API_KEY}`,
+  getCompanies: (symbol) => `/api/stock/search?symbol=${symbol}`,
   getWishlist: () => "/api/stock/get-wishlist",
   deleteWishlist: () => "/api/stock/delete-wishlist",
   updateWishlist: () => "/api/stock/update-wishlist",
+  userStats: () => "/api/admin/userstats",
 };

@@ -90,6 +90,16 @@ const StockManager = () => {
       changespercent: 0.16,
       changesisProgressive: false,
     },
+    {
+      id: 2,
+      url: "/assets/images/card-image.png",
+      agent: "GFAI",
+      price: 1.27,
+      changevalue: 0.03,
+      changeIsProgressive: true,
+      changespercent: 0.16,
+      changesisProgressive: false,
+    },
   ];
 
   const onPageChange = (page: number) => {

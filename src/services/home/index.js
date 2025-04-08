@@ -1,13 +1,13 @@
 import { routes } from "../api-routes";
+import httpService from "../httpService";
 import useFetchItem from "../useFetchItem";
-import axios from "axios";
 
 export const useGetCompanies = ({ enabled = true }) => {
   const { isFetched, isLoading, error, data, refetch, isFetching, setFilter } =
     useFetchItem({
       queryKey: ["companies"],
-      queryFn: () => {
-        return axios.get(routes.getCompanies());
+      queryFn: (symbol) => {
+        return httpService.getData(routes.getCompanies(symbol));
       },
       enabled,
       retry: 2,
@@ -17,7 +17,7 @@ export const useGetCompanies = ({ enabled = true }) => {
 
   return {
     companiesIsLoading: isLoading,
-    companiesData: data?.data || [],
+    companiesData: data?.data?.result || [],
     companiesRefetch: refetch,
     companiesFilter: setFilter,
   };

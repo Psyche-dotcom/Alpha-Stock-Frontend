@@ -13,6 +13,9 @@ interface Data {
   month: string;
   pv: number;
 }
+interface iProps {
+  data?: any;
+}
 
 const data: Data[] = [
   { month: "Jan", pv: 2400 },
@@ -29,11 +32,30 @@ const data: Data[] = [
   { month: "Dec", pv: 4800 },
 ];
 
-const AreaChartComponent: React.FC = () => {
+const AreaChartComponent: React.FC<iProps> = ({ data }) => {
+  const fullMonthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const formattedData = data.map((item: any) => ({
+    ...item,
+    month: fullMonthNames[item.month - 1],
+  }));
   return (
     <Box borderRadius="8px" bg="#fff" p={8}>
       <ResponsiveContainer width="100%" height={400}>
-        <AreaChart data={data}>
+        <AreaChart data={formattedData}>
           <defs>
             <linearGradient id="gradient1" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#765DFF" />
@@ -46,7 +68,7 @@ const AreaChartComponent: React.FC = () => {
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="pv"
+            dataKey="userCount"
             fill="url(#gradient1)"
             stroke="#4A3AFF"
             strokeWidth={3}

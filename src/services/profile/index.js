@@ -3,6 +3,7 @@ import { ErrorHandler } from "../errorHandler";
 import useFetchItem from "../useFetchItem";
 import httpService from "../httpService";
 import useMutateItem from "../useMutateItem";
+import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
 
 export const useGetProfile = ({ enabled = true }) => {
   const { isFetched, isLoading, error, data, refetch, isFetching, setFilter } =
@@ -28,8 +29,9 @@ export const useUpdateProfile = (handleSuccess) => {
     mutationFn: ({ payload, email }) =>
       httpService.patchData(payload, routes.updateProfile(email)),
     onSuccess: (requestParams) => {
-      const resData = requestParams?.data;
+      const resData = requestParams?.data?.result;
       handleSuccess(resData);
+      showSuccessAlert(resData);
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);

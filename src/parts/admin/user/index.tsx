@@ -255,13 +255,15 @@ const Users = () => {
             columnOrder={columnOrder}
             columnLabels={columnLabels}
           />
-          <div>
-            <Pagination
-              currentPage={pageSize}
-              totalPages={getUsersData?.totalPages || 0}
-              onPageChange={onPageChange}
-            />
-          </div>
+          {getUsersData?.totalPages > 0 && (
+            <div>
+              <Pagination
+                currentPage={pageSize}
+                totalPages={getUsersData?.totalPages || 0}
+                onPageChange={onPageChange}
+              />
+            </div>
+          )}
         </>
       )}
       <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>

@@ -1,4 +1,4 @@
-import { showErrorAlert } from "@/utils/alert";
+import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
 import { routes } from "../api-routes";
 import { ErrorHandler } from "../errorHandler";
 import httpService from "../httpService";
@@ -267,7 +267,6 @@ export const useUpdateBlog = (handleSuccess) => {
     onSuccess: (requestParams) => {
       const resData = requestParams?.data?.result || {};
       handleSuccess(resData);
-      showSuccessAlert(resData);
     },
     onError: (error) => {
       showErrorAlert("Error updating blog!");
@@ -292,6 +291,7 @@ export const useUpdateBlogStatus = (handleSuccess) => {
       showSuccessAlert(resData);
     },
     onError: (error) => {
+      console.log(error);
       showErrorAlert("Error updating blog status!");
     },
   });

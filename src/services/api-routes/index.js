@@ -8,7 +8,11 @@ export const routes = {
   retrievePlans: () => "/api/subscription/retrieve/all",
   updateProfile: (email) => `/api/user/update_details/${email}`,
   blog: () => "/api/blog/post/retrieve/all",
+  createBlog: () => "/api/blog/create",
   getSingleBlog: () => "/api/blog/post/retrieve/single",
+  deleteBlog: (id) => `/api/blog/delete/${id}`,
+  updateBlog: (id) => `/api/blog/update/${id}`,
+  updateBlogStatus: () => `/api/blog/admin/update/blogstatus`,
   getSingleBlogComments: () => "/api/blog/comment/retrieve/all",
   getSingleBlogCommentsComment: () => "/api/blog/comment/reply/retrieve/all",
   getAllUsers: (page_number, per_page_size, data) => {
@@ -52,4 +56,5 @@ export const routes = {
   deleteWishlist: () => "/api/stock/delete-wishlist",
   updateWishlist: () => "/api/stock/update-wishlist",
   userStats: () => "/api/admin/userstats",
+  uploadPicture: () => "/api/blog/upload/picture",
 };

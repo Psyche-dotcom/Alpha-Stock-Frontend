@@ -51,6 +51,16 @@ class HttpService {
       data: payload,
     });
   }
+  async uploadFile(payload, url) {
+    const formData = new FormData();
+    formData.append("file", payload.file);
+    formData.append("fileName", payload.fileName);
+    return this.request.post(this.getServiceUrl(url), formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 }
 
 export default new HttpService();

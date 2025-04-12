@@ -14,6 +14,7 @@ import { formatDateTime } from "@/utils";
 import { ThreeDotsIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 interface DataType {
   id: number;
@@ -49,7 +50,7 @@ const BlogManager = () => {
   }, [pageSize, date, name, filterStatus]);
 
   useEffect(() => {
-    if (getBlogsData?.result?.length > 0) {
+    if (getBlogsData?.result) {
       setBlogsData(getBlogsData);
     }
   }, [getBlogsData]);
@@ -73,18 +74,18 @@ const BlogManager = () => {
         py="2px"
         px={"10px"}
         bg={
-          status === "Published"
+          record?.status === "Published"
             ? "#DEF7EC"
-            : status === "Pending"
+            : record?.status === "Pending"
             ? "#FDF6B2"
             : "#F3F4F6"
         }
         w="fit-content"
         borderRadius={"8px"}
         color={
-          status === "Published"
+          record?.status === "Published"
             ? "#03543F"
-            : status === "Pending"
+            : record?.status === "Pending"
             ? "#723B13"
             : "#111928"
         }
@@ -92,10 +93,13 @@ const BlogManager = () => {
         {record?.status}
       </Text>
     ),
-    action: () => (
-      <Box>
-        <ThreeDotsIcon />
-      </Box>
+    action: (record: BlogData) => (
+      <Link
+        href={`/admin/blog-manager/${record.id}`}
+        className="text-[#111928] bg-[#F3F4F6] py-2 px-3"
+      >
+        View
+      </Link>
     ),
   };
 
@@ -136,16 +140,18 @@ const BlogManager = () => {
 
   return (
     <Box>
-      <LinkButton
-        href={ROUTES.ADMIN.CREATEBLOG}
-        text="+ Create Blog"
-        variant="outline"
-        color="#3A2206"
-        p="12px 20px"
-        border="1px solid #3A2206"
-        fontWeight={500}
-        w={"fit-content"}
-      />
+      <div className="w-[150px]">
+        <LinkButton
+          href={ROUTES.ADMIN.CREATEBLOG}
+          text="+ Create Blog"
+          variant="outline"
+          color="#3A2206"
+          p="12px 20px"
+          border="1px solid #3A2206"
+          fontWeight={500}
+          w={"fit-content"}
+        />
+      </div>
       <Box bg="#fff" mt={6} borderRadius={"12px"}>
         <Box m={4} pt={4}>
           <Text fontWeight={600} fontSize="18px" color="#111928">

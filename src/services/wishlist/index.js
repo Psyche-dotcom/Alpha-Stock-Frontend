@@ -11,7 +11,6 @@ export const useGetWishlist = () => {
     queryFn: () => httpService.getData(routes.getWishlist()),
     retry: 1,
   });
-  console.log(error);
   return {
     getWishlistIsLoading: isLoading,
     getWishlistData: data?.data?.result || [],

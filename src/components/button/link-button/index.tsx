@@ -50,7 +50,7 @@ const LinkButton: FC<ILinkButton> = ({
         }}
         transition="all 0.3s ease"
         display={"flex"}
-        justifyContent={"start"}
+        justifyContent={showText ? "start" : "center"}
         alignContent={"center"}
         gap={gap}
         w={w}

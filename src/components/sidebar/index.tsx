@@ -11,7 +11,7 @@ import { usePathname } from "next/navigation";
 const Sidebar = () => {
   const path = usePathname();
 
-  const [collapseSidebar, setCollapseSidebar] = useState<boolean>(false);
+  const [collapseSidebar, setCollapseSidebar] = useState<boolean>(true);
   return (
     <Box
       bg="#ffffff"
@@ -21,7 +21,7 @@ const Sidebar = () => {
       h="100vh"
       overflowY={"auto"}
     >
-      <Box mb={16} display="flex" justifyContent="center">
+      <Box mb={4} display="flex" justifyContent="center">
         <CompanyIcon />
       </Box>
       <Flex flexDirection={"column"} gap="16px">
@@ -39,6 +39,7 @@ const Sidebar = () => {
             bg={path === sidebar.path ? "#EBE9E6" : ""}
             border={path === sidebar.path ? "1px solid #351F05" : ""}
             showText={collapseSidebar}
+            w={"100%"}
           />
         ))}
       </Flex>

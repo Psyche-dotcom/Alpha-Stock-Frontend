@@ -1,3 +1,4 @@
+import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
 import { routes } from "../api-routes";
 import { ErrorHandler } from "../errorHandler";
 import httpService from "../httpService";
@@ -214,5 +215,90 @@ export const useBlogLikeUnlike = (handleSuccess) => {
     likeUnlikeError: ErrorHandler(error),
     likeUnlikeIsLoading: isPending,
     likeUnlikePayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useCreateBlog = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) => httpService.postData(payload, routes.createBlog()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(
+        error?.response?.data?.errorMessages[0] || "Error creating blog"
+      );
+    },
+  });
+
+  return {
+    blogCreateData: data,
+    blogCreateIsLoading: isPending,
+    blogCreatePayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useDeleteBlog = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (id) => httpService.deleteData(routes.deleteBlog(id)),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      showSuccessAlert(resData);
+    },
+    onError: (error) => {
+      showErrorAlert("Error deleting blog");
+    },
+  });
+
+  return {
+    deleteBlogData: data,
+    // deleteBlogDataError: ErrorHandler(error),
+    deleteBlogIsLoading: isPending,
+    deleteBlogPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useUpdateBlog = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: ({ id, payload }) =>
+      httpService.putData(payload, routes.updateBlog(id)),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert("Error updating blog!");
+    },
+  });
+
+  return {
+    updateBlogData: data,
+    updateBlogDataError: ErrorHandler(error),
+    updateBlogIsLoading: isPending,
+    updateBlogPayload: ({ id, payload }) => mutateAsync({ id, payload }),
+  };
+};
+
+export const useUpdateBlogStatus = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.putData(payload, routes.updateBlogStatus()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      showSuccessAlert(resData);
+    },
+    onError: (error) => {
+      console.log(error);
+      showErrorAlert("Error updating blog status!");
+    },
+  });
+
+  return {
+    updateBlogStatusData: data,
+    updateBlogStatusIsLoading: isPending,
+    updateBlogStatusPayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };

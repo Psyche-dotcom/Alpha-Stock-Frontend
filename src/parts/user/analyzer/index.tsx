@@ -92,7 +92,6 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   } = useGetStockAnalysisStat({ enabled: isFetchStats });
   const { predictStockData, predictStockIsLoading, predictStockPayload } =
     usePredictStock((res: { statusCode: number; result: any }) => {
-      console.log("res", res);
       if (res.statusCode == 200) {
         setShowAnalysisResult(true);
       }
@@ -330,7 +329,6 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
 
     setShowAnalysisResult(true);
   };
-  console.log("stockada", predictStockData);
   return (
     <Box py={4}>
       <Box bg="#fff" borderRadius="8px" pt={4}>

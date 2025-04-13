@@ -110,7 +110,6 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
       const stockPrice = event;
       const parsedData: any = JSON.parse(stockPrice.data);
       const parsedCompleteData: IStockData[] = JSON.parse(parsedData);
-      console.log("Parsed Data", parsedCompleteData);
       const transformedData: ICompanyStockCard[] = parsedCompleteData
         .slice(0, 6)
         .map((stock: any) => ({
@@ -124,7 +123,6 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
     };
 
     eventSource.onerror = (err) => {
-      console.error("EventSource failed:", err);
       eventSource.close();
     };
 

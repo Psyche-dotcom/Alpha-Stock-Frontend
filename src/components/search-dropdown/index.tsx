@@ -12,18 +12,17 @@ interface iProps {
 const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [queryResults, setQueryResults] = useState<any>([]);
+  const [enableSearch, setEnableSearch] = useState<boolean>(false);
 
   const {
     companiesData,
     companiesFilter,
     companiesIsLoading,
     companiesRefetch,
-  } = useGetCompanies({ enabled: true });
+  } = useGetCompanies({ enabled: enableSearch });
 
   const handleFocus = () => {
     if (inputRef.current) {
@@ -49,19 +48,13 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
     setSearchQuery("");
     setShowDropdown(false);
   };
-
   useEffect(() => {
-    if (companiesData && searchQuery.length > 1) {
-      setQueryResults(
-        companiesData.filter((company: any) =>
-          company.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    } else {
-      setQueryResults([]);
+    if (searchQuery.length > 0) {
+      companiesFilter(searchQuery);
+      setEnableSearch(true);
     }
-  }, []);
-  // companiesData, searchQuery
+  }, [searchQuery]);
+
   return (
     <>
       <div className="flex-1 flex justify-end md:justify-between items-center gap-3 lg:gap-6">
@@ -76,23 +69,22 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
               className="w-full custom-input"
             />
 
-            {searchQuery && (
-              <button onClick={handleClearSearch}>
-                {loading && <Spinner />}
-              </button>
-            )}
             <div ref={dropdownRef}>
               {searchQuery !== "" && (
                 <>
-                  {loading ? (
-                    <p>Loading...</p>
+                  {companiesIsLoading ? (
+                    <div
+                      className={`shadow-lg bg-white absolute w-full flex items-center justify-center shadow-custom-1 p-6 pb-2 rounded-lg max-h-20 hide-scrollbar z-10 overflow-scroll`}
+                    >
+                      <Spinner />
+                    </div>
                   ) : (
                     <div
                       className={`shadow-lg bg-white absolute w-full shadow-custom-1 p-6 pb-2 rounded-lg max-h-80 hide-scrollbar z-10 overflow-scroll`}
                     >
-                      {queryResults?.length !== 0 ? (
+                      {companiesData?.length !== 0 ? (
                         <ul>
-                          {queryResults?.map((result: any) => (
+                          {companiesData?.map((result: any) => (
                             <li key={result.userId}>
                               <div className="mb-4">
                                 <Link
@@ -111,7 +103,7 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
                                         <span className="uppercase font-semibold">
                                           {result.symbol}
                                         </span>
-                                        {result.companyName}
+                                        {result.name}
                                       </p>
                                     </div>
                                   </div>

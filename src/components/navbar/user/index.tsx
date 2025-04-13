@@ -78,9 +78,6 @@ const UserNavbar = () => {
                     <Text color="#111928" fontWeight={600} fontSize="12px">
                       {profileData?.result?.firstName.toLowerCase()}
                     </Text>
-                    <Text color="#6B7280" fontWeight={400} fontSize="12px">
-                      320 PTS
-                    </Text>
                   </Box>
                   <ChevronDown size={14} />
                 </Flex>

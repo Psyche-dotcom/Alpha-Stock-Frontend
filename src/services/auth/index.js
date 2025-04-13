@@ -17,7 +17,7 @@ export const useLogin = (handleSuccess) => {
       Storage.set("role", requestParams?.data?.result?.userRole[0] || "");
     },
     onError: (error) => {
-      showErrorAlert(error?.response?.data?.errorMessages[0]);
+      showErrorAlert(error?.response?.data?.errorMessages[0] || error?.message);
     },
   });
 

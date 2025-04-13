@@ -1,5 +1,6 @@
 "use client";
 
+import { useUserSession } from "@/app/context/user-context";
 import { IDropdown } from "@/interface/dropdown";
 import { ArrowDownIcon, ArrowUpIcon } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
@@ -17,9 +18,11 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
   mb,
   count,
 }) => {
+  const { setIsOpen, setSelectedChannel } = useUserSession();
   const [collapseCommunity, setCollapseCommunity] = useState<boolean>(false);
+
   return (
-    <Box mb={mb}>
+    <Box mb={mb} className="w-full">
       <Box
         bg="#ffffff"
         color="#111928"
@@ -52,6 +55,10 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
               display="flex"
               justifyContent={"space-between"}
               key={index}
+              onClick={() => {
+                setSelectedChannel(item?.text);
+                setIsOpen(false);
+              }}
             >
               <Text>{item?.text}</Text>
               {item?.count && (

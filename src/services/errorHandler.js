@@ -2,6 +2,7 @@ export const ErrorHandler = (error, useMessage = false) => {
   if (!error) return;
   let message = "";
   let defaultMessage = "Something went wrong, try again please.";
+  console.log(error);
   if (error?.response) {
     if (error?.response?.status > 500 && error?.response?.status < 600) {
       message = defaultMessage;
@@ -12,6 +13,7 @@ export const ErrorHandler = (error, useMessage = false) => {
           error?.response?.data?.userMessage ||
           error?.response?.data?.message ||
           error?.response?.message ||
+          error?.message ||
           error?.response?.data?.Message ||
           error?.response?.data?.responseDescription ||
           error?.response?.data?.error ||

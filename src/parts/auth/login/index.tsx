@@ -16,15 +16,17 @@ import { Separator } from "@/components/ui/separator";
 import { useLogin } from "@/services/auth";
 import { setCookie } from "cookies-next";
 const Login: React.FC = () => {
-  const { loginData, loginIsLoading, loginPayload } = useLogin((res: any) => {
-    setCookie("token", res?.jwt);
-    if (res?.userRole[0].toLowerCase() === "user") {
-      window.location.href = ROUTES.USER.HOME;
+  const { loginData, loginIsLoading, loginPayload, loginDataError } = useLogin(
+    (res: any) => {
+      setCookie("token", res?.jwt);
+      if (res?.userRole[0].toLowerCase() === "user") {
+        window.location.href = ROUTES.USER.HOME;
 
-      return;
+        return;
+      }
+      window.location.href = "/admin/users";
     }
-    window.location.href = "/admin/users";
-  });
+  );
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {

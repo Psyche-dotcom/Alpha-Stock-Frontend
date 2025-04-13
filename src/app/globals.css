@@ -73,3 +73,11 @@
   border: 1px solid #e5e7eb !important;
   outline: none;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

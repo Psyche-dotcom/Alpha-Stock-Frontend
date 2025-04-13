@@ -132,7 +132,7 @@ const CommentCard: React.FC<ICommentProps> = ({
   return (
     <Box
       bg="#FFFFFF"
-      p={6}
+      p={{ base: 3, sm: 4, md: 6 }}
       borderRadius="8px"
       border="1px solid #E5E7EB"
       boxShadow="customLight"
@@ -171,7 +171,7 @@ const CommentCard: React.FC<ICommentProps> = ({
 
       <Flex
         py="10px"
-        ps={5}
+        ps={{ base: 3, sm: 5 }}
         alignItems={"center"}
         justifyContent={"space-between"}
       >
@@ -182,7 +182,11 @@ const CommentCard: React.FC<ICommentProps> = ({
             cursor={"pointer"}
             onClick={() => setShowReply(!showReply)}
           >
-            <Text fontWeight={500} fontSize={14} color="#1F2A37">
+            <Text
+              fontWeight={500}
+              fontSize={{ base: 12, sm: 14 }}
+              color="#1F2A37"
+            >
               Reply
             </Text>
             <ChatIcon />
@@ -194,7 +198,11 @@ const CommentCard: React.FC<ICommentProps> = ({
               cursor={"pointer"}
               onClick={handleReaction}
             >
-              <Text fontWeight={500} fontSize={14} color="#1F2A37">
+              <Text
+                fontWeight={500}
+                fontSize={{ base: 12, sm: 14 }}
+                color="#1F2A37"
+              >
                 Unlike
               </Text>
               <Box color={comment?.isLiked ? "#351F05" : ""}>
@@ -208,7 +216,11 @@ const CommentCard: React.FC<ICommentProps> = ({
               cursor={"pointer"}
               onClick={handleReaction}
             >
-              <Text fontWeight={500} fontSize={14} color="#1F2A37">
+              <Text
+                fontWeight={500}
+                fontSize={{ base: 12, sm: 14 }}
+                color="#1F2A37"
+              >
                 Like
               </Text>
               <Box color={comment?.isLiked ? "#351F05" : ""}>
@@ -233,9 +245,6 @@ const CommentCard: React.FC<ICommentProps> = ({
               </Flex>
             </>
           )}
-        </Box>
-        <Box>
-          <ThreeDotsIcon />
         </Box>
       </Flex>
 

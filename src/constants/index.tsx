@@ -200,6 +200,20 @@ export const communityList = [
     userImgUrl: "/assets/images/card-image.png",
     name: "Micheal Angelo",
   },
+  {
+    commentId: "2",
+    comment: "Has anyone had any challenge with the premium sub plan?",
+    commentDate: "August 2, 2024",
+    userImgUrl: "/assets/images/card-image.png",
+    name: "Micheal Angelo",
+  },
+  {
+    commentId: "2",
+    comment: "Has anyone had any challenge with the premium sub plan?",
+    commentDate: "August 2, 2024",
+    userImgUrl: "/assets/images/card-image.png",
+    name: "Micheal Angelo",
+  },
 ];
 
 export const communityMenuList = [

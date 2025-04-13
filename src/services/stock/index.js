@@ -22,6 +22,24 @@ export const useGetStockInfo = ({ enabled = false }) => {
     setGetStockInfoFilter: setFilter,
   };
 };
+// export const useGetStockIsWishListAdded = ({ enabled = false }) => {
+//   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+//     queryKey: ["stockwish-list-isadded"],
+//     queryFn: ({ symbol }) => httpService.getData(routes.getStockInfo(symbol)),
+//     enabled,
+//     retry: 1,
+//   });
+
+//   return {
+//     getStockInfoIsLoading: isLoading,
+//     getStockInfoData: data?.data?.result || [],
+//     getStockInfoFilter: filter,
+//     getStockInfoError: ErrorHandler(error),
+//     refetchGetStockInfo: refetch,
+//     setGetStockInfoFilter: setFilter,
+//   };
+// };
+
 export const useGetIncomeStatement = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
     queryKey: ["income-statement"],

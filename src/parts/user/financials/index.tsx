@@ -6,6 +6,7 @@ import DropdownSelect from "@/components/DropdownSelect";
 import {
   AlldataSourceFinance,
   formatDateToHumanReadable,
+  formatMoneyNumber,
 } from "@/components/util";
 
 import { IButtonFilter2 } from "@/interface/button-filter";
@@ -101,27 +102,27 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
 
     row1: (item: DataType) => (
       <Text fontSize={16} color="#111928" textAlign={"center"}>
-        ${item?.row1}
+        {formatMoneyNumber(item?.row1)}
       </Text>
     ),
     row2: (item: DataType) => (
       <Text fontSize={16} color="#111928" textAlign={"center"}>
-        ${item?.row2}
+        {formatMoneyNumber(item?.row2)}
       </Text>
     ),
     row3: (item: DataType) => (
       <Text fontSize={16} color="#111928" textAlign={"center"}>
-        ${item?.row3}
+        {formatMoneyNumber(item?.row3)}
       </Text>
     ),
     row4: (item: DataType) => (
       <Text fontSize={16} color="#111928" textAlign={"center"}>
-        ${item?.row4}
+        {formatMoneyNumber(item?.row4)}
       </Text>
     ),
     row5: (item: DataType) => (
       <Text fontSize={16} color="#111928" textAlign={"center"}>
-        ${item?.row5}
+        {formatMoneyNumber(item?.row5)}
       </Text>
     ),
   };
@@ -143,6 +144,66 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         ? "ASSET"
         : btnFilter == "cashflow"
         ? "CASHFLOW"
+        : "NULL",
+    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+  };
+  const columnLabels2 = {
+    title:
+      btnFilter == "income-statements"
+        ? "BASIC EPS"
+        : btnFilter == "balance-sheet"
+        ? "LIABILITIES"
+        : btnFilter == "cashflow"
+        ? "CASHFLOW - INVESTING"
+        : "NULL",
+    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+  };
+  const columnLabels3 = {
+    title:
+      btnFilter == "income-statements"
+        ? "DILUTED EPS"
+        : btnFilter == "balance-sheet"
+        ? "SHAREHOLDER EQUITY"
+        : btnFilter == "cashflow"
+        ? "CASHFLOW - FINANCING"
+        : "NULL",
+    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+  };
+  const columnLabels4 = {
+    title:
+      btnFilter == "income-statements"
+        ? "SHARES DATA"
+        : btnFilter == "balance-sheet"
+        ? "ASSET"
+        : btnFilter == "cashflow"
+        ? "ENDING CASH"
+        : "NULL",
+    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+  };
+  const columnLabels5 = {
+    title:
+      btnFilter == "income-statements"
+        ? "SHARES DATA"
+        : btnFilter == "balance-sheet"
+        ? "ASSET"
+        : btnFilter == "cashflow"
+        ? "ADDITIONAL ITEMS"
         : "NULL",
     row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
     row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
@@ -197,11 +258,85 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       </Box>
       <TableComponent<DataType>
         //@ts-ignore
-        tableData={AlldataSourceFinance(btnFilter, Data)}
+        tableData={AlldataSourceFinance(
+          btnFilter,
+          btnFilter === "income-statements"
+            ? "Income"
+            : btnFilter === "balance-sheet"
+            ? "ASSET"
+            : btnFilter === "cashflow"
+            ? "CASH"
+            : "",
+          Data
+        )}
         cellRenderers={cellRenderers}
         columnOrder={columnOrder}
         columnLabels={columnLabels}
       />
+      <TableComponent<DataType>
+        //@ts-ignore
+        tableData={AlldataSourceFinance(
+          btnFilter,
+          btnFilter === "income-statements"
+            ? "BasicEps"
+            : btnFilter === "balance-sheet"
+            ? "LIABLE"
+            : btnFilter === "cashflow"
+            ? "Investing"
+            : "",
+          Data
+        )}
+        cellRenderers={cellRenderers}
+        columnOrder={columnOrder}
+        columnLabels={columnLabels2}
+      />
+      <TableComponent<DataType>
+        //@ts-ignore
+        tableData={AlldataSourceFinance(
+          btnFilter,
+          btnFilter === "income-statements"
+            ? "DiEps"
+            : btnFilter === "balance-sheet"
+            ? "SHARE"
+            : btnFilter === "cashflow"
+            ? "Financing"
+            : "",
+          Data
+        )}
+        cellRenderers={cellRenderers}
+        columnOrder={columnOrder}
+        columnLabels={columnLabels3}
+      />
+      {btnFilter != "balance-sheet" && (
+        <TableComponent<DataType>
+          //@ts-ignore
+          tableData={AlldataSourceFinance(
+            btnFilter,
+            btnFilter === "income-statements"
+              ? "share"
+              : btnFilter === "cashflow"
+              ? "cashbeginning"
+              : "",
+            Data
+          )}
+          cellRenderers={cellRenderers}
+          columnOrder={columnOrder}
+          columnLabels={columnLabels4}
+        />
+      )}
+      {btnFilter == "cashflow" && (
+        <TableComponent<DataType>
+          //@ts-ignore
+          tableData={AlldataSourceFinance(
+            btnFilter,
+            btnFilter === "cashflow" ? "Items" : "",
+            Data
+          )}
+          cellRenderers={cellRenderers}
+          columnOrder={columnOrder}
+          columnLabels={columnLabels5}
+        />
+      )}
     </Box>
   );
 };

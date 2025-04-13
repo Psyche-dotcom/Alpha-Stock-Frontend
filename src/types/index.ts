@@ -129,3 +129,9 @@ export interface BlogData extends DataItem {
   status: string;
   title: string;
 }
+
+export interface CommunityData extends DataItem {
+  channelName: string;
+  moderator: string;
+  category: string;
+}

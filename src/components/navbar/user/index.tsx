@@ -33,7 +33,7 @@ const UserNavbar = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <div className="bg-white px-4 rounded-[12px] mb-8 sticky py-[18.5px] z-10">
+    <div className="bg-white px-4 sticky z-10 top-0 shadow-xl">
       <div className="flex items-center justify-between lg:gap-[36px] xl:gap-[96px]">
         <Link href={ROUTES.USER.HOME} passHref>
           <CompanyIcon />

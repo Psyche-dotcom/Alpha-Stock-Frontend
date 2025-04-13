@@ -9,6 +9,10 @@ interface UserSessionContextType {
   profileData: any;
   profileError: any;
   isProfileLoading: boolean;
+  selectedChannel: string;
+  setSelectedChannel: (value: string) => void;
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
 }
 
 const UserSessionContext = React.createContext<UserSessionContextType | null>(
@@ -23,6 +27,8 @@ export function UserSessionProvider({ children }: Props) {
   const router = useRouter();
 
   const { profileData, isProfileLoading, profileError } = useUserSessionData();
+  const [selectedChannel, setSelectedChannel] = React.useState<string>("");
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (profileError) {
@@ -37,7 +43,15 @@ export function UserSessionProvider({ children }: Props) {
 
   return (
     <UserSessionContext.Provider
-      value={{ profileData, profileError, isProfileLoading }}
+      value={{
+        profileData,
+        profileError,
+        isProfileLoading,
+        selectedChannel,
+        setSelectedChannel,
+        isOpen,
+        setIsOpen,
+      }}
     >
       {children}
     </UserSessionContext.Provider>

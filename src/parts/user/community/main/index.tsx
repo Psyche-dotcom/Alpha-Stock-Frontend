@@ -17,8 +17,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FileUploadIcon, SendIcon, SmileyIcon } from "@/utils/icons";
+import CommunityCommentCard from "@/components/card/community-comment";
+import { useUserSession } from "@/app/context/user-context";
+interface iProps {
+  data?: any;
+}
 
-const CommunityMain = () => {
+const CommunityMain: React.FC<iProps> = () => {
+  const { setIsOpen } = useUserSession();
   const formSchema = z.object({
     email: z.string(),
   });
@@ -33,40 +39,58 @@ const CommunityMain = () => {
 
   async function onSubmit(values: FormSchemaType) {}
   return (
-    <Box borderRadius="8px" bg="#C2BAB2" p={8} w="100%">
-      <Flex flexDirection={"column"} gap={4}>
-        {communityList.map((comment: IComments, index: number) => (
-          <CommentCard
-            comment={comment}
-            key={index}
-            showOptions={true}
-            showUpload={true}
-          />
-        ))}
-      </Flex>
+    <Box
+      borderRadius="8px"
+      flex={1}
+      bg="#C2BAB2"
+      px={{ base: 4, sm: 5, md: 6, lg: 8 }}
+      w="100%"
+      height="100%"
+      maxHeight="calc(100vh - 80px)"
+      display="flex"
+      flexDirection="column"
+      pt={4}
+    >
+      <h6
+        className="text-end underline text-sm font-semibold mb-4 block md:hidden cursor-pointer"
+        onClick={() => setIsOpen(true)}
+      >
+        Back to channel list
+      </h6>
+      <Box flex="1" overflowY="auto" className="scrollbar-hide">
+        <Flex flexDirection="column" gap={4}>
+          {communityList.map((comment: IComments, index: number) => (
+            <CommunityCommentCard
+              comment={comment}
+              key={index}
+              showOptions={true}
+              showUpload={true}
+            />
+          ))}
+        </Flex>
+      </Box>
+
       <Box
-        height={"4.125rem"}
-        position={"fixed"}
-        bottom={0}
+        mt={3}
+        height="4.125rem"
         bg="white"
         p="12px"
-        borderRadius={"8px"}
-        maxWidth={"36.25rem"}
+        py="-12px"
+        borderRadius="8px"
         zIndex={10}
-        width={"100%"}
-        backdropFilter={"blur(10px)"}
-        boxShadow={"xl"}
-        m="0px auto"
+        width="100%"
+        boxShadow="xl"
+        mb="20px"
       >
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex gap-3 items-center"
           >
-            <Button variant={"ghost"} size="xl">
+            <Button variant="ghost" size="xl">
               <FileUploadIcon />
             </Button>
-            <Button variant={"ghost"} size="xl">
+            <Button variant="ghost" size="xl">
               <SmileyIcon />
             </Button>
             <FormField
@@ -81,8 +105,7 @@ const CommunityMain = () => {
                 </FormItem>
               )}
             />
-
-            <Button variant={"ghost"} size="xl">
+            <Button variant="ghost" size="xl">
               <SendIcon />
             </Button>
           </form>

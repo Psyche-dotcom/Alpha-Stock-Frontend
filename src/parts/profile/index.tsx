@@ -1,7 +1,7 @@
 "use client";
 import { ButtonIcon } from "@/components/button/button-icon";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { UploadIcon } from "@/utils/icons";
@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 const Profile: React.FC = () => {
   const { profileData } = useAdminSession();
   const role = Storage.get("role") as string | undefined;
+  const [fileObject, setFileObject] = useState<File | null>(null);
   const formattedRole = role?.toLowerCase() || "";
   const { updateProfileIsLoading, updateProfilePayload } = useUpdateProfile(
     (res: ApiResponse) => {
@@ -53,6 +54,13 @@ const Profile: React.FC = () => {
     });
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      setFileObject(file);
+    }
+  };
+
   return (
     <Flex
       borderRadius={12}
@@ -70,7 +78,12 @@ const Profile: React.FC = () => {
             position="relative"
           >
             <Image
-              src="/assets/images/card-image.png"
+              src={
+                fileObject
+                  ? URL.createObjectURL(fileObject)
+                  : profileData?.result?.profilePicture ||
+                    "/assets/images/card-image.png"
+              }
               height={96}
               width={96}
               alt="User profile icon"
@@ -90,13 +103,7 @@ const Profile: React.FC = () => {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    console.log("Selected file:", file);
-                    // Handle file upload logic here
-                  }
-                }}
+                onChange={handleFileChange}
                 style={{ display: "none" }}
               />
             </Box>

@@ -57,4 +57,5 @@ export const routes = {
   updateWishlist: () => "/api/stock/update-wishlist",
   userStats: () => "/api/admin/userstats",
   uploadPicture: () => "/api/blog/upload/picture",
+  updateUserProfile: (email) => `/api/user/update_picture/${email}`,
 };

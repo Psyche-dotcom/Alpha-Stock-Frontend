@@ -108,3 +108,23 @@ export const useGetUsersStats = () => {
     refetchUserStatsData: refetch,
   };
 };
+
+export const useUploadUserProfile = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: ({ email, file }) =>
+      httpService.uploadProfile(file, routes.updateUserProfile(email)),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert("Error uploading file");
+    },
+  });
+
+  return {
+    uploadData: data,
+    uploadIsLoading: isPending,
+    uploadFile: (file, email) => mutateAsync({ file, email }),
+  };
+};

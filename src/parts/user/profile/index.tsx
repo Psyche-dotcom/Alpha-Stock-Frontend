@@ -1,7 +1,6 @@
 "use client";
-import { ButtonIcon } from "@/components/button/button-icon";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { UploadIcon } from "@/utils/icons";
@@ -23,16 +22,21 @@ import { ApiResponse } from "@/types";
 import { showSuccessAlert } from "@/utils/alert";
 import { useUserSession } from "@/app/context/user-context";
 import { Button } from "@/components/ui/button";
+import { useUploadUserProfile } from "@/services/user";
 
 const UserProfile: React.FC = () => {
   const { profileData } = useUserSession();
   const role = Storage.get("role") as string | undefined;
+  const [fileObject, setFileObject] = useState<File | null>(null);
   const formattedRole = role?.toLowerCase() || "";
   const { updateProfileIsLoading, updateProfilePayload } = useUpdateProfile(
     (res: ApiResponse) => {
       showSuccessAlert(res?.result);
       window.location.reload();
     }
+  );
+  const { uploadData, uploadIsLoading, uploadFile } = useUploadUserProfile(
+    (res: any) => {}
   );
   const form = useForm<UpdateSchemaType>({
     resolver: zodResolver(updateDetailsSchema),
@@ -52,6 +56,17 @@ const UserProfile: React.FC = () => {
       email: profileData?.result?.email,
     });
   }
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      setFileObject(file);
+    }
+  };
+  useEffect(() => {
+    if (fileObject) {
+      uploadFile(fileObject, profileData?.result?.email);
+    }
+  }, [fileObject]);
 
   return (
     <Flex
@@ -70,7 +85,12 @@ const UserProfile: React.FC = () => {
             position="relative"
           >
             <Image
-              src="/assets/images/card-image.png"
+              src={
+                fileObject
+                  ? URL.createObjectURL(fileObject)
+                  : profileData?.result?.profilePicture ||
+                    "/assets/images/card-image.png"
+              }
               height={96}
               width={96}
               alt="User profile icon"
@@ -90,13 +110,7 @@ const UserProfile: React.FC = () => {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    console.log("Selected file:", file);
-                    // Handle file upload logic here
-                  }
-                }}
+                onChange={handleFileChange}
                 style={{ display: "none" }}
               />
             </Box>

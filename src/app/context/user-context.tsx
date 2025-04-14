@@ -13,6 +13,8 @@ interface UserSessionContextType {
   setSelectedChannel: (value: string) => void;
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
+  redirectModalOpen: boolean;
+  setRedirectModalOpen: (value: boolean) => void;
 }
 
 const UserSessionContext = React.createContext<UserSessionContextType | null>(
@@ -29,6 +31,8 @@ export function UserSessionProvider({ children }: Props) {
   const { profileData, isProfileLoading, profileError } = useUserSessionData();
   const [selectedChannel, setSelectedChannel] = React.useState<string>("");
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [redirectModalOpen, setRedirectModalOpen] =
+    React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (profileError) {
@@ -51,6 +55,8 @@ export function UserSessionProvider({ children }: Props) {
         setSelectedChannel,
         isOpen,
         setIsOpen,
+        redirectModalOpen,
+        setRedirectModalOpen,
       }}
     >
       {children}

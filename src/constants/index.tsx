@@ -31,7 +31,7 @@ export const userNavbarList = [
   },
   { title: "Community", path: ROUTES.USER.COMMUNITY },
   { title: "Blogs", path: ROUTES.USER.BLOGS },
-  { title: "Watchlist", path: ROUTES.USER.WATCHLIST },
+  { title: "Wishlist", path: ROUTES.USER.WATCHLIST },
 ];
 
 export const searchTab = [

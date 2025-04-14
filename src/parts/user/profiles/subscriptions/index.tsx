@@ -138,7 +138,7 @@ const Subscriptions = () => {
           </Text>
           <Box p={6} bg={"#351F05"}>
             <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
-              Free Plan
+              {profileData?.result?.activeSubcriptionName || "Free"} Plan
             </Text>
             <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
               Expires on 27th March, 2025
@@ -150,71 +150,11 @@ const Subscriptions = () => {
               >
                 Change Plan
               </Link>
-              <ButtonIcon
-                text="Create Account"
-                variant="solid"
-                bg="#fff"
-                p="10px 20px"
-                color="#291804"
-                fontWeight={500}
-              />
             </Flex>
-          </Box>
-        </Box>
-        <Box borderRadius={"8px"} bg="#fff" overflow={"hidden"}>
-          <Text px={6} py={4} color="#351F05" fontWeight={600} fontSize={16}>
-            Billing Information
-          </Text>
-          <Box p={6} bg={"#351F05"}>
-            <Flex mb={5} gap={1}>
-              <Text
-                py="22.9px"
-                px="9px"
-                bg="#fff"
-                borderRadius={"8px"}
-                color="#351F05"
-                fontWeight={900}
-              >
-                VISA
-              </Text>
-              <Box>
-                <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
-                  **** **** **** 8930
-                </Text>
-                <Text color="#fff" fontWeight={600} fontSize={16}>
-                  Expires Sept, 2027
-                </Text>
-              </Box>
-            </Flex>
-            <ButtonIcon
-              text="Edit Payment Method"
-              variant="solid"
-              bg="#fff"
-              p="10px 20px"
-              color="#291804"
-              fontWeight={500}
-              w="100%"
-              onClick={() => setIsOpen(true)}
-            />
           </Box>
         </Box>
       </Grid>
       <Box bg="#fff" pt={4} borderRadius={"12px"}>
-        {/* <div className="flex gap-3 bg-white rounded-md px-3 mb-4">
-          {filterBtnList.map((_, index: number) => (
-            <Button
-              variant={_?.value === filter ? "secondary" : "ghost"}
-              key={index}
-              btnText={_?.text}
-              onClick={() => setFilter(_?.value)}
-              className={`font-medium text-sm ${
-                _?.value === filter
-                  ? "bg-[#351F05] text-white py-2 px-4"
-                  : "p-0 text-[#6B7280]"
-              }`}
-            />
-          ))}
-        </div> */}
         {isPaymentLoading ? (
           <TableSkeleton />
         ) : (

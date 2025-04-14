@@ -22,7 +22,7 @@ export const ROUTES = {
     PLANS: "/user/plans",
     BLOGS: "/user/blog",
     SUBSCRIPTION: "/user/subscription",
-    WATCHLIST: "/user/watch-list",
+    WATCHLIST: "/user/wish-list",
   },
   ADMIN: {
     USERS: "/admin/users",

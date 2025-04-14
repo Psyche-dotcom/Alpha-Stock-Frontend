@@ -11,7 +11,7 @@ import { useUserSession } from "@/app/context/user-context";
 import Link from "next/link";
 
 const User: React.FC = () => {
-  const { profileData } = useUserSession();
+  const { profileData, setRedirectModalOpen } = useUserSession();
   const { getBlogsData, getBlogsError, getBlogsIsLoading, getBlogsPayload } =
     useGetBlogs((res: any) => {});
 
@@ -27,6 +27,12 @@ const User: React.FC = () => {
     };
     getBlogsPayload(payload);
   }, [profileData?.results?.id]);
+  const handleClick = (e: React.MouseEvent) => {
+    if (!profileData?.result?.isSubActive) {
+      e.preventDefault();
+      setRedirectModalOpen(true);
+    }
+  };
 
   return (
     <div className="xl:flex gap-4 h-full">
@@ -35,14 +41,20 @@ const User: React.FC = () => {
           <div className="mb-8 flex gap-4 h-ful md:h-auto flex-1">
             <div className="flex flex-col gap-4 h-[215px]">
               <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
-                <Link href={"/user/company/aapl?tab=company-info"}>
+                <Link
+                  href={"/user/company/aapl?tab=company-info"}
+                  onClick={(e) => handleClick(e)}
+                >
                   <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">
                     Fundamentals Toolkit <RightArrowLong />
                   </h6>
                 </Link>
               </div>
               <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
-                <Link href={"/user/company/aapl?tab=metrics"}>
+                <Link
+                  href={"/user/company/aapl?tab=metrics"}
+                  onClick={(e) => handleClick(e)}
+                >
                   <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
                     Metrics <RightArrowLong />
                   </h6>
@@ -55,7 +67,10 @@ const User: React.FC = () => {
             </div>
             <div className="flex flex-col gap-4">
               <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
-                <Link href={"/user/company/aapl?tab=financials"}>
+                <Link
+                  href={"/user/company/aapl?tab=financials"}
+                  onClick={(e) => handleClick(e)}
+                >
                   <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
                     FInancials <RightArrowLong />
                   </h6>

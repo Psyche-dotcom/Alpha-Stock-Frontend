@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { Spinner } from "@chakra-ui/react";
 import Link from "next/link";
 import { useGetCompanies } from "@/services/home";
+import { useUserSession } from "@/app/context/user-context";
 
 interface iProps {
   isAuth?: boolean;
 }
 
 const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
+  const { profileData, setRedirectModalOpen } = useUserSession();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
@@ -40,6 +42,10 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
   };
 
   const handleInputChange = (event: any) => {
+    if (profileData?.result?.isSubActive) {
+      setRedirectModalOpen(true);
+      return;
+    }
     const value = event.target.value;
     setSearchQuery(value);
   };

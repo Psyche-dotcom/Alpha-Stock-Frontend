@@ -94,7 +94,6 @@ const Profile: React.FC = () => {
                   const file = e.target.files?.[0];
                   if (file) {
                     console.log("Selected file:", file);
-                    // Handle file upload logic here
                   }
                 }}
                 style={{ display: "none" }}

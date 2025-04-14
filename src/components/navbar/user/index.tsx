@@ -27,10 +27,19 @@ import SearchDropdown from "@/components/search-dropdown";
 import Logout from "@/components/logout";
 
 const UserNavbar = () => {
-  const { profileData } = useUserSession();
+  const { profileData, setRedirectModalOpen } = useUserSession();
   const { handlePush } = useHandlePush();
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const handleClick = (e: React.MouseEvent, route: string) => {
+    if (
+      !profileData?.result?.isSubActive &&
+      (route === ROUTES.USER.WATCHLIST || route === ROUTES.USER.COMMUNITY)
+    ) {
+      e.preventDefault();
+      setRedirectModalOpen(true);
+    }
+  };
 
   return (
     <div className="bg-white px-4 sticky z-10 top-0 shadow-xl">
@@ -45,7 +54,12 @@ const UserNavbar = () => {
           <div className="justify-between items-center gap-2 flex">
             {userNavbarList.map((nav, index) => (
               <Link href={nav.path} key={index} passHref>
-                <div className="text-sm p-1 font-medium">{nav.title}</div>
+                <div
+                  onClick={(e) => handleClick(e, nav.path)}
+                  className="text-sm p-1 font-medium cursor-pointer"
+                >
+                  {nav.title}
+                </div>
               </Link>
             ))}
           </div>
@@ -96,7 +110,12 @@ const UserNavbar = () => {
         <div className="mt-4">
           <div className="flex-col gap-2 flex">
             {userNavbarList.map((nav, index) => (
-              <Link href={nav.path} key={index} passHref>
+              <Link
+                href={nav.path}
+                key={index}
+                passHref
+                onClick={(e) => handleClick(e, nav.path)}
+              >
                 <div className="text-sm p-1 font-medium">{nav.title}</div>
               </Link>
             ))}

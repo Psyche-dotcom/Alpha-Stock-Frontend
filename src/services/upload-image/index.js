@@ -23,3 +23,4 @@ export const useUploadFile = (handleSuccess) => {
     uploadFile: (file, fileName) => mutateAsync({ file, fileName }),
   };
 };
+

@@ -61,6 +61,16 @@ class HttpService {
       },
     });
   }
+
+  async uploadProfile(payload, url) {
+    const formData = new FormData();
+    formData.append("file", payload.file);
+    return this.request.patch(this.getServiceUrl(url), formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 }
 
 export default new HttpService();

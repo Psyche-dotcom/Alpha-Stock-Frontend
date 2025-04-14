@@ -225,8 +225,7 @@ const EditBlog = ({ blogId }: { blogId: string }) => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          {/* {(fileObject || getBlogData?.blogThumbnailUrl) && ( */}
-          {fileObject && (
+          {(fileObject || getBlogData?.blogThumbnailUrl) && (
             <Image
               src={
                 fileObject

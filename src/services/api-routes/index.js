@@ -34,6 +34,8 @@ export const routes = {
     `/api/stock/income-statement?symbol=${symbol}&period=${period}`,
   getStockMetricsUrl: (symbol, period) =>
     `/api/stock/fundamental-metric?symbol=${symbol}&period=${period}`,
+  getStockWishListIsAddedUrl: (symbol) =>
+    `/api/stock/get-wishlist-is-added?symbol=${symbol}`,
   balanceSheetUrl: (symbol, period) =>
     `/api/stock/balance-sheet?symbol=${symbol}&period=${period}`,
   cashFlowUrl: (symbol, period) =>
@@ -42,6 +44,7 @@ export const routes = {
     `/api/stock/stock-analyer-stats?symbol=${symbol}&period=${period}`,
   createSubscription: () => `/api/subscription/create`,
   stockAnalyzerUrlpredict: () => `/api/stock/stock-analyer-stats/predict`,
+  addStockWishListUrl: () => `/api/stock/add-wishlist`,
   editSubscription: () => `/api/subscription/update`,
   addBlogComment: () => `/api/blog/comment/add`,
   addBlogCommentReply: () => `/api/blog/comment/reply/add`,

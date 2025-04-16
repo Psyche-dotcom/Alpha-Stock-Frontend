@@ -24,7 +24,7 @@ export const navbarList = [
 
 export const userNavbarList = [
   { title: "Home", path: ROUTES.USER.HOME },
-  { title: "Market Kit", path: "#" },
+  { title: "Market Kit", path: ROUTES.USER.Market },
   {
     title: "Subscriptions",
     path: ROUTES.USER.SUBSCRIPTION,
@@ -32,6 +32,7 @@ export const userNavbarList = [
   { title: "Community", path: ROUTES.USER.COMMUNITY },
   { title: "Blogs", path: ROUTES.USER.BLOGS },
   { title: "Wishlist", path: ROUTES.USER.WATCHLIST },
+  { title: "Shop", path: ROUTES.USER.SHOP },
 ];
 
 export const searchTab = [

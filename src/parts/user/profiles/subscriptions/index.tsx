@@ -18,11 +18,15 @@ import { formatDateTime } from "@/utils";
 import TableSkeleton from "@/components/table-skeleton";
 
 const Subscriptions = () => {
-  const { profileData } = useUserSession();
+  const { profileData, setRedirectModalOpen } = useUserSession();
   const [filter, setFilter] = useState<number>(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [option, setOption] = useState<string>("edit");
   const [pageSize, setPageSize] = useState<number>(1);
+
+  useEffect(() => {
+    setRedirectModalOpen(false);
+  }, []);
   const {
     isPaymentLoading,
     paymentData,

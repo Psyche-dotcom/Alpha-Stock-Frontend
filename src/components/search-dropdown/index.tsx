@@ -42,7 +42,7 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
   };
 
   const handleInputChange = (event: any) => {
-    if (profileData?.result?.isSubActive) {
+    if (!profileData?.result?.isSubActive) {
       setRedirectModalOpen(true);
       return;
     }
@@ -100,6 +100,7 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
                                       : `/company/${result.symbol}?tab=company-info`
                                   }
                                   passHref
+                                  onClick={handleClearSearch}
                                 >
                                   <div className="flex gap-2 items-center">
                                     <div>

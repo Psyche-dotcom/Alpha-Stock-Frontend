@@ -3,6 +3,7 @@ export interface IStockComponent {
 }
 export interface ICompanyCard {
   companyName: string;
+  symbol: string;
   urlCompanyImg: string;
   price: number;
 }

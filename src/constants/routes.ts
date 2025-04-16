@@ -23,6 +23,8 @@ export const ROUTES = {
     BLOGS: "/user/blog",
     SUBSCRIPTION: "/user/subscription",
     WATCHLIST: "/user/wish-list",
+    SHOP: "/user/shop",
+    Market: "/user/company/aapl?tab=stock-analyser",
   },
   ADMIN: {
     USERS: "/admin/users",

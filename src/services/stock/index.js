@@ -22,23 +22,6 @@ export const useGetStockInfo = ({ enabled = false }) => {
     setGetStockInfoFilter: setFilter,
   };
 };
-// export const useGetStockIsWishListAdded = ({ enabled = false }) => {
-//   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
-//     queryKey: ["stockwish-list-isadded"],
-//     queryFn: ({ symbol }) => httpService.getData(routes.getStockInfo(symbol)),
-//     enabled,
-//     retry: 1,
-//   });
-
-//   return {
-//     getStockInfoIsLoading: isLoading,
-//     getStockInfoData: data?.data?.result || [],
-//     getStockInfoFilter: filter,
-//     getStockInfoError: ErrorHandler(error),
-//     refetchGetStockInfo: refetch,
-//     setGetStockInfoFilter: setFilter,
-//   };
-// };
 
 export const useGetIncomeStatement = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
@@ -75,6 +58,25 @@ export const useGetMetrics = ({ enabled = false }) => {
     getMetricsError: ErrorHandler(error),
     refetchGetMetrics: refetch,
     setMetricsFilter: setFilter,
+  };
+};
+
+export const useGetIsWishListAdded = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["get-wish-list-is-added"],
+    queryFn: ({ symbol }) =>
+      httpService.getData(routes.getStockWishListIsAddedUrl(symbol)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getWishlistIsAddedIsLoading: isLoading,
+    getWishlistIsAddedData: data?.data?.result || [],
+    getWishlistIsAddedFilter: filter,
+    getWishlistIsAddedError: ErrorHandler(error),
+    refetchGetWishlistIsAdded: refetch,
+    setWishlistIsAddedFilter: setFilter,
   };
 };
 
@@ -173,5 +175,26 @@ export const usePredictStock = (handleSuccess) => {
     predictStockError: ErrorHandler(error),
     predictStockIsLoading: isPending,
     predictStockPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+export const useAddStockWishList = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.addStockWishListUrl()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data || {};
+      handleSuccess(resData);
+      showSuccessAlert("Stock added to wishlist successfully.");
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    wishListAddData: data?.data,
+    wishListAddError: ErrorHandler(error),
+    wishListAddIsLoading: isPending,
+    wishListAddPayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };

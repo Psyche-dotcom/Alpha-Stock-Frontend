@@ -18,10 +18,12 @@ import CompanyStockCardSkeleton from "@/components/card/skeleton/CompanyStockCar
 import CompanyAnalysisCardSkeleton from "@/components/card/skeleton/CompanyAnalysisCardSkeleton ";
 
 import StockChartSwitcher from "@/components/charts/stockchart";
+import { useUserSession } from "@/app/context/user-context";
 
 const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<number>(1);
   const [stockNewData, setNewStockData] = useState<ICompanyStockCard[]>([]);
+
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
@@ -145,17 +147,18 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
 
   return (
     <div>
-      <div className="xl:hidden gap-1 bg-[#351F05] mb-3 rounded-[12px] p-4 flex items-center w-fit-content">
+      {/* <div className="xl:hidden gap-1 bg-[#351F05] mb-3 rounded-[12px] p-4 flex items-center w-fit-content">
         <p className="font-semibold text-sm text-white">
           Download Annual Report
         </p>
         <ArrowNarrowRight />
-      </div>
+      </div> */}
       <div className="lg:flex xl:gap-4 gap-2 mb-[34.5px]">
         {getStockInfoIsLoading ? (
           <CompanyCardSkeleton />
         ) : (
           <CompanyCard
+            symbol={symbol}
             companyName={getStockInfoData[0]?.companyName}
             urlCompanyImg={getStockInfoData[0]?.image}
             price={getStockInfoData[0]?.price}
@@ -182,12 +185,12 @@ const CompanyInfo: React.FC<IStockComponent> = ({ symbol }) => {
             </>
           )}
         </div>
-        <div className="hidden  bg-[#351F05] gap-1 rounded-[12px] px-2.5 xl:flex items-center justify-between w-fit-content">
+        {/* <div className="hidden  bg-[#351F05] gap-1 rounded-[12px] px-2.5 xl:flex items-center justify-between w-fit-content">
           <p className="font-semibold text-sm text-white">
             Download Annual Report
           </p>
           <ArrowNarrowRight />
-        </div>
+        </div> */}
       </div>
       <div className="bg-white p-4 rounded-[12px] mb-4 lg:flex justify-between gap-4">
         <div className="flex gap-2">

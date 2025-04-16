@@ -1,8 +1,8 @@
 "use client";
-import { ButtonIcon } from "@/components/button/button-icon";
+
 import CompanyAnalysisCard from "@/components/card/company-analysis-card";
 import CompanyCard from "@/components/card/company-card";
-import CompanyAnalysisCardSkeleton from "@/components/card/skeleton/CompanyAnalysisCardSkeleton ";
+
 import CompanyCardSkeleton from "@/components/card/skeleton/CompanyCardSkeleton";
 import MetricsSkeleton from "@/components/card/skeleton/MetricsSkeleton";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ import {
 import { ArrowNarrowRight, InformationIcon } from "@/utils/icons";
 import { Box, Flex, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import CompanyAnalysisCardSkeleton from "@/components/card/skeleton/CompanyAnalysisCardSkeleton ";
 
 const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<number>(1);
@@ -32,26 +33,11 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
 
   const filterBtn = [
     { text: "1D", value: 1 },
-    {
-      text: "5D",
-      value: 5,
-    },
-    {
-      text: "1M",
-      value: 30,
-    },
-    {
-      text: "3M",
-      value: 90,
-    },
-    {
-      text: "6M",
-      value: 180,
-    },
-    {
-      text: "1Y",
-      value: 365,
-    },
+    { text: "5D", value: 5 },
+    { text: "1M", value: 30 },
+    { text: "3M", value: 90 },
+    { text: "6M", value: 180 },
+    { text: "1Y", value: 365 },
   ];
 
   const currentDate = new Date();
@@ -60,13 +46,13 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     let previousDate = new Date(date);
     while (daysBack > 0) {
       previousDate.setDate(previousDate.getDate() - 1);
-
       if (previousDate.getDay() !== 0 && previousDate.getDay() !== 6) {
         daysBack--;
       }
     }
     return previousDate;
   };
+
   const excludedKeys = [
     "description",
     "isFund",
@@ -76,6 +62,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     "defaultImage",
     "image",
   ];
+
   const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
   const oneDayBefore = getPreviousTradingDay(currentDate, 1);
@@ -91,6 +78,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     setGetStockInfoFilter,
     getStockInfoError,
   } = useGetStockInfo({ enabled: true });
+
   const {
     getMetricsData,
     getMetricsFilter,
@@ -98,6 +86,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     setMetricsFilter,
     getMetricsError,
   } = useGetMetrics({ enabled: true });
+
   const {
     getStockInfoEodData,
     getStockInfoEodFilter,
@@ -113,6 +102,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     setGetStockInfoEodFilter: setGetStockInfoEodFilterChart,
     getStockInfoEodError: getStockInfoEodErrorChart,
   } = useGetStockInfoEod({ enabled: true, queryKey: "stockInfo-chart" });
+
   useEffect(() => {
     setGetStockInfoFilter({ symbol: symbol });
     setGetStockInfoEodFilter({
@@ -122,11 +112,13 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     });
     setMetricsFilter({ symbol: symbol, period: period });
   }, []);
+
   const handleFilterClick = (days: number) => {
     const newFrom = new Date();
     newFrom.setDate(today.getDate() - days);
     setFrom(newFrom.toISOString().split("T")[0]);
   };
+
   useEffect(() => {
     setGetStockInfoEodFilterChart({
       symbol: symbol,
@@ -134,23 +126,27 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
       startDate: from,
     });
   }, [from, to]);
+
   return (
     <Box>
       <div className="lg:flex xl:gap-4 gap-2 mb-[34.5px]">
         {getStockInfoIsLoading ? (
           <CompanyCardSkeleton />
-        ) : (
+        ) : getStockInfoData?.length > 0 ? (
           <CompanyCard
+            symbol={symbol}
             companyName={getStockInfoData[0]?.companyName}
             urlCompanyImg={getStockInfoData[0]?.image}
             price={getStockInfoData[0]?.price}
           />
-        )}
+        ) : null}
 
         <div className="grid md:grid-cols-2 xl:gap-4 gap-2">
           {getStockInfoEodIsLoading ? (
-            [...Array(2)].map((_, index) => <CompanyAnalysisCardSkeleton />)
-          ) : (
+            [...Array(2)].map((_, index) => (
+              <CompanyAnalysisCardSkeleton key={index} />
+            ))
+          ) : getStockInfoEodData?.length > 1 ? (
             <>
               <CompanyAnalysisCard
                 count={getStockInfoEodData[1]?.close}
@@ -165,13 +161,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                 isOpen={false}
               />
             </>
-          )}
-        </div>
-        <div className="hidden  bg-[#351F05] gap-1 rounded-[12px] px-2.5 xl:flex items-center justify-between w-fit-content">
-          <p className="font-semibold text-sm text-white">
-            Download Annual Report
-          </p>
-          <ArrowNarrowRight />
+          ) : null}
         </div>
       </div>
       <div className="rounded-[12px] p-2.5 bg-white w-full mb-6">
@@ -180,7 +170,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
             <Skeleton height="28px" width="50%" mb="10px" />
             <SkeletonText noOfLines={10} spacing="4" skeletonHeight="16px" />
           </>
-        ) : (
+        ) : getStockInfoData?.length > 0 ? (
           <>
             <Text fontWeight={700} fontSize={24} color="#111928" mb="10px">
               About {getStockInfoData[0]?.companyName}
@@ -189,7 +179,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
               {getStockInfoData[0]?.description}
             </Text>
           </>
-        )}
+        ) : null}
       </div>
       <div className="bg-white p-4 rounded-[12px] mb-4 lg:flex justify-between gap-4">
         <div className="flex gap-2">
@@ -238,22 +228,23 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
         </div>
       </div>
       <div className="bg-white p-4 rounded-[12px]">
-        {getStockInfoEodIsLoadingChart ? null : getStockInfoEodIsLoadingChart ==
-            false && getStockInfoEodDataChart.length < 1 ? (
-          <p className=" text-center">
+        {getStockInfoEodIsLoadingChart ? null : getStockInfoEodIsLoadingChart ===
+            false && getStockInfoEodDataChart?.length > 0 ? (
+          <StockChartSwitcher stockData={getStockInfoEodDataChart} />
+        ) : (
+          <p className="text-center">
             There is no EOD chart data for the date range selected
           </p>
-        ) : (
-          <StockChartSwitcher stockData={getStockInfoEodDataChart} />
         )}
       </div>
       <Box display={{ md: "flex" }} gap={4} mt={{ base: 4, md: 8 }}>
         <Box flex={1} borderRadius="12px" bg={"#fff"} mb={{ base: 2, md: 4 }}>
           {getStockInfoIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton />)
-            : Object.entries(getStockInfoData[0])
-                .filter(([key]) => !excludedKeys.includes(key))
-                .map(([key, value], index: number) => (
+            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
+            : getStockInfoData?.length > 0
+            ? Object?.entries(getStockInfoData[0])
+                ?.filter(([key]) => !excludedKeys.includes(key))
+                ?.map(([key, value], index: number) => (
                   <Box
                     p={4}
                     border={"1px solid #E5E7EB"}
@@ -269,20 +260,21 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                       display="inline-flex"
                       alignItems={"center"}
                     >
-                      {key} <InformationIcon />
+                      {key.toUpperCase()} <InformationIcon />
                     </Text>
-
                     <Text fontWeight={700} fontSize={"16px"} color="#111928">
                       {/* @ts-ignore */}
                       {value}
                     </Text>
                   </Box>
-                ))}
+                ))
+            : null}
         </Box>
         <Box borderRadius="12px" flex={1} bg={"#fff"} mb={4}>
           {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton />)
-            : Object.entries(getMetricsData?.metricThird).map(
+            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
+            : getMetricsData?.metricThird
+            ? Object?.entries(getMetricsData?.metricThird)?.map(
                 ([key, value], index: number) => (
                   <Box
                     p={4}
@@ -299,7 +291,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                       display="inline-flex"
                       alignItems={"center"}
                     >
-                      {key} <InformationIcon />
+                      {key.toUpperCase()} <InformationIcon />
                     </Text>
                     <Text fontWeight={700} fontSize={"16px"} color="#111928">
                       {/* @ts-ignore */}
@@ -307,14 +299,16 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                     </Text>
                   </Box>
                 )
-              )}
+              )
+            : null}
         </Box>
       </Box>
       <Box display={{ md: "flex" }} gap={4} mt={{ base: 4, md: 8 }}>
         <Box borderRadius="12px" bg={"#fff"} flex={1} mb={{ base: 2, md: 4 }}>
           {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton />)
-            : Object.entries(getMetricsData?.metricSecond).map(
+            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
+            : getMetricsData?.metricSecond
+            ? Object?.entries(getMetricsData?.metricSecond)?.map(
                 ([key, value], index: number) => (
                   <Box
                     p={4}
@@ -331,7 +325,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                       display="inline-flex"
                       alignItems={"center"}
                     >
-                      {key} <InformationIcon />
+                      {key.toUpperCase()} <InformationIcon />
                     </Text>
                     <Text fontWeight={700} fontSize={"16px"} color="#111928">
                       {/* @ts-ignore */}
@@ -339,12 +333,14 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                     </Text>
                   </Box>
                 )
-              )}
+              )
+            : null}
         </Box>
         <Box borderRadius="12px" bg={"#fff"} flex={1}>
           {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton />)
-            : Object.entries(getMetricsData?.metricFirst).map(
+            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
+            : getMetricsData?.metricFirst
+            ? Object?.entries(getMetricsData?.metricFirst)?.map(
                 ([key, value], index: number) => (
                   <Box
                     p={4}
@@ -361,7 +357,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                       display="inline-flex"
                       alignItems={"center"}
                     >
-                      {key} <InformationIcon />
+                      {key.toUpperCase()} <InformationIcon />
                     </Text>
                     <Text fontWeight={700} fontSize={"16px"} color="#111928">
                       {/* @ts-ignore */}
@@ -369,10 +365,10 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                     </Text>
                   </Box>
                 )
-              )}
+              )
+            : null}
         </Box>
       </Box>
-      {/* </Box> */}
     </Box>
   );
 };

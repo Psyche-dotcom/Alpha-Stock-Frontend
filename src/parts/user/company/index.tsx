@@ -9,6 +9,8 @@ import Metrics from "../metrics";
 import Financials from "../financials";
 import Fundamentals from "../fundamentals";
 import Analyzer from "../analyzer";
+import { useUserSession } from "@/app/context/user-context";
+import { useEffect } from "react";
 interface iProps {
   symbol: string;
 }
@@ -17,7 +19,12 @@ const Company: React.FC<iProps> = ({ symbol }) => {
   const param = useSearchParams();
   const activeTab = param.get("tab");
   const { handlePush } = useHandlePush();
-
+  const { profileData, setRedirectModalOpen } = useUserSession();
+  useEffect(() => {
+    if (!profileData?.result?.isSubActive) {
+      setRedirectModalOpen(true);
+    }
+  }, []);
   const renderItem = () => {
     switch (activeTab) {
       case "company-info":

@@ -14,6 +14,9 @@ const User: React.FC = () => {
   const { profileData, setRedirectModalOpen } = useUserSession();
   const { getBlogsData, getBlogsError, getBlogsIsLoading, getBlogsPayload } =
     useGetBlogs((res: any) => {});
+  useEffect(() => {
+    setRedirectModalOpen(false);
+  }, []);
 
   useEffect(() => {
     const payload = {

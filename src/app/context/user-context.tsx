@@ -41,10 +41,19 @@ export function UserSessionProvider({ children }: Props) {
     }
   }, [profileError, router]);
 
+  React.useEffect(() => {
+    if (profileData?.statusCode == 200) {
+      if (profileData?.result?.isSubActive) {
+        setRedirectModalOpen(false);
+      } else {
+        setRedirectModalOpen(true);
+      }
+    }
+  }, [profileData]);
+
   if (isProfileLoading) {
     return <SpinnerFill />;
   }
-
   return (
     <UserSessionContext.Provider
       value={{

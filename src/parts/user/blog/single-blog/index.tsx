@@ -38,7 +38,7 @@ import { showErrorAlert, showSuccessAlert } from "@/utils/alert";
 
 const BlogDetails = ({ blogId }: { blogId: string }) => {
   const [pageSize, setPageSize] = useState<number>(5);
-  const { profileData } = useUserSession();
+  const { profileData, setRedirectModalOpen } = useUserSession();
   const { getBlogData, getBlogError, getBlogIsLoading, getBlogPayload } =
     useGetBlog((res: any) => {});
 
@@ -56,6 +56,9 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
     perPageSize: pageSize,
   };
 
+  useEffect(() => {
+    setRedirectModalOpen(false);
+  }, []);
   const {
     getBlogCommentsData,
     getBlogCommentsError,

@@ -3,15 +3,21 @@
 import { Box } from "@chakra-ui/react";
 import CommunityLeftContent from "./left-content";
 import CommunityMain from "./main";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import useMediaSize from "@/hooks/use-mediasize";
 import { useUserSession } from "@/app/context/user-context";
 
 const Community = () => {
   const isAbove768 = useMediaSize(768);
-  const { isOpen, setIsOpen } = useUserSession();
+  const { isOpen, setIsOpen, profileData, setRedirectModalOpen } =
+    useUserSession();
 
+  useEffect(() => {
+    if (!profileData?.result?.isSubActive) {
+      setRedirectModalOpen(true);
+    }
+  }, []);
   useEffect(() => {
     if (isAbove768) {
       setIsOpen(false);

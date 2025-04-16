@@ -1,5 +1,6 @@
 "use client";
 
+import { useUserSession } from "@/app/context/user-context";
 import SingleCardSkeleton from "@/components/card/skeleton/single-view";
 import SkeletonViewCard from "@/components/card/skeleton/view";
 import ViewCard from "@/components/card/view-card";
@@ -13,6 +14,10 @@ import { useEffect, useState } from "react";
 const Blog = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [blogsData, setBlogsData] = useState<any>([]);
+  const { setRedirectModalOpen } = useUserSession();
+  useEffect(() => {
+    setRedirectModalOpen(false);
+  }, []);
 
   const { getBlogsData, getBlogsError, getBlogsIsLoading, getBlogsPayload } =
     useGetBlogs((res: any) => {});

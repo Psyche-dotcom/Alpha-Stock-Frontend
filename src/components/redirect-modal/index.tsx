@@ -14,7 +14,9 @@ const RedirectContent: React.FC = () => {
   return (
     <Dialog
       open={redirectModalOpen}
-      onOpenChange={() => setRedirectModalOpen(false)}
+      onOpenChange={() => {
+        handlePush(ROUTES.USER.SUBSCRIPTION);
+      }}
     >
       <DialogContent
         className={`left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-white p-[2rem]`}
@@ -35,13 +37,13 @@ const RedirectContent: React.FC = () => {
             </div>
           </DialogHeader>
           <div className="flex justify-between gap-5">
-            <Button
+            {/* <Button
               btnText="Cancel"
               className="py-4 text-base font-semibold w-full rounded-lg"
               onClick={() => setRedirectModalOpen(false)}
               variant={"outline"}
               size={"xl"}
-            />
+            /> */}
 
             <Button
               btnText="Subscribe"

@@ -4,9 +4,10 @@ import { ButtonIcon } from "@/components/button/button-icon";
 import { IButtonFilter2 } from "@/interface/button-filter";
 import Profile from "@/parts/profile";
 import { Box, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Watchlist from "./watchlist";
 import Subscriptions from "./subscriptions";
+import { useUserSession } from "@/app/context/user-context";
 
 const Profiles: React.FC = () => {
   const [btnFilter, setBtnFilter] = useState<string>("profile");
@@ -34,7 +35,10 @@ const Profiles: React.FC = () => {
         return <Profile />;
     }
   };
-
+  const { setRedirectModalOpen } = useUserSession();
+  useEffect(() => {
+    setRedirectModalOpen(false);
+  }, []);
   return (
     <Box>
       <Box bg={"#fff"} p={4} borderRadius={"12px"} mb={4}>

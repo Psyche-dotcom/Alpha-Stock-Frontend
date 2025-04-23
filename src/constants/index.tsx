@@ -36,10 +36,10 @@ export const userNavbarList = [
 ];
 
 export const searchTab = [
-  {
-    title: "Company Info",
-    value: "company-info",
-  },
+  // {
+  //   title: "Company Info",
+  //   value: "company-info",
+  // },
   {
     title: "Metrics",
     value: "metrics",
@@ -48,10 +48,10 @@ export const searchTab = [
     title: "Financials",
     value: "financials",
   },
-  {
-    title: "Fundamentals",
-    value: "fundamentals",
-  },
+  // {
+  //   title: "Fundamentals",
+  //   value: "fundamentals",
+  // },
   {
     title: "Stock Analyser",
     value: "stock-analyser",

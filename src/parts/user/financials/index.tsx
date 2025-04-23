@@ -17,6 +17,7 @@ import {
   useGetIncomeStatement,
 } from "@/services/stock";
 import { DataItem } from "@/types";
+import { getFontWeightByTitle } from "@/utils";
 import { ShineIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Table, { ColumnsType } from "antd/es/table";
@@ -91,37 +92,67 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     period,
   ]);
 
-  console.log("all data", Data);
-
   const cellRenderers = {
     title: (item: DataType) => (
-      <Text fontWeight={600} fontSize={16} color="#111928">
-        {item?.title}
-      </Text>
+      <span
+        className="whitespace-pre text-[#111928] text-[16px] font-medium"
+        style={{
+          fontWeight: getFontWeightByTitle(item?.title),
+        }}
+      >
+        {item?.title == ""
+          ? "                                                                "
+          : item?.title}
+      </span>
     ),
 
     row1: (item: DataType) => (
-      <Text fontSize={16} color="#111928" textAlign={"center"}>
+      <Text
+        fontSize={16}
+        color="#111928"
+        textAlign={"center"}
+        fontWeight={getFontWeightByTitle(item?.title)}
+      >
         {formatMoneyNumber(item?.row1)}
       </Text>
     ),
     row2: (item: DataType) => (
-      <Text fontSize={16} color="#111928" textAlign={"center"}>
+      <Text
+        fontSize={16}
+        color="#111928"
+        textAlign={"center"}
+        fontWeight={getFontWeightByTitle(item?.title)}
+      >
         {formatMoneyNumber(item?.row2)}
       </Text>
     ),
     row3: (item: DataType) => (
-      <Text fontSize={16} color="#111928" textAlign={"center"}>
+      <Text
+        fontSize={16}
+        color="#111928"
+        textAlign={"center"}
+        fontWeight={getFontWeightByTitle(item?.title)}
+      >
         {formatMoneyNumber(item?.row3)}
       </Text>
     ),
     row4: (item: DataType) => (
-      <Text fontSize={16} color="#111928" textAlign={"center"}>
+      <Text
+        fontSize={16}
+        color="#111928"
+        textAlign={"center"}
+        fontWeight={getFontWeightByTitle(item?.title)}
+      >
         {formatMoneyNumber(item?.row4)}
       </Text>
     ),
     row5: (item: DataType) => (
-      <Text fontSize={16} color="#111928" textAlign={"center"}>
+      <Text
+        fontSize={16}
+        color="#111928"
+        textAlign={"center"}
+        fontWeight={getFontWeightByTitle(item?.title)}
+      >
         {formatMoneyNumber(item?.row5)}
       </Text>
     ),

@@ -61,9 +61,8 @@ const CompanyCard: React.FC<ICompanyCard> = ({
           <Image
             src={urlCompanyImg}
             alt="stock symbol"
-            className=""
-            width={100}
-            height={100}
+            width={60}
+            height={60}
           />
         </div>
         <h2 className="xl:text-[36px] lg:text-[32px] text-[28px] font-bold text-[#111928]">
@@ -76,7 +75,7 @@ const CompanyCard: React.FC<ICompanyCard> = ({
         </h6>
         {!getWishlistIsAddedData?.isAdded ? (
           <div
-            className="flex item-center gap-2 font-medium text-sm text-[#291804]"
+            className="flex item-center gap-2 font-medium text-sm text-[#291804] cursor-pointer"
             onClick={() => {
               wishListAddPayload({
                 stockSymbol: symbol,
@@ -90,7 +89,7 @@ const CompanyCard: React.FC<ICompanyCard> = ({
           </div>
         ) : (
           <div
-            className="flex item-center gap-2 font-medium text-sm text-[#291804]"
+            className="flex item-center gap-2 font-medium text-sm text-[#291804] cursor-pointer"
             onClick={() => setIsOpen(true)}
           >
             <StarFillIcon />

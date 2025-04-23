@@ -51,7 +51,7 @@ const ConfirmPaymentPage: React.FC = () => {
   };
 
   return (
-    <Center minH="100vh" bg="gray.50" p={4}>
+    <Center minH="100vh" bg="gray.50" p={4} className="max-w-[1440px] mx-auto">
       <Box
         bg="white"
         p={8}

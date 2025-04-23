@@ -29,6 +29,7 @@ const Community = () => {
       gap={4}
       overflowY={"auto"}
       my={4}
+      className="max-w-[1440px] mx-auto"
       justifyContent={"end"}
     >
       <div className="md:block hidden">

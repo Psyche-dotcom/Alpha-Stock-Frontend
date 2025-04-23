@@ -18,7 +18,9 @@ export default function LandingLayout({
       <header className="sticky top-0 z-10 shadow-lg">
         <Navbar />
       </header>
-      <Box className="px-4 md:px-6 lg:px-8">{children}</Box>
+      <Box className="px-4 md:px-6 lg:px-8 max-w-[1440px] mx-auto">
+        {children}
+      </Box>
       <Footer />
     </>
   );

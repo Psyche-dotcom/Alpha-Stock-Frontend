@@ -84,7 +84,7 @@ const Watchlist: React.FC<iProp> = () => {
   }
   if (getWishlistData.length < 1) {
     return (
-      <Box className="flex flex-col justify-center items-center h-[50vh] text-center bg-white rounded-lg">
+      <Box className="flex flex-col justify-center items-center h-[50vh] text-center bg-white rounded-lg max-w-[1440px] mx-auto">
         <Icon boxSize={10} color="gray.400" mb={4} />
         <Text fontSize="lg" fontWeight="semibold" color="gray.500">
           Oops! No wishlist
@@ -93,7 +93,7 @@ const Watchlist: React.FC<iProp> = () => {
     );
   }
   return (
-    <Box>
+    <Box className="max-w-[1440px] mx-auto">
       <Grid
         gap={4}
         bg="#fff"

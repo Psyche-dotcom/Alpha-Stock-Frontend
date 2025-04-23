@@ -8,7 +8,7 @@ const ShopMainSection = () => {
     setRedirectModalOpen(false);
   }, []);
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 max-w-[1440px] mx-auto ">
       <div className="text-center">
         <img
           src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3ozaTdpMDBtamZ3YngxaHUzemFheGU4NnczYXRjZmt1bDlwOXl6OSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/dgVQkiSSL4TsZDrXYx/giphy.gif"

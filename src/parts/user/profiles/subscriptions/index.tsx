@@ -134,7 +134,7 @@ const Subscriptions = () => {
   }, [pageSize, profileData]);
 
   return (
-    <Box>
+    <Box className="max-w-[1440px] mx-auto">
       <Grid mb={8} gap={4} gridTemplateColumns={"repeat(3, 1fr)"}>
         <Box borderRadius={"8px"} bg="#fff" overflow={"hidden"}>
           <Text px={6} py={4} color="#351F05" fontWeight={600} fontSize={16}>

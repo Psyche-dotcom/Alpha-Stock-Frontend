@@ -3,6 +3,7 @@ import { Box } from "@chakra-ui/react";
 import UserNavbar from "@/components/navbar/user";
 import { UserSessionProvider } from "../context/user-context";
 import RedirectContent from "@/components/redirect-modal";
+import Footer from "@/parts/user/user_main_footer";
 
 export const metadata: Metadata = {
   title: "Nvidia",
@@ -21,6 +22,7 @@ export default function UserLayout({
           <UserNavbar />
           <Box className="px-4 md:px-6 lg:px-8 mt-6">{children}</Box>
           <RedirectContent />
+          <Footer />
         </Box>
       </UserSessionProvider>
     </>

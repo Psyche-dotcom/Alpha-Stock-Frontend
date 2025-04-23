@@ -68,7 +68,7 @@ const Plans = () => {
   };
   return (
     <>
-      <Box mt={8}>
+      <Box mt={8} className="max-w-[1440px] mx-auto">
         <div className="mt-10">
           <Box>
             <Grid gap={3} gridTemplateColumns={"repeat(4, 1fr)"}>

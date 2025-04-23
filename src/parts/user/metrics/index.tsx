@@ -17,9 +17,22 @@ import {
   useGetStockInfoEod,
 } from "@/services/stock";
 import { ArrowNarrowRight, InformationIcon } from "@/utils/icons";
-import { Box, Flex, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Skeleton,
+  SkeletonText,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import CompanyAnalysisCardSkeleton from "@/components/card/skeleton/CompanyAnalysisCardSkeleton ";
+import { getStockLabel, toCamelCaseWithSpaces } from "@/utils";
+import CompanyStockCardSkeleton from "@/components/card/skeleton/CompanyStockCardSkeleton";
+import { ICompanyStockCard } from "@/interface/company-stock-card";
+import CompanyStockCard from "@/components/card/company-stock-card";
+import { IStockData } from "@/interface/stock-view";
+import { formatMoneyNumber, formatMoneyNumber2 } from "@/components/util";
 
 const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<number>(1);
@@ -30,7 +43,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
   yesterday.setDate(today.getDate() - 1);
   const [from, setFrom] = useState(yesterday.toISOString().split("T")[0]);
   const [to, setTo] = useState(today.toISOString().split("T")[0]);
-
+  const [stockNewData, setNewStockData] = useState<ICompanyStockCard[]>([]);
   const filterBtn = [
     { text: "1D", value: 1 },
     { text: "5D", value: 5 },
@@ -46,7 +59,8 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     let previousDate = new Date(date);
     while (daysBack > 0) {
       previousDate.setDate(previousDate.getDate() - 1);
-      if (previousDate.getDay() !== 0 && previousDate.getDay() !== 6) {
+      const day = previousDate.getDay();
+      if (day !== 0 && day !== 6) {
         daysBack--;
       }
     }
@@ -126,27 +140,54 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
       startDate: from,
     });
   }, [from, to]);
+  useEffect(() => {
+    const eventSource = new EventSource(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/stock/stream/market_performance?leaderType=MostTraded`
+    );
+
+    eventSource.onmessage = (event) => {
+      const stockPrice = event;
+      const parsedData: any = JSON.parse(stockPrice.data);
+      const parsedCompleteData: IStockData[] = JSON.parse(parsedData);
+      const transformedData: ICompanyStockCard[] = parsedCompleteData
+        .slice(0, 6)
+        .map((stock: any) => ({
+          name: stock.symbol,
+          amount: stock.price.toFixed(2),
+          isProgressive: stock.change > 0,
+          value: stock.changesPercentage.toFixed(2),
+        }));
+
+      setNewStockData(transformedData);
+    };
+
+    eventSource.onerror = (err) => {
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   return (
     <Box>
       <div className="lg:flex xl:gap-4 gap-2 mb-[34.5px]">
         {getStockInfoIsLoading ? (
           <CompanyCardSkeleton />
-        ) : getStockInfoData?.length > 0 ? (
+        ) : (
           <CompanyCard
             symbol={symbol}
             companyName={getStockInfoData[0]?.companyName}
             urlCompanyImg={getStockInfoData[0]?.image}
             price={getStockInfoData[0]?.price}
           />
-        ) : null}
+        )}
 
         <div className="grid md:grid-cols-2 xl:gap-4 gap-2">
           {getStockInfoEodIsLoading ? (
-            [...Array(2)].map((_, index) => (
-              <CompanyAnalysisCardSkeleton key={index} />
-            ))
-          ) : getStockInfoEodData?.length > 1 ? (
+            [...Array(2)].map((_, index) => <CompanyAnalysisCardSkeleton />)
+          ) : (
             <>
               <CompanyAnalysisCard
                 count={getStockInfoEodData[1]?.close}
@@ -161,26 +202,16 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                 isOpen={false}
               />
             </>
-          ) : null}
+          )}
         </div>
+        {/* <div className="hidden  bg-[#351F05] gap-1 rounded-[12px] px-2.5 xl:flex items-center justify-between w-fit-content">
+               <p className="font-semibold text-sm text-white">
+                 Download Annual Report
+               </p>
+               <ArrowNarrowRight />
+             </div> */}
       </div>
-      <div className="rounded-[12px] p-2.5 bg-white w-full mb-6">
-        {getStockInfoIsLoading ? (
-          <>
-            <Skeleton height="28px" width="50%" mb="10px" />
-            <SkeletonText noOfLines={10} spacing="4" skeletonHeight="16px" />
-          </>
-        ) : getStockInfoData?.length > 0 ? (
-          <>
-            <Text fontWeight={700} fontSize={24} color="#111928" mb="10px">
-              About {getStockInfoData[0]?.companyName}
-            </Text>
-            <Text fontWeight={400} fontSize={16}>
-              {getStockInfoData[0]?.description}
-            </Text>
-          </>
-        ) : null}
-      </div>
+
       <div className="bg-white p-4 rounded-[12px] mb-4 lg:flex justify-between gap-4">
         <div className="flex gap-2">
           {filterBtn.map((filter: IButtonFilter, index: number) => (
@@ -238,7 +269,13 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
         )}
       </div>
       <Box display={{ md: "flex" }} gap={4} mt={{ base: 4, md: 8 }}>
-        <Box flex={1} borderRadius="12px" bg={"#fff"} mb={{ base: 2, md: 4 }}>
+        <Box
+          flex={1}
+          borderRadius="12px"
+          bg={"#fff"}
+          mb={{ base: 2, md: 4 }}
+          className="w-full"
+        >
           {getStockInfoIsLoading
             ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
             : getStockInfoData?.length > 0
@@ -260,113 +297,169 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                       display="inline-flex"
                       alignItems={"center"}
                     >
-                      {key.toUpperCase()} <InformationIcon />
+                      {getStockLabel(key)}
+                      <InformationIcon />
                     </Text>
                     <Text fontWeight={700} fontSize={"16px"} color="#111928">
                       {/* @ts-ignore */}
-                      {value}
+                      {formatMoneyNumber2(value)}
                     </Text>
                   </Box>
                 ))
             : null}
         </Box>
-        <Box borderRadius="12px" flex={1} bg={"#fff"} mb={4}>
-          {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
-            : getMetricsData?.metricThird
-            ? Object?.entries(getMetricsData?.metricThird)?.map(
-                ([key, value], index: number) => (
-                  <Box
-                    p={4}
-                    border={"1px solid #E5E7EB"}
-                    display="flex"
-                    justifyContent={"space-between"}
-                    alignItems={"center"}
-                    key={index}
-                  >
-                    <Text
-                      fontWeight={500}
-                      fontSize={16}
-                      color="#111928"
-                      display="inline-flex"
+        <div className="md:w-1/2">
+          <Box borderRadius="12px" flex={1} bg={"#fff"} mb={4}>
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricThird
+              ? Object?.entries(getMetricsData?.metricThird)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={4}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
                       alignItems={"center"}
+                      key={index}
                     >
-                      {key.toUpperCase()} <InformationIcon />
-                    </Text>
-                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                      {/* @ts-ignore */}
-                      {value}
-                    </Text>
-                  </Box>
+                      <Text
+                        fontWeight={500}
+                        fontSize={16}
+                        color="#111928"
+                        display="inline-flex"
+                        alignItems={"center"}
+                      >
+                        {getStockLabel(key)} <InformationIcon />
+                      </Text>
+                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                        {/* @ts-ignore */}
+                        {formatMoneyNumber2(value)}
+                      </Text>
+                    </Box>
+                  )
                 )
-              )
-            : null}
-        </Box>
+              : null}
+          </Box>{" "}
+          <Box borderRadius="12px" bg={"#fff"} flex={1} mb={{ base: 2, md: 4 }}>
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricSecond
+              ? Object?.entries(getMetricsData?.metricSecond)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={4}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      key={index}
+                    >
+                      <Text
+                        fontWeight={500}
+                        fontSize={16}
+                        color="#111928"
+                        display="inline-flex"
+                        alignItems={"center"}
+                      >
+                        {getStockLabel(key)} <InformationIcon />
+                      </Text>
+                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                        {/* @ts-ignore */}
+                        {formatMoneyNumber2(value)}
+                      </Text>
+                    </Box>
+                  )
+                )
+              : null}
+          </Box>
+          <Box borderRadius="12px" bg={"#fff"} flex={1}>
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricFirst
+              ? Object?.entries(getMetricsData?.metricFirst)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={4}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      key={index}
+                    >
+                      <Text
+                        fontWeight={500}
+                        fontSize={16}
+                        color="#111928"
+                        display="inline-flex"
+                        alignItems={"center"}
+                      >
+                        {getStockLabel(key)} <InformationIcon />
+                      </Text>
+                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                        {/* @ts-ignore */}
+                        {formatMoneyNumber2(value)}
+                      </Text>
+                    </Box>
+                  )
+                )
+              : null}
+          </Box>
+        </div>
       </Box>
       <Box display={{ md: "flex" }} gap={4} mt={{ base: 4, md: 8 }}>
-        <Box borderRadius="12px" bg={"#fff"} flex={1} mb={{ base: 2, md: 4 }}>
-          {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
-            : getMetricsData?.metricSecond
-            ? Object?.entries(getMetricsData?.metricSecond)?.map(
-                ([key, value], index: number) => (
-                  <Box
-                    p={4}
-                    border={"1px solid #E5E7EB"}
-                    display="flex"
-                    justifyContent={"space-between"}
-                    alignItems={"center"}
-                    key={index}
-                  >
-                    <Text
-                      fontWeight={500}
-                      fontSize={16}
-                      color="#111928"
-                      display="inline-flex"
-                      alignItems={"center"}
-                    >
-                      {key.toUpperCase()} <InformationIcon />
-                    </Text>
-                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                      {/* @ts-ignore */}
-                      {value}
-                    </Text>
+        <div className="rounded-[12px] p-2.5 bg-white w-full mb-6">
+          {getStockInfoIsLoading ? (
+            <>
+              <Skeleton height="28px" width="50%" mb="10px" />
+              <SkeletonText noOfLines={10} spacing="4" skeletonHeight="16px" />
+            </>
+          ) : getStockInfoData?.length > 0 ? (
+            <>
+              <Text fontWeight={700} fontSize={24} color="#111928" mb="10px">
+                About {getStockInfoData[0]?.companyName}
+              </Text>
+              <Text fontWeight={400} fontSize={16}>
+                {getStockInfoData[0]?.description}
+              </Text>
+            </>
+          ) : null}
+        </div>
+        <Box
+          borderRadius="12px"
+          p={"10px"}
+          mt={{ base: 4, lg: 0 }}
+          bg="#fff"
+          w="100%"
+          h="fit-content"
+        >
+          <Text fontWeight={700} fontSize={24} color="#111928" mb="10px">
+            Top Traded Trending Stocks
+          </Text>
+          <Grid
+            gap={{ base: 2, md: 4 }}
+            gridTemplateColumns={{ sm: "repeat(2, 1fr)" }}
+          >
+            {stockNewData.length === 0
+              ? [...Array(6)].map((_, index) => (
+                  <Box key={index} pb={{ base: 3, sm: 0 }}>
+                    <CompanyStockCardSkeleton />
                   </Box>
-                )
-              )
-            : null}
-        </Box>
-        <Box borderRadius="12px" bg={"#fff"} flex={1}>
-          {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
-            : getMetricsData?.metricFirst
-            ? Object?.entries(getMetricsData?.metricFirst)?.map(
-                ([key, value], index: number) => (
-                  <Box
-                    p={4}
-                    border={"1px solid #E5E7EB"}
-                    display="flex"
-                    justifyContent={"space-between"}
-                    alignItems={"center"}
-                    key={index}
-                  >
-                    <Text
-                      fontWeight={500}
-                      fontSize={16}
-                      color="#111928"
-                      display="inline-flex"
-                      alignItems={"center"}
-                    >
-                      {key.toUpperCase()} <InformationIcon />
-                    </Text>
-                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                      {/* @ts-ignore */}
-                      {value}
-                    </Text>
-                  </Box>
-                )
-              )
-            : null}
+                ))
+              : stockNewData?.map(
+                  (company: ICompanyStockCard, index: number) => (
+                    <Box key={index} pb={{ base: 3, sm: 0 }}>
+                      <CompanyStockCard company={company} />
+                    </Box>
+                  )
+                )}
+          </Grid>
         </Box>
       </Box>
     </Box>

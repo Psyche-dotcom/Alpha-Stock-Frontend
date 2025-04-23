@@ -58,7 +58,7 @@ const Blog = () => {
   };
 
   return (
-    <Box mt={8}>
+    <Box mt={8} className="max-w-[1440px] mx-auto">
       <Flex
         gap={4}
         alignItems="stretch"

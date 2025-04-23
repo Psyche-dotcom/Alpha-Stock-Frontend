@@ -75,6 +75,7 @@ const UserProfile: React.FC = () => {
       justifyContent={"center"}
       mt={4}
       py={10}
+      className="max-w-[1440px] mx-auto"
     >
       <Box w="588px" position="relative">
         <Box display={"flex"} justifyContent={"center"}>

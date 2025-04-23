@@ -21,7 +21,7 @@ export interface EnhancedTableProps<T extends DataItem> extends ITableProps<T> {
   columnLabels?: Partial<Record<keyof T, string>>;
 }
 
-export function TableComponent<T extends DataItem>({
+export function TableComponent2<T extends DataItem>({
   tableData,
   currentPage,
   totalPages,

@@ -148,7 +148,7 @@ const Signup: React.FC = () => {
             </form>
           </Form>
           <Separator className="bg-[#E5E7EB] h-1 my-8" />
-          <p className="text-sm font-normal text-center mb-8 text-[#6B7280]">
+          {/* <p className="text-sm font-normal text-center mb-8 text-[#6B7280]">
             Or sign in with
           </p>
           <Button
@@ -156,7 +156,7 @@ const Signup: React.FC = () => {
             variant="outline"
             className="w-full text-base font-medium"
             icon={<GoogleIcon />}
-          />
+          /> */}
           <div className="flex gap-2 items-center justify-center mt-8">
             <p className="font-medium text-sm text-[#6B7280]">
               Already a user on our platform?

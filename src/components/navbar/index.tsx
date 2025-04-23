@@ -8,21 +8,35 @@ import { ROUTES } from "@/constants/routes";
 import { Button } from "../ui/button";
 import { Box } from "@chakra-ui/react";
 import { useHandlePush } from "@/hooks/handlePush";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const pathname = usePathname();
   const { handlePush } = useHandlePush();
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(path);
+  };
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   return (
     <div className="bg-white px-4">
-      <div className="flex items-center lg:gap-[64px] xl:gap-[96px] justify-between">
+      <div className="flex items-center lg:gap-[64px] xl:gap-[96px] justify-between max-w-[1440px] mx-auto">
         <Link href={"/"} passHref>
           <CompanyIcon />
         </Link>
         <div className="lg:gap-[64px] xl:gap-[96px] hidden lg:flex items-center flex-1">
-          <div className="flex me-auto lg:gap-1 gl:gap-2 flex items-center justify-between">
+          <div className="flex me-auto lg:gap-1 gl:gap-2  items-center justify-between">
             {navbarList.map((nav, index) => (
               <Link href={nav.path} key={index} passHref>
-                <div className="p-4">{nav.title}</div>
+                <div
+                  className={`p-4 hover:scale-110 transition-transform cursor-pointer ${
+                    isActive(nav.path) ? "text-[#3A2206] font-bold" : null
+                  }`}
+                >
+                  {nav.title}
+                </div>
               </Link>
             ))}
           </div>
@@ -76,7 +90,13 @@ const Navbar = () => {
           <div className="flex flex-col">
             {navbarList.map((nav, index) => (
               <Link href={nav.path} key={index} passHref>
-                <div className="p-2 text-lg font-medium">{nav.title}</div>
+                <div
+                  className={`p-2 text-lg font-medium hover:scale-110 transition-transform cursor-pointer ${
+                    isActive(nav.path) ? "text-[#3A2206] font-bold" : null
+                  }`}
+                >
+                  {nav.title}
+                </div>
               </Link>
             ))}
           </div>

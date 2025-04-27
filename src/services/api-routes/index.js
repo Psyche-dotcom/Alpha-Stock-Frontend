@@ -59,6 +59,13 @@ export const routes = {
   deleteWishlist: () => "/api/stock/delete-wishlist",
   updateWishlist: () => "/api/stock/update-wishlist",
   userStats: () => "/api/admin/userstats",
+  userCommunity: () => "/api/community/retrieve/user/channel",
+  addchannel: () => "/api/community/create/channel",
+  addCommunityCategory: (catName) =>
+    `/api/community/create/category?CategoryName=${catName}`,
+  categoryUrl: () => "/api/community/retrieve/category/all",
+  categoryChannelCountUrl: () =>
+    "/api/community/retrieve/category/channel/messages",
   uploadPicture: () => "/api/blog/upload/picture",
   updateUserProfile: (email) => `/api/user/update_picture/${email}`,
 };

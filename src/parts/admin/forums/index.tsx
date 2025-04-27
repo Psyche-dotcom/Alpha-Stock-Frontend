@@ -2,7 +2,7 @@
 
 import { CommunityData } from "@/types";
 import { EditIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,11 +16,18 @@ import { Button } from "@/components/ui/button";
 import CreateCategory from "./create-category";
 import { Card, CardContent } from "@/components/ui/card";
 import { InputFilter } from "@/components/filter/input-filter";
-
+import { useGetChannel } from "@/services/community";
 const Forums: React.FC = () => {
   const [option, setOption] = useState<string>("create");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
+  const [tableData, setTableData] = useState<CommunityData[]>([]);
+  const {
+    getChannelData,
+    getChannelIsLoading,
+    setChannelFilter,
+    refetchChannel,
+  } = useGetChannel();
   const cellRenderers = {
     channelName: (record: CommunityData) => (
       <p className="font-semibold text-start">{record?.channelName}</p>
@@ -44,13 +51,18 @@ const Forums: React.FC = () => {
       </div>
     ),
   };
-  const tableData: CommunityData[] = [
-    {
-      channelName: "#Announcements",
-      category: "General",
-      moderator: "Gucci Picasso",
-    },
-  ];
+
+  useEffect(() => {
+    const tableDataFUll: CommunityData[] = getChannelData?.map((item: any) => ({
+      channelName: item?.name,
+      category: item?.category?.name,
+      moderator:
+        item.createdByUser?.firstName + " " + item.createdByUser?.lastName,
+    }));
+
+    setTableData(tableDataFUll);
+  }, [getChannelData]);
+
   const columnOrder: (keyof CommunityData)[] = [
     "channelName",
     "category",
@@ -59,10 +71,10 @@ const Forums: React.FC = () => {
   ];
 
   const columnLabels = {
-    channelName: "Full Name",
-    category: "Email",
-    moderator: "Subscription Name",
-    action: "Subscription Status",
+    channelName: "Channel Name",
+    category: "Category",
+    moderator: "Moderator",
+    action: "Action",
   };
 
   const renderItem = () => {
@@ -70,7 +82,7 @@ const Forums: React.FC = () => {
       case "create-channel":
         return <CreateForum />;
       case "create-category":
-        return <CreateCategory />;
+        return <CreateCategory setIsOpen={setIsOpen} />;
       case "edit":
         return <EditForum />;
       default:

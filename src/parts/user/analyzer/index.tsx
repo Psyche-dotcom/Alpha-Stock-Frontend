@@ -129,12 +129,17 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
 
   const cellRenderers = {
     feature: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14}>
+      <Text fontWeight={400} fontSize={14} className="text-nowrap">
         {item?.feature}
       </Text>
     ),
     year1: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} textAlign={"center"}>
+      <Text
+        fontWeight={400}
+        fontSize={14}
+        textAlign={"center"}
+        className="text-nowrap"
+      >
         {item?.year1
           ? `${parseFloat(String(item.year1)).toFixed(2)} ${
               item?.showPercent ? "%" : ""
@@ -143,7 +148,12 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       </Text>
     ),
     year5: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} textAlign={"center"}>
+      <Text
+        fontWeight={400}
+        fontSize={14}
+        textAlign={"center"}
+        className="text-nowrap"
+      >
         {item?.year5
           ? `${parseFloat(String(item.year5)).toFixed(2)} ${
               item?.showPercent ? "%" : ""
@@ -152,7 +162,12 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       </Text>
     ),
     year10: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} textAlign={"center"}>
+      <Text
+        fontWeight={400}
+        fontSize={14}
+        textAlign={"center"}
+        className="text-nowrap"
+      >
         {item?.year10
           ? `${parseFloat(String(item.year10)).toFixed(2)} ${
               item?.showPercent ? "%" : ""
@@ -164,7 +179,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       <Box className="flex justify-center relative">
         <Input
           name="low"
-          style={{ maxWidth: "54px", paddingRight: "20px" }}
+          style={{ maxWidth: "54px" }}
           value={tableState[item.category!]?.low || 0}
           onChange={(e) =>
             handleInputChange(item.category!, "low", Number(e.target.value))
@@ -172,7 +187,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           className="h-8 w-[10.6rem]"
         />
         {item?.showPercent && (
-          <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
             %
           </Box>
         )}
@@ -191,7 +206,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           className="h-8 w-[10.6rem]"
         />
         {item?.showPercent && (
-          <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
             %
           </Box>
         )}
@@ -209,7 +224,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           className="h-8 w-[10.6rem]"
         />
         {item?.showPercent && (
-          <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
             %
           </Box>
         )}
@@ -391,7 +406,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
             </Button>
           </div>
         </Box>
-        <Box className="flex md:flex md:gap-4 gap-4 flex-col md:flex-row">
+        <Box className="flex lg:flex md:gap-4 gap-4 flex-col lg:flex-row md:p-4 p-2">
           <Box className="w-full">
             <div className="bg-[#EBE9E6] text-[#6B7280] border-b border-[#6B7280] py-4 rounded-tr-lg text-center rounded-lt-lg uppercase font-semibold text-xs grid grid-cols-3">
               <h6></h6>
@@ -433,26 +448,24 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
               </Button>
             </Box>
           </Box>
-          <Box className="md:w-1/3">
-            <Box className="p-4 rounded-[6px] bg-white flex gap-4 md:max-w-[400px] border-2 border-[#E5E7EB] mx-2">
-              {/* <CautionIcon /> */}
-              <Box className="text-[#3A2206] flex-1">
-                <Text className="font-bold text-base mb-1">Disclaimer:</Text>
+          <Box className="p-4 rounded-[6px] bg-white flex gap-4 lg:max-w-[400px] border-2 border-[#E5E7EB] mx-2 h-full">
+            {/* <CautionIcon /> */}
+            <Box className="text-[#3A2206] flex-1">
+              <Text className="font-bold text-base mb-1">Disclaimer:</Text>
 
-                <Text className="font-normal text-sm">
-                  Everything Money (including Paul, Mo, and any other person
-                  including, but not limited to, other staff members, guests,
-                  personalities, etc.) is not an investment adviser, and it is
-                  not registered as such with the U.S. Securities & Exchange
-                  Commission or any other state or federal authority under the
-                  Investment Advisers Act of 1940 or any other law. The results
-                  generated by the Stock Analyzer Tool are for informational and
-                  educational purposes only and are not, and should not be
-                  considered, investment advice or a recommendation to buy,
-                  sell, or hold a particular security, make a particular
-                  investment, or follow a particular investing strategy.
-                </Text>
-              </Box>
+              <Text className="font-normal text-sm">
+                Everything Money (including Paul, Mo, and any other person
+                including, but not limited to, other staff members, guests,
+                personalities, etc.) is not an investment adviser, and it is not
+                registered as such with the U.S. Securities & Exchange
+                Commission or any other state or federal authority under the
+                Investment Advisers Act of 1940 or any other law. The results
+                generated by the Stock Analyzer Tool are for informational and
+                educational purposes only and are not, and should not be
+                considered, investment advice or a recommendation to buy, sell,
+                or hold a particular security, make a particular investment, or
+                follow a particular investing strategy.
+              </Text>
             </Box>
           </Box>
         </Box>

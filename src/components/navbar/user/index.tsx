@@ -69,7 +69,10 @@ const UserNavbar = () => {
         <Link href={ROUTES.USER.HOME} passHref>
           <CompanyIcon />
         </Link>
-        <div className="lg:hidden" onClick={() => setShowNavbar(!showNavbar)}>
+        <div
+          className="lg:hidden cursor-pointer"
+          onClick={() => setShowNavbar(!showNavbar)}
+        >
           <BurgerIcon />
         </div>
         <div className="flex-1  justify-between   gap-5 lg:flex hidden">
@@ -79,7 +82,7 @@ const UserNavbar = () => {
                 <div
                   onClick={(e) => handleClick(e, nav.path)}
                   className={` text-sm p-1 font-medium hover:scale-110 transition-transform cursor-pointer ${
-                    isActive(nav.path) ? "text-[#3A2206] font-bold" : null
+                    pathname === nav.path ? "text-[#3A2206] font-black" : ""
                   }`}
                 >
                   {nav.title}
@@ -138,9 +141,18 @@ const UserNavbar = () => {
                 href={nav.path}
                 key={index}
                 passHref
-                onClick={(e) => handleClick(e, nav.path)}
+                onClick={(e) => {
+                  setShowNavbar(!showNavbar);
+                  handleClick(e, nav.path);
+                }}
               >
-                <div className="text-sm p-1 font-medium">{nav.title}</div>
+                <div
+                  className={`text-sm p-1 font-medium ${
+                    pathname === nav.path ? "text-[#3A2206] font-black" : ""
+                  }`}
+                >
+                  {nav.title}
+                </div>
               </Link>
             ))}
           </div>

@@ -15,7 +15,10 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import { useAddChannel, useGetCategory } from "@/services/community";
 import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 const formSchema = z.object({
@@ -26,6 +29,7 @@ const formSchema = z.object({
 type FormSchemaType = z.infer<typeof formSchema>;
 
 const CreateForum: React.FC = () => {
+  // const [categoryList, setCategoryList] = React.useState<any[]>([]);
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,16 +37,30 @@ const CreateForum: React.FC = () => {
       category: "",
     },
   });
+  const {
+    setChannelCategoryFilter,
+    refetchChannelCategory,
+    getChannelCategoryError,
+    getChannelCategoryData,
+  } = useGetCategory();
 
+  let categoryList = getChannelCategoryData?.map((item: any) => ({
+    title: item?.name,
+    value: item?.id,
+  }));
+  const { channelAddData, channelAddIsLoading, channelAddPayload } =
+    useAddChannel((res: { statusCode: number; result: any }) => {
+      // setIsOpen(false);
+    });
   async function onSubmit(values: FormSchemaType) {
+    console.log("values new ", values);
+    channelAddPayload({
+      catId: values.category,
+      name: values.channelName,
+    });
     await Promise.resolve(true);
   }
-  const categoryList = [
-    {
-      title: "Category",
-      value: "cat",
-    },
-  ];
+
   return (
     <>
       <Form {...form}>
@@ -81,7 +99,7 @@ const CreateForum: React.FC = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-white">
-                    {categoryList?.map((_, index) => (
+                    {categoryList?.map((_: any, index: any) => (
                       <SelectItem value={_.value} key={index}>
                         {_.title}
                       </SelectItem>

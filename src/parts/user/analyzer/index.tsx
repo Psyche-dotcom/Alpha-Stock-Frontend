@@ -41,6 +41,7 @@ interface DataType extends DataItem {
   medium?: number;
   high?: number;
   category: string;
+  showPercent?: boolean;
 }
 interface DataTypes extends DataItem {
   id: number;
@@ -134,17 +135,29 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     ),
     year1: (item: DataType) => (
       <Text fontWeight={400} fontSize={14} textAlign={"center"}>
-        {item?.year1 ? `${parseFloat(String(item.year1)).toFixed(2)}%` : "-"}
+        {item?.year1
+          ? `${parseFloat(String(item.year1)).toFixed(2)} ${
+              item?.showPercent ? "%" : ""
+            }`
+          : "-"}
       </Text>
     ),
     year5: (item: DataType) => (
       <Text fontWeight={400} fontSize={14} textAlign={"center"}>
-        {item?.year5 ? `${parseFloat(String(item.year5)).toFixed(2)}%` : "-"}
+        {item?.year5
+          ? `${parseFloat(String(item.year5)).toFixed(2)} ${
+              item?.showPercent ? "%" : ""
+            }`
+          : "-"}
       </Text>
     ),
     year10: (item: DataType) => (
       <Text fontWeight={400} fontSize={14} textAlign={"center"}>
-        {item?.year10 ? `${parseFloat(String(item.year10)).toFixed(2)}%` : "-"}
+        {item?.year10
+          ? `${parseFloat(String(item.year10)).toFixed(2)} ${
+              item?.showPercent ? "%" : ""
+            }`
+          : "-"}
       </Text>
     ),
     low: (item: DataType) => (
@@ -158,9 +171,11 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           }
           className="h-8 w-[10.6rem]"
         />
-        <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
-          %
-        </Box>
+        {item?.showPercent && (
+          <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+            %
+          </Box>
+        )}
       </Box>
     ),
 
@@ -175,9 +190,11 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           }
           className="h-8 w-[10.6rem]"
         />
-        <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
-          %
-        </Box>
+        {item?.showPercent && (
+          <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+            %
+          </Box>
+        )}
       </Box>
     ),
     high: (item: DataType) => (
@@ -191,9 +208,11 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           }
           className="h-8 w-[10.6rem]"
         />
-        <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
-          %
-        </Box>
+        {item?.showPercent && (
+          <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+            %
+          </Box>
+        )}
       </Box>
     ),
   };

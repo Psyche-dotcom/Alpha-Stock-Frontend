@@ -128,26 +128,25 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
 
   const cellRenderers = {
     feature: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} color="#111928">
+      <Text fontWeight={400} fontSize={14}>
         {item?.feature}
       </Text>
     ),
     year1: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year1 ? parseFloat(String(item.year1)).toFixed(2) : "-"}
+      <Text fontWeight={400} fontSize={14} textAlign={"center"}>
+        {item?.year1 ? `${parseFloat(String(item.year1)).toFixed(2)}%` : "-"}
       </Text>
     ),
     year5: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year5 ? parseFloat(String(item.year5)).toFixed(2) : "-"}
+      <Text fontWeight={400} fontSize={14} textAlign={"center"}>
+        {item?.year5 ? `${parseFloat(String(item.year5)).toFixed(2)}%` : "-"}
       </Text>
     ),
     year10: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year10 ? parseFloat(String(item.year10)).toFixed(2) : "-"}
+      <Text fontWeight={400} fontSize={14} textAlign={"center"}>
+        {item?.year10 ? `${parseFloat(String(item.year10)).toFixed(2)}%` : "-"}
       </Text>
     ),
-
     low: (item: DataType) => (
       <Box className="flex justify-center">
         <Input
@@ -161,6 +160,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
         />
       </Box>
     ),
+
     medium: (item: DataType) => (
       <Box className="flex justify-center">
         <Input
@@ -371,6 +371,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
                 cellRenderers={cellRenderers}
                 columnOrder={columnOrder}
                 columnLabels={columnLabels}
+                className="!text-[#6B7280] text-sm font-normal"
               />
             </div>
             <Box

@@ -22,7 +22,7 @@ const AdminStockAnalyser: React.FC<IAdminStock> = ({
       <p className="font-semibold">{record?.featureName}</p>
     ),
     currentState: (record: SubscriptionFeature) => (
-      <div className="font-semibold">
+      <div className="font-semibold flex items-center justify-center">
         {record?.currentState.toLowerCase() === "false" ? (
           <CancelIcon />
         ) : (

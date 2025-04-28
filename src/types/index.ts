@@ -25,6 +25,7 @@ export interface ITableProps<T extends DataItem> {
   defaultRoute?: string;
   onRowClick?: (item: T) => void;
   boldColumns?: string[];
+  className?: string;
 }
 
 export interface MarketMove extends DataItem {

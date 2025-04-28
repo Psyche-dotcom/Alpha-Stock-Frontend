@@ -41,10 +41,10 @@ const User: React.FC = () => {
     <div className="xl:flex gap-4 h-full max-w-[1440px] mx-auto">
       <div className="flex-1">
         <div className="flex gap-4 flex-col md:flex-row xl:flex-col w-full md:mb-8 mb-4 xl:mb-0">
-          <div className="mb-8 flex  gap-4 h-ful md:h-auto flex-1">
-            <div className="flex flex-col gap-4 h-[215px]">
+          <div className="md:mb-8 mb-5 flex sm:flex-row flex-col sm:gap-4 gap-3 h-ful md:h-auto flex-1">
+            <div className="flex flex-col sm:gap-4 gap-3 sm:h-[215px] h-auto">
               <Link
-                href={"/user/company/aapl?tab=company-info"}
+                href={"/user/company/aapl?tab=metrics"}
                 onClick={(e) => handleClick(e)}
               >
                 <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
@@ -68,7 +68,7 @@ const User: React.FC = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:gap-4 gap-3">
               <Link
                 href={"/user/company/aapl?tab=financials"}
                 onClick={(e) => handleClick(e)}

@@ -78,10 +78,10 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     if (btnFilter == "income-statements") {
       setData(getIncomeStatementData);
     } else if (btnFilter == "balance-sheet") {
-      console.log("balance shet set");
+     
       setData(getBalanceSheetData);
     } else if (btnFilter == "cashflow") {
-      console.log("cashflowset");
+    
       setData(getCashFlowData);
     }
   }, [

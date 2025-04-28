@@ -148,43 +148,52 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       </Text>
     ),
     low: (item: DataType) => (
-      <Box className="flex justify-center">
+      <Box className="flex justify-center relative">
         <Input
           name="low"
-          style={{ maxWidth: "50px" }}
+          style={{ maxWidth: "54px", paddingRight: "20px" }}
           value={tableState[item.category!]?.low || 0}
           onChange={(e) =>
             handleInputChange(item.category!, "low", Number(e.target.value))
           }
           className="h-8 w-[10.6rem]"
         />
+        <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+          %
+        </Box>
       </Box>
     ),
 
     medium: (item: DataType) => (
-      <Box className="flex justify-center">
+      <Box className="flex justify-center relative">
         <Input
           name="mid"
-          style={{ maxWidth: "50px" }}
+          style={{ maxWidth: "54px" }}
           value={tableState[item.category!]?.mid || 0}
           onChange={(e) =>
             handleInputChange(item.category!, "mid", Number(e.target.value))
           }
           className="h-8 w-[10.6rem]"
         />
+        <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+          %
+        </Box>
       </Box>
     ),
     high: (item: DataType) => (
-      <Box className="flex justify-center">
+      <Box className="flex justify-center relative">
         <Input
           name="high"
-          style={{ maxWidth: "50px" }}
+          style={{ maxWidth: "54px" }}
           value={tableState[item.category!]?.high || 0}
           onChange={(e) =>
             handleInputChange(item.category!, "high", Number(e.target.value))
           }
           className="h-8 w-[10.6rem]"
         />
+        <Box className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+          %
+        </Box>
       </Box>
     ),
   };
@@ -364,7 +373,12 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           </div>
         </Box>
         <Box className="flex md:flex md:gap-4 gap-4 flex-col md:flex-row">
-          <Box className="flex flex-col gap-4 w-full">
+          <Box className="w-full">
+            <div className="bg-[#EBE9E6] text-[#6B7280] border-b border-[#6B7280] py-4 rounded-tr-lg text-center rounded-lt-lg uppercase font-semibold text-xs grid grid-cols-3">
+              <h6></h6>
+              <h6>Historical Data</h6>
+              <h6>My Assumptions</h6>
+            </div>
             <div className="w-full">
               <TableComponentNew<DataType>
                 tableData={DataSourceAnalyzer(getStockAnalysisStatData)}

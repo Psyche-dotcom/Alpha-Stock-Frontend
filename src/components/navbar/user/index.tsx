@@ -62,7 +62,7 @@ const UserNavbar = () => {
       setRedirectModalOpen(true);
     }
   };
-  console.log(pathname);
+
   return (
     <div className="bg-white px-4 sticky z-10 top-0 shadow-xl">
       <div className="flex items-center justify-between lg:gap-[36px] xl:gap-[96px] max-w-[1440px] mx-auto ">

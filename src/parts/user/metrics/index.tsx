@@ -344,7 +344,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
               )
             : null}
         </Box>
-        <div className="w-full h-fit">
+        <div className="w-full h-fit hidden xl:block">
           <Box borderRadius="12px" bg={"#fff"} mb={{ base: 2, md: 4 }}>
             {getMetricsIsLoading
               ? [...Array(10)].map((_, index) => (
@@ -380,6 +380,83 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
               : null}
           </Box>
           <Box borderRadius="12px" bg={"#fff"}>
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricFirst
+              ? Object?.entries(getMetricsData?.metricFirst)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={4}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      key={index}
+                    >
+                      <Text
+                        fontWeight={500}
+                        fontSize={16}
+                        color="#111928"
+                        display="inline-flex"
+                        alignItems={"center"}
+                      >
+                        {getStockLabel(key)} <InformationIcon />
+                      </Text>
+                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                        {/* @ts-ignore */}
+                        {formatMoneyNumber2(value)}
+                      </Text>
+                    </Box>
+                  )
+                )
+              : null}
+          </Box>
+        </div>
+      </Box>
+      <Box className="block xl:hidden w-full">
+        <div className="w-full h-fit flex md:flex-row flex-col md:gap-4 gap-3">
+          <Box
+            borderRadius="12px"
+            bg={"#fff"}
+            mb={{ base: 2, md: 4 }}
+            className="w-full"
+          >
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricSecond
+              ? Object?.entries(getMetricsData?.metricSecond)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={4}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      key={index}
+                    >
+                      <Text
+                        fontWeight={500}
+                        fontSize={16}
+                        color="#111928"
+                        display="inline-flex"
+                        alignItems={"center"}
+                      >
+                        {getStockLabel(key)} <InformationIcon />
+                      </Text>
+                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                        {/* @ts-ignore */}
+                        {formatMoneyNumber2(value)}
+                      </Text>
+                    </Box>
+                  )
+                )
+              : null}
+          </Box>
+          <Box borderRadius="12px" bg={"#fff"} className="w-full">
             {getMetricsIsLoading
               ? [...Array(10)].map((_, index) => (
                   <MetricsSkeleton key={index} />

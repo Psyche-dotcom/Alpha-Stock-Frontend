@@ -1170,6 +1170,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.roic?.fifth,
       feature: "ROIC",
       category: "roic",
+      showPercent: true,
     },
     {
       id: 2,
@@ -1178,6 +1179,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.revGrowth?.fifth,
       feature: "Rev. Growth %",
       category: "revGrowth",
+      showPercent: true,
     },
     {
       id: 3,
@@ -1186,6 +1188,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.profitMargin?.fifth,
       feature: "Profit Margin",
       category: "profitMargin",
+      showPercent: true,
     },
     {
       id: 4,
@@ -1194,6 +1197,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.freeCashFlowMargin?.fifth,
       feature: "Free Cash Flow Margin",
       category: "freeCashFlowMargin",
+      showPercent: true,
     },
     {
       id: 5,
@@ -1202,6 +1206,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.peRatio?.fifth,
       feature: "P/E",
       category: "peRatio",
+      showPercent: false,
     },
     {
       id: 6,
@@ -1210,6 +1215,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.pfcf?.fifth,
       feature: "P/FCF",
       category: "pfcf",
+      showPercent: false,
     },
     {
       id: 6,
@@ -1218,6 +1224,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: 0,
       feature: "Desired Annual Return",
       category: "desiredAnnReturn",
+      showPercent: true,
     },
   ];
   return dataSources;

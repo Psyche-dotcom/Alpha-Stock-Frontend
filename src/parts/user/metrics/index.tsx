@@ -268,19 +268,23 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
           </p>
         )}
       </div>
-      <Box display={{ md: "flex" }} gap={4} mt={{ base: 4, md: 8 }}>
+      <Box
+        className="grid xl:grid-cols-3 md:grid-cols-2 h-fit"
+        gap={{ base: 3, lg: 4 }}
+        mt={{ base: 4, md: 8 }}
+      >
         <Box
-          flex={1}
           borderRadius="12px"
           bg={"#fff"}
           mb={{ base: 2, md: 4 }}
-          className="w-full"
+          className="w-full h-fit"
         >
           {getStockInfoIsLoading
             ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
             : getStockInfoData?.length > 0
             ? Object?.entries(getStockInfoData[0])
                 ?.filter(([key]) => !excludedKeys.includes(key))
+                ?.slice(0, 12) // Only slice the first 12 entries
                 ?.map(([key, value], index: number) => (
                   <Box
                     p={4}
@@ -308,42 +312,40 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                 ))
             : null}
         </Box>
-        <div className="md:w-1/2">
-          <Box borderRadius="12px" flex={1} bg={"#fff"} mb={4}>
-            {getMetricsIsLoading
-              ? [...Array(10)].map((_, index) => (
-                  <MetricsSkeleton key={index} />
-                ))
-              : getMetricsData?.metricThird
-              ? Object?.entries(getMetricsData?.metricThird)?.map(
-                  ([key, value], index: number) => (
-                    <Box
-                      p={4}
-                      border={"1px solid #E5E7EB"}
-                      display="flex"
-                      justifyContent={"space-between"}
+        <Box borderRadius="12px" bg={"#fff"} mb={4} className="w-full h-fit">
+          {getMetricsIsLoading
+            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
+            : getMetricsData?.metricThird
+            ? Object?.entries(getMetricsData?.metricThird)?.map(
+                ([key, value], index: number) => (
+                  <Box
+                    p={4}
+                    border={"1px solid #E5E7EB"}
+                    display="flex"
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    key={index}
+                  >
+                    <Text
+                      fontWeight={500}
+                      fontSize={16}
+                      color="#111928"
+                      display="inline-flex"
                       alignItems={"center"}
-                      key={index}
                     >
-                      <Text
-                        fontWeight={500}
-                        fontSize={16}
-                        color="#111928"
-                        display="inline-flex"
-                        alignItems={"center"}
-                      >
-                        {getStockLabel(key)} <InformationIcon />
-                      </Text>
-                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                        {/* @ts-ignore */}
-                        {formatMoneyNumber2(value)}
-                      </Text>
-                    </Box>
-                  )
+                      {getStockLabel(key)} <InformationIcon />
+                    </Text>
+                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                      {/* @ts-ignore */}
+                      {formatMoneyNumber2(value)}
+                    </Text>
+                  </Box>
                 )
-              : null}
-          </Box>{" "}
-          <Box borderRadius="12px" bg={"#fff"} flex={1} mb={{ base: 2, md: 4 }}>
+              )
+            : null}
+        </Box>
+        <div className="w-full h-fit">
+          <Box borderRadius="12px" bg={"#fff"} mb={{ base: 2, md: 4 }}>
             {getMetricsIsLoading
               ? [...Array(10)].map((_, index) => (
                   <MetricsSkeleton key={index} />
@@ -377,7 +379,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                 )
               : null}
           </Box>
-          <Box borderRadius="12px" bg={"#fff"} flex={1}>
+          <Box borderRadius="12px" bg={"#fff"}>
             {getMetricsIsLoading
               ? [...Array(10)].map((_, index) => (
                   <MetricsSkeleton key={index} />

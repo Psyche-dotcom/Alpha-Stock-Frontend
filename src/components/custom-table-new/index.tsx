@@ -74,7 +74,7 @@ export function TableComponentNew<T extends DataItem>({
               {columns.map((column, index) => (
                 <TableHead
                   className={cn(
-                    "whitespace-pre py-4 font-semibold text-xs text-[#6B7280]",
+                    "whitespace-pre py-2 font-semibold text-xs text-[#6B7280]",
                     index === 0 ? "pl-6 text-start" : "text-center"
                   )}
                   key={String(column)}
@@ -95,7 +95,7 @@ export function TableComponentNew<T extends DataItem>({
               >
                 {columns.map((column, colIndex) => (
                   <TableCell
-                    className={cn("py-4", colIndex === 0 ? "pl-6" : "")}
+                    className={cn("py-2", colIndex === 0 ? "pl-6" : "")}
                     key={String(column)}
                   >
                     {rowIndex === 0 &&

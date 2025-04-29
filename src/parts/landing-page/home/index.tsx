@@ -13,6 +13,7 @@ import Image from "next/image";
 import { useAboutMarket, useTrendingAnalysis } from "@/services/blog";
 import SkeletonViewCard from "@/components/card/skeleton/view";
 import StockCardSkeleton from "@/components/card/skeleton/StockCardSkeleton";
+import { MouseMoveEffect } from "@/components/mouseEvent";
 
 const Home = () => {
   const [stockData, setStockData] = useState<IStock[]>([]);
@@ -87,6 +88,7 @@ const Home = () => {
 
   return (
     <div>
+      <MouseMoveEffect color="#22c55e" size={120} opacity={0.15} />
       <header className="sticky top-0 z-10 shadow-lg">
         <Navbar />
       </header>

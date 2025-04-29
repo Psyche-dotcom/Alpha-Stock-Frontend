@@ -72,7 +72,7 @@ export const getStockLabel = (key: string): string => {
     psratio: "P/S Ratio",
     fcfttmtoequityttm: "FCF/Equity (TTM)",
     ptoeratiofive5yrs: "P/E Ratio 5yrs",
-    fiveyearavgfreecashflowyield: "5 Year Avg Free Cash Flow Yield",
+    fiveyearavgfreecashflowyield: "5 yrs Avg FCF Yield",
     returnoninvestedcapitalttm: "Return on Invested Capital (TTM)",
   };
 

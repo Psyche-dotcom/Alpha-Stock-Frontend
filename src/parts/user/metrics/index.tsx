@@ -258,7 +258,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
           </div>
         </div>
       </div>
-      <div className="bg-white p-4 rounded-[12px]">
+      <div className="bg-white p-4 rounded-[12px] max-h-[500px]">
         {getStockInfoEodIsLoadingChart ? null : getStockInfoEodIsLoadingChart ===
             false && getStockInfoEodDataChart?.length > 0 ? (
           <StockChartSwitcher stockData={getStockInfoEodDataChart} />
@@ -268,6 +268,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
           </p>
         )}
       </div>
+
       <Box
         className="grid xl:grid-cols-3 md:grid-cols-2 h-fit"
         gap={{ base: 3, lg: 4 }}
@@ -287,7 +288,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                 ?.slice(0, 12) // Only slice the first 12 entries
                 ?.map(([key, value], index: number) => (
                   <Box
-                    p={4}
+                    p={2}
                     border={"1px solid #E5E7EB"}
                     display="flex"
                     justifyContent={"space-between"}
@@ -319,7 +320,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
             ? Object?.entries(getMetricsData?.metricThird)?.map(
                 ([key, value], index: number) => (
                   <Box
-                    p={4}
+                    p={2}
                     border={"1px solid #E5E7EB"}
                     display="flex"
                     justifyContent={"space-between"}
@@ -354,7 +355,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
               ? Object?.entries(getMetricsData?.metricSecond)?.map(
                   ([key, value], index: number) => (
                     <Box
-                      p={4}
+                      p={2}
                       border={"1px solid #E5E7EB"}
                       display="flex"
                       justifyContent={"space-between"}
@@ -388,7 +389,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
               ? Object?.entries(getMetricsData?.metricFirst)?.map(
                   ([key, value], index: number) => (
                     <Box
-                      p={4}
+                      p={2}
                       border={"1px solid #E5E7EB"}
                       display="flex"
                       justifyContent={"space-between"}
@@ -431,7 +432,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
               ? Object?.entries(getMetricsData?.metricSecond)?.map(
                   ([key, value], index: number) => (
                     <Box
-                      p={4}
+                      p={2}
                       border={"1px solid #E5E7EB"}
                       display="flex"
                       justifyContent={"space-between"}
@@ -465,7 +466,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
               ? Object?.entries(getMetricsData?.metricFirst)?.map(
                   ([key, value], index: number) => (
                     <Box
-                      p={4}
+                      p={2}
                       border={"1px solid #E5E7EB"}
                       display="flex"
                       justifyContent={"space-between"}

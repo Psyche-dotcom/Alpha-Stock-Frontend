@@ -423,7 +423,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
               />
             </div>
             <Box
-              className="flex md:flex-row flex-col gap-4 "
+              className="flex md:flex-row flex-col gap-4 justify-between"
               alignItems={"center"}
               mb={8}
               mt={4}
@@ -434,18 +434,18 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
                 <p className="font-bold ">US${getStockInfoData[0]?.price}</p>
               </div>
               <Button
-                className="bg-[#291804] text-white px-3 py-3 font-medium text-base md:me-auto"
+                className="bg-[#291804] text-white px-3 py-3 font-medium text-base"
                 variant={"secondary"}
                 onClick={RunAnalysis}
               >
                 Run Analysis
               </Button>
-              <Button
+              {/* <Button
                 className="border-[#351F05] px-3 py-3 font-medium text-[#351F05] text-base"
                 variant={"outline"}
               >
                 Save Analysis
-              </Button>
+              </Button> */}
             </Box>
           </Box>
           <Box className="p-4 rounded-[6px] bg-white flex gap-4 lg:max-w-[400px] border-2 border-[#E5E7EB] mx-2 h-full">

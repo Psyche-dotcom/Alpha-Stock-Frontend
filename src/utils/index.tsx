@@ -1,5 +1,11 @@
 import { jsPDF } from "jspdf";
-
+export interface CommentData {
+  commentId: string;
+  comment: string;
+  commentDate: string;
+  userImgUrl: string;
+  name: string;
+}
 export function capitalizeFirstLetter(letter: string): string {
   return letter.charAt(0).toUpperCase() + letter.slice(1);
 }
@@ -78,7 +84,33 @@ export const getStockLabel = (key: string): string => {
 
   return labelMap[formattedKey] ?? toCamelCaseWithSpaces(key);
 };
-
+export const mapApiToComment = (apiData: any): CommentData => {
+  return {
+    commentId: apiData.id,
+    comment: apiData.message,
+    commentDate: new Date(apiData.created).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }),
+    userImgUrl: apiData.sentByImgUrl,
+    name: apiData.senderName,
+  };
+};
+export const mapApiToCommentSignalR = (apiData: any): CommentData => {
+  console.log("apiData SIGNAL R", apiData);
+  return {
+    commentId: apiData.id,
+    comment: apiData.message,
+    commentDate: new Date(apiData.created).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }),
+    userImgUrl: apiData.sentByImgUrl,
+    name: apiData.senderName,
+  };
+};
 export function getFontWeightByTitle(title?: string): number | undefined {
   if (!title) return undefined;
 

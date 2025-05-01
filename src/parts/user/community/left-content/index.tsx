@@ -1,12 +1,25 @@
+import { useUserSession } from "@/app/context/user-context";
 import DropdownComponent from "@/components/drop-down";
-import { communityMenuList } from "@/constants";
+
 import { Box } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 interface iProps {
   data: any;
 }
 
 const CommunityLeftContent: React.FC<iProps> = ({ data }) => {
+  const { setSelectedChannel } = useUserSession();
+  useEffect(() => {
+    const firstChannelRoomName = data.find(
+      (category: any) => category.channels.length > 0
+    )?.channels[0]?.channelRoomName;
+
+    if (firstChannelRoomName !== null && firstChannelRoomName !== undefined) {
+      setSelectedChannel(firstChannelRoomName);
+    }
+  }, [data]);
+
   return (
     <Box
       overflowY="auto"

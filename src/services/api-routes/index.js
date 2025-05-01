@@ -63,6 +63,8 @@ export const routes = {
   addchannel: () => "/api/community/create/channel",
   addCommunityCategory: (catName) =>
     `/api/community/create/category?CategoryName=${catName}`,
+  getChannelMessageUrl: (roomid) =>
+    `/api/community/channel/messages/all?RoomId=${roomid}`,
   categoryUrl: () => "/api/community/retrieve/category/all",
   categoryChannelCountUrl: () =>
     "/api/community/retrieve/category/channel/messages",

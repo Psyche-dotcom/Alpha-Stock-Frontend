@@ -32,9 +32,29 @@ export const useGetCategory = () => {
     setChannelCategoryFilter: setFilter,
   };
 };
+
+export const useGetChannelMessages = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["channel-messages"],
+    queryFn: ({ roomid }) =>
+      httpService.getData(routes.getChannelMessageUrl(roomid)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getChannelMesaggesIsLoading: isLoading,
+    getChannelMesaggesData: data?.data?.result || [],
+    getChannelMesaggesFilter: filter,
+    getChannelMesaggesError: ErrorHandler(error),
+    refetchGetChannelMesagges: refetch,
+    setGetChannelMesaggesFilter: setFilter,
+  };
+};
+
 export const useGetCategoryChannelCount = () => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
-    queryKey: ["get-category-cahannel-count"],
+    queryKey: ["get-category-channel-count"],
     queryFn: () => httpService.getData(routes.categoryChannelCountUrl()),
     retry: 1,
   });

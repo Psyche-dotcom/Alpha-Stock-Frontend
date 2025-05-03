@@ -37,8 +37,11 @@ const Community = () => {
     getChannelCategoryCountData,
   } = useGetCategoryChannelCount();
 
-  const { setGetChannelMesaggesFilter, getChannelMesaggesData } =
-    useGetChannelMessages({ enabled: true });
+  const {
+    setGetChannelMesaggesFilter,
+    getChannelMesaggesData,
+    getChannelMesaggesIsLoading,
+  } = useGetChannelMessages({ enabled: true });
   console.log("channel", selectedChannel);
   // 👇 Enforce Subscription Check
   useEffect(() => {
@@ -76,7 +79,7 @@ const Community = () => {
 
   // 👇 Set initial message list
   useEffect(() => {
-    if (getChannelMesaggesData) {
+    if (getChannelMesaggesData && getChannelMesaggesData.length > 0) {
       setCommunityList(getChannelMesaggesData.map(mapApiToComment));
     }
   }, [getChannelMesaggesData]);
@@ -160,10 +163,10 @@ const Community = () => {
         </div>
         <Box
           flex="1"
-          marginLeft={{ base: "16px", md: "280px", lg: "349px" }}
+          // marginLeft={{ base: "16px", md: "280px", lg: "349px" }}
           justifySelf="end"
         >
-          <CommunityMain data={communityList} funSend={sendMessage} />
+          <CommunityMain data={communityList} funSend={sendMessage} isLoading={getChannelMesaggesIsLoading}/>
         </Box>
 
         <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>

@@ -26,6 +26,7 @@ export interface ITableProps<T extends DataItem> {
   onRowClick?: (item: T) => void;
   boldColumns?: string[];
   className?: string;
+  isLoading?: boolean;
 }
 
 export interface MarketMove extends DataItem {

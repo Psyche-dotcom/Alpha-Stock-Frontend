@@ -24,11 +24,12 @@ const CommunityLeftContent: React.FC<iProps> = ({ data }) => {
     <Box
       overflowY="auto"
       height="md:calc(100vh - 80px) h-full"
-      position="fixed"
+      position="sticky"
+      top={0}
       left={{ base: 0, md: 3, lg: 5 }}
       flexShrink={0}
       pb={{ base: 3, sm: 8 }}
-      zIndex={10}
+      zIndex={1}
       className="lg:w-[349px] md:w-[275px] w-full"
     >
       {data?.map((category: any) => {

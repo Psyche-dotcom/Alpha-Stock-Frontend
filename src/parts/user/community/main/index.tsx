@@ -1,7 +1,5 @@
 "use client";
 
-import CommentCard from "@/components/card/comment-card";
-
 import { IComments } from "@/interface/comment";
 import { Box, Flex } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,12 +17,27 @@ import { Button } from "@/components/ui/button";
 import { FileUploadIcon, SendIcon, SmileyIcon } from "@/utils/icons";
 import CommunityCommentCard from "@/components/card/community-comment";
 import { useUserSession } from "@/app/context/user-context";
+import CommentSkeleton from "@/components/card/skeleton/comment";
+import { useRef, useState } from "react";
 interface iProps {
   data: any;
   funSend: (message: string, messageType: string) => void;
+  isLoading?: boolean;
 }
 
-const CommunityMain: React.FC<iProps> = ({ data, funSend }) => {
+const CommunityMain: React.FC<iProps> = ({ data, funSend, isLoading }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      setSelectedFile(file);
+      console.log("Selected image:", file);
+    } else {
+      alert("Please select a valid image file");
+    }
+  };
   const { setIsOpen } = useUserSession();
   const formSchema = z.object({
     message: z.string(),
@@ -65,16 +78,23 @@ const CommunityMain: React.FC<iProps> = ({ data, funSend }) => {
         Back to channel list
       </h6>
       <Box flex="1" overflowY="auto" className="scrollbar-hide">
-        <Flex flexDirection="column" gap={4}>
-          {data?.map((comment: IComments, index: number) => (
-            <CommunityCommentCard
-              comment={comment}
-              key={index}
-              showOptions={true}
-              showUpload={true}
-            />
-          ))}
-        </Flex>
+        {isLoading ? (
+          <Flex flexDirection="column" gap={4}>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CommentSkeleton key={index} />
+            ))}
+          </Flex>
+        ) : (
+          <Flex flexDirection="column" gap={4}>
+            {data?.map((comment: IComments, index: number) => (
+              <CommunityCommentCard
+                comment={comment}
+                key={index}
+                showUpload={true}
+              />
+            ))}
+          </Flex>
+        )}
       </Box>
 
       <Box
@@ -94,9 +114,21 @@ const CommunityMain: React.FC<iProps> = ({ data, funSend }) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex gap-3 items-center"
           >
-            <Button variant="ghost" size="xl">
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+            />
+            <Button
+              variant="ghost"
+              size="xl"
+              onClick={() => fileInputRef.current?.click()}
+            >
               <FileUploadIcon />
             </Button>
+
             <Button variant="ghost" size="xl">
               <SmileyIcon />
             </Button>

@@ -299,7 +299,8 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                       fontWeight={500}
                       fontSize={{ base: 12, sm: 16 }}
                       color="#111928"
-                      display="inline-flex"
+                      display="flex"
+                      gap={"2px"}
                       alignItems={"center"}
                     >
                       {getStockLabel(key)}
@@ -333,9 +334,10 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                   >
                     <Text
                       fontWeight={500}
-                      fontSize={16}
+                      fontSize={14}
                       color="#111928"
-                      display="inline-flex"
+                      display="flex"
+                      gap={"2px"}
                       alignItems={"center"}
                       key={index}
                     >
@@ -369,9 +371,10 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                     >
                       <Text
                         fontWeight={500}
-                        fontSize={16}
+                        fontSize={14}
                         color="#111928"
-                        display="inline-flex"
+                        display="flex"
+                        gap={"2px"}
                         alignItems={"center"}
                       >
                         {getStockLabel(key)} <InformationIcon />
@@ -403,9 +406,10 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                     >
                       <Text
                         fontWeight={500}
-                        fontSize={16}
+                        fontSize={14}
                         color="#111928"
-                        display="inline-flex"
+                        display="flex"
+                        gap={"2px"}
                         alignItems={"center"}
                       >
                         {getStockLabel(key)} <InformationIcon />
@@ -448,7 +452,8 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                         fontWeight={500}
                         fontSize={16}
                         color="#111928"
-                        display="inline-flex"
+                        display="flex"
+                        gap={"2px"}
                         alignItems={"center"}
                       >
                         {getStockLabel(key)} <InformationIcon />
@@ -480,9 +485,10 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                     >
                       <Text
                         fontWeight={500}
-                        fontSize={16}
+                        fontSize={14}
                         color="#111928"
-                        display="inline-flex"
+                        display="flex"
+                        gap={"2px"}
                         alignItems={"center"}
                       >
                         {getStockLabel(key)} <InformationIcon />

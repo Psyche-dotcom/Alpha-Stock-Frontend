@@ -74,7 +74,7 @@ const CommentCard: React.FC<ICommentProps> = ({
     addCommentReplyIsLoading,
     addCommentReplyPayload,
   } = useAddCommentReply((res: any) => {
-    showSuccessAlert("Repl successfully submitted");
+    showSuccessAlert("Reply successfully submitted");
   });
 
   const { likeUnlikeData, likeUnlikePayload, likeUnlikeIsLoading } =

@@ -79,10 +79,8 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     if (btnFilter == "income-statements") {
       setData(getIncomeStatementData);
     } else if (btnFilter == "balance-sheet") {
-     
       setData(getBalanceSheetData);
     } else if (btnFilter == "cashflow") {
-    
       setData(getCashFlowData);
     }
   }, [
@@ -109,7 +107,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
 
     row1: (item: DataType) => (
       <Text
-        fontSize={16}
+        fontSize={14}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
@@ -119,7 +117,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     ),
     row2: (item: DataType) => (
       <Text
-        fontSize={16}
+        fontSize={14}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
@@ -129,7 +127,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     ),
     row3: (item: DataType) => (
       <Text
-        fontSize={16}
+        fontSize={14}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
@@ -139,7 +137,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     ),
     row4: (item: DataType) => (
       <Text
-        fontSize={16}
+        fontSize={14}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
@@ -149,7 +147,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     ),
     row5: (item: DataType) => (
       <Text
-        fontSize={16}
+        fontSize={14}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}

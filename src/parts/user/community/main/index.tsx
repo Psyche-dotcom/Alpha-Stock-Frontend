@@ -26,6 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { XIcon } from "lucide-react";
 interface iProps {
   data: any;
   funSend: (message: string, messageType: string) => void;
@@ -36,17 +37,23 @@ const CommunityMain: React.FC<iProps> = ({ data, funSend, isLoading }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+  const [previewURL, setPreviewURL] = useState<string | null>(null);
 
   const handleEmojiClick = (emojiData: EmojiClickData) => {
     setSelectedEmoji(emojiData.emoji);
-    alert(emojiData.emoji);
+  };
+
+  const removeFile = () => {
+    setSelectedFile(null);
+    setPreviewURL(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
       setSelectedFile(file);
-      console.log("Selected image:", file);
+      setPreviewURL(URL.createObjectURL(file));
     } else {
       alert("Please select a valid image file");
     }
@@ -141,6 +148,23 @@ const CommunityMain: React.FC<iProps> = ({ data, funSend, isLoading }) => {
             >
               <FileUploadIcon />
             </Button>
+            {previewURL && (
+              <div className="fixed bottom-5 right-5 bg-white border shadow-lg rounded-lg overflow-hidden w-[200px] z-50">
+                <div className="relative">
+                  <img
+                    src={previewURL}
+                    alt="Preview"
+                    className="w-full h-[150px] object-cover"
+                  />
+                  <button
+                    onClick={removeFile}
+                    className="absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1"
+                  >
+                    <XIcon className="w-4 h-4 text-red-500" />
+                  </button>
+                </div>
+              </div>
+            )}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="ghost" size="xl">

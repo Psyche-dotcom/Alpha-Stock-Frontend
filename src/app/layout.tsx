@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="max-w-[1400px] mx-auto">
+      <body>
         <TopLoader />
         <Toaster richColors expand={false} />
         <ChakraWrapperProvider>{children}</ChakraWrapperProvider>

@@ -7,12 +7,14 @@ export interface IComment {
 }
 
 export interface IComments {
-  comment: string;
+  comment?: string;
   commentDate: string;
-  commentId: string;
+  commentId?: string;
   isLiked?: boolean;
+  isDownvoted?: boolean;
+  isSaved?: boolean;
   likeCount?: number;
-  name: string;
+  name?: string;
   userImgUrl?: string;
   commentImgUrl?: string;
   replyContent?: string;

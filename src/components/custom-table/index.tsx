@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { DataItem, ITableProps } from "@/types";
 import { Folder } from "lucide-react";
 import { ReactNode } from "react";
+import TableSkeleton from "../card/skeleton/table";
 
 type CellRenderer<T> = (item: T, column: keyof T) => ReactNode;
 
@@ -29,7 +30,11 @@ export function TableComponent<T extends DataItem>({
   cellRenderers = {},
   columnOrder,
   columnLabels = {},
+  className,
+  isLoading = false,
 }: EnhancedTableProps<T>) {
+  const columns = columnOrder || (Object.keys(tableData[0]) as (keyof T)[]);
+  if (isLoading) return <TableSkeleton columns={columns} />;
   if (tableData.length === 0)
     return (
       <div
@@ -44,8 +49,6 @@ export function TableComponent<T extends DataItem>({
         </div>
       </div>
     );
-
-  const columns = columnOrder || (Object.keys(tableData[0]) as (keyof T)[]);
 
   const formatColumnName = (name: string) => {
     return (
@@ -83,7 +86,7 @@ export function TableComponent<T extends DataItem>({
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody className="bg-white">
+          <TableBody className={cn("bg-white", className)}>
             {tableData.map((item, rowIndex) => (
               <TableRow
                 key={rowIndex}

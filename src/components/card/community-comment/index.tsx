@@ -3,11 +3,13 @@
 import { IComments } from "@/interface/comment";
 import {
   ChatIcon,
+  DownvoteFilledIcon,
   DownvoteIcon,
   SavedIcon,
   ThreeDotsIcon,
   ThumbsIcon,
   ThumbsOutlineIcon,
+  UnSavedIcon,
 } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import {
@@ -29,15 +31,29 @@ import { useEffect, useState } from "react";
 import { formatDate } from "@/utils";
 interface ICommentProps {
   comment: IComments;
-  showOptions?: boolean;
   showUpload?: boolean;
 }
 
 const CommunityCommentCard: React.FC<ICommentProps> = ({
   comment,
-  showOptions = true,
   showUpload = true,
 }) => {
+  const [commentCount, setCommentCount] = useState<number>(
+    Number(comment.likeCount || 0)
+  );
+
+  const [commentLiked, setCommentLiked] = useState<boolean>(
+    comment?.isLiked || false
+  );
+
+  const [commentDownvoted, setCommentDownvoted] = useState<boolean>(
+    comment?.isDownvoted || false
+  );
+
+  const [commentSaved, setCommentSaved] = useState<boolean>(
+    comment?.isSaved || false
+  );
+
   const [showReply, setShowReply] = useState<boolean>(false);
   const formSchema = z.object({
     reply: z.string(),
@@ -52,6 +68,24 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
   });
 
   async function onSubmit(values: FormSchemaType) {}
+
+  const datas: IComments[] = [
+    {
+      name: "Babatunde Saheed",
+      replyContent: "Hello world!!!",
+      commentDate: "",
+    },
+    {
+      name: "Babatunde Saheed",
+      replyContent: "Hello world!!!",
+      commentDate: "",
+    },
+    {
+      name: "Babatunde Saheed",
+      replyContent: "Hello world!!!",
+      commentDate: "",
+    },
+  ];
 
   return (
     <Box
@@ -78,9 +112,11 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
           {formatDate(comment?.commentDate)}
         </Text>
       </Flex>
-      <Text fontWeight={400} fontSize={16} color="#6B7280" mb={4}>
-        {comment?.comment}
-      </Text>
+      {comment?.comment && (
+        <Text fontWeight={400} fontSize={16} color="#6B7280" mb={4}>
+          {comment?.comment}
+        </Text>
+      )}
       {comment?.commentImgUrl && (
         <Box mb={4} h={"148px"} w="100%">
           <Image
@@ -115,44 +151,64 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
             </Text>
             <ChatIcon />
           </Flex>
-
+          {!commentDownvoted && (
+            <Flex
+              alignItems={"center"}
+              gap="4px"
+              cursor={"pointer"}
+              // onClick={handleReaction}
+            >
+              <Text
+                fontWeight={500}
+                fontSize={{ base: 12, sm: 14 }}
+                color="#1F2A37"
+              >
+                {commentLiked ? "Unlike" : "Like"}
+              </Text>
+              {commentLiked ? (
+                <Box
+                  color={comment?.isLiked ? "#351F05" : ""}
+                  className="flex gap-1 items-center"
+                >
+                  <ThumbsIcon /> {commentCount}
+                </Box>
+              ) : (
+                <Box color={comment?.isLiked ? "#351F05" : ""}>
+                  <ThumbsOutlineIcon />
+                </Box>
+              )}
+            </Flex>
+          )}
+          {!commentLiked && (
+            <Flex alignItems={"center"} gap="4px" cursor={"pointer"}>
+              <Text
+                fontWeight={500}
+                fontSize={{ base: 12, sm: 14 }}
+                color="#1F2A37"
+              >
+                {commentDownvoted ? "UnDownvote" : " Downvote"}
+              </Text>
+              {commentDownvoted ? (
+                <Box color={comment?.isDownvoted ? "#351F05" : ""}>
+                  <DownvoteFilledIcon />
+                </Box>
+              ) : (
+                <Box color={comment?.isDownvoted ? "#351F05" : ""}>
+                  <DownvoteIcon />
+                </Box>
+              )}
+            </Flex>
+          )}
           <Flex alignItems={"center"} gap="4px" cursor={"pointer"}>
             <Text
               fontWeight={500}
               fontSize={{ base: 12, sm: 14 }}
               color="#1F2A37"
             >
-              Like
+              {commentSaved ? "Saved" : "Save"}
             </Text>
-            <Box color={comment?.isLiked ? "#351F05" : ""}>
-              <ThumbsOutlineIcon />
-            </Box>
+            {commentSaved ? <SavedIcon /> : <UnSavedIcon />}
           </Flex>
-
-          {showOptions && (
-            <>
-              <Flex alignItems={"center"} gap="4px" cursor={"pointer"}>
-                <Text
-                  fontWeight={500}
-                  fontSize={{ base: 12, sm: 14 }}
-                  color="#1F2A37"
-                >
-                  Downvote
-                </Text>
-                <DownvoteIcon />
-              </Flex>
-              <Flex alignItems={"center"} gap="4px" cursor={"pointer"}>
-                <Text
-                  fontWeight={500}
-                  fontSize={{ base: 12, sm: 14 }}
-                  color="#1F2A37"
-                >
-                  Saved
-                </Text>
-                <SavedIcon />
-              </Flex>
-            </>
-          )}
         </Box>
       </Flex>
 
@@ -204,9 +260,9 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
             </form>
           </Form>
 
-          {/* <Flex flexDirection={"column"} gap={4} w={{ base: "100%" }}>
-            {data?.map((comment: IComments, index: number) => (
-              <Box className="mt-3 ms-5">
+          <Flex flexDirection={"column"} gap={4} w={{ base: "100%" }}>
+            {datas?.map((comment: IComments, index: number) => (
+              <Box className="mt-3 ms-5" key={index}>
                 <Flex alignItems={"center"} gap="8px" mb="6px">
                   <Box h="24px" width="24px">
                     <Image
@@ -233,7 +289,20 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
                 </Text>
               </Box>
             ))}
-          </Flex> */}
+          </Flex>
+          <Box
+            display={"flex"}
+            justifyContent={"end"}
+            textDecoration={"underline"}
+            fontSize={"sm"}
+            color="#351F05"
+            fontWeight={600}
+            mt="24px"
+            cursor={"pointer"}
+            // onClick={handleMoreClick}
+          >
+            view more comments
+          </Box>
         </Box>
       )}
     </Box>

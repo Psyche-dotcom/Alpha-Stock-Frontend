@@ -19,6 +19,13 @@ import CommunityCommentCard from "@/components/card/community-comment";
 import { useUserSession } from "@/app/context/user-context";
 import CommentSkeleton from "@/components/card/skeleton/comment";
 import { useRef, useState } from "react";
+import { EmojiClickData } from "emoji-picker-react";
+import EmojiPicker from "emoji-picker-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 interface iProps {
   data: any;
   funSend: (message: string, messageType: string) => void;
@@ -28,6 +35,12 @@ interface iProps {
 const CommunityMain: React.FC<iProps> = ({ data, funSend, isLoading }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+
+  const handleEmojiClick = (emojiData: EmojiClickData) => {
+    setSelectedEmoji(emojiData.emoji);
+    alert(emojiData.emoji);
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -128,10 +141,21 @@ const CommunityMain: React.FC<iProps> = ({ data, funSend, isLoading }) => {
             >
               <FileUploadIcon />
             </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="xl">
+                  <SmileyIcon />
+                </Button>
+              </PopoverTrigger>
 
-            <Button variant="ghost" size="xl">
-              <SmileyIcon />
-            </Button>
+              <PopoverContent className="w-auto p-0">
+                <EmojiPicker
+                  onEmojiClick={handleEmojiClick}
+                  height={350}
+                  width={300}
+                />
+              </PopoverContent>
+            </Popover>
             <FormField
               control={form.control}
               name="message"

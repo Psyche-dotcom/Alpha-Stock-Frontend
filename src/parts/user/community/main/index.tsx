@@ -1,7 +1,7 @@
 "use client";
 
 import CommentCard from "@/components/card/comment-card";
-import { communityList } from "@/constants";
+
 import { IComments } from "@/interface/comment";
 import { Box, Flex } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,24 +20,31 @@ import { FileUploadIcon, SendIcon, SmileyIcon } from "@/utils/icons";
 import CommunityCommentCard from "@/components/card/community-comment";
 import { useUserSession } from "@/app/context/user-context";
 interface iProps {
-  data?: any;
+  data: any;
+  funSend: (message: string, messageType: string) => void;
 }
 
-const CommunityMain: React.FC<iProps> = () => {
+const CommunityMain: React.FC<iProps> = ({ data, funSend }) => {
   const { setIsOpen } = useUserSession();
   const formSchema = z.object({
-    email: z.string(),
+    message: z.string(),
   });
 
   type FormSchemaType = z.infer<typeof formSchema>;
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      message: "",
     },
   });
 
-  async function onSubmit(values: FormSchemaType) {}
+  const { reset } = form;
+
+  async function onSubmit(values: FormSchemaType) {
+    console.log("values", values);
+    funSend(values.message, "Text");
+    reset();
+  }
   return (
     <Box
       borderRadius="8px"
@@ -59,7 +66,7 @@ const CommunityMain: React.FC<iProps> = () => {
       </h6>
       <Box flex="1" overflowY="auto" className="scrollbar-hide">
         <Flex flexDirection="column" gap={4}>
-          {communityList.map((comment: IComments, index: number) => (
+          {data?.map((comment: IComments, index: number) => (
             <CommunityCommentCard
               comment={comment}
               key={index}
@@ -95,7 +102,7 @@ const CommunityMain: React.FC<iProps> = () => {
             </Button>
             <FormField
               control={form.control}
-              name="email"
+              name="message"
               render={({ field }) => (
                 <FormItem className="flex-1 w-full">
                   <FormControl>

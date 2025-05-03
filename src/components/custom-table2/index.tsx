@@ -21,7 +21,7 @@ export interface EnhancedTableProps<T extends DataItem> extends ITableProps<T> {
   columnLabels?: Partial<Record<keyof T, string>>;
 }
 
-export function TableComponent<T extends DataItem>({
+export function TableComponent2<T extends DataItem>({
   tableData,
   currentPage,
   totalPages,
@@ -29,7 +29,6 @@ export function TableComponent<T extends DataItem>({
   cellRenderers = {},
   columnOrder,
   columnLabels = {},
-  className,
 }: EnhancedTableProps<T>) {
   if (tableData.length === 0)
     return (
@@ -74,7 +73,7 @@ export function TableComponent<T extends DataItem>({
               {columns.map((column, index) => (
                 <TableHead
                   className={cn(
-                    "whitespace-pre py-2 font-bold text-xs text-[#6B7280]",
+                    "whitespace-pre py-4 font-bold text-xs text-[#6B7280]",
                     index === 0 ? "pl-6 text-start" : "text-center"
                   )}
                   key={String(column)}
@@ -84,7 +83,7 @@ export function TableComponent<T extends DataItem>({
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody className={cn("bg-white", className)}>
+          <TableBody className="bg-white">
             {tableData.map((item, rowIndex) => (
               <TableRow
                 key={rowIndex}
@@ -92,7 +91,7 @@ export function TableComponent<T extends DataItem>({
               >
                 {columns.map((column, colIndex) => (
                   <TableCell
-                    className={cn("py-2 ", colIndex === 0 ? "pl-6" : "")}
+                    className={cn("py-4 ", colIndex === 0 ? "pl-6" : "")}
                     key={String(column)}
                   >
                     {renderCellContent(item, column)}

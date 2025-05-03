@@ -134,30 +134,35 @@ const Subscriptions = () => {
   }, [pageSize, profileData]);
 
   return (
-    <Box>
-      <Grid mb={8} gap={4} gridTemplateColumns={"repeat(3, 1fr)"}>
-        <Box borderRadius={"8px"} bg="#fff" overflow={"hidden"}>
-          <Text px={6} py={4} color="#351F05" fontWeight={600} fontSize={16}>
-            Subscription Information
+    <Box className="max-w-[1440px] mx-auto">
+      <Box
+        borderRadius={"8px"}
+        bg="#fff"
+        overflow={"hidden"}
+        maxW={"472px"}
+        mb={4}
+      >
+        <Text px={6} py={4} color="#351F05" fontWeight={600} fontSize={16}>
+          Subscription Information
+        </Text>
+        <Box p={6} bg={"#351F05"}>
+          <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
+            {profileData?.result?.activeSubcriptionName || "Free"} Plan
           </Text>
-          <Box p={6} bg={"#351F05"}>
-            <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
-              {profileData?.result?.activeSubcriptionName || "Free"} Plan
-            </Text>
-            <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
-              Expires on 27th March, 2025
-            </Text>
-            <Flex gap={"16px"} alignItems={"center"}>
-              <Link
-                href={ROUTES.USER.PLANS}
-                className="border border-solid py-[10px] px-5 font-medium text-white rounded-md"
-              >
-                Change Plan
-              </Link>
-            </Flex>
-          </Box>
+          <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
+            Expires on 27th March, 2025
+          </Text>
+          <Flex gap={"16px"} alignItems={"center"}>
+            <Link
+              href={ROUTES.USER.PLANS}
+              className="border border-solid py-[10px] px-5 font-medium text-white rounded-md"
+            >
+              Change Plan
+            </Link>
+          </Flex>
         </Box>
-      </Grid>
+      </Box>
+
       <Box bg="#fff" pt={4} borderRadius={"12px"}>
         {isPaymentLoading ? (
           <TableSkeleton />

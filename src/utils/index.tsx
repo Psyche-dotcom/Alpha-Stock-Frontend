@@ -1,7 +1,16 @@
 import { jsPDF } from "jspdf";
-
+export interface CommentData {
+  commentId: string;
+  comment: string;
+  commentDate: string;
+  userImgUrl: string;
+  name: string;
+}
 export function capitalizeFirstLetter(letter: string): string {
   return letter.charAt(0).toUpperCase() + letter.slice(1);
+}
+export function toCamelCaseWithSpaces(str: string) {
+  return str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 export function formatDate(utcDate: string): string {
@@ -33,7 +42,103 @@ export const formatDateTime = (dateString: string): string => {
     hour12: true, // AM/PM format
   }).format(date);
 };
+export const getStockLabel = (key: string): string => {
+  const formattedKey = key.toLowerCase();
 
+  const labelMap: Record<string, string> = {
+    fulltimeemployees: "Full Time Employees",
+    ipodate: "IPO Date",
+    exchangefullname: "Exchange Full Name",
+    companyname: "Company Name",
+    averagevolume: "Average Volume",
+    changepercentage: "Change Percentage",
+    marketcap: "Market Cap",
+    lastdividend: "Last Dividend",
+    ayearhigh: "52 Week High",
+    ayearlow: "52 Week Low",
+    adaylow: "Day Low",
+    adayhigh: "Day High",
+    priceavg50: "50 Day Avg",
+    priceavg200: "200 Day Avg",
+    previousclose: "Previous Close",
+    returnonasset: "Return on Assets",
+    returnonequity: "Return on Equity",
+    freecashflowyield: "Free Cash Flow Yield",
+    enterprisevalue: "Enterprise Value",
+    evtosales: "EV/Sales",
+    evtosales5yrs: "EV/Sales 5yrs",
+    evtofcf: "EV/FCF",
+    ev5years: "EV 5yrs",
+    revenuepershare: "Revenue per Share",
+    evtofcf5yrs: "EV/FCF 5yrs",
+    psratiofive5yrs: "P/S Ratio 5yrs",
+    grossprofitmargin: "Gross Profit Margin",
+    dividendsyieldttm: "Dividends Yield (TTM)",
+    ptoeratio: "P/E Ratio",
+    psratio: "P/S Ratio",
+    fcfttmtoequityttm: "FCF/Equity (TTM)",
+    ptoeratiofive5yrs: "P/E Ratio 5yrs",
+    fiveyearavgfreecashflowyield: "5 yrs Avg FCF Yield",
+    returnoninvestedcapitalttm: "Return on Invested Capital (TTM)",
+  };
+
+  return labelMap[formattedKey] ?? toCamelCaseWithSpaces(key);
+};
+export const mapApiToComment = (apiData: any): CommentData => {
+  return {
+    commentId: apiData.id,
+    comment: apiData.message,
+    commentDate: new Date(apiData.created).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }),
+    userImgUrl: apiData.sentByImgUrl,
+    name: apiData.senderName,
+  };
+};
+export const mapApiToCommentSignalR = (apiData: any): CommentData => {
+  console.log("apiData SIGNAL R", apiData);
+  return {
+    commentId: apiData.id,
+    comment: apiData.message,
+    commentDate: new Date(apiData.created).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }),
+    userImgUrl: apiData.sentByImgUrl,
+    name: apiData.senderName,
+  };
+};
+export function getFontWeightByTitle(title?: string): number | undefined {
+  if (!title) return undefined;
+
+  const lowerTitle = title.toLowerCase();
+
+  const boldTitles = [
+    "revenue",
+    "net income",
+    "net interest income",
+    "gross profit",
+    "research and development expenses",
+    "operating expenses",
+    "operating income",
+    "pre-tax income",
+    "inventories",
+    "goodwill & intangible assets",
+    "other total stockholders equity",
+    "depreciation and amortization",
+    "net cash provided by investing activities",
+    "free cash flow",
+    "capital expenditure",
+    "total liabilities",
+    "total current liabilities",
+    "cash & short term investments",
+  ];
+
+  return boldTitles.includes(lowerTitle) ? 800 : 600;
+}
 export const downloadPaymentPDF = (data: any) => {
   const doc = new jsPDF();
   doc.setFontSize(14);

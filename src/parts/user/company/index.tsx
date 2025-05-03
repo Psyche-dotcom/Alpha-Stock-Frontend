@@ -27,25 +27,25 @@ const Company: React.FC<iProps> = ({ symbol }) => {
   }, []);
   const renderItem = () => {
     switch (activeTab) {
-      case "company-info":
-        return <CompanyInfo symbol={symbol} />;
+      // case "company-info":
+      //   return <CompanyInfo symbol={symbol} />;
       case "metrics":
         return <Metrics symbol={symbol} />;
       case "financials":
         return <Financials symbol={symbol} />;
-      case "fundamentals":
-        return <Fundamentals />;
+      // case "fundamentals":
+      //   return <Fundamentals />;
       case "stock-analyser":
         return <Analyzer symbol={symbol} />;
 
       default:
-        return <CompanyInfo symbol={symbol} />;
+        return <Metrics symbol={symbol} />;
     }
   };
 
   return (
     <>
-      <div className="flex mt-5">
+      <div className="flex mt-5 max-w-[1440px] mx-auto">
         <div className="flex gap-2 mb-8 bg-white rounded-lg py-2 md:px-4 px-2">
           {searchTab.map((tab, index: number) => (
             <Button
@@ -68,7 +68,7 @@ const Company: React.FC<iProps> = ({ symbol }) => {
           ))}
         </div>
       </div>
-      <div>{renderItem()}</div>
+      <div className="max-w-[1440px] mx-auto">{renderItem()}</div>
     </>
   );
 };

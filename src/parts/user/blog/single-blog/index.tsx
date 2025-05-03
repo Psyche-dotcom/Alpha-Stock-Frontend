@@ -132,7 +132,7 @@ const BlogDetails = ({ blogId }: { blogId: string }) => {
   };
 
   return (
-    <Box mt={8}>
+    <Box mt={8} className="max-w-[1440px] mx-auto">
       <Flex
         alignItems={"center"}
         gap={4}

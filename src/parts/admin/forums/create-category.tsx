@@ -8,7 +8,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAddCategory } from "@/services/community";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 const formSchema = z.object({
@@ -17,15 +19,23 @@ const formSchema = z.object({
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
-const CreateCategory: React.FC = () => {
+interface CreateCategoryProps {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}
+const CreateCategory: React.FC<CreateCategoryProps> = ({ setIsOpen }) => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       category: "",
     },
   });
-
+  const { categoryAddData, categoryAddIsLoading, categoryAddPayload } =
+    useAddCategory((res: { statusCode: number; result: any }) => {
+      setIsOpen(false);
+    });
   async function onSubmit(values: FormSchemaType) {
+    console.log("values", values);
+    categoryAddPayload(values);
     await Promise.resolve(true);
   }
 

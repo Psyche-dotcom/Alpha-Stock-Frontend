@@ -40,7 +40,7 @@ const Profiles: React.FC = () => {
     setRedirectModalOpen(false);
   }, []);
   return (
-    <Box>
+    <Box className="max-w-[1440px] mx-auto">
       <Box bg={"#fff"} p={4} borderRadius={"12px"} mb={4}>
         <Flex gap={2}>
           {filterBtn.map((filter: IButtonFilter2, index: number) => (

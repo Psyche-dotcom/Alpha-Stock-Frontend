@@ -26,150 +26,14 @@ export const AlldataSourceFinance = (
           row5: Data[4]?.revenue,
         },
         {
-          id: 5,
-          title: "Gross Profit",
-          row1: Data[0]?.grossProfit,
-          row2: Data[1]?.grossProfit,
-          row3: Data[2]?.grossProfit,
-          row4: Data[3]?.grossProfit,
-          row5: Data[4]?.grossProfit,
+          id: 4,
+          title: "Cost Of Revenue",
+          row1: Data[0]?.costOfRevenue,
+          row2: Data[1]?.costOfRevenue,
+          row3: Data[2]?.costOfRevenue,
+          row4: Data[3]?.costOfRevenue,
+          row5: Data[4]?.costOfRevenue,
         },
-        {
-          id: 23,
-          title: "Income Before Tax",
-          row1: Data[0]?.incomeBeforeTax,
-          row2: Data[1]?.incomeBeforeTax,
-          row3: Data[2]?.incomeBeforeTax,
-          row4: Data[3]?.incomeBeforeTax,
-          row5: Data[4]?.incomeBeforeTax,
-        },
-        {
-          id: 24,
-          title: "Income Tax Expense",
-          row1: Data[0]?.incomeTaxExpense,
-          row2: Data[1]?.incomeTaxExpense,
-          row3: Data[2]?.incomeTaxExpense,
-          row4: Data[3]?.incomeTaxExpense,
-          row5: Data[4]?.incomeTaxExpense,
-        },
-        {
-          id: 14,
-          title: "Interest Income",
-          row1: Data[0]?.interestIncome,
-          row2: Data[1]?.interestIncome,
-          row3: Data[2]?.interestIncome,
-          row4: Data[3]?.interestIncome,
-          row5: Data[4]?.interestIncome,
-        },
-        {
-          id: 15,
-          title: "Interest Expense",
-          row1: Data[0]?.interestExpense,
-          row2: Data[1]?.interestExpense,
-          row3: Data[2]?.interestExpense,
-          row4: Data[3]?.interestExpense,
-          row5: Data[4]?.interestExpense,
-        },
-        {
-          id: 13,
-          title: "Net Interest Income",
-          row1: Data[0]?.netInterestIncome,
-          row2: Data[1]?.netInterestIncome,
-          row3: Data[2]?.netInterestIncome,
-          row4: Data[3]?.netInterestIncome,
-          row5: Data[4]?.netInterestIncome,
-        },
-        {
-          id: 27,
-          title: "Net Income",
-          row1: Data[0]?.netIncome,
-          row2: Data[1]?.netIncome,
-          row3: Data[2]?.netIncome,
-          row4: Data[3]?.netIncome,
-          row5: Data[4]?.netIncome,
-        },
-        {
-          id: 28,
-          title: "Net Income Deductions",
-          row1: Data[0]?.netIncomeDeductions,
-          row2: Data[1]?.netIncomeDeductions,
-          row3: Data[2]?.netIncomeDeductions,
-          row4: Data[3]?.netIncomeDeductions,
-          row5: Data[4]?.netIncomeDeductions,
-        },
-        {
-          id: 24,
-          title: "Net Income From Continuing Operations",
-          row1: Data[0]?.netIncomeFromContinuingOperations,
-          row2: Data[1]?.netIncomeFromContinuingOperations,
-          row3: Data[2]?.netIncomeFromContinuingOperations,
-          row4: Data[3]?.netIncomeFromContinuingOperations,
-          row5: Data[4]?.netIncomeFromContinuingOperations,
-        },
-        {
-          id: 25,
-          title: "Net Income From Discontinued Operations",
-          row1: Data[0]?.netIncomeFromDiscontinuedOperations,
-          row2: Data[1]?.netIncomeFromDiscontinuedOperations,
-          row3: Data[2]?.netIncomeFromDiscontinuedOperations,
-          row4: Data[3]?.netIncomeFromDiscontinuedOperations,
-          row5: Data[4]?.netIncomeFromDiscontinuedOperations,
-        },
-        {
-          id: 35,
-          title: "Net Interest Income",
-          row1: Data[0]?.netInterestIncome,
-          row2: Data[1]?.netInterestIncome,
-          row3: Data[2]?.netInterestIncome,
-          row4: Data[3]?.netInterestIncome,
-          row5: Data[4]?.netInterestIncome,
-        },
-        {
-          id: 19,
-          title: "Non Operating Income Excluding Interest",
-          row1: Data[0]?.nonOperatingIncomeExcludingInterest,
-          row2: Data[1]?.nonOperatingIncomeExcludingInterest,
-          row3: Data[2]?.nonOperatingIncomeExcludingInterest,
-          row4: Data[3]?.nonOperatingIncomeExcludingInterest,
-          row5: Data[4]?.nonOperatingIncomeExcludingInterest,
-        },
-        {
-          id: 11,
-          title: "Operating Expenses",
-          row1: Data[0]?.operatingExpenses,
-          row2: Data[1]?.operatingExpenses,
-          row3: Data[2]?.operatingExpenses,
-          row4: Data[3]?.operatingExpenses,
-          row5: Data[4]?.operatingExpenses,
-        },
-        {
-          id: 20,
-          title: "Operating Income",
-          row1: Data[0]?.operatingIncome,
-          row2: Data[1]?.operatingIncome,
-          row3: Data[2]?.operatingIncome,
-          row4: Data[3]?.operatingIncome,
-          row5: Data[4]?.operatingIncome,
-        },
-        {
-          id: 10,
-          title: "Other Expenses",
-          row1: Data[0]?.otherExpenses,
-          row2: Data[1]?.otherExpenses,
-          row3: Data[2]?.otherExpenses,
-          row4: Data[3]?.otherExpenses,
-          row5: Data[4]?.otherExpenses,
-        },
-        {
-          id: 27,
-          title: "Bottom Line NetIncome",
-          row1: Data[0]?.bottomLineNetIncome,
-          row2: Data[1]?.bottomLineNetIncome,
-          row3: Data[2]?.bottomLineNetIncome,
-          row4: Data[3]?.bottomLineNetIncome,
-          row5: Data[4]?.bottomLineNetIncome,
-        },
-
         {
           id: 12,
           title: "Cost And Expenses",
@@ -180,42 +44,13 @@ export const AlldataSourceFinance = (
           row5: Data[4]?.costAndExpenses,
         },
         {
-          id: 4,
-          title: "Cost Of Revenue",
-          row1: Data[0]?.costOfRevenue,
-          row2: Data[1]?.costOfRevenue,
-          row3: Data[2]?.costOfRevenue,
-          row4: Data[3]?.costOfRevenue,
-          row5: Data[4]?.costOfRevenue,
-        },
-        {
-          id: 16,
-          title: "Depreciation And Amortization",
-          row1: Data[0]?.depreciationAndAmortization,
-          row2: Data[1]?.depreciationAndAmortization,
-          row3: Data[2]?.depreciationAndAmortization,
-          row4: Data[3]?.depreciationAndAmortization,
-          row5: Data[4]?.depreciationAndAmortization,
-        },
-
-        {
-          id: 7,
-          title: "General And Administrative Expenses",
-          row1: Data[0]?.generalAndAdministrativeExpenses,
-          row2: Data[1]?.generalAndAdministrativeExpenses,
-          row3: Data[2]?.generalAndAdministrativeExpenses,
-          row4: Data[3]?.generalAndAdministrativeExpenses,
-          row5: Data[4]?.generalAndAdministrativeExpenses,
-        },
-
-        {
-          id: 26,
-          title: "Other Adjustments To NetIncome",
-          row1: Data[0]?.otherAdjustmentsToNetIncome,
-          row2: Data[1]?.otherAdjustmentsToNetIncome,
-          row3: Data[2]?.otherAdjustmentsToNetIncome,
-          row4: Data[3]?.otherAdjustmentsToNetIncome,
-          row5: Data[4]?.otherAdjustmentsToNetIncome,
+          id: 5,
+          title: "Gross Profit",
+          row1: Data[0]?.grossProfit,
+          row2: Data[1]?.grossProfit,
+          row3: Data[2]?.grossProfit,
+          row4: Data[3]?.grossProfit,
+          row5: Data[4]?.grossProfit,
         },
         {
           id: 6,
@@ -255,8 +90,169 @@ export const AlldataSourceFinance = (
           row5: Data[4]?.totalOtherIncomeExpensesNet,
         },
         {
+          id: 11,
+          title: "Operating Expenses",
+          row1: Data[0]?.operatingExpenses,
+          row2: Data[1]?.operatingExpenses,
+          row3: Data[2]?.operatingExpenses,
+          row4: Data[3]?.operatingExpenses,
+          row5: Data[4]?.operatingExpenses,
+        },
+        {
+          id: 20,
+          title: "Operating Income",
+          row1: Data[0]?.operatingIncome,
+          row2: Data[1]?.operatingIncome,
+          row3: Data[2]?.operatingIncome,
+          row4: Data[3]?.operatingIncome,
+          row5: Data[4]?.operatingIncome,
+        },
+        {
+          id: 10,
+          title: "Other Expenses",
+          row1: Data[0]?.otherExpenses,
+          row2: Data[1]?.otherExpenses,
+          row3: Data[2]?.otherExpenses,
+          row4: Data[3]?.otherExpenses,
+          row5: Data[4]?.otherExpenses,
+        },
+        {
+          id: 35,
+          title: "Net Interest Income",
+          row1: Data[0]?.netInterestIncome,
+          row2: Data[1]?.netInterestIncome,
+          row3: Data[2]?.netInterestIncome,
+          row4: Data[3]?.netInterestIncome,
+          row5: Data[4]?.netInterestIncome,
+        },
+        {
+          id: 14,
+          title: "Interest Income",
+          row1: Data[0]?.interestIncome,
+          row2: Data[1]?.interestIncome,
+          row3: Data[2]?.interestIncome,
+          row4: Data[3]?.interestIncome,
+          row5: Data[4]?.interestIncome,
+        },
+        {
+          id: 23,
+          title: "Pre-Tax Income",
+          row1: Data[0]?.incomeBeforeTax,
+          row2: Data[1]?.incomeBeforeTax,
+          row3: Data[2]?.incomeBeforeTax,
+          row4: Data[3]?.incomeBeforeTax,
+          row5: Data[4]?.incomeBeforeTax,
+        },
+        {
+          id: 24,
+          title: "Income Tax Expense",
+          row1: Data[0]?.incomeTaxExpense,
+          row2: Data[1]?.incomeTaxExpense,
+          row3: Data[2]?.incomeTaxExpense,
+          row4: Data[3]?.incomeTaxExpense,
+          row5: Data[4]?.incomeTaxExpense,
+        },
+
+        {
+          id: 15,
+          title: "Interest Expense",
+          row1: Data[0]?.interestExpense,
+          row2: Data[1]?.interestExpense,
+          row3: Data[2]?.interestExpense,
+          row4: Data[3]?.interestExpense,
+          row5: Data[4]?.interestExpense,
+        },
+
+        {
+          id: 28,
+          title: "Net Income Deductions",
+          row1: Data[0]?.netIncomeDeductions,
+          row2: Data[1]?.netIncomeDeductions,
+          row3: Data[2]?.netIncomeDeductions,
+          row4: Data[3]?.netIncomeDeductions,
+          row5: Data[4]?.netIncomeDeductions,
+        },
+        {
+          id: 24,
+          title: "Net Income From Continuing Operations",
+          row1: Data[0]?.netIncomeFromContinuingOperations,
+          row2: Data[1]?.netIncomeFromContinuingOperations,
+          row3: Data[2]?.netIncomeFromContinuingOperations,
+          row4: Data[3]?.netIncomeFromContinuingOperations,
+          row5: Data[4]?.netIncomeFromContinuingOperations,
+        },
+        {
+          id: 25,
+          title: "Net Income From Discontinued Operations",
+          row1: Data[0]?.netIncomeFromDiscontinuedOperations,
+          row2: Data[1]?.netIncomeFromDiscontinuedOperations,
+          row3: Data[2]?.netIncomeFromDiscontinuedOperations,
+          row4: Data[3]?.netIncomeFromDiscontinuedOperations,
+          row5: Data[4]?.netIncomeFromDiscontinuedOperations,
+        },
+
+        {
+          id: 19,
+          title: "Non Operating Income Excluding Interest",
+          row1: Data[0]?.nonOperatingIncomeExcludingInterest,
+          row2: Data[1]?.nonOperatingIncomeExcludingInterest,
+          row3: Data[2]?.nonOperatingIncomeExcludingInterest,
+          row4: Data[3]?.nonOperatingIncomeExcludingInterest,
+          row5: Data[4]?.nonOperatingIncomeExcludingInterest,
+        },
+
+        {
+          id: 27,
+          title: "Bottom Line NetIncome",
+          row1: Data[0]?.bottomLineNetIncome,
+          row2: Data[1]?.bottomLineNetIncome,
+          row3: Data[2]?.bottomLineNetIncome,
+          row4: Data[3]?.bottomLineNetIncome,
+          row5: Data[4]?.bottomLineNetIncome,
+        },
+
+        {
+          id: 16,
+          title: "Depreciation And Amortization",
+          row1: Data[0]?.depreciationAndAmortization,
+          row2: Data[1]?.depreciationAndAmortization,
+          row3: Data[2]?.depreciationAndAmortization,
+          row4: Data[3]?.depreciationAndAmortization,
+          row5: Data[4]?.depreciationAndAmortization,
+        },
+
+        {
+          id: 7,
+          title: "General And Administrative Expenses",
+          row1: Data[0]?.generalAndAdministrativeExpenses,
+          row2: Data[1]?.generalAndAdministrativeExpenses,
+          row3: Data[2]?.generalAndAdministrativeExpenses,
+          row4: Data[3]?.generalAndAdministrativeExpenses,
+          row5: Data[4]?.generalAndAdministrativeExpenses,
+        },
+
+        {
+          id: 26,
+          title: "Other Adjustments To NetIncome",
+          row1: Data[0]?.otherAdjustmentsToNetIncome,
+          row2: Data[1]?.otherAdjustmentsToNetIncome,
+          row3: Data[2]?.otherAdjustmentsToNetIncome,
+          row4: Data[3]?.otherAdjustmentsToNetIncome,
+          row5: Data[4]?.otherAdjustmentsToNetIncome,
+        },
+
+        {
+          id: 27,
+          title: "Net Income",
+          row1: Data[0]?.netIncome,
+          row2: Data[1]?.netIncome,
+          row3: Data[2]?.netIncome,
+          row4: Data[3]?.netIncome,
+          row5: Data[4]?.netIncome,
+        },
+        {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -288,7 +284,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -320,7 +316,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -352,7 +348,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -374,14 +370,52 @@ export const AlldataSourceFinance = (
           row5: Data[4]?.cashAndCashEquivalents,
         },
         {
-          id: 20,
-          title: "Other Assets",
-          row1: Data[0]?.otherAssets,
-          row2: Data[1]?.otherAssets,
-          row3: Data[2]?.otherAssets,
-          row4: Data[3]?.otherAssets,
-          row5: Data[4]?.otherAssets,
+          id: 33,
+          title: "Short Term Investments",
+          row1: Data[0]?.shortTermInvestments,
+          row2: Data[1]?.shortTermInvestments,
+          row3: Data[2]?.shortTermInvestments,
+          row4: Data[3]?.shortTermInvestments,
+          row5: Data[4]?.shortTermInvestments,
         },
+        {
+          id: 16,
+          title: "Long Term Investments",
+          row1: Data[0]?.longTermInvestments,
+          row2: Data[1]?.longTermInvestments,
+          row3: Data[2]?.longTermInvestments,
+          row4: Data[3]?.longTermInvestments,
+          row5: Data[4]?.longTermInvestments,
+        },
+
+        {
+          id: 7,
+          title: "Cash & Short Term Investments",
+          row1: Data[0]?.cashAndShortTermInvestments,
+          row2: Data[1]?.cashAndShortTermInvestments,
+          row3: Data[2]?.cashAndShortTermInvestments,
+          row4: Data[3]?.cashAndShortTermInvestments,
+          row5: Data[4]?.cashAndShortTermInvestments,
+        },
+        {
+          id: 2,
+          title: "Accounts Receivables",
+          row1: Data[0]?.accountsReceivables,
+          row2: Data[1]?.accountsReceivables,
+          row3: Data[2]?.accountsReceivables,
+          row4: Data[3]?.accountsReceivables,
+          row5: Data[4]?.accountsReceivables,
+        },
+        {
+          id: 15,
+          title: "Inventories",
+          row1: Data[0]?.inventory,
+          row2: Data[1]?.inventory,
+          row3: Data[2]?.inventory,
+          row4: Data[3]?.inventory,
+          row5: Data[4]?.inventory,
+        },
+
         {
           id: 21,
           title: "Other Current Assets",
@@ -410,33 +444,7 @@ export const AlldataSourceFinance = (
           row4: Data[3]?.otherNonCurrentAssets,
           row5: Data[4]?.otherNonCurrentAssets,
         },
-        {
-          id: 7,
-          title: "Cash And Short Term Investments",
-          row1: Data[0]?.cashAndShortTermInvestments,
-          row2: Data[1]?.cashAndShortTermInvestments,
-          row3: Data[2]?.cashAndShortTermInvestments,
-          row4: Data[3]?.cashAndShortTermInvestments,
-          row5: Data[4]?.cashAndShortTermInvestments,
-        },
-        {
-          id: 33,
-          title: "Short Term Investments",
-          row1: Data[0]?.shortTermInvestments,
-          row2: Data[1]?.shortTermInvestments,
-          row3: Data[2]?.shortTermInvestments,
-          row4: Data[3]?.shortTermInvestments,
-          row5: Data[4]?.shortTermInvestments,
-        },
-        {
-          id: 2,
-          title: "Accounts Receivables",
-          row1: Data[0]?.accountsReceivables,
-          row2: Data[1]?.accountsReceivables,
-          row3: Data[2]?.accountsReceivables,
-          row4: Data[3]?.accountsReceivables,
-          row5: Data[4]?.accountsReceivables,
-        },
+
         {
           id: 27,
           title: "Other Receivables",
@@ -445,6 +453,25 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherReceivables,
           row4: Data[3]?.otherReceivables,
           row5: Data[4]?.otherReceivables,
+        },
+
+        {
+          id: 8,
+          title: "Common Stock",
+          row1: Data[0]?.commonStock,
+          row2: Data[1]?.commonStock,
+          row3: Data[2]?.commonStock,
+          row4: Data[3]?.commonStock,
+          row5: Data[4]?.commonStock,
+        },
+        {
+          id: 9,
+          title: "Deferred Revenue",
+          row1: Data[0]?.deferredRevenue,
+          row2: Data[1]?.deferredRevenue,
+          row3: Data[2]?.deferredRevenue,
+          row4: Data[3]?.deferredRevenue,
+          row5: Data[4]?.deferredRevenue,
         },
         {
           id: 12,
@@ -457,12 +484,30 @@ export const AlldataSourceFinance = (
         },
         {
           id: 13,
-          title: "Goodwill And Intangible Assets",
+          title: "Goodwill & Intangible Assets",
           row1: Data[0]?.goodwillAndIntangibleAssets,
           row2: Data[1]?.goodwillAndIntangibleAssets,
           row3: Data[2]?.goodwillAndIntangibleAssets,
           row4: Data[3]?.goodwillAndIntangibleAssets,
           row5: Data[4]?.goodwillAndIntangibleAssets,
+        },
+        {
+          id: 18,
+          title: "Net Debt",
+          row1: Data[0]?.netDebt,
+          row2: Data[1]?.netDebt,
+          row3: Data[2]?.netDebt,
+          row4: Data[3]?.netDebt,
+          row5: Data[4]?.netDebt,
+        },
+        {
+          id: 19,
+          title: "Net Receivables",
+          row1: Data[0]?.netReceivables,
+          row2: Data[1]?.netReceivables,
+          row3: Data[2]?.netReceivables,
+          row4: Data[3]?.netReceivables,
+          row5: Data[4]?.netReceivables,
         },
         {
           id: 42,
@@ -493,99 +538,8 @@ export const AlldataSourceFinance = (
           row5: Data[4]?.totalStockholdersEquity,
         },
         {
-          id: 8,
-          title: "Common Stock",
-          row1: Data[0]?.commonStock,
-          row2: Data[1]?.commonStock,
-          row3: Data[2]?.commonStock,
-          row4: Data[3]?.commonStock,
-          row5: Data[4]?.commonStock,
-        },
-        {
-          id: 9,
-          title: "Deferred Revenue",
-          row1: Data[0]?.deferredRevenue,
-          row2: Data[1]?.deferredRevenue,
-          row3: Data[2]?.deferredRevenue,
-          row4: Data[3]?.deferredRevenue,
-          row5: Data[4]?.deferredRevenue,
-        },
-        {
-          id: 10,
-          title: "Deferred Revenue Non Current",
-          row1: Data[0]?.deferredRevenueNonCurrent,
-          row2: Data[1]?.deferredRevenueNonCurrent,
-          row3: Data[2]?.deferredRevenueNonCurrent,
-          row4: Data[3]?.deferredRevenueNonCurrent,
-          row5: Data[4]?.deferredRevenueNonCurrent,
-        },
-        {
-          id: 11,
-          title: "Deferred Tax Liabilities Non Current",
-          row1: Data[0]?.deferredTaxLiabilitiesNonCurrent,
-          row2: Data[1]?.deferredTaxLiabilitiesNonCurrent,
-          row3: Data[2]?.deferredTaxLiabilitiesNonCurrent,
-          row4: Data[3]?.deferredTaxLiabilitiesNonCurrent,
-          row5: Data[4]?.deferredTaxLiabilitiesNonCurrent,
-        },
-
-        {
-          id: 14,
-          title: "Intangible Assets",
-          row1: Data[0]?.intangibleAssets,
-          row2: Data[1]?.intangibleAssets,
-          row3: Data[2]?.intangibleAssets,
-          row4: Data[3]?.intangibleAssets,
-          row5: Data[4]?.intangibleAssets,
-        },
-        {
-          id: 15,
-          title: "Inventory",
-          row1: Data[0]?.inventory,
-          row2: Data[1]?.inventory,
-          row3: Data[2]?.inventory,
-          row4: Data[3]?.inventory,
-          row5: Data[4]?.inventory,
-        },
-        {
-          id: 16,
-          title: "Long Term Investments",
-          row1: Data[0]?.longTermInvestments,
-          row2: Data[1]?.longTermInvestments,
-          row3: Data[2]?.longTermInvestments,
-          row4: Data[3]?.longTermInvestments,
-          row5: Data[4]?.longTermInvestments,
-        },
-        {
-          id: 17,
-          title: "Minority Interest",
-          row1: Data[0]?.minorityInterest,
-          row2: Data[1]?.minorityInterest,
-          row3: Data[2]?.minorityInterest,
-          row4: Data[3]?.minorityInterest,
-          row5: Data[4]?.minorityInterest,
-        },
-        {
-          id: 18,
-          title: "Net Debt",
-          row1: Data[0]?.netDebt,
-          row2: Data[1]?.netDebt,
-          row3: Data[2]?.netDebt,
-          row4: Data[3]?.netDebt,
-          row5: Data[4]?.netDebt,
-        },
-        {
-          id: 19,
-          title: "Net Receivables",
-          row1: Data[0]?.netReceivables,
-          row2: Data[1]?.netReceivables,
-          row3: Data[2]?.netReceivables,
-          row4: Data[3]?.netReceivables,
-          row5: Data[4]?.netReceivables,
-        },
-        {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -643,43 +597,6 @@ export const AlldataSourceFinance = (
           row4: Data[3]?.otherNonCurrentLiabilities,
           row5: Data[4]?.otherNonCurrentLiabilities,
         },
-        {
-          id: 38,
-          title: "Total Current Liabilities",
-          row1: Data[0]?.totalCurrentLiabilities,
-          row2: Data[1]?.totalCurrentLiabilities,
-          row3: Data[2]?.totalCurrentLiabilities,
-          row4: Data[3]?.totalCurrentLiabilities,
-          row5: Data[4]?.totalCurrentLiabilities,
-        },
-        {
-          id: 40,
-          title: "Total Liabilities",
-          row1: Data[0]?.totalLiabilities,
-          row2: Data[1]?.totalLiabilities,
-          row3: Data[2]?.totalLiabilities,
-          row4: Data[3]?.totalLiabilities,
-          row5: Data[4]?.totalLiabilities,
-        },
-        {
-          id: 43,
-          title: "Total Non Current Liabilities",
-          row1: Data[0]?.totalNonCurrentLiabilities,
-          row2: Data[1]?.totalNonCurrentLiabilities,
-          row3: Data[2]?.totalNonCurrentLiabilities,
-          row4: Data[3]?.totalNonCurrentLiabilities,
-          row5: Data[4]?.totalNonCurrentLiabilities,
-        },
-
-        {
-          id: 41,
-          title: "Total Liabilities And Total Equity",
-          row1: Data[0]?.totalLiabilitiesAndTotalEquity,
-          row2: Data[1]?.totalLiabilitiesAndTotalEquity,
-          row3: Data[2]?.totalLiabilitiesAndTotalEquity,
-          row4: Data[3]?.totalLiabilitiesAndTotalEquity,
-          row5: Data[4]?.totalLiabilitiesAndTotalEquity,
-        },
 
         {
           id: 4,
@@ -698,35 +615,6 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.additionalPaidInCapital,
           row4: Data[3]?.additionalPaidInCapital,
           row5: Data[4]?.additionalPaidInCapital,
-        },
-
-        {
-          id: 36,
-          title: "Total Assets",
-          row1: Data[0]?.totalAssets,
-          row2: Data[1]?.totalAssets,
-          row3: Data[2]?.totalAssets,
-          row4: Data[3]?.totalAssets,
-          row5: Data[4]?.totalAssets,
-        },
-        {
-          id: 37,
-          title: "Total Current Assets",
-          row1: Data[0]?.totalCurrentAssets,
-          row2: Data[1]?.totalCurrentAssets,
-          row3: Data[2]?.totalCurrentAssets,
-          row4: Data[3]?.totalCurrentAssets,
-          row5: Data[4]?.totalCurrentAssets,
-        },
-
-        {
-          id: 39,
-          title: "Total Investments",
-          row1: Data[0]?.totalInvestments,
-          row2: Data[1]?.totalInvestments,
-          row3: Data[2]?.totalInvestments,
-          row4: Data[3]?.totalInvestments,
-          row5: Data[4]?.totalInvestments,
         },
 
         {
@@ -767,8 +655,74 @@ export const AlldataSourceFinance = (
           row5: Data[4]?.totalDebt,
         },
         {
+          id: 36,
+          title: "Total Assets",
+          row1: Data[0]?.totalAssets,
+          row2: Data[1]?.totalAssets,
+          row3: Data[2]?.totalAssets,
+          row4: Data[3]?.totalAssets,
+          row5: Data[4]?.totalAssets,
+        },
+        {
+          id: 37,
+          title: "Total Current Assets",
+          row1: Data[0]?.totalCurrentAssets,
+          row2: Data[1]?.totalCurrentAssets,
+          row3: Data[2]?.totalCurrentAssets,
+          row4: Data[3]?.totalCurrentAssets,
+          row5: Data[4]?.totalCurrentAssets,
+        },
+
+        {
+          id: 39,
+          title: "Total Investments",
+          row1: Data[0]?.totalInvestments,
+          row2: Data[1]?.totalInvestments,
+          row3: Data[2]?.totalInvestments,
+          row4: Data[3]?.totalInvestments,
+          row5: Data[4]?.totalInvestments,
+        },
+        {
+          id: 38,
+          title: "Total Current Liabilities",
+          row1: Data[0]?.totalCurrentLiabilities,
+          row2: Data[1]?.totalCurrentLiabilities,
+          row3: Data[2]?.totalCurrentLiabilities,
+          row4: Data[3]?.totalCurrentLiabilities,
+          row5: Data[4]?.totalCurrentLiabilities,
+        },
+        {
+          id: 40,
+          title: "Total Liabilities",
+          row1: Data[0]?.totalLiabilities,
+          row2: Data[1]?.totalLiabilities,
+          row3: Data[2]?.totalLiabilities,
+          row4: Data[3]?.totalLiabilities,
+          row5: Data[4]?.totalLiabilities,
+        },
+        {
+          id: 43,
+          title: "Total Non Current Liabilities",
+          row1: Data[0]?.totalNonCurrentLiabilities,
+          row2: Data[1]?.totalNonCurrentLiabilities,
+          row3: Data[2]?.totalNonCurrentLiabilities,
+          row4: Data[3]?.totalNonCurrentLiabilities,
+          row5: Data[4]?.totalNonCurrentLiabilities,
+        },
+
+        {
+          id: 41,
+          title: "Total Liabilities And Total Equity",
+          row1: Data[0]?.totalLiabilitiesAndTotalEquity,
+          row2: Data[1]?.totalLiabilitiesAndTotalEquity,
+          row3: Data[2]?.totalLiabilitiesAndTotalEquity,
+          row4: Data[3]?.totalLiabilitiesAndTotalEquity,
+          row5: Data[4]?.totalLiabilitiesAndTotalEquity,
+        },
+
+        {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -779,6 +733,34 @@ export const AlldataSourceFinance = (
     }
     if (type == "SHARE") {
       dataSources = [
+        {
+          id: 31,
+          title: "Retained Earnings",
+          row1: Data[0]?.retainedEarnings,
+          row2: Data[1]?.retainedEarnings,
+          row3: Data[2]?.retainedEarnings,
+          row4: Data[3]?.retainedEarnings,
+          row5: Data[4]?.retainedEarnings,
+        },
+        {
+          id: 30,
+          title: "Property Plant Equipment Net",
+          row1: Data[0]?.propertyPlantEquipmentNet,
+          row2: Data[1]?.propertyPlantEquipmentNet,
+          row3: Data[2]?.propertyPlantEquipmentNet,
+          row4: Data[3]?.propertyPlantEquipmentNet,
+          row5: Data[4]?.propertyPlantEquipmentNet,
+        },
+
+        {
+          id: 32,
+          title: "Short Term Debt",
+          row1: Data[0]?.shortTermDebt,
+          row2: Data[1]?.shortTermDebt,
+          row3: Data[2]?.shortTermDebt,
+          row4: Data[3]?.shortTermDebt,
+          row5: Data[4]?.shortTermDebt,
+        },
         {
           id: 28,
           title: "Preferred Stock",
@@ -796,34 +778,6 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.prepaids,
           row4: Data[3]?.prepaids,
           row5: Data[4]?.prepaids,
-        },
-
-        {
-          id: 30,
-          title: "Property Plant Equipment Net",
-          row1: Data[0]?.propertyPlantEquipmentNet,
-          row2: Data[1]?.propertyPlantEquipmentNet,
-          row3: Data[2]?.propertyPlantEquipmentNet,
-          row4: Data[3]?.propertyPlantEquipmentNet,
-          row5: Data[4]?.propertyPlantEquipmentNet,
-        },
-        {
-          id: 31,
-          title: "Retained Earnings",
-          row1: Data[0]?.retainedEarnings,
-          row2: Data[1]?.retainedEarnings,
-          row3: Data[2]?.retainedEarnings,
-          row4: Data[3]?.retainedEarnings,
-          row5: Data[4]?.retainedEarnings,
-        },
-        {
-          id: 32,
-          title: "Short Term Debt",
-          row1: Data[0]?.shortTermDebt,
-          row2: Data[1]?.shortTermDebt,
-          row3: Data[2]?.shortTermDebt,
-          row4: Data[3]?.shortTermDebt,
-          row5: Data[4]?.shortTermDebt,
         },
 
         {
@@ -865,7 +819,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -961,7 +915,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -1028,7 +982,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -1113,7 +1067,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -1153,7 +1107,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -1194,7 +1148,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 100,
-          title: "================================",
+          title: "",
           row1: "",
           row2: "",
           row3: "",
@@ -1216,6 +1170,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.roic?.fifth,
       feature: "ROIC",
       category: "roic",
+      showPercent: true,
     },
     {
       id: 2,
@@ -1224,6 +1179,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.revGrowth?.fifth,
       feature: "Rev. Growth %",
       category: "revGrowth",
+      showPercent: true,
     },
     {
       id: 3,
@@ -1232,6 +1188,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.profitMargin?.fifth,
       feature: "Profit Margin",
       category: "profitMargin",
+      showPercent: true,
     },
     {
       id: 4,
@@ -1240,6 +1197,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.freeCashFlowMargin?.fifth,
       feature: "Free Cash Flow Margin",
       category: "freeCashFlowMargin",
+      showPercent: true,
     },
     {
       id: 5,
@@ -1248,6 +1206,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.peRatio?.fifth,
       feature: "P/E",
       category: "peRatio",
+      showPercent: false,
     },
     {
       id: 6,
@@ -1256,6 +1215,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: Data?.pfcf?.fifth,
       feature: "P/FCF",
       category: "pfcf",
+      showPercent: false,
     },
     {
       id: 6,
@@ -1264,6 +1224,7 @@ export const DataSourceAnalyzer = (Data: any) => {
       year5: 0,
       feature: "Desired Annual Return",
       category: "desiredAnnReturn",
+      showPercent: true,
     },
   ];
   return dataSources;
@@ -1312,6 +1273,49 @@ export function formatMoneyNumber(value: string | number): string {
     return sign + (absNum / 1_000).toFixed(2) + "K";
   } else {
     return sign + absNum.toString();
+  }
+}
+export function formatMoneyNumber2(value: string | number): string {
+  if (value === "") return "";
+
+  const isDateString = (val: string): boolean =>
+    !isNaN(Date.parse(val)) && /\d{4}-\d{2}-\d{2}/.test(val);
+
+  if (typeof value === "string") {
+    // Check if it's a valid date
+    if (isDateString(value)) {
+      const date = new Date(value);
+      return date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    }
+
+    // Try to parse as number
+    const parsed = parseFloat(value);
+    if (!isNaN(parsed)) {
+      value = parsed;
+    } else {
+      // Not a date, not a number – return as-is
+      return value;
+    }
+  }
+
+  // At this point, value is a number
+  const num = value as number;
+
+  const absNum = Math.abs(num);
+  const sign = num < 0 ? "-" : "";
+
+  if (absNum >= 1_000_000_000) {
+    return sign + (absNum / 1_000_000_000).toFixed(2) + "B";
+  } else if (absNum >= 1_000_000) {
+    return sign + (absNum / 1_000_000).toFixed(2) + "M";
+  } else if (absNum >= 1_000) {
+    return sign + (absNum / 1_000).toFixed(2) + "K";
+  } else {
+    return sign + num.toFixed(2); // Even for small numbers, format to 2 decimals
   }
 }
 

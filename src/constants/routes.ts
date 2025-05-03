@@ -12,7 +12,7 @@ export const ROUTES = {
     HOME: "/user",
     COMMUNITY: "/user/community",
     PLAN: "/user/plans",
-    COMPANYINFO: "/user/company-info",
+    COMPANYINFO: "/user/metrics",
     METRICS: "/user/metrics",
     FINANCIALS: "/user/financials",
     FUNDAMENTALS: "/user/fundamentals",

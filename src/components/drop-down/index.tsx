@@ -18,11 +18,11 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
   mb,
   count,
 }) => {
-  const { setIsOpen, setSelectedChannel } = useUserSession();
+  const { setIsOpen, setSelectedChannel, selectedChannel } = useUserSession();
   const [collapseCommunity, setCollapseCommunity] = useState<boolean>(false);
 
   return (
-    <Box mb={mb} className="w-full">
+    <Box mb={mb} className="w-full cursor-pointer">
       <Box
         bg="#ffffff"
         color="#111928"
@@ -56,11 +56,17 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
               justifyContent={"space-between"}
               key={index}
               onClick={() => {
-                setSelectedChannel(item?.text);
+                setSelectedChannel(item?.roomid);
                 setIsOpen(false);
               }}
             >
-              <Text>{item?.text}</Text>
+              <Text
+                className={`${
+                  selectedChannel == item?.roomid ? "font-bold" : ""
+                }`}
+              >
+                {item?.text}
+              </Text>
               {item?.count && (
                 <Box
                   bg="#C2BAB2"

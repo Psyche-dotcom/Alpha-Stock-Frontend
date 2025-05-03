@@ -38,27 +38,27 @@ const User: React.FC = () => {
   };
 
   return (
-    <div className="xl:flex gap-4 h-full">
+    <div className="xl:flex gap-4 h-full max-w-[1440px] mx-auto">
       <div className="flex-1">
         <div className="flex gap-4 flex-col md:flex-row xl:flex-col w-full md:mb-8 mb-4 xl:mb-0">
-          <div className="mb-8 flex sm:flex-row flex-col gap-4 h-ful md:h-auto flex-1">
+          <div className="md:mb-8 mb-5 flex sm:flex-row flex-col sm:gap-4 gap-3 h-ful md:h-auto flex-1">
             <div className="flex flex-col sm:gap-4 gap-3 sm:h-[215px] h-auto">
-              <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
-                <Link
-                  href={"/user/company/aapl?tab=company-info"}
-                  onClick={(e) => handleClick(e)}
-                >
+              <Link
+                href={"/user/company/aapl?tab=metrics"}
+                onClick={(e) => handleClick(e)}
+              >
+                <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
                   <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">
                     Fundamentals Toolkit <RightArrowLong />
                   </h6>
-                </Link>
-              </div>
+                </div>
+              </Link>
               <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
                 <Link
                   href={"/user/company/aapl?tab=metrics"}
                   onClick={(e) => handleClick(e)}
                 >
-                  <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
+                  <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4 cursor-pointer">
                     Metrics <RightArrowLong />
                   </h6>
                 </Link>
@@ -69,21 +69,26 @@ const User: React.FC = () => {
               </div>
             </div>
             <div className="flex flex-col sm:gap-4 gap-3">
-              <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
-                <Link
-                  href={"/user/company/aapl?tab=financials"}
-                  onClick={(e) => handleClick(e)}
-                >
+              <Link
+                href={"/user/company/aapl?tab=financials"}
+                onClick={(e) => handleClick(e)}
+              >
+                <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
                   <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
-                    FInancials <RightArrowLong />
+                    Financials <RightArrowLong />
                   </h6>
-                </Link>
-              </div>
-              <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
-                <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">
-                  Stock Analyser <RightArrowLong />
-                </h6>
-              </div>
+                </div>
+              </Link>
+              <Link
+                href={"/user/company/aapl?tab=stock-analyser"}
+                onClick={(e) => handleClick(e)}
+              >
+                <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end cursor-pointer">
+                  <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">
+                    Stock Analyser <RightArrowLong />
+                  </h6>
+                </div>
+              </Link>
             </div>
           </div>
           <MarketMoveContent />

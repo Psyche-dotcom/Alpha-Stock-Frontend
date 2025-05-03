@@ -25,12 +25,34 @@ import { useUserSession } from "@/app/context/user-context";
 import { useHandlePush } from "@/hooks/handlePush";
 import SearchDropdown from "@/components/search-dropdown";
 import Logout from "@/components/logout";
+import { usePathname } from "next/navigation";
 
 const UserNavbar = () => {
   const { profileData, setRedirectModalOpen } = useUserSession();
   const { handlePush } = useHandlePush();
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const pathname = usePathname();
+  const isActive = (path: string) => {
+    const cleanPath = pathname.split("?")[0];
+
+    // Always match exact for "/"
+    if (path === "/") return cleanPath === "/";
+
+    // Normalize trailing slashes
+    const normalizedCurrent = cleanPath.replace(/\/$/, "");
+    const normalizedTarget = path.replace(/\/$/, "");
+
+    // Split into segments
+    const currentSegments = normalizedCurrent.split("/");
+    const targetSegments = normalizedTarget.split("/");
+
+    for (let i = 0; i < targetSegments.length; i++) {
+      if (currentSegments[i] !== targetSegments[i]) return false;
+    }
+
+    return true;
+  };
   const handleClick = (e: React.MouseEvent, route: string) => {
     if (
       !profileData?.result?.isSubActive &&
@@ -43,20 +65,25 @@ const UserNavbar = () => {
 
   return (
     <div className="bg-white px-4 sticky z-10 top-0 shadow-xl">
-      <div className="flex items-center justify-between lg:gap-[36px] xl:gap-[96px]">
+      <div className="flex items-center justify-between lg:gap-[36px] xl:gap-[96px] max-w-[1440px] mx-auto ">
         <Link href={ROUTES.USER.HOME} passHref>
           <CompanyIcon />
         </Link>
-        <div className="lg:hidden" onClick={() => setShowNavbar(!showNavbar)}>
+        <div
+          className="lg:hidden cursor-pointer"
+          onClick={() => setShowNavbar(!showNavbar)}
+        >
           <BurgerIcon />
         </div>
-        <div className="flex-1 flex justify-between  lg:flex hidden gap-5 lg:flex hidden">
+        <div className="flex-1  justify-between   gap-5 lg:flex hidden">
           <div className="justify-between items-center gap-2 flex">
             {userNavbarList.map((nav, index) => (
               <Link href={nav.path} key={index} passHref>
                 <div
                   onClick={(e) => handleClick(e, nav.path)}
-                  className="text-sm p-1 font-medium cursor-pointer"
+                  className={` text-sm p-1 font-medium hover:scale-110 transition-transform cursor-pointer ${
+                    pathname === nav.path ? "text-[#3A2206] font-black" : ""
+                  }`}
                 >
                   {nav.title}
                 </div>
@@ -114,9 +141,18 @@ const UserNavbar = () => {
                 href={nav.path}
                 key={index}
                 passHref
-                onClick={(e) => handleClick(e, nav.path)}
+                onClick={(e) => {
+                  setShowNavbar(!showNavbar);
+                  handleClick(e, nav.path);
+                }}
               >
-                <div className="text-sm p-1 font-medium">{nav.title}</div>
+                <div
+                  className={`text-sm p-1 font-medium ${
+                    pathname === nav.path ? "text-[#3A2206] font-black" : ""
+                  }`}
+                >
+                  {nav.title}
+                </div>
               </Link>
             ))}
           </div>

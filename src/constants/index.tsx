@@ -30,16 +30,16 @@ export const userNavbarList = [
     path: ROUTES.USER.SUBSCRIPTION,
   },
   { title: "Community", path: ROUTES.USER.COMMUNITY },
-  { title: "Blogs", path: ROUTES.USER.BLOGS },
-  { title: "Wishlist", path: ROUTES.USER.WATCHLIST },
+  // { title: "Blogs", path: ROUTES.USER.BLOGS },
+  { title: "Watchlist", path: ROUTES.USER.WATCHLIST },
   { title: "Shop", path: ROUTES.USER.SHOP },
 ];
 
 export const searchTab = [
-  {
-    title: "Company Info",
-    value: "company-info",
-  },
+  // {
+  //   title: "Company Info",
+  //   value: "company-info",
+  // },
   {
     title: "Metrics",
     value: "metrics",
@@ -48,10 +48,10 @@ export const searchTab = [
     title: "Financials",
     value: "financials",
   },
-  {
-    title: "Fundamentals",
-    value: "fundamentals",
-  },
+  // {
+  //   title: "Fundamentals",
+  //   value: "fundamentals",
+  // },
   {
     title: "Stock Analyser",
     value: "stock-analyser",

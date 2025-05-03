@@ -28,6 +28,8 @@ import {
 } from "@/components/util";
 import DropdownSelect from "@/components/DropdownSelect";
 import YearDropdownSelect from "@/components/yearSelectdropdown";
+import { TableComponent2 } from "@/components/custom-table2";
+import { TableComponentNew } from "@/components/custom-table-new";
 
 interface DataType extends DataItem {
   id: number;
@@ -39,6 +41,7 @@ interface DataType extends DataItem {
   medium?: number;
   high?: number;
   category: string;
+  showPercent?: boolean;
 }
 interface DataTypes extends DataItem {
   id: number;
@@ -126,60 +129,105 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
 
   const cellRenderers = {
     feature: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} color="#111928">
+      <Text fontWeight={400} fontSize={14} className="text-nowrap">
         {item?.feature}
       </Text>
     ),
     year1: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year1 ? parseFloat(String(item.year1)).toFixed(2) : "-"}
+      <Text
+        fontWeight={400}
+        fontSize={14}
+        textAlign={"center"}
+        className="text-nowrap"
+      >
+        {item?.year1
+          ? `${parseFloat(String(item.year1)).toFixed(2)} ${
+              item?.showPercent ? "%" : ""
+            }`
+          : "-"}
       </Text>
     ),
     year5: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year5 ? parseFloat(String(item.year5)).toFixed(2) : "-"}
+      <Text
+        fontWeight={400}
+        fontSize={14}
+        textAlign={"center"}
+        className="text-nowrap"
+      >
+        {item?.year5
+          ? `${parseFloat(String(item.year5)).toFixed(2)} ${
+              item?.showPercent ? "%" : ""
+            }`
+          : "-"}
       </Text>
     ),
     year10: (item: DataType) => (
-      <Text fontWeight={400} fontSize={14} color="#111928" textAlign={"center"}>
-        {item?.year10 ? parseFloat(String(item.year10)).toFixed(2) : "-"}
+      <Text
+        fontWeight={400}
+        fontSize={14}
+        textAlign={"center"}
+        className="text-nowrap"
+      >
+        {item?.year10
+          ? `${parseFloat(String(item.year10)).toFixed(2)} ${
+              item?.showPercent ? "%" : ""
+            }`
+          : "-"}
       </Text>
     ),
-
     low: (item: DataType) => (
-      <Box className="flex justify-center">
+      <Box className="flex justify-center relative">
         <Input
           name="low"
+          style={{ maxWidth: "54px" }}
           value={tableState[item.category!]?.low || 0}
           onChange={(e) =>
             handleInputChange(item.category!, "low", Number(e.target.value))
           }
           className="h-8 w-[10.6rem]"
         />
+        {item?.showPercent && (
+          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+            %
+          </Box>
+        )}
       </Box>
     ),
+
     medium: (item: DataType) => (
-      <Box className="flex justify-center">
+      <Box className="flex justify-center relative">
         <Input
           name="mid"
+          style={{ maxWidth: "54px" }}
           value={tableState[item.category!]?.mid || 0}
           onChange={(e) =>
             handleInputChange(item.category!, "mid", Number(e.target.value))
           }
           className="h-8 w-[10.6rem]"
         />
+        {item?.showPercent && (
+          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+            %
+          </Box>
+        )}
       </Box>
     ),
     high: (item: DataType) => (
-      <Box className="flex justify-center">
+      <Box className="flex justify-center relative">
         <Input
           name="high"
+          style={{ maxWidth: "54px" }}
           value={tableState[item.category!]?.high || 0}
           onChange={(e) =>
             handleInputChange(item.category!, "high", Number(e.target.value))
           }
           className="h-8 w-[10.6rem]"
         />
+        {item?.showPercent && (
+          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
+            %
+          </Box>
+        )}
       </Box>
     ),
   };
@@ -333,58 +381,96 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     <Box py={4}>
       <Box bg="#fff" borderRadius="8px" pt={4}>
         <Box
-          display="flex"
+          className="flex"
           justifyContent={"space-between"}
           alignItems={"center"}
           mb={7}
           mx={4}
         >
-          <Text fontWeight={400} fontSize={18} color="#111928">
+          <Text fontWeight={600} fontSize={18} color="#111928">
             Stock Analyser
           </Text>
-
-          <Box>
-            <YearDropdownSelect value={year} onChange={handleDropdownChange} />
-          </Box>
-          <Button
-            className="border-[#351F05] px-3 py-2 font-medium text-[#351F05] text-xs"
-            variant={"outline"}
-            onClick={() => setShowAnalysisHistory(!showAnalysisHistory)}
-          >
-            Analysis History
-          </Button>
+          <div className="flex flex-col md:flex-row justify-between gap-4">
+            <Box>
+              <YearDropdownSelect
+                value={year}
+                onChange={handleDropdownChange}
+              />
+            </Box>
+            <Button
+              className="border-[#351F05] px-3 py-2 font-medium text-[#351F05] text-xs"
+              variant={"outline"}
+              onClick={() => setShowAnalysisHistory(!showAnalysisHistory)}
+            >
+              Analysis History
+            </Button>
+          </div>
         </Box>
+        <Box className="flex lg:flex md:gap-4 gap-4 flex-col lg:flex-row md:p-4 p-2">
+          <Box className="w-full">
+            <div className="bg-[#EBE9E6] text-[#6B7280] border-b border-[#6B7280] py-4 rounded-tr-lg text-center rounded-lt-lg uppercase font-semibold text-xs grid grid-cols-3">
+              <h6></h6>
+              <h6>Historical Data</h6>
+              <h6>My Assumptions</h6>
+            </div>
+            <div className="w-full">
+              <TableComponentNew<DataType>
+                tableData={DataSourceAnalyzer(getStockAnalysisStatData)}
+                cellRenderers={cellRenderers}
+                columnOrder={columnOrder}
+                columnLabels={columnLabels}
+                className="!text-[#6B7280] text-sm font-normal"
+              />
+            </div>
+            <Box
+              className="flex md:flex-row flex-col gap-4 justify-between"
+              alignItems={"center"}
+              mb={8}
+              mt={4}
+              gap={3}
+            >
+              <div className=" px-3 py-3 font-medium text-[#111928] text-base flex gap-2">
+                Current Price:
+                <p className="font-bold ">US${getStockInfoData[0]?.price}</p>
+              </div>
+              <Button
+                className="bg-[#291804] text-white px-3 py-3 font-medium text-base"
+                variant={"secondary"}
+                onClick={RunAnalysis}
+              >
+                Run Analysis
+              </Button>
+              {/* <Button
+                className="border-[#351F05] px-3 py-3 font-medium text-[#351F05] text-base"
+                variant={"outline"}
+              >
+                Save Analysis
+              </Button> */}
+            </Box>
+          </Box>
+          <Box className="p-4 rounded-[6px] bg-white flex gap-4 lg:max-w-[400px] border-2 border-[#E5E7EB] mx-2 h-full">
+            {/* <CautionIcon /> */}
+            <Box className="text-[#3A2206] flex-1">
+              <Text className="font-bold text-base mb-1">Disclaimer:</Text>
 
-        <TableComponent<DataType>
-          tableData={DataSourceAnalyzer(getStockAnalysisStatData)}
-          cellRenderers={cellRenderers}
-          columnOrder={columnOrder}
-          columnLabels={columnLabels}
-        />
+              <Text className="font-normal text-sm">
+                Everything Money (including Paul, Mo, and any other person
+                including, but not limited to, other staff members, guests,
+                personalities, etc.) is not an investment adviser, and it is not
+                registered as such with the U.S. Securities & Exchange
+                Commission or any other state or federal authority under the
+                Investment Advisers Act of 1940 or any other law. The results
+                generated by the Stock Analyzer Tool are for informational and
+                educational purposes only and are not, and should not be
+                considered, investment advice or a recommendation to buy, sell,
+                or hold a particular security, make a particular investment, or
+                follow a particular investing strategy.
+              </Text>
+            </Box>
+          </Box>
+        </Box>
       </Box>
-      <Box display="flex" alignItems={"center"} mb={8} mt={4} gap={3}>
-        <Button
-          className="bg-white px-3 py-3 font-medium text-[#111928]] text-base"
-          variant={"secondary"}
-          asChild
-        >
-          Current Price:
-          <p className="font-bold ">US${getStockInfoData[0]?.price}</p>
-        </Button>
-        <Button
-          className="bg-[#291804] text-white px-3 py-3 font-medium text-base me-auto"
-          variant={"secondary"}
-          onClick={RunAnalysis}
-        >
-          Run Analysis
-        </Button>
-        <Button
-          className="border-[#351F05] px-3 py-3 font-medium text-[#351F05] text-base"
-          variant={"outline"}
-        >
-          Save Analysis
-        </Button>
-      </Box>
+
       {showAnalysisResult && (
         <Box className="my-5 bg-white rounded-lg">
           <Box
@@ -400,7 +486,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
             </Text>
           </Box>
 
-          <TableComponent<DataTypes>
+          <TableComponent2<DataTypes>
             tableData={DataSourceAnalyzerResult(predictStockData?.result)}
             cellRenderers={cellRunRenderer}
             columnOrder={columnRunOrder}
@@ -408,25 +494,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           />
         </Box>
       )}
-      <Box className="p-4 rounded-[6px] bg-white flex gap-4">
-        <CautionIcon />
-        <Box className="text-[#3A2206] flex-1">
-          <Text className="font-bold text-base mb-1">Disclaimer:</Text>
 
-          <Text className="font-normal text-sm">
-            Everything Money (including Paul, Mo, and any other person
-            including, but not limited to, other staff members, guests,
-            personalities, etc.) is not an investment adviser, and it is not
-            registered as such with the U.S. Securities & Exchange Commission or
-            any other state or federal authority under the Investment Advisers
-            Act of 1940 or any other law. The results generated by the Stock
-            Analyzer Tool are for informational and educational purposes only
-            and are not, and should not be considered, investment advice or a
-            recommendation to buy, sell, or hold a particular security, make a
-            particular investment, or follow a particular investing strategy.
-          </Text>
-        </Box>
-      </Box>
       <Dialog
         open={showAnalysisHistory}
         onOpenChange={() => setShowAnalysisHistory(!showAnalysisHistory)}

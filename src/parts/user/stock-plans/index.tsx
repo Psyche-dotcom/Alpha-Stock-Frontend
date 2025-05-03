@@ -68,10 +68,13 @@ const Plans = () => {
   };
   return (
     <>
-      <Box mt={8}>
+      <Box mt={8} className="max-w-[1440px] mx-auto">
         <div className="mt-10">
           <Box>
-            <Grid gap={3} gridTemplateColumns={"repeat(4, 1fr)"}>
+            <Grid
+              gap={3}
+              className="xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2"
+            >
               {getSubscriptionsIsLoading ? (
                 <>
                   {Array.from({ length: 4 }).map((_, index) => (

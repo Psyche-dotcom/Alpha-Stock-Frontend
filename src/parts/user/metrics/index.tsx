@@ -255,14 +255,18 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                   >
                     <Text
                       fontWeight={500}
-                      fontSize={16}
+                      fontSize={{ base: 12, sm: 16 }}
                       color="#111928"
                       display="inline-flex"
                       alignItems={"center"}
                     >
                       {key.toUpperCase()} <InformationIcon />
                     </Text>
-                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                    <Text
+                      fontWeight={700}
+                      fontSize={{ base: "12px", sm: "16px" }}
+                      color="#111928"
+                    >
                       {/* @ts-ignore */}
                       {value}
                     </Text>
@@ -270,103 +274,127 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                 ))
             : null}
         </Box>
-        <Box borderRadius="12px" flex={1} bg={"#fff"} mb={4}>
-          {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
-            : getMetricsData?.metricThird
-            ? Object?.entries(getMetricsData?.metricThird)?.map(
-                ([key, value], index: number) => (
-                  <Box
-                    p={4}
-                    border={"1px solid #E5E7EB"}
-                    display="flex"
-                    justifyContent={"space-between"}
-                    alignItems={"center"}
-                    key={index}
-                  >
-                    <Text
-                      fontWeight={500}
-                      fontSize={16}
-                      color="#111928"
-                      display="inline-flex"
+        <Box flexDir={"column"} gap={4} mt={{ base: 4, md: 8 }} flex={1}>
+          <Box
+            borderRadius="12px"
+            flex={1}
+            bg={"#fff"}
+            mb={4}
+            height={"fit-content"}
+          >
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricThird
+              ? Object?.entries(getMetricsData?.metricThird)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={4}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
                       alignItems={"center"}
+                      key={index}
                     >
-                      {key.toUpperCase()} <InformationIcon />
-                    </Text>
-                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                      {/* @ts-ignore */}
-                      {value}
-                    </Text>
-                  </Box>
+                      <Text
+                        fontWeight={500}
+                        fontSize={{ base: 12, sm: 16 }}
+                        color="#111928"
+                        display="inline-flex"
+                        alignItems={"center"}
+                      >
+                        {key.toUpperCase()} <InformationIcon />
+                      </Text>
+                      <Text
+                        fontWeight={700}
+                        fontSize={{ base: "12px", sm: "16px" }}
+                        color="#111928"
+                      >
+                        {/* @ts-ignore */}
+                        {value}
+                      </Text>
+                    </Box>
+                  )
                 )
-              )
-            : null}
-        </Box>
-      </Box>
-      <Box display={{ md: "flex" }} gap={4} mt={{ base: 4, md: 8 }}>
-        <Box borderRadius="12px" bg={"#fff"} flex={1} mb={{ base: 2, md: 4 }}>
-          {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
-            : getMetricsData?.metricSecond
-            ? Object?.entries(getMetricsData?.metricSecond)?.map(
-                ([key, value], index: number) => (
-                  <Box
-                    p={4}
-                    border={"1px solid #E5E7EB"}
-                    display="flex"
-                    justifyContent={"space-between"}
-                    alignItems={"center"}
-                    key={index}
-                  >
-                    <Text
-                      fontWeight={500}
-                      fontSize={16}
-                      color="#111928"
-                      display="inline-flex"
+              : null}
+          </Box>
+          <Box borderRadius="12px" bg={"#fff"} flex={1} mb={{ base: 2, md: 4 }}>
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricSecond
+              ? Object?.entries(getMetricsData?.metricSecond)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={4}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
                       alignItems={"center"}
+                      key={index}
                     >
-                      {key.toUpperCase()} <InformationIcon />
-                    </Text>
-                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                      {/* @ts-ignore */}
-                      {value}
-                    </Text>
-                  </Box>
+                      <Text
+                        fontWeight={500}
+                        fontSize={{ base: 12, sm: 16 }}
+                        color="#111928"
+                        display="inline-flex"
+                        alignItems={"center"}
+                      >
+                        {key.toUpperCase()} <InformationIcon />
+                      </Text>
+                      <Text
+                        fontWeight={700}
+                        fontSize={{ base: "12px", sm: "16px" }}
+                        color="#111928"
+                      >
+                        {/* @ts-ignore */}
+                        {value}
+                      </Text>
+                    </Box>
+                  )
                 )
-              )
-            : null}
-        </Box>
-        <Box borderRadius="12px" bg={"#fff"} flex={1}>
-          {getMetricsIsLoading
-            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
-            : getMetricsData?.metricFirst
-            ? Object?.entries(getMetricsData?.metricFirst)?.map(
-                ([key, value], index: number) => (
-                  <Box
-                    p={4}
-                    border={"1px solid #E5E7EB"}
-                    display="flex"
-                    justifyContent={"space-between"}
-                    alignItems={"center"}
-                    key={index}
-                  >
-                    <Text
-                      fontWeight={500}
-                      fontSize={16}
-                      color="#111928"
-                      display="inline-flex"
+              : null}
+          </Box>
+          <Box borderRadius="12px" bg={"#fff"} flex={1}>
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricFirst
+              ? Object?.entries(getMetricsData?.metricFirst)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={4}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
                       alignItems={"center"}
+                      key={index}
                     >
-                      {key.toUpperCase()} <InformationIcon />
-                    </Text>
-                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                      {/* @ts-ignore */}
-                      {value}
-                    </Text>
-                  </Box>
+                      <Text
+                        fontWeight={500}
+                        fontSize={{ base: 12, sm: 16 }}
+                        color="#111928"
+                        display="inline-flex"
+                        alignItems={"center"}
+                      >
+                        {key.toUpperCase()} <InformationIcon />
+                      </Text>
+                      <Text
+                        fontWeight={700}
+                        fontSize={{ base: "12px", sm: "16px" }}
+                        color="#111928"
+                      >
+                        {/* @ts-ignore */}
+                        {value}
+                      </Text>
+                    </Box>
+                  )
                 )
-              )
-            : null}
+              : null}
+          </Box>
         </Box>
       </Box>
     </Box>

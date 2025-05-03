@@ -73,6 +73,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       setisFetchCash(true);
     }
   }, [btnFilter, period]);
+
   useEffect(() => {
     if (btnFilter == "income-statements") {
       setData(getIncomeStatementData);
@@ -272,6 +273,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         cellRenderers={cellRenderers}
         columnOrder={columnOrder}
         columnLabels={columnLabels}
+        className="text-[#111928] font-semibold"
       />
       <TableComponent<DataType>
         //@ts-ignore

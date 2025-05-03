@@ -29,6 +29,7 @@ export function TableComponent<T extends DataItem>({
   cellRenderers = {},
   columnOrder,
   columnLabels = {},
+  className,
 }: EnhancedTableProps<T>) {
   if (tableData.length === 0)
     return (
@@ -83,7 +84,7 @@ export function TableComponent<T extends DataItem>({
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody className="bg-white">
+          <TableBody className={cn("bg-white", className)}>
             {tableData.map((item, rowIndex) => (
               <TableRow
                 key={rowIndex}

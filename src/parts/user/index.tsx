@@ -41,8 +41,8 @@ const User: React.FC = () => {
     <div className="xl:flex gap-4 h-full">
       <div className="flex-1">
         <div className="flex gap-4 flex-col md:flex-row xl:flex-col w-full md:mb-8 mb-4 xl:mb-0">
-          <div className="mb-8 flex gap-4 h-ful md:h-auto flex-1">
-            <div className="flex flex-col gap-4 h-[215px]">
+          <div className="mb-8 flex sm:flex-row flex-col gap-4 h-ful md:h-auto flex-1">
+            <div className="flex flex-col sm:gap-4 gap-3 sm:h-[215px] h-auto">
               <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
                 <Link
                   href={"/user/company/aapl?tab=company-info"}
@@ -68,7 +68,7 @@ const User: React.FC = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:gap-4 gap-3">
               <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
                 <Link
                   href={"/user/company/aapl?tab=financials"}

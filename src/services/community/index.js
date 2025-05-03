@@ -87,6 +87,27 @@ export const useAddCategory = (handleSuccess) => {
     categoryAddPayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };
+export const useSaveText = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.addSavedMessage()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data || {};
+      handleSuccess(resData);
+      showSuccessAlert("Message saved successfully.");
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    messageSavedData: data?.data,
+    messageSavedError: ErrorHandler(error),
+    messageSavedIsLoading: isPending,
+    messageSavedPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
 export const useAddChannel = (handleSuccess) => {
   const { data, error, isPending, mutateAsync } = useMutateItem({
     mutationFn: (payload) => httpService.postData(payload, routes.addchannel()),

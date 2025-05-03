@@ -40,6 +40,7 @@ const Community = () => {
   const {
     setGetChannelMesaggesFilter,
     getChannelMesaggesData,
+    refetchGetChannelMesagges,
     getChannelMesaggesIsLoading,
   } = useGetChannelMessages({ enabled: true });
   console.log("channel", selectedChannel);
@@ -110,16 +111,14 @@ const Community = () => {
     const startSignalR = async () => {
       try {
         await connection.start();
-        console.log("Connected to SignalR hub.");
+
         await connection.invoke("JoinMultipleChannels", channelRoomIds);
-        console.log("Joined channels:", channelRoomIds);
 
         // Register handler once
         connection.off("ReceiveChannelMessage"); // Prevent duplicate handlers
         connection.on("ReceiveChannelMessage", (message) => {
           console.log("Received message:", message);
-          console.log("selectedChannel ref:", selectedChannelRef.current);
-          console.log("message.roomId:", message.roomId);
+
           if (message.roomId === selectedChannelRef.current) {
             const newComment = mapApiToCommentSignalR(message);
             console.log("New comment:", newComment);
@@ -166,7 +165,12 @@ const Community = () => {
           // marginLeft={{ base: "16px", md: "280px", lg: "349px" }}
           justifySelf="end"
         >
-          <CommunityMain data={communityList} funSend={sendMessage} isLoading={getChannelMesaggesIsLoading}/>
+          <CommunityMain
+            data={communityList}
+            funSend={sendMessage}
+            refreshChannelMessage={refetchGetChannelMesagges}
+            isLoading={getChannelMesaggesIsLoading}
+          />
         </Box>
 
         <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>

@@ -11,7 +11,7 @@ export interface IComments {
   commentDate: string;
   commentId?: string;
   isLiked?: boolean;
-  isDownvoted?: boolean;
+  IsUnliked?: boolean;
   isSaved?: boolean;
   likeCount?: number;
   name?: string;

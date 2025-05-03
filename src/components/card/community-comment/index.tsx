@@ -29,14 +29,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/utils";
+import { useSaveText } from "@/services/community";
 interface ICommentProps {
   comment: IComments;
   showUpload?: boolean;
+  refreshChannelMessage?: any;
 }
 
 const CommunityCommentCard: React.FC<ICommentProps> = ({
   comment,
   showUpload = true,
+  refreshChannelMessage,
 }) => {
   const [commentCount, setCommentCount] = useState<number>(
     Number(comment.likeCount || 0)
@@ -47,7 +50,7 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
   );
 
   const [commentDownvoted, setCommentDownvoted] = useState<boolean>(
-    comment?.isDownvoted || false
+    comment?.IsUnliked || false
   );
 
   const [commentSaved, setCommentSaved] = useState<boolean>(
@@ -58,7 +61,10 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
   const formSchema = z.object({
     reply: z.string(),
   });
-
+  const { messageSavedData, messageSavedIsLoading, messageSavedPayload } =
+    useSaveText((res: { statusCode: number; result: any }) => {
+      refreshChannelMessage();
+    });
   type FormSchemaType = z.infer<typeof formSchema>;
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
@@ -189,17 +195,26 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
                 {commentDownvoted ? "UnDownvote" : " Downvote"}
               </Text>
               {commentDownvoted ? (
-                <Box color={comment?.isDownvoted ? "#351F05" : ""}>
+                <Box color={comment?.IsUnliked ? "#351F05" : ""}>
                   <DownvoteFilledIcon />
                 </Box>
               ) : (
-                <Box color={comment?.isDownvoted ? "#351F05" : ""}>
+                <Box color={comment?.IsUnliked ? "#351F05" : ""}>
                   <DownvoteIcon />
                 </Box>
               )}
             </Flex>
           )}
-          <Flex alignItems={"center"} gap="4px" cursor={"pointer"}>
+          <Flex
+            alignItems={"center"}
+            gap="4px"
+            cursor={"pointer"}
+            onClick={() => {
+              messageSavedPayload({
+                messageId: comment?.commentId,
+              });
+            }}
+          >
             <Text
               fontWeight={500}
               fontSize={{ base: 12, sm: 14 }}

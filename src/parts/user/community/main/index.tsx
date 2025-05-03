@@ -30,17 +30,25 @@ import { XIcon } from "lucide-react";
 interface iProps {
   data: any;
   funSend: (message: string, messageType: string) => void;
+  refreshChannelMessage: any;
   isLoading?: boolean;
 }
 
-const CommunityMain: React.FC<iProps> = ({ data, funSend, isLoading }) => {
+const CommunityMain: React.FC<iProps> = ({
+  data,
+  funSend,
+  isLoading,
+  refreshChannelMessage,
+}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+
   const [previewURL, setPreviewURL] = useState<string | null>(null);
 
   const handleEmojiClick = (emojiData: EmojiClickData) => {
-    setSelectedEmoji(emojiData.emoji);
+    const currentMessage = form.getValues("message");
+    const newMessage = currentMessage + emojiData.emoji;
+    form.setValue("message", newMessage);
   };
 
   const removeFile = () => {
@@ -78,6 +86,7 @@ const CommunityMain: React.FC<iProps> = ({ data, funSend, isLoading }) => {
     funSend(values.message, "Text");
     reset();
   }
+
   return (
     <Box
       borderRadius="8px"
@@ -110,6 +119,7 @@ const CommunityMain: React.FC<iProps> = ({ data, funSend, isLoading }) => {
               <CommunityCommentCard
                 comment={comment}
                 key={index}
+                refreshChannelMessage={refreshChannelMessage}
                 showUpload={true}
               />
             ))}

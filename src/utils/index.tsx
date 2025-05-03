@@ -5,6 +5,10 @@ export interface CommentData {
   commentDate: string;
   userImgUrl: string;
   name: string;
+  isLiked: boolean;
+  IsUnliked: boolean;
+  isSaved: boolean;
+  messageType: string;
 }
 export function capitalizeFirstLetter(letter: string): string {
   return letter.charAt(0).toUpperCase() + letter.slice(1);
@@ -95,10 +99,13 @@ export const mapApiToComment = (apiData: any): CommentData => {
     }),
     userImgUrl: apiData.sentByImgUrl,
     name: apiData.senderName,
+    isLiked: apiData.isLiked,
+    IsUnliked: apiData.isUnLiked,
+    isSaved: apiData.isSaved,
+    messageType: apiData.messageType,
   };
 };
 export const mapApiToCommentSignalR = (apiData: any): CommentData => {
-  console.log("apiData SIGNAL R", apiData);
   return {
     commentId: apiData.id,
     comment: apiData.message,
@@ -109,6 +116,10 @@ export const mapApiToCommentSignalR = (apiData: any): CommentData => {
     }),
     userImgUrl: apiData.sentByImgUrl,
     name: apiData.senderName,
+    isLiked: apiData.isLiked,
+    IsUnliked: apiData.isUnLiked,
+    isSaved: apiData.isSaved,
+    messageType: apiData.messageType,
   };
 };
 export function getFontWeightByTitle(title?: string): number | undefined {

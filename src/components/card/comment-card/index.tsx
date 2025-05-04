@@ -77,12 +77,13 @@ const CommentCard: React.FC<ICommentProps> = ({
     showSuccessAlert("Reply successfully submitted");
   });
 
-  const { likeUnlikeData, likeUnlikePayload, likeUnlikeIsLoading } =
-    useCommentLIkeUnlike((res: any) => {
+  const { likeUnlikePayload, likeUnlikeIsLoading } = useCommentLIkeUnlike(
+    (res: any) => {
       showSuccessAlert(res);
       setCommentLiked((prev) => !prev);
       setCommentCount((prev) => (commentLiked ? prev - 1 : prev + 1));
-    });
+    }
+  );
 
   const formSchema = z.object({
     reply: z.string(),

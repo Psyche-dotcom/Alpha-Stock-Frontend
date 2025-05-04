@@ -15,6 +15,8 @@ interface UserSessionContextType {
   setIsOpen: (value: boolean) => void;
   redirectModalOpen: boolean;
   setRedirectModalOpen: (value: boolean) => void;
+  showSavedMessages: string;
+  setShowSavedMessages: (value: string) => void;
 }
 
 const UserSessionContext = React.createContext<UserSessionContextType | null>(
@@ -31,6 +33,8 @@ export function UserSessionProvider({ children }: Props) {
   const { profileData, isProfileLoading, profileError } = useUserSessionData();
   const [selectedChannel, setSelectedChannel] = React.useState<string>("");
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [showSavedMessages, setShowSavedMessages] =
+    React.useState<string>("community");
   const [redirectModalOpen, setRedirectModalOpen] =
     React.useState<boolean>(false);
 
@@ -66,6 +70,8 @@ export function UserSessionProvider({ children }: Props) {
         setIsOpen,
         redirectModalOpen,
         setRedirectModalOpen,
+        showSavedMessages,
+        setShowSavedMessages,
       }}
     >
       {children}

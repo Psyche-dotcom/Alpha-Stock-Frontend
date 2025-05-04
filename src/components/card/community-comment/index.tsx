@@ -6,7 +6,6 @@ import {
   DownvoteFilledIcon,
   DownvoteIcon,
   SavedIcon,
-  ThreeDotsIcon,
   ThumbsIcon,
   ThumbsOutlineIcon,
   UnSavedIcon,
@@ -22,14 +21,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FileUploadIcon, SendIcon, SmileyIcon } from "@/utils/icons";
-
 import Image from "next/image";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { formatDate } from "@/utils";
-import { useSaveText } from "@/services/community";
+import {
+  useCommunityDownvoteUnDownvote,
+  useCommunityLIkeUnlike,
+  useSaveText,
+} from "@/services/community";
+import { showSuccessAlert } from "@/utils/alert";
 interface ICommentProps {
   comment: IComments;
   showUpload?: boolean;
@@ -56,16 +59,33 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
   const [commentSaved, setCommentSaved] = useState<boolean>(
     comment?.isSaved || false
   );
+  const { likeUnlikePayload, likeUnlikeIsLoading } = useCommunityLIkeUnlike(
+    (res: any) => {
+      showSuccessAlert(res);
+      setCommentLiked((prev) => !prev);
+    }
+  );
+
+  const { downvoteUndownvoteIsLoading, downvoteUndownvotePayload } =
+    useCommunityDownvoteUnDownvote((res: any) => {
+      showSuccessAlert(res);
+      setCommentDownvoted((prev) => !prev);
+    });
 
   const [showReply, setShowReply] = useState<boolean>(false);
   const formSchema = z.object({
     reply: z.string(),
   });
-  const { messageSavedData, messageSavedIsLoading, messageSavedPayload } =
-    useSaveText((res: { statusCode: number; result: any }) => {
+  const { messageSavedIsLoading, messageSavedPayload } = useSaveText(
+    (res: any) => {
+      showSuccessAlert(res || "");
+      setCommentSaved((prev) => !prev);
       refreshChannelMessage();
-    });
+    }
+  );
+
   type FormSchemaType = z.infer<typeof formSchema>;
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -92,6 +112,26 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
       commentDate: "",
     },
   ];
+
+  const handleLikeToggle = () => {
+    if (likeUnlikeIsLoading) {
+      return;
+    }
+    const payload = {
+      messageId: comment?.commentId,
+    };
+    likeUnlikePayload(payload);
+  };
+
+  const handleDownvoteToggle = () => {
+    if (downvoteUndownvoteIsLoading) {
+      return;
+    }
+    const payload = {
+      messageId: comment?.commentId,
+    };
+    downvoteUndownvotePayload(payload);
+  };
 
   return (
     <Box
@@ -162,7 +202,7 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
               alignItems={"center"}
               gap="4px"
               cursor={"pointer"}
-              // onClick={handleReaction}
+              onClick={handleLikeToggle}
             >
               <Text
                 fontWeight={500}
@@ -176,7 +216,7 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
                   color={comment?.isLiked ? "#351F05" : ""}
                   className="flex gap-1 items-center"
                 >
-                  <ThumbsIcon /> {commentCount}
+                  <ThumbsIcon />
                 </Box>
               ) : (
                 <Box color={comment?.isLiked ? "#351F05" : ""}>
@@ -186,7 +226,12 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
             </Flex>
           )}
           {!commentLiked && (
-            <Flex alignItems={"center"} gap="4px" cursor={"pointer"}>
+            <Flex
+              alignItems={"center"}
+              gap="4px"
+              cursor={"pointer"}
+              onClick={handleDownvoteToggle}
+            >
               <Text
                 fontWeight={500}
                 fontSize={{ base: 12, sm: 14 }}
@@ -210,6 +255,9 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
             gap="4px"
             cursor={"pointer"}
             onClick={() => {
+              if (messageSavedIsLoading) {
+                return;
+              }
               messageSavedPayload({
                 messageId: comment?.commentId,
               });

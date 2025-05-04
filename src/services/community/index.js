@@ -87,14 +87,14 @@ export const useAddCategory = (handleSuccess) => {
     categoryAddPayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };
+
 export const useSaveText = (handleSuccess) => {
   const { data, error, isPending, mutateAsync } = useMutateItem({
     mutationFn: (payload) =>
       httpService.postData(payload, routes.addSavedMessage()),
     onSuccess: (requestParams) => {
-      const resData = requestParams?.data || {};
+      const resData = requestParams?.data?.result || "";
       handleSuccess(resData);
-      showSuccessAlert("Message saved successfully.");
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);
@@ -126,5 +126,66 @@ export const useAddChannel = (handleSuccess) => {
     channelAddError: ErrorHandler(error),
     channelAddIsLoading: isPending,
     channelAddPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useCommunityLIkeUnlike = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.communityCommentLikeUnlike()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result;
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    likeUnlikeData: data,
+    likeUnlikeError: ErrorHandler(error),
+    likeUnlikeIsLoading: isPending,
+    likeUnlikePayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useCommunityDownvoteUnDownvote = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(
+        payload,
+        routes.communityCommentDownvoteUnDownvote()
+      ),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result;
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    downvoteUndownvoteData: data,
+    downvoteUndownvoteError: ErrorHandler(error),
+    downvoteUndownvoteIsLoading: isPending,
+    downvoteUndownvotePayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+
+export const useGetSavedMessages = ({ enabled }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["savedMesssages"],
+    queryFn: () => httpService.getData(routes.savedMessages()),
+    enabled,
+    retry: 1,
+  });
+  return {
+    getSavedMessagesIsLoading: isLoading,
+    getSavedMessagesData: data?.data?.result || [],
+    getSavedMessagesError: ErrorHandler(error),
+    refetchSavedMessages: refetch,
+    setSavedMessagesFilter: setFilter,
   };
 };

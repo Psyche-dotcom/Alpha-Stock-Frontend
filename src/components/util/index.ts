@@ -1245,13 +1245,6 @@ export const DataSourceAnalyzerResult = (Data: any) => {
       high: Data?.discountedFreeCashFlowValue.high,
       id: 2,
     },
-    {
-      feature: "Current Price Return",
-      low: 117.83,
-      medium: 117.83,
-      high: 117.83,
-      id: 3,
-    },
   ];
   return dataSources;
 };
@@ -1338,3 +1331,12 @@ export function formatDateToHumanReadable(
   const date = new Date(isoDateString);
   return date.toLocaleDateString(locale, options);
 }
+export const excludedKeys = [
+  "description",
+  "isFund",
+  "isAdr",
+  "isActivelyTrading",
+  "isEtf",
+  "defaultImage",
+  "image",
+];

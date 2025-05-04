@@ -48,10 +48,10 @@ export const searchTab = [
     title: "Financials",
     value: "financials",
   },
-  // {
-  //   title: "Fundamentals",
-  //   value: "fundamentals",
-  // },
+  {
+    title: "Fundamentals",
+    value: "fundamentals",
+  },
   {
     title: "Stock Analyser",
     value: "stock-analyser",

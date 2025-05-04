@@ -1,15 +1,35 @@
 "use client";
 import { ButtonIcon } from "@/components/button/button-icon";
 import FundamentalsCard from "@/components/card/fundamentals-card";
+import MetricsSkeleton from "@/components/card/skeleton/MetricsSkeleton";
+import { excludedKeys, formatMoneyNumber2 } from "@/components/util";
 import { FundamentalsList, metricsList } from "@/constants";
 import { IButtonFilter2 } from "@/interface/button-filter";
 import { IFundamentalCard } from "@/interface/fundamental-card";
+import { IStockComponent } from "@/interface/stock";
+import { useGetMetrics, useGetStockInfo } from "@/services/stock";
+import { getStockLabel } from "@/utils";
 import { InformationIcon } from "@/utils/icons";
 import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Fundamentals: React.FC = () => {
+const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<string>("my-pillars");
+  const {
+    getStockInfoData,
+    getStockInfoFilter,
+    getStockInfoIsLoading,
+    setGetStockInfoFilter,
+    getStockInfoError,
+  } = useGetStockInfo({ enabled: true });
+
+  const {
+    getMetricsData,
+    getMetricsFilter,
+    getMetricsIsLoading,
+    setMetricsFilter,
+    getMetricsError,
+  } = useGetMetrics({ enabled: true });
   const filterBtn = [
     { text: "My Pillars", value: "my-pillars" },
     {
@@ -17,6 +37,11 @@ const Fundamentals: React.FC = () => {
       value: "alpha-pillars",
     },
   ];
+  useEffect(() => {
+    setGetStockInfoFilter({ symbol: symbol });
+
+    setMetricsFilter({ symbol: symbol, period: "annual" });
+  }, []);
   return (
     <Box>
       <Box bg={"#fff"} p={4} borderRadius={"12px"} mb={4}>
@@ -39,7 +64,7 @@ const Fundamentals: React.FC = () => {
       <Grid
         gap={{ base: 2, md: 4 }}
         mb={{ base: 2, md: 4, xl: 8 }}
-        gridTemplateColumns={{ md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
+        gridTemplateColumns={{ md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
       >
         {FundamentalsList.map(
           (fundamental: IFundamentalCard, index: number) => (
@@ -49,109 +74,161 @@ const Fundamentals: React.FC = () => {
           )
         )}
       </Grid>
-      <Box display={{ md: "flex" }} gap={4}>
-        <Box borderRadius="12px" flex={1} bg={"#fff"} mb={{ base: 2, md: 4 }}>
-          {metricsList.map((metrics, index: number) => (
-            <Box
-              p={4}
-              border={"1px solid #E5E7EB"}
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              key={index}
-            >
-              <Text
-                fontWeight={500}
-                fontSize={16}
-                color="#111928"
-                display="inline-flex"
-                alignItems={"center"}
-              >
-                {metrics?.title} <InformationIcon />
-              </Text>
-              <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                {metrics?.text}
-              </Text>
-            </Box>
-          ))}
+      <Box
+        className="grid xl:grid-cols-3 md:grid-cols-2 h-fit"
+        gap={{ base: 3, lg: 4 }}
+        mt={{ base: 4, md: 8 }}
+      >
+        <Box
+          borderRadius="12px"
+          bg={"#fff"}
+          mb={{ base: 2, md: 4 }}
+          className="w-full h-fit"
+        >
+          {getStockInfoIsLoading
+            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
+            : getStockInfoData?.length > 0
+            ? Object?.entries(getStockInfoData[0])
+                ?.filter(([key]) => !excludedKeys.includes(key))
+                ?.slice(0, 12) // Only slice the first 12 entries
+                ?.map(([key, value], index: number) => (
+                  <Box
+                    p={2}
+                    border={"1px solid #E5E7EB"}
+                    display="flex"
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    key={index}
+                  >
+                    <Text
+                      fontWeight={500}
+                      fontSize={{ base: 12, sm: 16 }}
+                      color="#111928"
+                      display="flex"
+                      gap={"2px"}
+                      alignItems={"center"}
+                    >
+                      {getStockLabel(key)}
+                      <InformationIcon />
+                    </Text>
+                    <Text
+                      fontWeight={700}
+                      fontSize={{ base: "12px", sm: "16px" }}
+                      color="#111928"
+                    >
+                      {/* @ts-ignore */}
+                      {formatMoneyNumber2(value)}
+                    </Text>
+                  </Box>
+                ))
+            : null}
         </Box>
-        <Box borderRadius="12px" bg={"#fff"} mb={4} flex={1}>
-          {metricsList.map((metrics, index: number) => (
-            <Box
-              p={4}
-              border={"1px solid #E5E7EB"}
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              key={index}
-            >
-              <Text
-                fontWeight={500}
-                fontSize={16}
-                color="#111928"
-                display="inline-flex"
-                alignItems={"center"}
-              >
-                {metrics?.title} <InformationIcon />
-              </Text>
-              <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                {metrics?.text}
-              </Text>
-            </Box>
-          ))}
+        <Box borderRadius="12px" bg={"#fff"} mb={4} className="w-full h-fit">
+          {getMetricsIsLoading
+            ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
+            : getMetricsData?.metricThird
+            ? Object?.entries(getMetricsData?.metricThird)?.map(
+                ([key, value], index: number) => (
+                  <Box
+                    p={2}
+                    border={"1px solid #E5E7EB"}
+                    display="flex"
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    key={index}
+                  >
+                    <Text
+                      fontWeight={500}
+                      fontSize={14}
+                      color="#111928"
+                      display="flex"
+                      gap={"2px"}
+                      alignItems={"center"}
+                      key={index}
+                    >
+                      {getStockLabel(key)} <InformationIcon />
+                    </Text>
+                    <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                      {/* @ts-ignore */}
+                      {formatMoneyNumber2(value)}
+                    </Text>
+                  </Box>
+                )
+              )
+            : null}
         </Box>
-      </Box>
-      <Box gap={4} display={{ md: "flex" }}>
-        <Box borderRadius="12px" flex={1} bg={"#fff"} mb={{ base: 2, md: 4 }}>
-          {metricsList.map((metrics, index: number) => (
-            <Box
-              p={4}
-              border={"1px solid #E5E7EB"}
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              key={index}
-            >
-              <Text
-                fontWeight={500}
-                fontSize={16}
-                color="#111928"
-                display="inline-flex"
-                alignItems={"center"}
-              >
-                {metrics?.title} <InformationIcon />
-              </Text>
-              <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                {metrics?.text}
-              </Text>
-            </Box>
-          ))}
-        </Box>
-        <Box borderRadius="12px" bg={"#fff"} mb={4} flex={1}>
-          {metricsList.map((metrics, index: number) => (
-            <Box
-              p={4}
-              border={"1px solid #E5E7EB"}
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              key={index}
-            >
-              <Text
-                fontWeight={500}
-                fontSize={16}
-                color="#111928"
-                display="inline-flex"
-                alignItems={"center"}
-              >
-                {metrics?.title} <InformationIcon />
-              </Text>
-              <Text fontWeight={700} fontSize={"16px"} color="#111928">
-                {metrics?.text}
-              </Text>
-            </Box>
-          ))}
-        </Box>
+        <div className="w-full h-fit hidden xl:block">
+          <Box borderRadius="12px" bg={"#fff"} mb={{ base: 2, md: 4 }}>
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricSecond
+              ? Object?.entries(getMetricsData?.metricSecond)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={2}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      key={index}
+                    >
+                      <Text
+                        fontWeight={500}
+                        fontSize={14}
+                        color="#111928"
+                        display="flex"
+                        gap={"2px"}
+                        alignItems={"center"}
+                      >
+                        {getStockLabel(key)} <InformationIcon />
+                      </Text>
+                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                        {/* @ts-ignore */}
+                        {formatMoneyNumber2(value)}
+                      </Text>
+                    </Box>
+                  )
+                )
+              : null}
+          </Box>
+          <Box borderRadius="12px" bg={"#fff"}>
+            {getMetricsIsLoading
+              ? [...Array(10)].map((_, index) => (
+                  <MetricsSkeleton key={index} />
+                ))
+              : getMetricsData?.metricFirst
+              ? Object?.entries(getMetricsData?.metricFirst)?.map(
+                  ([key, value], index: number) => (
+                    <Box
+                      p={2}
+                      border={"1px solid #E5E7EB"}
+                      display="flex"
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      key={index}
+                    >
+                      <Text
+                        fontWeight={500}
+                        fontSize={14}
+                        color="#111928"
+                        display="flex"
+                        gap={"2px"}
+                        alignItems={"center"}
+                      >
+                        {getStockLabel(key)} <InformationIcon />
+                      </Text>
+                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                        {/* @ts-ignore */}
+                        {formatMoneyNumber2(value)}
+                      </Text>
+                    </Box>
+                  )
+                )
+              : null}
+          </Box>
+        </div>
       </Box>
     </Box>
   );

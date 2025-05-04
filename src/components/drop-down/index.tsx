@@ -18,7 +18,12 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
   mb,
   count,
 }) => {
-  const { setIsOpen, setSelectedChannel, selectedChannel } = useUserSession();
+  const {
+    setIsOpen,
+    setSelectedChannel,
+    selectedChannel,
+    setShowSavedMessages,
+  } = useUserSession();
   const [collapseCommunity, setCollapseCommunity] = useState<boolean>(false);
 
   return (
@@ -47,7 +52,13 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
         {collapseCommunity ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </Box>
       {collapseCommunity && (
-        <Box bg="white" boxShadow="lg" borderRadius="8px">
+        <Box
+          bg="white"
+          boxShadow="lg"
+          borderRadius="4px"
+          borderTop="2px"
+          borderColor={"#111928"}
+        >
           {itemList?.map((item: any, index: number) => (
             <Box
               px={8}
@@ -56,6 +67,7 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
               justifyContent={"space-between"}
               key={index}
               onClick={() => {
+                setShowSavedMessages("community");
                 setSelectedChannel(item?.roomid);
                 setIsOpen(false);
               }}

@@ -1,7 +1,8 @@
 import { useUserSession } from "@/app/context/user-context";
 import DropdownComponent from "@/components/drop-down";
 
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
+import { BookmarkCheck } from "lucide-react";
 import { useEffect } from "react";
 
 interface iProps {
@@ -9,7 +10,7 @@ interface iProps {
 }
 
 const CommunityLeftContent: React.FC<iProps> = ({ data }) => {
-  const { setSelectedChannel } = useUserSession();
+  const { setSelectedChannel, setShowSavedMessages } = useUserSession();
   useEffect(() => {
     const firstChannelRoomName = data.find(
       (category: any) => category.channels.length > 0
@@ -32,8 +33,27 @@ const CommunityLeftContent: React.FC<iProps> = ({ data }) => {
       zIndex={1}
       className="lg:w-[349px] md:w-[275px] w-full"
     >
+      <Box
+        bg="#ffffff"
+        color="#111928"
+        border="1px solod #E5E7EB"
+        borderRadius="8px"
+        w={"100%"}
+        display="flex"
+        gap={"5px"}
+        alignItems={"center"}
+        px={5}
+        py={4}
+        cursor={"pointer"}
+        mb={3}
+        onClick={() => setShowSavedMessages("messages")}
+      >
+        <Text fontWeight={500} fontSize="16px">
+          Saved Messages
+        </Text>
+        <BookmarkCheck size={16} />
+      </Box>
       {data?.map((category: any) => {
-        // Skip if no channels
         if (!category.channels || category.channels.length === 0) return null;
 
         const itemList = category.channels.map((channel: any) => ({
@@ -52,16 +72,6 @@ const CommunityLeftContent: React.FC<iProps> = ({ data }) => {
           />
         );
       })}
-      {/* <DropdownComponent
-        itemList={communityMenuList}
-        header="Community"
-        mb={4}
-      />
-     
-      <DropdownComponent
-        itemList={communityMenuList}
-        header="Intelligent Investors"
-      /> */}{" "}
     </Box>
   );
 };

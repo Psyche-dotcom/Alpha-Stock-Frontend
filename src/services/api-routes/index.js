@@ -71,4 +71,8 @@ export const routes = {
     "/api/community/retrieve/category/channel/messages",
   uploadPicture: () => "/api/blog/upload/picture",
   updateUserProfile: (email) => `/api/user/update_picture/${email}`,
+  communityCommentDownvoteUnDownvote: () =>
+    `/api/community/channel/message/unlike`,
+  communityCommentLikeUnlike: () => `/api/community/channel/message/like`,
+  savedMessages: () => `/api/community/channel/message/fav`,
 };

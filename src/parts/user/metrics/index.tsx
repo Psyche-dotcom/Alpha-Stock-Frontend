@@ -32,7 +32,11 @@ import CompanyStockCardSkeleton from "@/components/card/skeleton/CompanyStockCar
 import { ICompanyStockCard } from "@/interface/company-stock-card";
 import CompanyStockCard from "@/components/card/company-stock-card";
 import { IStockData } from "@/interface/stock-view";
-import { formatMoneyNumber, formatMoneyNumber2 } from "@/components/util";
+import {
+  excludedKeys,
+  formatMoneyNumber,
+  formatMoneyNumber2,
+} from "@/components/util";
 
 const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<number>(1);
@@ -66,16 +70,6 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     }
     return previousDate;
   };
-
-  const excludedKeys = [
-    "description",
-    "isFund",
-    "isAdr",
-    "isActivelyTrading",
-    "isEtf",
-    "defaultImage",
-    "image",
-  ];
 
   const formatDate = (date: Date) => date.toISOString().split("T")[0];
 

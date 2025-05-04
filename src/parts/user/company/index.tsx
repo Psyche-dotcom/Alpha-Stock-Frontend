@@ -33,8 +33,8 @@ const Company: React.FC<iProps> = ({ symbol }) => {
         return <Metrics symbol={symbol} />;
       case "financials":
         return <Financials symbol={symbol} />;
-      // case "fundamentals":
-      //   return <Fundamentals />;
+      case "fundamentals":
+        return <Fundamentals symbol={symbol} />;
       case "stock-analyser":
         return <Analyzer symbol={symbol} />;
 

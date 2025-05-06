@@ -1,15 +1,11 @@
+import {
+  ApiData,
+  CommentData,
+  FundamentalsItem,
+  IAlphaMap,
+} from "@/interface/comment";
 import { jsPDF } from "jspdf";
-export interface CommentData {
-  commentId: string;
-  comment: string;
-  commentDate: string;
-  userImgUrl: string;
-  name: string;
-  isLiked: boolean;
-  IsUnliked: boolean;
-  isSaved: boolean;
-  messageType: string;
-}
+
 export function capitalizeFirstLetter(letter: string): string {
   return letter.charAt(0).toUpperCase() + letter.slice(1);
 }
@@ -105,6 +101,7 @@ export const mapApiToComment = (apiData: any): CommentData => {
     messageType: apiData.messageType,
   };
 };
+
 export const mapApiToCommentSignalR = (apiData: any): CommentData => {
   return {
     commentId: apiData.id,
@@ -163,3 +160,138 @@ export const downloadPaymentPDF = (data: any) => {
 
   doc.save("payment-details.pdf");
 };
+
+export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
+  const formatCurrency = (numStr: string) => {
+    const num = parseFloat(numStr);
+    if (isNaN(num)) return "-";
+    if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
+    if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
+    if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
+    return `$${num.toFixed(2)}`;
+  };
+
+  const formatPercentage = (val: string) => {
+    const num = parseFloat(val);
+    return isNaN(num) ? "-" : `${num.toFixed(2)}%`;
+  };
+
+  const parseNumber = (val: string) => parseFloat(val.replace("%", ""));
+
+  const periodMap: Record<string, string> = {
+    first: "1Y",
+    fifth: "5Y",
+    ten: "10Y",
+  };
+
+  const fundamentals: FundamentalsItem[] = [];
+
+  // Add Market Cap
+  // if (apiData.marketCap) {
+  //   fundamentals.push({
+  //     header: "Market Cap",
+  //     amount: formatCurrency(apiData.marketCap),
+  //     isActive: true,
+  //   });
+  // }
+
+  // Definitions of the 8-pillar indicators
+  const rules: {
+    key: keyof ApiData;
+    period: keyof ApiData["averageShareOutstanding"];
+    condition: (val: number) => boolean;
+    label: string;
+    description: string;
+    format: "currency" | "percentage";
+  }[] = [
+    {
+      key: "netIcome",
+      period: "fifth",
+      condition: (v) => v < 10e9,
+      label: "Net Income",
+      description: "< 10B",
+      format: "currency",
+    },
+    {
+      key: "roic",
+      period: "fifth",
+      condition: (v) => v < 20,
+      label: "ROIC",
+      description: "< 20%",
+      format: "percentage",
+    },
+    {
+      key: "averageShareOutstanding",
+      period: "fifth",
+      condition: (v) => v > 1.75e9,
+      label: "Avg Share Outstanding",
+      description: "> 1.75B",
+      format: "currency",
+    },
+    {
+      key: "freeCashFlowMargin",
+      period: "fifth",
+      condition: (v) => v < 22,
+      label: "Free Cash Flow Margin",
+      description: "< 22%",
+      format: "percentage",
+    },
+    {
+      key: "revGrowth",
+      period: "fifth",
+      condition: (v) => v > 5,
+      label: "Revenue Growth",
+      description: "> 5%",
+      format: "percentage",
+    },
+    {
+      key: "pfcf",
+      period: "first",
+      condition: (v) => v < 200,
+      label: "P/FCF",
+      description: "< 200",
+      format: "currency",
+    },
+    {
+      key: "peRatio",
+      period: "first",
+      condition: (v) => v > 22,
+      label: "P/E Ratio",
+      description: "> 22",
+      format: "currency",
+    },
+    {
+      key: "profitMargin",
+      period: "fifth",
+      condition: (v) => v > 20,
+      label: "Profit Margin",
+      description: "> 20%",
+      format: "percentage",
+    },
+  ];
+
+  for (const rule of rules) {
+    const raw =
+      typeof apiData[rule.key] === "object" && apiData[rule.key] !== null
+        ? (apiData[rule.key] as Record<string, string | null>)[rule.period]
+        : null;
+    if (!raw) continue;
+
+    const valueNum = parseNumber(raw);
+    const amount =
+      rule.key == "peRatio" || rule.key == "pfcf"
+        ? raw
+        : rule.format === "currency"
+        ? formatCurrency(raw)
+        : formatPercentage(raw);
+    const isActive = rule.condition(valueNum);
+
+    fundamentals.push({
+      header: `${rule.label} (${periodMap[rule.period]}) ${rule.description}`,
+      amount,
+      isActive,
+    });
+  }
+
+  return fundamentals;
+}

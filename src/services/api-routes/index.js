@@ -42,6 +42,8 @@ export const routes = {
     `/api/stock/cash-flow?symbol=${symbol}&period=${period}`,
   stockAnalysisStatsUrl: (symbol, period) =>
     `/api/stock/stock-analyer-stats?symbol=${symbol}&period=${period}`,
+  stockAlphaStatsUrl: (symbol, period) =>
+    `/api/stock/stock-alpha-stats?symbol=${symbol}&period=${period}`,
   createSubscription: () => `/api/subscription/create`,
   stockAnalyzerUrlpredict: () => `/api/stock/stock-analyer-stats/predict`,
   addStockWishListUrl: () => `/api/stock/add-wishlist`,

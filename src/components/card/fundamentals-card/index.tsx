@@ -17,7 +17,7 @@ const FundamentalsCard: React.FC<IFundamentalProp> = ({ fundamental }) => {
         alignItems={"center"}
       >
         <Text color="#111928" fontWeight={700}>
-          ${fundamental?.amount}
+          {fundamental?.amount}
         </Text>
         <Box>{fundamental?.isActive ? <ActiveIcon /> : <InactiveIcon />}</Box>
       </Box>

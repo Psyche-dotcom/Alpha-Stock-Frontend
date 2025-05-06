@@ -1,194 +1,331 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
 import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-  Button,
-  Tag,
-  TagLabel,
-  TagCloseButton,
-  VStack,
-  HStack,
-  Text,
-} from "@chakra-ui/react";
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { ChevronDown, X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { showErrorAlert } from "@/utils/alert";
 
-interface Pillar {
-  pillerName: string;
-  comparison: string;
-  format: string;
+// Mocked API data
+const apiResponse = {
+  statusCode: 200,
+  displayMessage: "Success",
+  result: {
+    marketCap: "2987745469000.00",
+    averageShareOutstanding: {
+      first: "15343783000.00",
+      fifth: "17352119000.00",
+      ten: "23013684000.00",
+    },
+    netIcome: {
+      first: "93736000000.00",
+      fifth: "57411000000.00",
+      ten: "53394000000.00",
+    },
+    roic: {
+      first: "70.14%",
+      fifth: "59.26%",
+      ten: "44.10%",
+    },
+    revGrowth: {
+      first: "2.021994077514121%",
+      fifth: "7.332170089721002",
+      ten: "5.281703758121736",
+    },
+    profitMargin: {
+      first: "23.971255769943866%",
+      fifth: "20.913611278072235",
+      ten: "22.845773698735638",
+    },
+    freeCashFlowMargin: {
+      first: "27.83%",
+      fifth: "26.84%",
+      ten: "25.77%",
+    },
+    peRatio: {
+      first: "31.87",
+      fifth: null,
+      ten: null,
+    },
+    pfcf: {
+      first: "27.46",
+      fifth: null,
+      ten: null,
+    },
+  },
+  errorMessages: null,
+};
+
+type PillarFilter = {
+  pillarKey: string;
+  comparison: ">" | "<";
   value: string;
+  format: string;
+};
+
+type PillarOption = {
   label: string;
+  value: string;
+  format: string;
+  category: string;
+};
+
+const formatMap: Record<string, string> = {
+  marketCap: "$",
+  roic: "%",
+  revGrowth: "%",
+  profitMargin: "%",
+  freeCashFlowMargin: "%",
+};
+
+const labelMap: Record<string, string> = {
+  first: "1Yr",
+  fifth: "5Yr",
+  ten: "10Yr",
+};
+
+// 💡 Categorize based on key naming
+function getCategory(key: string): string {
+  if (key.includes("Growth")) return "Growth";
+  if (key.includes("Margin") || key.includes("profit")) return "Margins";
+  if (key.includes("Cap") || key.includes("pe") || key.includes("pfcf"))
+    return "Valuation";
+  return "Performance";
 }
 
-interface Category {
-  name: string;
-  items: Pillar[];
-}
+function generatePillarOptions(result: any): PillarOption[] {
+  const options: PillarOption[] = [];
 
-const PillarScreener = () => {
-  // Mock categories data
-  const [categories] = useState<Category[]>([
-    {
-      name: "Popular Metrics",
-      items: [
-        {
-          label: "EYrs FCF > 1.70",
-          pillerName: "eyrsFCF",
-          comparison: ">",
-          format: "",
-          value: "1.70",
-        },
-        {
-          label: "EYrs Price to FCF < 1.80",
-          pillerName: "eyrsPriceToFCF",
-          comparison: "<",
-          format: "",
-          value: "1.80",
-        },
-      ],
-    },
-    {
-      name: "Income Statement",
-      items: [
-        {
-          label: "Revenue Growth > 5%",
-          pillerName: "revGrowth",
-          comparison: ">",
-          format: "%",
-          value: "5",
-        },
-        {
-          label: "Net Income < $150M",
-          pillerName: "netIncome",
-          comparison: "<",
-          format: "$",
-          value: "150000000",
-        },
-      ],
-    },
-  ]);
-
-  const [selectedPillars, setSelectedPillars] = useState<Pillar[]>([]);
-  const [expandedCategories, setExpandedCategories] = useState<number[]>([]);
-
-  const handleCategoryToggle = (index: number) => {
-    setExpandedCategories((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-  };
-
-  const handlePillarSelect = (pillar: Pillar) => {
-    if (selectedPillars.length >= 8) return;
-    if (!selectedPillars.find((p) => p.pillerName === pillar.pillerName)) {
-      setSelectedPillars((prev) => [...prev, pillar]);
-    }
-  };
-
-  const handlePillarRemove = (pillarName: string) => {
-    setSelectedPillars((prev) =>
-      prev.filter((p) => p.pillerName !== pillarName)
-    );
-  };
-
-  const handleSubmit = async () => {
-    const payload = selectedPillars.map((pillar) => ({
-      pillerName: pillar.pillerName,
-      comparison: pillar.comparison,
-      format: pillar.format,
-      value: pillar.value,
-    }));
-
-    try {
-      // Replace with actual API call
-      const response = await fetch("/api/screener", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+  Object.entries(result).forEach(([key, val]) => {
+    if (typeof val === "object" && val !== null) {
+      Object.entries(val).forEach(([subKey, subVal]) => {
+        if (subVal !== null) {
+          const label = `${labelMap[subKey] || subKey} ${key}`.replace(
+            /([a-z])([A-Z])/g,
+            "$1 $2"
+          );
+          options.push({
+            label,
+            value: `${key} ${subKey}`,
+            format: formatMap[key] || "",
+            category: getCategory(key),
+          });
+        }
       });
-      // Handle response
-    } catch (error) {
-      console.error("Error submitting pillars:", error);
+    } else if (val !== null) {
+      options.push({
+        label: key.replace(/([a-z])([A-Z])/g, "$1 $2"),
+        value: key,
+        format: formatMap[key] || "",
+        category: getCategory(key),
+      });
     }
+  });
+
+  return options;
+}
+
+// ✅ Group options by category
+function groupPillarOptions(options: PillarOption[]) {
+  const groups: Record<string, PillarOption[]> = {};
+  options.forEach((opt) => {
+    if (!groups[opt.category]) groups[opt.category] = [];
+    groups[opt.category].push(opt);
+  });
+  return groups;
+}
+
+export default function PillarScreener() {
+  const length = 8;
+  const [selectedFilters, setSelectedFilters] = useState<PillarFilter[]>([]);
+  const [pillarOptions, setPillarOptions] = useState<PillarOption[]>([]);
+  const [groupedOptions, setGroupedOptions] = useState<
+    Record<string, PillarOption[]>
+  >({});
+
+  useEffect(() => {
+    const opts = generatePillarOptions(apiResponse.result);
+    setPillarOptions(opts);
+    setGroupedOptions(groupPillarOptions(opts));
+  }, []);
+
+  const updateFilter = (
+    pillarKey: string,
+    comparison: string,
+    inputValue: string
+  ) => {
+    const format =
+      pillarOptions.find((p) => p.value === pillarKey)?.format || "";
+
+    const updated: PillarFilter = {
+      pillarKey,
+      comparison: comparison as ">" | "<",
+      value: inputValue,
+      format,
+    };
+
+    setSelectedFilters((prev) => {
+      const exists = prev.find((f) => f.pillarKey === pillarKey);
+      if (exists) {
+        return prev.map((f) => (f.pillarKey === pillarKey ? updated : f));
+      } else {
+        return [...prev, updated];
+      }
+    });
+  };
+
+  const removeFilter = (pillarKey: string) => {
+    setSelectedFilters((prev) => prev.filter((f) => f.pillarKey !== pillarKey));
+  };
+
+  const toggleFilter = (pillarKey: string) => {
+    setSelectedFilters((prev) => {
+      const exists = prev.find((f) => f.pillarKey === pillarKey);
+      if (exists) {
+        return prev.filter((f) => f.pillarKey !== pillarKey);
+      } else {
+        const newFilter = pillarOptions.find((p) => p.value === pillarKey);
+        return newFilter
+          ? [
+              ...prev,
+              {
+                pillarKey: newFilter.value,
+                comparison: ">",
+                value: "",
+                format: newFilter.format,
+              },
+            ]
+          : prev;
+      }
+    });
+  };
+
+  const handleSearch = () => {
+    if (selectedFilters.length !== length) {
+      showErrorAlert("You should select exactly 8 filters");
+      return;
+    }
+
+    alert(JSON.stringify(selectedFilters, null, 2));
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
-      <Text fontSize="2xl" fontWeight="bold" mb={6}>
-        Pillar Screener
-      </Text>
-
-      <Accordion allowMultiple index={expandedCategories}>
-        {categories.map((category, index) => (
-          <AccordionItem key={category.name} border="none" mb={4}>
-            <AccordionButton
-              onClick={() => handleCategoryToggle(index)}
-              className="hover:bg-gray-50 rounded-lg p-3"
-            >
-              <Box flex="1" textAlign="left" fontWeight="semibold">
-                {category.name}
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-
-            <AccordionPanel pb={4}>
-              <VStack align="stretch" spacing={3}>
-                {category.items.map((item) => (
-                  <Button
-                    key={item.pillerName}
-                    variant="outline"
-                    onClick={() => handlePillarSelect(item)}
-                    isDisabled={selectedPillars.length >= 8}
-                    className="justify-start"
-                  >
-                    {item.label}
-                  </Button>
-                ))}
-              </VStack>
-            </AccordionPanel>
-          </AccordionItem>
-        ))}
-      </Accordion>
-
-      <Box mt={8}>
-        <Text fontWeight="semibold" mb={4}>
-          My Pillars ({selectedPillars.length}/8)
-        </Text>
-
-        <HStack spacing={2} wrap="wrap">
-          {selectedPillars.map((pillar) => (
-            <Tag
-              key={pillar.pillerName}
-              variant="subtle"
-              colorScheme="blue"
-              borderRadius="full"
-              py={2}
-              px={4}
-            >
-              <TagLabel>{pillar.label}</TagLabel>
-              <TagCloseButton
-                onClick={() => handlePillarRemove(pillar.pillerName)}
-              />
-            </Tag>
+    <div className="space-y-4 flex sm:flex-row flex-col xl:gap-14 sm:gap-8 lg:gap-10 gap-5 mb-10">
+      <div className="flex flex-col gap-8 h-fit sm:w-[40%] w-full">
+        <div className="flex flex-wrap gap-4">
+          {Object.entries(groupedOptions).map(([category, options]) => (
+            <DropdownMenu key={category}>
+              <DropdownMenuTrigger asChild>
+                <Button className="py-1 px-2 bg-[#351F05] text-white gap-3">
+                  {category} <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="!w-[500px] bg-white max-h-[300px] overflow-auto">
+                <div className="grid grid-cols-1 gap-1">
+                  {options.map((pillar) => {
+                    const selected = selectedFilters.find(
+                      (f) => f.pillarKey === pillar.value
+                    );
+                    return (
+                      <div
+                        key={pillar.value}
+                        className="flex items-center gap-2 bg-muted/50 p-1 rounded"
+                      >
+                        <Checkbox
+                          checked={!!selected}
+                          onCheckedChange={() => toggleFilter(pillar.value)}
+                        />
+                        <div className="text-sm font-medium w-48">
+                          {pillar.label}
+                        </div>
+                        <>
+                          <Select
+                            value={selected?.comparison || ""}
+                            onValueChange={(val) =>
+                              updateFilter(
+                                pillar.value,
+                                val,
+                                selected?.value || ""
+                              )
+                            }
+                          >
+                            <SelectTrigger className="w-24 h-9">
+                              <SelectValue placeholder=">" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white">
+                              <SelectItem value=">">Greater</SelectItem>
+                              <SelectItem value="<">Less</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Input
+                            placeholder="1.5"
+                            value={selected?.value || ""}
+                            className="w-32 h-9"
+                            onChange={(e) =>
+                              updateFilter(
+                                pillar.value,
+                                selected?.comparison || ">",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </>
+                      </div>
+                    );
+                  })}
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ))}
-        </HStack>
-      </Box>
-
-      <Button
-        mt={8}
-        colorScheme="blue"
-        isDisabled={selectedPillars.length !== 8}
-        onClick={handleSubmit}
-      >
-        Search Companies
-      </Button>
+        </div>
+        <Button
+          className={`py-1 px-2 text-white ${
+            selectedFilters.length !== length
+              ? "bg-gray-400 pointer-events-none"
+              : "bg-[#351F05]"
+          }`}
+          onClick={handleSearch}
+        >
+          Search
+        </Button>
+      </div>
+      <div className="!mt-0 w-full">
+        <div className="flex justify-between mb-6">
+          <h3 className="font-bold text-lg">My Pillars</h3>
+          <p className="font-semibold text-sm">
+            {selectedFilters.length} / {length} Pillars
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 bg-[#FFF8F0] sm:px-4 px-2 sm:py-8 py-3 rounded-md shadow-sm min-h-[150px]">
+          {selectedFilters.map((filter) => (
+            <div
+              key={filter.pillarKey}
+              className="h-fit flex items-center bg-[#351F05] text-white rounded-full sm:px-3 px-2 py-1 sm:text-sm text-xs text-nowrap"
+            >
+              {filter.pillarKey} {filter.comparison} {filter.value}
+              <button
+                onClick={() => removeFilter(filter.pillarKey)}
+                className="ml-2"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
-};
-
-export default PillarScreener;
+}

@@ -135,6 +135,24 @@ export const useGetStockAnalysisStat = ({ enabled = false }) => {
     setGetStockAnalysisStatFilter: setFilter,
   };
 };
+export const useGetStockAlphaStat = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["stock-alpha-stats"],
+    queryFn: ({ symbol, period }) =>
+      httpService.getData(routes.stockAlphaStatsUrl(symbol, period)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getStockAlphaStatIsLoading: isLoading,
+    getStockAlphaStatData: data?.data?.result || [],
+    getStockAlphaStatFilter: filter,
+    getStockAlphaStatError: ErrorHandler(error),
+    refetchGetStockAlphaStat: refetch,
+    setGetStockAlphaStatFilter: setFilter,
+  };
+};
 export const useGetStockInfoEod = ({
   enabled = false,
   queryKey = "stockInfo-Performance",

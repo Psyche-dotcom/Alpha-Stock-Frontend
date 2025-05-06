@@ -5,16 +5,22 @@ import MetricsSkeleton from "@/components/card/skeleton/MetricsSkeleton";
 import { excludedKeys, formatMoneyNumber2 } from "@/components/util";
 import { FundamentalsList, metricsList } from "@/constants";
 import { IButtonFilter2 } from "@/interface/button-filter";
+import { IAlphaMap } from "@/interface/comment";
 import { IFundamentalCard } from "@/interface/fundamental-card";
 import { IStockComponent } from "@/interface/stock";
-import { useGetMetrics, useGetStockInfo } from "@/services/stock";
-import { getStockLabel } from "@/utils";
+import {
+  useGetMetrics,
+  useGetStockAlphaStat,
+  useGetStockInfo,
+} from "@/services/stock";
+import { generateFundamentalsList, getStockLabel } from "@/utils";
 import { InformationIcon } from "@/utils/icons";
 import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<string>("my-pillars");
+  const [fundamental, setFundamental] = useState<IAlphaMap[]>([]);
   const {
     getStockInfoData,
     getStockInfoFilter,
@@ -30,18 +36,33 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
     setMetricsFilter,
     getMetricsError,
   } = useGetMetrics({ enabled: true });
+
+  const {
+    getStockAlphaStatData,
+    getStockAlphaStatFilter,
+    getStockAlphaStatIsLoading,
+    setGetStockAlphaStatFilter,
+    getStockAlphaStatError,
+  } = useGetStockAlphaStat({ enabled: symbol !== null });
   const filterBtn = [
-    { text: "My Pillars", value: "my-pillars" },
     {
       text: "Alpha Pillars",
       value: "alpha-pillars",
     },
+    { text: "My Pillars", value: "my-pillars" },
   ];
+
   useEffect(() => {
     setGetStockInfoFilter({ symbol: symbol });
-
+    setGetStockAlphaStatFilter({
+      symbol: symbol,
+      period: "annual",
+    });
     setMetricsFilter({ symbol: symbol, period: "annual" });
   }, []);
+
+  const result = generateFundamentalsList(getStockAlphaStatData);
+
   return (
     <Box>
       <Box bg={"#fff"} p={4} borderRadius={"12px"} mb={4}>
@@ -66,13 +87,11 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
         mb={{ base: 2, md: 4, xl: 8 }}
         gridTemplateColumns={{ md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
       >
-        {FundamentalsList.map(
-          (fundamental: IFundamentalCard, index: number) => (
-            <GridItem key={index}>
-              <FundamentalsCard fundamental={fundamental} />
-            </GridItem>
-          )
-        )}
+        {result?.map((fundamental: IFundamentalCard, index: number) => (
+          <GridItem key={index}>
+            <FundamentalsCard fundamental={fundamental} />
+          </GridItem>
+        ))}
       </Grid>
       <Box
         className="grid xl:grid-cols-3 md:grid-cols-2 h-fit"

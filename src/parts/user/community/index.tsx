@@ -14,7 +14,8 @@ import {
   useGetCategoryChannelCount,
   useGetChannelMessages,
 } from "@/services/community";
-import { CommentData, mapApiToComment, mapApiToCommentSignalR } from "@/utils";
+import { mapApiToComment, mapApiToCommentSignalR } from "@/utils";
+import { CommentData } from "@/interface/comment";
 
 const Community = () => {
   const [connection, setConnection] = useState<signalR.HubConnection | null>(

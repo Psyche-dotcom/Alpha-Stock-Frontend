@@ -10,10 +10,15 @@ import { IFundamentalCard } from "@/interface/fundamental-card";
 import { IStockComponent } from "@/interface/stock";
 import {
   useGetMetrics,
+  useGetMyCurrentAlpha,
   useGetStockAlphaStat,
   useGetStockInfo,
 } from "@/services/stock";
-import { generateFundamentalsList, getStockLabel } from "@/utils";
+import {
+  generateFundamentalsList,
+  generateFundamentalsList2,
+  getStockLabel,
+} from "@/utils";
 import { InformationIcon } from "@/utils/icons";
 import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -28,6 +33,12 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
     setGetStockInfoFilter,
     getStockInfoError,
   } = useGetStockInfo({ enabled: true });
+  const {
+    getMyCurrentAlphaData,
+    getMyCurrentAlphaIsLoading,
+    setGetMyCurrentAlphaFilter,
+    getMyCurrentAlphaError,
+  } = useGetMyCurrentAlpha({ enabled: true });
 
   const {
     getMetricsData,
@@ -62,6 +73,10 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
   }, []);
 
   const result = generateFundamentalsList(getStockAlphaStatData);
+  const userPiller = generateFundamentalsList2(
+    getStockAlphaStatData,
+    getMyCurrentAlphaData
+  );
 
   return (
     <Box>
@@ -87,12 +102,15 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
         mb={{ base: 2, md: 4, xl: 8 }}
         gridTemplateColumns={{ md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
       >
-        {result?.map((fundamental: IFundamentalCard, index: number) => (
-          <GridItem key={index}>
-            <FundamentalsCard fundamental={fundamental} />
-          </GridItem>
-        ))}
+        {(btnFilter === "alpha-pillars" ? result : userPiller)?.map(
+          (fundamental: IFundamentalCard, index: number) => (
+            <GridItem key={index}>
+              <FundamentalsCard fundamental={fundamental} />
+            </GridItem>
+          )
+        )}
       </Grid>
+
       <Box
         className="grid xl:grid-cols-3 md:grid-cols-2 h-fit"
         gap={{ base: 3, lg: 4 }}

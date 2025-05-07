@@ -22,7 +22,23 @@ export const useGetStockInfo = ({ enabled = false }) => {
     setGetStockInfoFilter: setFilter,
   };
 };
+export const useGetMyCurrentAlpha = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["current-alpha"],
+    queryFn: () => httpService.getData(routes.mycurrentAlphaUrl()),
+    enabled,
+    retry: 1,
+  });
 
+  return {
+    getMyCurrentAlphaIsLoading: isLoading,
+    getMyCurrentAlphaData: data?.data?.result || [],
+    getMyCurrentAlphaFilter: filter,
+    getMyCurrentAlphaError: ErrorHandler(error),
+    refetchGetMyCurrentAlpha: refetch,
+    setGetMyCurrentAlphaFilter: setFilter,
+  };
+};
 export const useGetIncomeStatement = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
     queryKey: ["income-statement"],
@@ -214,5 +230,26 @@ export const useAddStockWishList = (handleSuccess) => {
     wishListAddError: ErrorHandler(error),
     wishListAddIsLoading: isPending,
     wishListAddPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+export const useAddMyPiller = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.addmyPillerUrl()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data || {};
+      handleSuccess(resData);
+      showSuccessAlert("Piller updated successfully.");
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    myAddPillerData: data?.data,
+    myAddPillerError: ErrorHandler(error),
+    myAddPillerIsLoading: isPending,
+    myAddPillerPayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };

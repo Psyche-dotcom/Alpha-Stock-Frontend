@@ -4,7 +4,9 @@ import React from "react";
 const MyPillarScreen = () => {
   return (
     <>
-      <PillarScreener />
+      <section className="max-w-[1440px] mx-auto">
+        <PillarScreener />
+      </section>
     </>
   );
 };

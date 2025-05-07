@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { showErrorAlert } from "@/utils/alert";
+import { useAddMyPiller, useGetStockAlphaStat } from "@/services/stock";
 
 // Mocked API data
 const apiResponse = {
@@ -70,7 +71,7 @@ const apiResponse = {
 };
 
 type PillarFilter = {
-  pillarKey: string;
+  pillerName: string;
   comparison: ">" | "<";
   value: string;
   format: string;
@@ -155,12 +156,27 @@ export default function PillarScreener() {
   const [groupedOptions, setGroupedOptions] = useState<
     Record<string, PillarOption[]>
   >({});
+  const {
+    getStockAlphaStatData,
+    getStockAlphaStatFilter,
+    getStockAlphaStatIsLoading,
+    setGetStockAlphaStatFilter,
+    getStockAlphaStatError,
+  } = useGetStockAlphaStat({ enabled: true });
+  useEffect(() => {
+    setGetStockAlphaStatFilter({
+      symbol: "AAPL",
+      period: "annual",
+    });
+  }, []);
+  const { myAddPillerData, myAddPillerIsLoading, myAddPillerPayload } =
+    useAddMyPiller((res: { statusCode: number; result: any }) => {});
 
   useEffect(() => {
-    const opts = generatePillarOptions(apiResponse.result);
+    const opts = generatePillarOptions(getStockAlphaStatData);
     setPillarOptions(opts);
     setGroupedOptions(groupPillarOptions(opts));
-  }, []);
+  }, [getStockAlphaStatData]);
 
   const updateFilter = (
     pillarKey: string,
@@ -171,16 +187,16 @@ export default function PillarScreener() {
       pillarOptions.find((p) => p.value === pillarKey)?.format || "";
 
     const updated: PillarFilter = {
-      pillarKey,
+      pillerName: pillarKey,
       comparison: comparison as ">" | "<",
       value: inputValue,
       format,
     };
 
     setSelectedFilters((prev) => {
-      const exists = prev.find((f) => f.pillarKey === pillarKey);
+      const exists = prev.find((f) => f.pillerName === pillarKey);
       if (exists) {
-        return prev.map((f) => (f.pillarKey === pillarKey ? updated : f));
+        return prev.map((f) => (f.pillerName === pillarKey ? updated : f));
       } else {
         return [...prev, updated];
       }
@@ -188,21 +204,23 @@ export default function PillarScreener() {
   };
 
   const removeFilter = (pillarKey: string) => {
-    setSelectedFilters((prev) => prev.filter((f) => f.pillarKey !== pillarKey));
+    setSelectedFilters((prev) =>
+      prev.filter((f) => f.pillerName !== pillarKey)
+    );
   };
 
   const toggleFilter = (pillarKey: string) => {
     setSelectedFilters((prev) => {
-      const exists = prev.find((f) => f.pillarKey === pillarKey);
+      const exists = prev.find((f) => f.pillerName === pillarKey);
       if (exists) {
-        return prev.filter((f) => f.pillarKey !== pillarKey);
+        return prev.filter((f) => f.pillerName !== pillarKey);
       } else {
         const newFilter = pillarOptions.find((p) => p.value === pillarKey);
         return newFilter
           ? [
               ...prev,
               {
-                pillarKey: newFilter.value,
+                pillerName: newFilter.value,
                 comparison: ">",
                 value: "",
                 format: newFilter.format,
@@ -218,8 +236,8 @@ export default function PillarScreener() {
       showErrorAlert("You should select exactly 8 filters");
       return;
     }
-
-    alert(JSON.stringify(selectedFilters, null, 2));
+    myAddPillerPayload(selectedFilters);
+    // alert(JSON.stringify(selectedFilters, null, 2));
   };
 
   return (
@@ -237,7 +255,7 @@ export default function PillarScreener() {
                 <div className="grid grid-cols-1 gap-1">
                   {options.map((pillar) => {
                     const selected = selectedFilters.find(
-                      (f) => f.pillarKey === pillar.value
+                      (f) => f.pillerName === pillar.value
                     );
                     return (
                       <div
@@ -312,12 +330,12 @@ export default function PillarScreener() {
         <div className="flex flex-wrap gap-2 bg-[#FFF8F0] sm:px-4 px-2 sm:py-8 py-3 rounded-md shadow-sm min-h-[150px]">
           {selectedFilters.map((filter) => (
             <div
-              key={filter.pillarKey}
+              key={filter.pillerName}
               className="h-fit flex items-center bg-[#351F05] text-white rounded-full sm:px-3 px-2 py-1 sm:text-sm text-xs text-nowrap"
             >
-              {filter.pillarKey} {filter.comparison} {filter.value}
+              {filter.pillerName} {filter.comparison} {filter.value}
               <button
-                onClick={() => removeFilter(filter.pillarKey)}
+                onClick={() => removeFilter(filter.pillerName)}
                 className="ml-2"
               >
                 <X size={14} />

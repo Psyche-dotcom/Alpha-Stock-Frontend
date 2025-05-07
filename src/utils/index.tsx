@@ -295,3 +295,81 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
 
   return fundamentals;
 }
+
+interface AlphaPreference {
+  pillerName: string;
+  comparison: ">" | "<";
+  format: "%" | "$" | "";
+  value: string;
+}
+
+export function generateFundamentalsList2(
+  apiData: ApiData,
+  userAlphaPreferences: AlphaPreference[]
+): FundamentalsItem[] {
+  const formatCurrency = (numStr: string) => {
+    const num = parseFloat(numStr);
+    if (isNaN(num)) return "-";
+    if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
+    if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
+    if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
+    return `$${num.toFixed(2)}`;
+  };
+
+  const formatPercentage = (val: string) => {
+    const num = parseFloat(val);
+    return isNaN(num) ? "-" : `${num.toFixed(2)}%`;
+  };
+
+  const parseNumber = (val: string) => parseFloat(val.replace(/[%$]/g, ""));
+
+  const periodMap: Record<string, string> = {
+    first: "1Y",
+    fifth: "5Y",
+    ten: "10Y",
+  };
+
+  const fundamentals: FundamentalsItem[] = [];
+
+  for (const pref of userAlphaPreferences) {
+    const [key, period] = pref.pillerName.split(" ");
+    const valKey = key as keyof ApiData;
+    const valPeriod = period as keyof ApiData["averageShareOutstanding"];
+
+    const raw =
+      typeof apiData[valKey] === "object" && apiData[valKey] !== null
+        ? (apiData[valKey] as Record<string, string | null>)[valPeriod]
+        : (apiData[valKey] as string | null);
+
+    if (!raw) continue;
+
+    const valueNum = parseNumber(raw);
+    const threshold = parseFloat(pref.value);
+    let isActive = false;
+
+    if (pref.comparison === ">") {
+      isActive = valueNum > threshold;
+    } else if (pref.comparison === "<") {
+      isActive = valueNum < threshold;
+    }
+
+    const formattedValue =
+      pref.format === "$"
+        ? formatCurrency(raw)
+        : pref.format === "%"
+        ? formatPercentage(raw)
+        : raw;
+
+    const label = `${key} (${periodMap[period] ?? ""}) ${pref.comparison} ${
+      pref.value
+    }${pref.format}`;
+
+    fundamentals.push({
+      header: label,
+      amount: formattedValue,
+      isActive,
+    });
+  }
+
+  return fundamentals;
+}

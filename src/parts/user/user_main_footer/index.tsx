@@ -6,9 +6,9 @@ export default function Footer() {
     <div className="flex flex-wrap gap-4 justify-center items-center my-8">
       <SocialIcons />
       <FooterLink
-        href="/terms-and-conditions"
+        href="/user/terms-and-conditions"
         label="Terms and Conditions"
-        external={true}
+        external={false}
       />
       <FooterLink href="/report-issue" label="Report Issue" />
       <FooterLink

@@ -14,7 +14,7 @@ const AuthCard: React.FC<IAuthCardProps> = () => {
       display={"flex"}
     >
       <Text fontSize="32px" fontWeight={700} color="#EBE9E6">
-        Take control of the market with the right tools abd accurate insight
+        Take control of the market with the right tools and accurate insight
       </Text>
       <Box
         borderRadius={"1.5rem"}

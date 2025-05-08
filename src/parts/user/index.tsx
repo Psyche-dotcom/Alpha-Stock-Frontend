@@ -47,18 +47,18 @@ const User: React.FC = () => {
                 href={"/user/company/aapl?tab=metrics"}
                 onClick={(e) => handleClick(e)}
               >
-                <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end">
+                <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] hover:bg-[#351F05]/90 h-auto flex items-end">
                   <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">
                     Fundamentals Toolkit <RightArrowLong />
                   </h6>
                 </div>
               </Link>
-              <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
+              <div className="border border-[#614E38] hover:border-[#614E38]/80 hover:shadow-md transition-shadow pt-[1.75rem] p-4 rounded-[12px] bg-white text-[#351F05] hover:text-[#351F05]/60">
                 <Link
                   href={"/user/company/aapl?tab=metrics"}
                   onClick={(e) => handleClick(e)}
                 >
-                  <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4 cursor-pointer">
+                  <h6 className="text-base font-semibold flex items-center gap-4 cursor-pointer">
                     Metrics <RightArrowLong />
                   </h6>
                 </Link>
@@ -68,13 +68,13 @@ const User: React.FC = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col sm:gap-4 gap-3">
+            <div className="flex flex-col sm:gap-4 gap-3 text-[#351F05] hover:text-[#351F05]/60">
               <Link
                 href={"/user/company/aapl?tab=financials"}
                 onClick={(e) => handleClick(e)}
               >
-                <div className="border border-[#614E38] pt-[1.75rem] p-4 rounded-[12px] bg-white">
-                  <h6 className="text-base font-semibold text-[#351F05] flex items-center gap-4">
+                <div className="border border-[#614E38] hover:border-[#614E38]/80 hover:shadow-md transition-shadow pt-[1.75rem] p-4 rounded-[12px] bg-white">
+                  <h6 className="text-base font-semibold  flex items-center gap-4">
                     Financials <RightArrowLong />
                   </h6>
                 </div>
@@ -83,7 +83,7 @@ const User: React.FC = () => {
                 href={"/user/company/aapl?tab=stock-analyser"}
                 onClick={(e) => handleClick(e)}
               >
-                <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] h-auto flex items-end cursor-pointer">
+                <div className="border border-[#614E38] pt-[1.75rem] p-6 rounded-[12px] bg-[#351F05] hover:bg-[#351F05]/90 h-auto flex items-end cursor-pointer">
                   <h6 className="text-2xl font-semibold text-[#fff] flex items-center gap-4">
                     Stock Analyser <RightArrowLong />
                   </h6>

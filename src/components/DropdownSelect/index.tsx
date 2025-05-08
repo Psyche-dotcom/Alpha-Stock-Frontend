@@ -12,7 +12,11 @@ const DropdownSelect: React.FC<DropdownSelectProps> = ({ value, onChange }) => {
   };
 
   return (
-    <Select value={value} onChange={handleChange}>
+    <Select
+      value={value}
+      onChange={handleChange}
+      className="cursor-pointer hover:border-gray-400 transition-all duration-200"
+    >
       <option value="annual">Annual</option>
       <option value="quarter">Quarter</option>
     </Select>

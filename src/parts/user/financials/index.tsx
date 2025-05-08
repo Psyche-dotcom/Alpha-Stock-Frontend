@@ -5,7 +5,7 @@ import { TableComponent } from "@/components/custom-table";
 import DropdownSelect from "@/components/DropdownSelect";
 import {
   AlldataSourceFinance,
-  formatDateToHumanReadable,
+  formatDateToHumanReadableNew,
   formatMoneyNumber,
 } from "@/components/util";
 
@@ -175,11 +175,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         : btnFilter == "cashflow"
         ? "CASHFLOW"
         : "NULL",
-    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
-    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
-    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
-    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
-    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+    row5: formatDateToHumanReadableNew(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadableNew(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadableNew(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadableNew(Data[3]?.acceptedDate),
   };
   const columnLabels2 = {
     title:
@@ -190,11 +190,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         : btnFilter == "cashflow"
         ? "CASHFLOW - INVESTING"
         : "NULL",
-    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
-    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
-    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
-    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
-    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+    row5: formatDateToHumanReadableNew(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadableNew(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadableNew(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadableNew(Data[3]?.acceptedDate),
   };
   const columnLabels3 = {
     title:
@@ -205,11 +205,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         : btnFilter == "cashflow"
         ? "CASHFLOW - FINANCING"
         : "NULL",
-    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
-    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
-    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
-    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
-    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+    row5: formatDateToHumanReadableNew(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadableNew(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadableNew(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadableNew(Data[3]?.acceptedDate),
   };
   const columnLabels4 = {
     title:
@@ -220,11 +220,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         : btnFilter == "cashflow"
         ? "ENDING CASH"
         : "NULL",
-    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
-    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
-    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
-    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
-    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+    row5: formatDateToHumanReadableNew(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadableNew(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadableNew(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadableNew(Data[3]?.acceptedDate),
   };
   const columnLabels5 = {
     title:
@@ -235,11 +235,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         : btnFilter == "cashflow"
         ? "ADDITIONAL ITEMS"
         : "NULL",
-    row5: formatDateToHumanReadable(Data[4]?.acceptedDate),
-    row1: formatDateToHumanReadable(Data[0]?.acceptedDate),
-    row2: formatDateToHumanReadable(Data[1]?.acceptedDate),
-    row3: formatDateToHumanReadable(Data[2]?.acceptedDate),
-    row4: formatDateToHumanReadable(Data[3]?.acceptedDate),
+    row5: formatDateToHumanReadableNew(Data[4]?.acceptedDate),
+    row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
+    row2: formatDateToHumanReadableNew(Data[1]?.acceptedDate),
+    row3: formatDateToHumanReadableNew(Data[2]?.acceptedDate),
+    row4: formatDateToHumanReadableNew(Data[3]?.acceptedDate),
   };
 
   const btnList = [

@@ -3,6 +3,7 @@ import {
   CommentData,
   FundamentalsItem,
   IAlphaMap,
+  IComments,
 } from "@/interface/comment";
 import { jsPDF } from "jspdf";
 
@@ -85,9 +86,21 @@ export const getStockLabel = (key: string): string => {
   return labelMap[formattedKey] ?? toCamelCaseWithSpaces(key);
 };
 export const mapApiToComment = (apiData: any): CommentData => {
+  let comment = apiData.message;
+  let commentImgUrl = "";
+
+  if (apiData.messageType === "ImgText") {
+    const parts = apiData.message.split("|||IMG|||");
+    if (parts.length > 1) {
+      comment = parts[0];
+      commentImgUrl = parts[1] || "";
+    } else if (parts[0].includes("http:")) {
+      commentImgUrl = parts[0];
+    }
+  }
+
   return {
     commentId: apiData.id,
-    comment: apiData.message,
     commentDate: new Date(apiData.created).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -99,13 +112,43 @@ export const mapApiToComment = (apiData: any): CommentData => {
     IsUnliked: apiData.isUnLiked,
     isSaved: apiData.isSaved,
     messageType: apiData.messageType,
+    commentImgUrl,
+    comment,
+  };
+};
+export const mapApiToCommentReply = (apiData: any): IComments => {
+  return {
+    commentId: apiData.id,
+    commentDate: new Date(apiData.created).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }),
+    userImgUrl: apiData.sentByImgUrl,
+    name: apiData.senderName,
+    isLiked: apiData.isLiked,
+    IsUnliked: apiData.isUnLiked,
+    isSaved: apiData.isSaved,
+    replyContent: apiData.message,
   };
 };
 
 export const mapApiToCommentSignalR = (apiData: any): CommentData => {
+  let comment = apiData.message;
+  let commentImgUrl = "";
+
+  if (apiData.messageType === "ImgText") {
+    const parts = apiData.message.split("|||IMG|||");
+    if (parts.length > 1) {
+      comment = parts[0];
+      commentImgUrl = parts[1] || "";
+    } else if (parts[0].includes("http:")) {
+      commentImgUrl = parts[0];
+    }
+  }
+
   return {
     commentId: apiData.id,
-    comment: apiData.message,
     commentDate: new Date(apiData.created).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -117,6 +160,8 @@ export const mapApiToCommentSignalR = (apiData: any): CommentData => {
     IsUnliked: apiData.isUnLiked,
     isSaved: apiData.isSaved,
     messageType: apiData.messageType,
+    commentImgUrl,
+    comment,
   };
 };
 export function getFontWeightByTitle(title?: string): number | undefined {
@@ -303,6 +348,18 @@ interface AlphaPreference {
   value: string;
 }
 
+const KEY_LABEL_MAP: Record<string, string> = {
+  profitMargin: "Profit Margin",
+  netIcome: "Net Icome",
+  freeCashFlowMargin: "Free CashFlow Margin",
+  marketCap: "Market Cap",
+  revGrowth: "Revenue Growth",
+  averageShareOutstanding: "Avg Share Outstanding",
+  peRatio: "P/E Ratio", // If applicable
+  pfcf: "P/FCF",
+  roic: "ROIC", // If you meant this too
+};
+
 export function generateFundamentalsList2(
   apiData: ApiData,
   userAlphaPreferences: AlphaPreference[]
@@ -358,11 +415,29 @@ export function generateFundamentalsList2(
         ? formatCurrency(raw)
         : pref.format === "%"
         ? formatPercentage(raw)
+        : key == "netIcome"
+        ? formatCurrency(raw)
+        : key == "averageShareOutstanding"
+        ? formatCurrency(raw)
         : raw;
 
-    const label = `${key} (${periodMap[period] ?? ""}) ${pref.comparison} ${
-      pref.value
-    }${pref.format}`;
+    const keyLabel = KEY_LABEL_MAP[key] ?? key;
+
+    const periodLabel =
+      key === "marketCap" ? "" : ` (${periodMap[period] ?? ""})`;
+
+    const formattedThreshold =
+      pref.format === "$"
+        ? formatCurrency(pref.value)
+        : pref.format === "%"
+        ? formatPercentage(pref.value)
+        : key == "netIcome"
+        ? formatCurrency(pref.value)
+        : key == "averageShareOutstanding"
+        ? formatCurrency(pref.value)
+        : pref.value;
+
+    const label = `${keyLabel}${periodLabel} ${pref.comparison} ${formattedThreshold}`;
 
     fundamentals.push({
       header: label,

@@ -30,20 +30,27 @@ import { BookmarkCheck, XIcon } from "lucide-react";
 import SavedMessageCard from "@/components/card/saved-message";
 import SavedMessageCardSkeleton from "@/components/card/skeleton/savedMessageSkeleton";
 import { useGetSavedMessages } from "@/services/community";
+import { useUploadFile } from "@/services/upload-image";
 interface iProps {
   data: any;
   funSend: (message: string, messageType: string) => void;
+  funSendReply: (message: string) => void;
   refreshChannelMessage: any;
+  commentDataInfo: any;
   isLoading?: boolean;
 }
 
 const CommunityMain: React.FC<iProps> = ({
   data,
   funSend,
+  funSendReply,
   isLoading,
+  commentDataInfo,
   refreshChannelMessage,
 }) => {
-  const { setIsOpen, showSavedMessages } = useUserSession();
+  const [isUploading, setIsUploading] = useState(false);
+  const { setIsOpen, showSavedMessages, setSelectedReplyChannel } =
+    useUserSession();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewURL, setPreviewURL] = useState<string | null>(null);
@@ -58,7 +65,9 @@ const CommunityMain: React.FC<iProps> = ({
     const newMessage = currentMessage + emojiData.emoji;
     form.setValue("message", newMessage);
   };
-
+  const { uploadData, uploadFile, uploadIsLoading } = useUploadFile(
+    (res: any) => {}
+  );
   const removeFile = () => {
     setSelectedFile(null);
     setPreviewURL(null);
@@ -91,9 +100,31 @@ const CommunityMain: React.FC<iProps> = ({
   const { reset } = form;
 
   async function onSubmit(values: FormSchemaType) {
-    console.log("values", values);
-    funSend(values.message, "Text");
-    reset();
+    try {
+      setIsUploading(true);
+
+      let messageToSend = values.message;
+      let messageType = "Text";
+
+      if (selectedFile) {
+        // Upload file to external API
+        let data = await uploadFile(selectedFile, selectedFile.name);
+        messageType = "ImgText";
+        messageToSend = `${messageToSend} |||IMG||| ${
+          (data as { data: { result: string } })?.data?.result
+        }`;
+      }
+
+      funSend(messageToSend, messageType);
+
+      // Clear input and image preview
+      reset();
+      removeFile();
+    } catch (error) {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
   }
 
   useEffect(() => {
@@ -166,7 +197,9 @@ const CommunityMain: React.FC<iProps> = ({
               <Flex flexDirection="column" gap={4}>
                 {data?.map((comment: IComments, index: number) => (
                   <CommunityCommentCard
+                    commentDataInfo={commentDataInfo}
                     comment={comment}
+                    funSendReply={funSendReply}
                     key={index}
                     refreshChannelMessage={refreshChannelMessage}
                     showUpload={true}
@@ -218,6 +251,7 @@ const CommunityMain: React.FC<iProps> = ({
                   style={{ display: "none" }}
                 />
                 <Button
+                  type="button"
                   variant="ghost"
                   size="xl"
                   onClick={() => fileInputRef.current?.click()}
@@ -255,7 +289,7 @@ const CommunityMain: React.FC<iProps> = ({
                     </FormItem>
                   )}
                 />
-                <Button variant="ghost" size="xl">
+                <Button variant="ghost" size="xl" type="submit">
                   <SendIcon />
                 </Button>
               </form>

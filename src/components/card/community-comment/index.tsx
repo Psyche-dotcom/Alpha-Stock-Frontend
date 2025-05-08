@@ -18,6 +18,13 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { EmojiClickData } from "emoji-picker-react";
+import EmojiPicker from "emoji-picker-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FileUploadIcon, SendIcon, SmileyIcon } from "@/utils/icons";
@@ -33,16 +40,21 @@ import {
   useSaveText,
 } from "@/services/community";
 import { showSuccessAlert } from "@/utils/alert";
+import { useUserSession } from "@/app/context/user-context";
 interface ICommentProps {
   comment: IComments;
   showUpload?: boolean;
   refreshChannelMessage?: any;
+  commentDataInfo: any;
+  funSendReply: (message: string) => void;
 }
 
 const CommunityCommentCard: React.FC<ICommentProps> = ({
   comment,
   showUpload = true,
   refreshChannelMessage,
+  commentDataInfo,
+  funSendReply,
 }) => {
   const [commentCount, setCommentCount] = useState<number>(
     Number(comment.likeCount || 0)
@@ -59,6 +71,7 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
   const [commentSaved, setCommentSaved] = useState<boolean>(
     comment?.isSaved || false
   );
+  const { setSelectedReplyChannel } = useUserSession();
   const { likeUnlikePayload, likeUnlikeIsLoading } = useCommunityLIkeUnlike(
     (res: any) => {
       showSuccessAlert(res);
@@ -92,26 +105,11 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
       reply: "",
     },
   });
-
-  async function onSubmit(values: FormSchemaType) {}
-
-  const datas: IComments[] = [
-    {
-      name: "Babatunde Saheed",
-      replyContent: "Hello world!!!",
-      commentDate: "",
-    },
-    {
-      name: "Babatunde Saheed",
-      replyContent: "Hello world!!!",
-      commentDate: "",
-    },
-    {
-      name: "Babatunde Saheed",
-      replyContent: "Hello world!!!",
-      commentDate: "",
-    },
-  ];
+  const { reset } = form;
+  async function onSubmit(values: FormSchemaType) {
+    funSendReply(values.reply);
+    reset();
+  }
 
   const handleLikeToggle = () => {
     if (likeUnlikeIsLoading) {
@@ -132,7 +130,11 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
     };
     downvoteUndownvotePayload(payload);
   };
-
+  const handleEmojiClick = (emojiData: EmojiClickData) => {
+    const currentMessage = form.getValues("reply");
+    const newMessage = currentMessage + emojiData.emoji;
+    form.setValue("reply", newMessage);
+  };
   return (
     <Box
       bg="#FFFFFF"
@@ -186,7 +188,11 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
             alignItems={"center"}
             gap="4px"
             cursor={"pointer"}
-            onClick={() => setShowReply(!showReply)}
+            onClick={() => {
+              //@ts-ignore
+              setSelectedReplyChannel(comment.commentId);
+              setShowReply(!showReply);
+            }}
           >
             <Text
               fontWeight={500}
@@ -291,12 +297,24 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
             >
               {showUpload && (
                 <>
-                  <Button variant={"ghost"} size="xl">
+                  {/* <Button variant={"ghost"} size="xl">
                     <FileUploadIcon />
-                  </Button>
-                  <Button variant={"ghost"} size="xl">
-                    <SmileyIcon />
-                  </Button>
+                  </Button> */}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="ghost" size="xl">
+                        <SmileyIcon />
+                      </Button>
+                    </PopoverTrigger>
+
+                    <PopoverContent className="w-auto p-0">
+                      <EmojiPicker
+                        onEmojiClick={handleEmojiClick}
+                        height={350}
+                        width={300}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </>
               )}
 
@@ -324,7 +342,7 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
           </Form>
 
           <Flex flexDirection={"column"} gap={4} w={{ base: "100%" }}>
-            {datas?.map((comment: IComments, index: number) => (
+            {commentDataInfo?.map((comment: IComments, index: number) => (
               <Box className="mt-3 ms-5" key={index}>
                 <Flex alignItems={"center"} gap="8px" mb="6px">
                   <Box h="24px" width="24px">
@@ -353,7 +371,7 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
               </Box>
             ))}
           </Flex>
-          <Box
+          {/* <Box
             display={"flex"}
             justifyContent={"end"}
             textDecoration={"underline"}
@@ -365,7 +383,7 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
             // onClick={handleMoreClick}
           >
             view more comments
-          </Box>
+          </Box> */}
         </Box>
       )}
     </Box>

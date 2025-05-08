@@ -44,6 +44,7 @@ export interface CommentData {
   IsUnliked: boolean;
   isSaved: boolean;
   messageType: string;
+  commentImgUrl?: string;
 }
 export interface IAlphaMap {
   header: string;

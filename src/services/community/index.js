@@ -51,6 +51,24 @@ export const useGetChannelMessages = ({ enabled = false }) => {
     setGetChannelMesaggesFilter: setFilter,
   };
 };
+export const useGetChannelReplyMessages = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["channel-messages-reply"],
+    queryFn: ({ messageid }) =>
+      httpService.getData(routes.getChannelMessageReplyUrl(messageid)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getChannelMesaggesReplyIsLoading: isLoading,
+    getChannelMesaggesReplyData: data?.data?.result || [],
+    getChannelMesaggesReplyFilter: filter,
+    getChannelMesaggesReplyError: ErrorHandler(error),
+    refetchGetChannelMesaggesReply: refetch,
+    setGetChannelMesaggesReplyFilter: setFilter,
+  };
+};
 
 export const useGetCategoryChannelCount = () => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({

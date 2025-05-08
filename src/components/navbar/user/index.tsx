@@ -56,7 +56,7 @@ const UserNavbar = () => {
   const handleClick = (e: React.MouseEvent, route: string) => {
     if (
       !profileData?.result?.isSubActive &&
-      (route === ROUTES.USER.WATCHLIST || route === ROUTES.USER.COMMUNITY)
+      (route === ROUTES.USER.WISHLIST || route === ROUTES.USER.COMMUNITY)
     ) {
       e.preventDefault();
       setRedirectModalOpen(true);

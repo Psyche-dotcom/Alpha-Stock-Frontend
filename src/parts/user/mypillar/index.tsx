@@ -241,116 +241,120 @@ export default function PillarScreener() {
   };
 
   return (
-    <div className="space-y-4 flex sm:flex-row flex-col xl:gap-14 sm:gap-8 lg:gap-10 gap-5 mb-10">
-      <div className="flex flex-col gap-8 h-fit sm:w-[40%] w-full">
-        <div className="flex flex-wrap gap-4 relative">
-          {Object.entries(groupedOptions).map(([category, options]) => (
-            <DropdownMenu key={category}>
-              <DropdownMenuTrigger asChild>
-                <Button className="py-1 px-2 bg-[#351F05] text-white gap-3">
-                  {category} <ChevronDown />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="start"
-                className="max-w-[600px] w-full bg-white max-h-[300px] overflow-y-auto"
-              >
-                <div className="space-y-2 px-2 py-1">
-                  {options.map((pillar) => {
-                    const selected = selectedFilters.find(
-                      (f) => f.pillerName === pillar.value
-                    );
-                    return (
-                      <div
-                        key={pillar.value}
-                        className="flex flex-col sm:grid sm:grid-cols-2 sm:items-center gap-2 bg-muted/50 rounded"
-                      >
-                        <div className="flex gap-2 items-start">
-                          <Checkbox
-                            checked={!!selected}
-                            onCheckedChange={() => toggleFilter(pillar.value)}
-                          />
-                          <div className="text-sm font-medium break-words w-full sm:w-48">
-                            {pillar.label}
+    <>
+      <p className="text-center text-[32px] font-bold mb-3">Pillar Screener</p>
+      <div className="space-y-4 flex sm:flex-row flex-col xl:gap-14 sm:gap-8 lg:gap-10 gap-5 mb-10">
+        <div className="flex flex-col gap-8 h-fit w-full">
+          <h3 className="font-bold text-lg">Categories</h3>
+          <div className="grid lg:grid-cols-3 grid-cols-2 gap-4 relative mt-0">
+            {Object.entries(groupedOptions).map(([category, options]) => (
+              <DropdownMenu key={category}>
+                <DropdownMenuTrigger asChild>
+                  <button className="sm:p-2 p-[5px] bg-[#351F05] rounded-md text-white gap-3 max-w-[200px] flex justify-between !w-full">
+                    {category} <ChevronDown />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="start"
+                  className="max-w-[600px] w-full bg-white max-h-[300px] overflow-y-auto"
+                >
+                  <div className="space-y-2 px-2 py-1">
+                    {options.map((pillar) => {
+                      const selected = selectedFilters.find(
+                        (f) => f.pillerName === pillar.value
+                      );
+                      return (
+                        <div
+                          key={pillar.value}
+                          className="flex flex-col sm:grid sm:grid-cols-2 sm:items-center gap-2 bg-muted/50 rounded"
+                        >
+                          <div className="flex gap-2 items-start">
+                            <Checkbox
+                              checked={!!selected}
+                              onCheckedChange={() => toggleFilter(pillar.value)}
+                            />
+                            <div className="text-sm font-medium break-words w-full sm:w-48">
+                              {pillar.label}
+                            </div>
+                          </div>
+                          <div className="flex flex-col sm:flex-row gap-2 w-full">
+                            <Select
+                              value={selected?.comparison || ""}
+                              onValueChange={(val) =>
+                                updateFilter(
+                                  pillar.value,
+                                  val,
+                                  selected?.value || ""
+                                )
+                              }
+                            >
+                              <SelectTrigger className="w-full sm:w-24 h-9">
+                                <SelectValue placeholder=">" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white">
+                                <SelectItem value=">">Greater</SelectItem>
+                                <SelectItem value="<">Less</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <Input
+                              placeholder="1.5"
+                              value={selected?.value || ""}
+                              className="w-full sm:w-32 h-9"
+                              onChange={(e) =>
+                                updateFilter(
+                                  pillar.value,
+                                  selected?.comparison || ">",
+                                  e.target.value
+                                )
+                              }
+                            />
                           </div>
                         </div>
-                        <div className="flex flex-col sm:flex-row gap-2 w-full">
-                          <Select
-                            value={selected?.comparison || ""}
-                            onValueChange={(val) =>
-                              updateFilter(
-                                pillar.value,
-                                val,
-                                selected?.value || ""
-                              )
-                            }
-                          >
-                            <SelectTrigger className="w-full sm:w-24 h-9">
-                              <SelectValue placeholder=">" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white">
-                              <SelectItem value=">">Greater</SelectItem>
-                              <SelectItem value="<">Less</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <Input
-                            placeholder="1.5"
-                            value={selected?.value || ""}
-                            className="w-full sm:w-32 h-9"
-                            onChange={(e) =>
-                              updateFilter(
-                                pillar.value,
-                                selected?.comparison || ">",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ))}
-        </div>
-        <div className="flex justify-center">
-          <Button
-            className={`sm:w-[60%] w-full py-1 px-2 text-white ${
-              selectedFilters.length !== length
-                ? "bg-gray-400 pointer-events-none"
-                : "bg-[#351F05]"
-            }`}
-            onClick={handleSearch}
-          >
-            Search
-          </Button>
-        </div>
-      </div>
-      <div className="!mt-0 w-full">
-        <div className="flex justify-between mb-6">
-          <h3 className="font-bold text-lg">My Pillars</h3>
-          <p className="font-semibold text-sm">
-            {selectedFilters.length} / {length} Pillars
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2 bg-[#FFF8F0] sm:px-4 px-2 sm:py-8 py-3 rounded-md shadow-sm min-h-[150px]">
-          {selectedFilters.map((filter) => (
-            <div
-              key={filter.pillerName}
-              className="h-fit flex items-center bg-[#351F05] text-white rounded-full sm:px-3 px-2 py-1 sm:text-sm text-xs text-nowrap"
+                      );
+                    })}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <Button
+              className={`sm:w-[60%] w-full py-1 px-2 text-white ${
+                selectedFilters.length !== length
+                  ? "bg-gray-400 pointer-events-none"
+                  : "bg-[#351F05]"
+              }`}
+              onClick={handleSearch}
             >
-              {filter.pillerName} {filter.comparison} {filter.value}
-              <button
-                onClick={() => removeFilter(filter.pillerName)}
-                className="ml-2"
+              Search
+            </Button>
+          </div>
+        </div>
+        <div className="!mt-0 w-full">
+          <div className="flex justify-between mb-6">
+            <h3 className="font-bold text-lg">My Pillars</h3>
+            <p className="font-semibold text-sm">
+              {selectedFilters.length} / {length} Pillars
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 bg-[#FFF8F0] sm:px-4 px-2 sm:py-8 py-3 rounded-md shadow-sm min-h-[150px]">
+            {selectedFilters.map((filter) => (
+              <div
+                key={filter.pillerName}
+                className="h-fit flex items-center bg-[#351F05] text-white rounded-full sm:px-3 px-2 py-1 sm:text-sm text-xs text-nowrap"
               >
-                <X size={14} />
-              </button>
-            </div>
-          ))}
+                {filter.pillerName} {filter.comparison} {filter.value}
+                <button
+                  onClick={() => removeFilter(filter.pillerName)}
+                  className="ml-2"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

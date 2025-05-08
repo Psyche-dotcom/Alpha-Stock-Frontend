@@ -50,7 +50,7 @@ const MarketMoveContent = () => {
   const cellRenderers = {
     symbol: (record: MarketMove) => (
       <div className="flex gap-2 items-center">
-        <div className="h-6 w-6">
+        {/* <div className="h-6 w-6">
           <Image
             src={record?.url || "/assets/images/card-image.png"}
             alt={record?.agent}
@@ -58,7 +58,7 @@ const MarketMoveContent = () => {
             height={24}
             className="rounded-full object-cover h-full w-full"
           />
-        </div>
+        </div> */}
         <p className="font-semibold text-xs text-[#111928]">{record?.agent}</p>
       </div>
     ),
@@ -71,7 +71,7 @@ const MarketMoveContent = () => {
           record?.changeProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
         }`}
       >
-        {record?.changeProgress ? "+" : "-"} {record?.changeValue}
+        {record?.changeValue}
       </p>
     ),
     changePercent: (record: MarketMove) => (
@@ -80,7 +80,6 @@ const MarketMoveContent = () => {
           record?.changePercentProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
         }`}
       >
-        {record?.changePercentProgress ? "+" : "-"}
         {record?.changePercent}
       </p>
     ),

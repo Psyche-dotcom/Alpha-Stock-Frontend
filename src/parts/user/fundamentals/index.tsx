@@ -139,7 +139,7 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
                   >
                     <Text
                       fontWeight={500}
-                      fontSize={{ base: 12, sm: 16 }}
+                      fontSize={{ base: 12, sm: 14 }}
                       color="#111928"
                       display="flex"
                       gap={"2px"}
@@ -150,7 +150,7 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
                     </Text>
                     <Text
                       fontWeight={700}
-                      fontSize={{ base: "12px", sm: "16px" }}
+                      fontSize={{ base: "12px", sm: "14px" }}
                       color="#111928"
                     >
                       {/* @ts-ignore */}
@@ -176,7 +176,7 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
                   >
                     <Text
                       fontWeight={500}
-                      fontSize={14}
+                      fontSize={{ base: "12px", sm: "14px" }}
                       color="#111928"
                       display="flex"
                       gap={"2px"}
@@ -213,7 +213,7 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
                     >
                       <Text
                         fontWeight={500}
-                        fontSize={14}
+                        fontSize={{ base: "12px", sm: "14px" }}
                         color="#111928"
                         display="flex"
                         gap={"2px"}
@@ -221,7 +221,11 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
                       >
                         {getStockLabel(key)} <InformationIcon />
                       </Text>
-                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                      <Text
+                        fontWeight={700}
+                        fontSize={{ base: "12px", sm: "14px" }}
+                        color="#111928"
+                      >
                         {/* @ts-ignore */}
                         {formatMoneyNumber2(value)}
                       </Text>
@@ -248,7 +252,7 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
                     >
                       <Text
                         fontWeight={500}
-                        fontSize={14}
+                        fontSize={{ base: "12px", sm: "14px" }}
                         color="#111928"
                         display="flex"
                         gap={"2px"}
@@ -256,7 +260,11 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
                       >
                         {getStockLabel(key)} <InformationIcon />
                       </Text>
-                      <Text fontWeight={700} fontSize={"16px"} color="#111928">
+                      <Text
+                        fontWeight={700}
+                        fontSize={{ base: "12px", sm: "14px" }}
+                        color="#111928"
+                      >
                         {/* @ts-ignore */}
                         {formatMoneyNumber2(value)}
                       </Text>

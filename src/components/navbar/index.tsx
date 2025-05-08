@@ -58,22 +58,22 @@ const Navbar = () => {
             </Box>
             <div>
               <div className="gap-4 items-center flex">
-                <Button
-                  variant="outline"
-                  className="font-medium border px-3 py-5 border-[#3A2206] w-fit-content"
-                >
-                  <Link passHref href={ROUTES.AUTH.LOGIN}>
+                <Link passHref href={ROUTES.AUTH.LOGIN}>
+                  <Button
+                    variant="outline"
+                    className="font-medium border px-3 py-5 border-[#3A2206] w-fit-content"
+                  >
                     Login
-                  </Link>
-                </Button>
-                <Button
-                  variant={"secondary"}
-                  className="font-medium px-3 py-5 w-fit-content"
-                >
-                  <Link passHref href={ROUTES.AUTH.SIGNUP}>
+                  </Button>
+                </Link>
+                <Link passHref href={ROUTES.AUTH.SIGNUP}>
+                  <Button
+                    variant={"secondary"}
+                    className="font-medium px-3 py-5 w-fit-content"
+                  >
                     Create Account
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

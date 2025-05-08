@@ -2,6 +2,7 @@
 import { ButtonIcon } from "@/components/button/button-icon";
 import FundamentalsCard from "@/components/card/fundamentals-card";
 import MetricsSkeleton from "@/components/card/skeleton/MetricsSkeleton";
+import { Button } from "@/components/ui/button";
 import { excludedKeys, formatMoneyNumber2 } from "@/components/util";
 import { FundamentalsList, metricsList } from "@/constants";
 import { IButtonFilter2 } from "@/interface/button-filter";
@@ -21,6 +22,8 @@ import {
 } from "@/utils";
 import { InformationIcon } from "@/utils/icons";
 import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
@@ -81,21 +84,33 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
   return (
     <Box>
       <Box bg={"#fff"} p={4} borderRadius={"12px"} mb={4}>
-        <Flex gap={2}>
-          {filterBtn.map((filter: IButtonFilter2, index: number) => (
-            <ButtonIcon
-              key={index}
-              text={filter?.text}
-              variant={filter?.value === btnFilter ? "solid" : "ghost"}
-              bg={filter?.value === btnFilter ? "#351F05" : ""}
-              fontWeight={500}
-              color={filter?.value === btnFilter ? "#ffffff" : "#6B7280"}
-              fontSize="12px"
-              p={filter?.value === btnFilter ? "12px 16px" : "0px"}
-              onClick={() => setBtnFilter(filter?.value)}
-            />
-          ))}
-        </Flex>
+        <div className="flex justify-between gap-4">
+          <Flex gap={2}>
+            {filterBtn.map((filter: IButtonFilter2, index: number) => (
+              <ButtonIcon
+                key={index}
+                text={filter?.text}
+                variant={filter?.value === btnFilter ? "solid" : "ghost"}
+                bg={filter?.value === btnFilter ? "#351F05" : ""}
+                fontWeight={500}
+                color={filter?.value === btnFilter ? "#ffffff" : "#6B7280"}
+                fontSize="12px"
+                p={filter?.value === btnFilter ? "12px 16px" : "0px"}
+                onClick={() => setBtnFilter(filter?.value)}
+              />
+            ))}
+          </Flex>
+          {btnFilter === "my-pillars" && (
+            <Link passHref href={`/user/company/${symbol}/mypiller`}>
+              <Button
+                variant={"secondary"}
+                className="font-medium px-3 py-5 w-fit-content"
+              >
+                Edit
+              </Button>
+            </Link>
+          )}
+        </div>
       </Box>
       <Grid
         gap={{ base: 2, md: 4 }}

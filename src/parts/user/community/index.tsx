@@ -114,8 +114,8 @@ const Community = () => {
   // 👇 Setup SignalR connection once
   useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:7013" + "/chatHub")
-      // .withUrl(process.env.NEXT_PUBLIC_API_URL + "/chatHub")
+      .withUrl(process.env.NEXT_PUBLIC_API_URL + "/chatHub")
+      //.withUrl("https://localhost:7013" + "/chatHub")
       .withAutomaticReconnect()
       .build();
 

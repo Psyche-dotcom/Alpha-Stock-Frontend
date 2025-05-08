@@ -11,6 +11,8 @@ interface UserSessionContextType {
   isProfileLoading: boolean;
   selectedChannel: string;
   setSelectedChannel: (value: string) => void;
+  selectedReplyChannel: string;
+  setSelectedReplyChannel: (value: string) => void;
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   redirectModalOpen: boolean;
@@ -32,6 +34,8 @@ export function UserSessionProvider({ children }: Props) {
 
   const { profileData, isProfileLoading, profileError } = useUserSessionData();
   const [selectedChannel, setSelectedChannel] = React.useState<string>("");
+  const [selectedReplyChannel, setSelectedReplyChannel] =
+    React.useState<string>("");
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [showSavedMessages, setShowSavedMessages] =
     React.useState<string>("community");
@@ -66,6 +70,8 @@ export function UserSessionProvider({ children }: Props) {
         isProfileLoading,
         selectedChannel,
         setSelectedChannel,
+        selectedReplyChannel,
+        setSelectedReplyChannel,
         isOpen,
         setIsOpen,
         redirectModalOpen,

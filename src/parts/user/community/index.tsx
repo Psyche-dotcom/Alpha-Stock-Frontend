@@ -13,15 +13,21 @@ import {
   useGetCategory,
   useGetCategoryChannelCount,
   useGetChannelMessages,
+  useGetChannelReplyMessages,
 } from "@/services/community";
-import { mapApiToComment, mapApiToCommentSignalR } from "@/utils";
-import { CommentData } from "@/interface/comment";
+import {
+  mapApiToComment,
+  mapApiToCommentReply,
+  mapApiToCommentSignalR,
+} from "@/utils";
+import { CommentData, IComments } from "@/interface/comment";
 
 const Community = () => {
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null
   );
   const [communityList, setCommunityList] = useState<CommentData[]>([]);
+  const [messageReplyList, setMessageReplyList] = useState<IComments[]>([]);
   const isAbove768 = useMediaSize(768);
   const selectedChannelRef = useRef<string | null>(null);
   const {
@@ -29,6 +35,7 @@ const Community = () => {
     setIsOpen,
     profileData,
     selectedChannel,
+    selectedReplyChannel,
     setRedirectModalOpen,
   } = useUserSession();
 
@@ -44,7 +51,13 @@ const Community = () => {
     refetchGetChannelMesagges,
     getChannelMesaggesIsLoading,
   } = useGetChannelMessages({ enabled: true });
-  console.log("channel", selectedChannel);
+  const {
+    setGetChannelMesaggesReplyFilter,
+    getChannelMesaggesReplyData,
+    refetchGetChannelMesaggesReply,
+    getChannelMesaggesReplyIsLoading,
+  } = useGetChannelReplyMessages({ enabled: selectedReplyChannel !== null });
+
   // 👇 Enforce Subscription Check
   useEffect(() => {
     if (!profileData?.result?.isSubActive) {
@@ -67,6 +80,11 @@ const Community = () => {
       setGetChannelMesaggesFilter({ roomid: selectedChannel });
     }
   }, [selectedChannel, setGetChannelMesaggesFilter]);
+  useEffect(() => {
+    if (selectedReplyChannel) {
+      setGetChannelMesaggesReplyFilter({ messageid: selectedReplyChannel });
+    }
+  }, [selectedReplyChannel, setGetChannelMesaggesReplyFilter]);
 
   // 👇 Extract room IDs
   const channelRoomIds = useMemo(() => {
@@ -85,6 +103,13 @@ const Community = () => {
       setCommunityList(getChannelMesaggesData.map(mapApiToComment));
     }
   }, [getChannelMesaggesData]);
+  useEffect(() => {
+    if (getChannelMesaggesReplyData && getChannelMesaggesReplyData.length > 0) {
+      setMessageReplyList(
+        getChannelMesaggesReplyData.map(mapApiToCommentReply)
+      );
+    }
+  }, [getChannelMesaggesReplyData]);
 
   // 👇 Setup SignalR connection once
   useEffect(() => {
@@ -100,7 +125,7 @@ const Community = () => {
       newConnection.stop();
     };
   }, []);
-
+  console.log("Reply message list", messageReplyList);
   // 👇 Handle connection start and message receiving
   useEffect(() => {
     if (
@@ -133,7 +158,7 @@ const Community = () => {
     };
 
     startSignalR();
-  }, [connection, channelRoomIds, selectedChannel]);
+  }, [connection, channelRoomIds, selectedChannel, selectedReplyChannel]);
 
   // 👇 Send message function
   const sendMessage = useCallback(
@@ -155,6 +180,25 @@ const Community = () => {
     },
     [connection, selectedChannel, profileData]
   );
+  const sendReplyMessage = useCallback(
+    async (message: string) => {
+      if (connection && selectedChannel) {
+        try {
+          await connection.invoke(
+            "SendMessageToChannel",
+            selectedReplyChannel,
+            message,
+            "Text",
+            profileData?.result?.id,
+            true
+          );
+        } catch (error) {
+          console.error("Error sending message:", error);
+        }
+      }
+    },
+    [connection, selectedReplyChannel, profileData]
+  );
 
   return (
     <div className="max-w-[1440px] mx-auto">
@@ -168,8 +212,10 @@ const Community = () => {
           justifySelf="end"
         >
           <CommunityMain
+            commentDataInfo={messageReplyList}
             data={communityList}
             funSend={sendMessage}
+            funSendReply={sendReplyMessage}
             refreshChannelMessage={refetchGetChannelMesagges}
             isLoading={getChannelMesaggesIsLoading}
           />

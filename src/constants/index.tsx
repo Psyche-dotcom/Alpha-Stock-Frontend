@@ -31,7 +31,7 @@ export const userNavbarList = [
   },
   { title: "Community", path: ROUTES.USER.COMMUNITY },
   // { title: "Blogs", path: ROUTES.USER.BLOGS },
-  { title: "Wishlist", path: ROUTES.USER.WISHLIST },
+  { title: "Watchlist", path: ROUTES.USER.WISHLIST },
   { title: "Shop", path: ROUTES.USER.SHOP },
 ];
 

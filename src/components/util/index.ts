@@ -1268,13 +1268,23 @@ export function formatMoneyNumber(value: string | number): string {
     return sign + absNum.toString();
   }
 }
-export function formatMoneyNumber2(value: string | number): string {
-  if (value === "") return "";
+export function formatMoneyNumber2(
+  value: string | number | null | undefined
+): string {
+  if (value === null || value === undefined || value === "") return "";
 
   const isDateString = (val: string): boolean =>
     !isNaN(Date.parse(val)) && /\d{4}-\d{2}-\d{2}/.test(val);
 
   if (typeof value === "string") {
+    // Handle percentages (e.g., "0.2430126434312604%")
+    const isPercentage = value.trim().endsWith("%");
+    if (isPercentage) {
+      const num = parseFloat(value.replace("%", "").trim());
+      if (isNaN(num)) return value; // return original if not a valid number
+      return (num * 100).toFixed(2) + "%";
+    }
+
     // Check if it's a valid date
     if (isDateString(value)) {
       const date = new Date(value);
@@ -1290,14 +1300,13 @@ export function formatMoneyNumber2(value: string | number): string {
     if (!isNaN(parsed)) {
       value = parsed;
     } else {
-      // Not a date, not a number – return as-is
-      return value;
+      return value; // Not a date, not a number – return as-is
     }
   }
 
-  // At this point, value is a number
-  const num = value as number;
+  if (typeof value !== "number" || isNaN(value)) return "";
 
+  const num = value;
   const absNum = Math.abs(num);
   const sign = num < 0 ? "-" : "";
 
@@ -1308,7 +1317,7 @@ export function formatMoneyNumber2(value: string | number): string {
   } else if (absNum >= 1_000) {
     return sign + (absNum / 1_000).toFixed(2) + "K";
   } else {
-    return sign + num.toFixed(2); // Even for small numbers, format to 2 decimals
+    return sign + num.toFixed(2); // Format small numbers to 2 decimals
   }
 }
 

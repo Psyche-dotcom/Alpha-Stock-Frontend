@@ -263,7 +263,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     <Box bg="#fff" pt={4} mb={16}>
       <Box mb={4} mx={4}>
         <Text fontWeight={700} fontSize={20} color="#111928" mb={4}>
-          Income Statements
+          {btnFilter == "income-statements"
+            ? "Income Statements"
+            : btnFilter == "balance-sheet"
+            ? "Balance Sheet"
+            : "Cash Flow"}
         </Text>
         <Flex justifyContent="space-between" gap="2">
           <Flex gap={2}>

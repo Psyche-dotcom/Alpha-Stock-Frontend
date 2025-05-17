@@ -1,12 +1,11 @@
 "use client";
 import { ButtonIcon } from "@/components/button/button-icon";
 import FundamentalsCard from "@/components/card/fundamentals-card";
-import MetricsSkeleton from "@/components/card/skeleton/MetricsSkeleton";
+
 import { Button } from "@/components/ui/button";
-import { excludedKeys, formatMoneyNumber2 } from "@/components/util";
-import { FundamentalsList, metricsList } from "@/constants";
+
 import { IButtonFilter2 } from "@/interface/button-filter";
-import { IAlphaMap } from "@/interface/comment";
+
 import { IFundamentalCard } from "@/interface/fundamental-card";
 import { IStockComponent } from "@/interface/stock";
 import {
@@ -16,13 +15,9 @@ import {
   useGetStockAlphaStat,
   useGetStockInfo,
 } from "@/services/stock";
-import {
-  generateFundamentalsList,
-  generateFundamentalsList2,
-  getStockLabel,
-} from "@/utils";
-import { InformationIcon } from "@/utils/icons";
-import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { generateFundamentalsList2 } from "@/utils";
+
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -30,7 +25,7 @@ import MetricData from "../metrics/metricData";
 
 const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<string>("my-pillars");
-  const [fundamental, setFundamental] = useState<IAlphaMap[]>([]);
+
   const {
     getStockInfoData,
     getStockInfoFilter,
@@ -85,7 +80,7 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
   }, []);
 
   const result = getAlpha8PillerData;
-  console.log("result", result);
+
   const userPiller = generateFundamentalsList2(
     getStockAlphaStatData,
     getMyCurrentAlphaData

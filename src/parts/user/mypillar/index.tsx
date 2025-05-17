@@ -18,57 +18,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { showErrorAlert } from "@/utils/alert";
-import { useAddMyPiller, useGetStockAlphaStat } from "@/services/stock";
-
-// Mocked API data
-const apiResponse = {
-  statusCode: 200,
-  displayMessage: "Success",
-  result: {
-    marketCap: "2987745469000.00",
-    averageShareOutstanding: {
-      first: "15343783000.00",
-      fifth: "17352119000.00",
-      ten: "23013684000.00",
-    },
-    netIcome: {
-      first: "93736000000.00",
-      fifth: "57411000000.00",
-      ten: "53394000000.00",
-    },
-    roic: {
-      first: "70.14%",
-      fifth: "59.26%",
-      ten: "44.10%",
-    },
-    revGrowth: {
-      first: "2.021994077514121%",
-      fifth: "7.332170089721002",
-      ten: "5.281703758121736",
-    },
-    profitMargin: {
-      first: "23.971255769943866%",
-      fifth: "20.913611278072235",
-      ten: "22.845773698735638",
-    },
-    freeCashFlowMargin: {
-      first: "27.83%",
-      fifth: "26.84%",
-      ten: "25.77%",
-    },
-    peRatio: {
-      first: "31.87",
-      fifth: null,
-      ten: null,
-    },
-    pfcf: {
-      first: "27.46",
-      fifth: null,
-      ten: null,
-    },
-  },
-  errorMessages: null,
-};
+import {
+  useAddMyPiller,
+  useGetMyCurrentAlpha,
+  useGetStockAlphaStat,
+} from "@/services/stock";
 
 type PillarFilter = {
   pillerName: string;
@@ -163,12 +117,25 @@ export default function PillarScreener() {
     setGetStockAlphaStatFilter,
     getStockAlphaStatError,
   } = useGetStockAlphaStat({ enabled: true });
+  const {
+    getMyCurrentAlphaData,
+    getMyCurrentAlphaIsLoading,
+    setGetMyCurrentAlphaFilter,
+    getMyCurrentAlphaError,
+    refetchGetMyCurrentAlpha,
+  } = useGetMyCurrentAlpha({ enabled: true });
   useEffect(() => {
     setGetStockAlphaStatFilter({
       symbol: "AAPL",
       period: "annual",
     });
+    refetchGetMyCurrentAlpha();
   }, []);
+
+  useEffect(() => {
+    setSelectedFilters(getMyCurrentAlphaData);
+  }, [getMyCurrentAlphaData]);
+
   const { myAddPillerData, myAddPillerIsLoading, myAddPillerPayload } =
     useAddMyPiller((res: { statusCode: number; result: any }) => {});
 
@@ -326,7 +293,7 @@ export default function PillarScreener() {
               }`}
               onClick={handleSearch}
             >
-              Search
+              Update My Pillars
             </Button>
           </div>
         </div>

@@ -39,6 +39,24 @@ export const useGetMyCurrentAlpha = ({ enabled = false }) => {
     setGetMyCurrentAlphaFilter: setFilter,
   };
 };
+export const useGetAlpha8Piller = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["alpha-8-piller"],
+    queryFn: ({ symbol }) =>
+      httpService.getData(routes.Alpha8PillerScreener(symbol)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getAlpha8PillerIsLoading: isLoading,
+    getAlpha8PillerData: data?.data?.result || [],
+    getAlpha8PillerFilter: filter,
+    getAlpha8PillerError: ErrorHandler(error),
+    refetchGetMyAlpha8Piller: refetch,
+    setGetAlpha8PillerFilter: setFilter,
+  };
+};
 export const useGetIncomeStatement = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
     queryKey: ["income-statement"],

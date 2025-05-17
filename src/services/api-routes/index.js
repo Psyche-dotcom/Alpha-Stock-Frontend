@@ -27,6 +27,8 @@ export const routes = {
   getSubscription: (id) => `/api/subscription/info/${id}`,
   confirmSubscription: (token) =>
     `/api/payment/webhook/confirm-payment?token=${token}`,
+  Alpha8PillerScreener: (symbol) =>
+    `/api/stock/alpha-8-piller-screener?symbol=${symbol}&period=annual`,
   getStockInfo: (symbol) => `/api/stock/info/profile?symbol=${symbol}`,
   getStockInfoEod: (symbol, startdate, endDate) =>
     `/api/stock/historical/eod?symbol=${symbol}&startDate=${startdate}&endDate=${endDate}`,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAdminSession } from "@/app/context/admin-context";
 import { useUserSession } from "@/app/context/user-context";
 import { IDropdown } from "@/interface/dropdown";
 import { ArrowDownIcon, ArrowUpIcon } from "@/utils/icons";
@@ -10,6 +11,7 @@ interface IDropdownProps {
   itemList?: IDropdown[];
   mb?: number;
   count?: number;
+  roleType: string;
 }
 
 const DropdownComponent: React.FC<IDropdownProps> = ({
@@ -17,13 +19,14 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
   itemList,
   mb,
   count,
+  roleType,
 }) => {
   const {
     setIsOpen,
     setSelectedChannel,
     selectedChannel,
     setShowSavedMessages,
-  } = useUserSession();
+  } = roleType == "User" ? useUserSession() : useAdminSession();
   const [collapseCommunity, setCollapseCommunity] = useState<boolean>(false);
 
   return (

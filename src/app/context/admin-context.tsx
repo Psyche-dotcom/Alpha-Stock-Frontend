@@ -9,8 +9,17 @@ interface AdminSessionContextType {
   profileData: any;
   profileError: any;
   isProfileLoading: boolean;
+  selectedChannel: string;
+  setSelectedChannel: (value: string) => void;
+  selectedReplyChannel: string;
+  setSelectedReplyChannel: (value: string) => void;
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
+  redirectModalOpen: boolean;
+  setRedirectModalOpen: (value: boolean) => void;
+  showSavedMessages: string;
+  setShowSavedMessages: (value: string) => void;
 }
-
 const AdminSessionContext = React.createContext<AdminSessionContextType | null>(
   null
 );
@@ -23,7 +32,14 @@ export function AdminSessionProvider({ children }: Props) {
   const router = useRouter();
 
   const { profileData, isProfileLoading, profileError } = useUserSessionData();
-
+  const [selectedChannel, setSelectedChannel] = React.useState<string>("");
+  const [selectedReplyChannel, setSelectedReplyChannel] =
+    React.useState<string>("");
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [showSavedMessages, setShowSavedMessages] =
+    React.useState<string>("community");
+  const [redirectModalOpen, setRedirectModalOpen] =
+    React.useState<boolean>(false);
   React.useEffect(() => {
     if (profileError) {
       // Redirect to login page if there is an error with profile data
@@ -37,7 +53,21 @@ export function AdminSessionProvider({ children }: Props) {
 
   return (
     <AdminSessionContext.Provider
-      value={{ profileData, profileError, isProfileLoading }}
+      value={{
+        profileData,
+        profileError,
+        isProfileLoading,
+        selectedChannel,
+        setSelectedChannel,
+        selectedReplyChannel,
+        setSelectedReplyChannel,
+        isOpen,
+        setIsOpen,
+        redirectModalOpen,
+        setRedirectModalOpen,
+        showSavedMessages,
+        setShowSavedMessages,
+      }}
     >
       {children}
     </AdminSessionContext.Provider>

@@ -1,3 +1,4 @@
+import { useAdminSession } from "@/app/context/admin-context";
 import { useUserSession } from "@/app/context/user-context";
 import DropdownComponent from "@/components/drop-down";
 
@@ -7,10 +8,12 @@ import { useEffect } from "react";
 
 interface iProps {
   data: any;
+  roleType: string;
 }
 
-const CommunityLeftContent: React.FC<iProps> = ({ data }) => {
-  const { setSelectedChannel, setShowSavedMessages } = useUserSession();
+const CommunityLeftContent: React.FC<iProps> = ({ data, roleType }) => {
+  const { setSelectedChannel, setShowSavedMessages } =
+    roleType == "User" ? useUserSession() : useAdminSession();
   useEffect(() => {
     const firstChannelRoomName = data.find(
       (category: any) => category.channels.length > 0
@@ -69,6 +72,7 @@ const CommunityLeftContent: React.FC<iProps> = ({ data }) => {
             itemList={itemList}
             header={category.categoryName}
             mb={4}
+            roleType={roleType}
           />
         );
       })}

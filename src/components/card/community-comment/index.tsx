@@ -41,9 +41,11 @@ import {
 } from "@/services/community";
 import { showSuccessAlert } from "@/utils/alert";
 import { useUserSession } from "@/app/context/user-context";
+import { useAdminSession } from "@/app/context/admin-context";
 interface ICommentProps {
   comment: IComments;
   showUpload?: boolean;
+  roleType: string;
   refreshChannelMessage?: any;
   commentDataInfo: any;
   funSendReply: (message: string) => void;
@@ -51,6 +53,7 @@ interface ICommentProps {
 
 const CommunityCommentCard: React.FC<ICommentProps> = ({
   comment,
+  roleType,
   showUpload = true,
   refreshChannelMessage,
   commentDataInfo,
@@ -71,7 +74,8 @@ const CommunityCommentCard: React.FC<ICommentProps> = ({
   const [commentSaved, setCommentSaved] = useState<boolean>(
     comment?.isSaved || false
   );
-  const { setSelectedReplyChannel } = useUserSession();
+  const { setSelectedReplyChannel } =
+    roleType == "User" ? useUserSession() : useAdminSession();
   const { likeUnlikePayload, likeUnlikeIsLoading } = useCommunityLIkeUnlike(
     (res: any) => {
       showSuccessAlert(res);

@@ -2,7 +2,7 @@
 import React from "react";
 import { Box, Text } from "@chakra-ui/react";
 import MetricsSkeleton from "@/components/card/skeleton/MetricsSkeleton";
-import { InformationIcon } from "@/utils/icons";
+
 import { getStockLabel } from "@/utils";
 import { formatMoneyNumber2 } from "@/components/util";
 import { IMetricData } from "@/interface/stock";
@@ -43,7 +43,7 @@ const MetricData: React.FC<IMetricData> = ({
                     gap={"2px"}
                     alignItems={"center"}
                   >
-                    {getStockLabel(key)} <InformationIcon />
+                    {getStockLabel(key)}
                   </Text>
                   <Text
                     fontWeight={700}
@@ -81,7 +81,7 @@ const MetricData: React.FC<IMetricData> = ({
                     alignItems={"center"}
                     key={index}
                   >
-                    {getStockLabel(key)} <InformationIcon />
+                    {getStockLabel(key)}
                   </Text>
                   <Text
                     fontWeight={700}
@@ -119,7 +119,7 @@ const MetricData: React.FC<IMetricData> = ({
                       gap={"2px"}
                       alignItems={"center"}
                     >
-                      {getStockLabel(key)} <InformationIcon />
+                      {getStockLabel(key)}
                     </Text>
                     <Text
                       fontWeight={700}
@@ -156,7 +156,7 @@ const MetricData: React.FC<IMetricData> = ({
                       gap={"2px"}
                       alignItems={"center"}
                     >
-                      {getStockLabel(key)} <InformationIcon />
+                      {getStockLabel(key)}
                     </Text>
                     <Text
                       fontWeight={700}

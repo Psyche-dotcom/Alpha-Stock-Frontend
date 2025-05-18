@@ -28,6 +28,7 @@ export const ROUTES = {
   },
   ADMIN: {
     USERS: "/admin/users",
+    CommunityChat: "/admin/community",
     STOCKS: "/admin/stocks",
     SUBSCRIPTIONS: "/admin/subscriptions",
     ACCOUNTING: "/admin/accounting",

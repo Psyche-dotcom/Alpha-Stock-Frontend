@@ -28,6 +28,19 @@ export interface ITableProps<T extends DataItem> {
   className?: string;
   isLoading?: boolean;
 }
+export interface ITableProps2<T extends DataItem> {
+  tableData: T[];
+  currentPage?: number;
+  totalPages?: number;
+  basePrice: number;
+  onPageChange?: (page: number) => void;
+  statusKey?: keyof T;
+  defaultRoute?: string;
+  onRowClick?: (item: T) => void;
+  boldColumns?: string[];
+  className?: string;
+  isLoading?: boolean;
+}
 
 export interface MarketMove extends DataItem {
   id: number;

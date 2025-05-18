@@ -31,6 +31,7 @@ import SavedMessageCard from "@/components/card/saved-message";
 import SavedMessageCardSkeleton from "@/components/card/skeleton/savedMessageSkeleton";
 import { useGetSavedMessages } from "@/services/community";
 import { useUploadFile } from "@/services/upload-image";
+import { useAdminSession } from "@/app/context/admin-context";
 interface iProps {
   data: any;
   funSend: (message: string, messageType: string) => void;
@@ -38,6 +39,7 @@ interface iProps {
   refreshChannelMessage: any;
   commentDataInfo: any;
   isLoading?: boolean;
+  roleType: string;
 }
 
 const CommunityMain: React.FC<iProps> = ({
@@ -47,10 +49,17 @@ const CommunityMain: React.FC<iProps> = ({
   isLoading,
   commentDataInfo,
   refreshChannelMessage,
+  roleType,
 }) => {
   const [isUploading, setIsUploading] = useState(false);
-  const { setIsOpen, showSavedMessages, setSelectedReplyChannel } =
-    useUserSession();
+  const {
+    setIsOpen,
+    showSavedMessages,
+    setSelectedReplyChannel,
+    selectedChannel,
+  } = roleType == "User" ? useUserSession() : useAdminSession();
+
+  console.log("selectedChannel", selectedChannel);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewURL, setPreviewURL] = useState<string | null>(null);
@@ -197,6 +206,7 @@ const CommunityMain: React.FC<iProps> = ({
               <Flex flexDirection="column" gap={4}>
                 {data?.map((comment: IComments, index: number) => (
                   <CommunityCommentCard
+                    roleType={roleType}
                     commentDataInfo={commentDataInfo}
                     comment={comment}
                     funSendReply={funSendReply}
@@ -208,93 +218,94 @@ const CommunityMain: React.FC<iProps> = ({
               </Flex>
             )}
           </Box>
-
-          <Box
-            mt={3}
-            minHeight="4.125rem"
-            bg="white"
-            p="12px"
-            py="-12px"
-            borderRadius="8px"
-            zIndex={10}
-            width="100%"
-            boxShadow="xl"
-            mb="20px"
-          >
-            {previewURL && (
-              <div className="bg-white border shadow-lg rounded-sm overflow-hidden w-[60px] z-50">
-                <div className="relative">
-                  <img
-                    src={previewURL}
-                    alt="Preview"
-                    className="w-full h-[60px] object-cover mb-1"
-                  />
-                  <button
-                    onClick={removeFile}
-                    className="absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-lg"
-                  >
-                    <XIcon className="w-3 h-3 text-red-500" />
-                  </button>
-                </div>
-              </div>
-            )}
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex gap-3 items-center"
-              >
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  style={{ display: "none" }}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="xl"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <FileUploadIcon />
-                </Button>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="ghost" size="xl">
-                      <SmileyIcon />
-                    </Button>
-                  </PopoverTrigger>
-
-                  <PopoverContent className="w-auto p-0">
-                    <EmojiPicker
-                      onEmojiClick={handleEmojiClick}
-                      height={350}
-                      width={300}
+          {(roleType === "Admin" || selectedChannel !== "199860") && (
+            <Box
+              mt={3}
+              minHeight="4.125rem"
+              bg="white"
+              p="12px"
+              py="-12px"
+              borderRadius="8px"
+              zIndex={10}
+              width="100%"
+              boxShadow="xl"
+              mb="20px"
+            >
+              {previewURL && (
+                <div className="bg-white border shadow-lg rounded-sm overflow-hidden w-[60px] z-50">
+                  <div className="relative">
+                    <img
+                      src={previewURL}
+                      alt="Preview"
+                      className="w-full h-[60px] object-cover mb-1"
                     />
-                  </PopoverContent>
-                </Popover>
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem className="flex-1 w-full">
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Type here ..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button variant="ghost" size="xl" type="submit">
-                  <SendIcon />
-                </Button>
-              </form>
-            </Form>
-          </Box>
+                    <button
+                      onClick={removeFile}
+                      className="absolute top-1 right-1 bg-white/80 hover:bg-white rounded-full p-1 shadow-lg"
+                    >
+                      <XIcon className="w-3 h-3 text-red-500" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="flex gap-3 items-center"
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="xl"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <FileUploadIcon />
+                  </Button>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="ghost" size="xl">
+                        <SmileyIcon />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <EmojiPicker
+                        onEmojiClick={handleEmojiClick}
+                        height={350}
+                        width={300}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem className="flex-1 w-full">
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Type here ..."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button variant="ghost" size="xl" type="submit">
+                    <SendIcon />
+                  </Button>
+                </form>
+              </Form>
+            </Box>
+          )}
         </>
       )}
     </Box>

@@ -280,9 +280,9 @@ export const sidebarList: ISidebar[] = [
     icon: <MessageIcon />,
   },
   {
-    title: "Reports",
-    path: ROUTES.ADMIN.REPORTSANDFEEDBACKS,
-    icon: <ReportIcon />,
+    title: "Community Chat",
+    path: ROUTES.ADMIN.CommunityChat,
+    icon: <MessageIcon />,
   },
   {
     title: "Blog",

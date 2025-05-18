@@ -9,13 +9,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { DataItem, ITableProps } from "@/types";
+import { DataItem, ITableProps, ITableProps2 } from "@/types";
+
 import { Folder } from "lucide-react";
 import { ReactNode } from "react";
 
 type CellRenderer<T> = (item: T, column: keyof T) => ReactNode;
 
-export interface EnhancedTableProps<T extends DataItem> extends ITableProps<T> {
+export interface EnhancedTableProps<T extends DataItem>
+  extends ITableProps2<T> {
   cellRenderers?: Partial<Record<keyof T, CellRenderer<T>>>;
   columnOrder?: (keyof T)[];
   columnLabels?: Partial<Record<keyof T, string>>;
@@ -25,6 +27,7 @@ export function TableComponent2<T extends DataItem>({
   tableData,
   currentPage,
   totalPages,
+  basePrice,
   onPageChange,
   cellRenderers = {},
   columnOrder,
@@ -87,16 +90,26 @@ export function TableComponent2<T extends DataItem>({
             {tableData.map((item, rowIndex) => (
               <TableRow
                 key={rowIndex}
-                className="border-b border-[#E5E7EB] cursor-pointer hover:bg-[#EBE9E6]/40"
+                className="border-b  border-[#E5E7EB] cursor-pointer hover:bg-[#EBE9E6]/40"
               >
-                {columns.map((column, colIndex) => (
-                  <TableCell
-                    className={cn("py-4 ", colIndex === 0 ? "pl-6" : "")}
-                    key={String(column)}
-                  >
-                    {renderCellContent(item, column)}
-                  </TableCell>
-                ))}
+                {columns.map((column, colIndex) => {
+                  return (
+                    <TableCell
+                      className={cn(
+                        "py-4",
+                        colIndex === 0 && "pl-6",
+                        typeof item[column] === "number"
+                          ? basePrice > item[column]
+                            ? "text-red-500"
+                            : "text-green-500"
+                          : ""
+                      )}
+                      key={String(column)}
+                    >
+                      {renderCellContent(item, column)}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))}
           </TableBody>

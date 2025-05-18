@@ -487,6 +487,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           </Box>
 
           <TableComponent2<DataTypes>
+            basePrice={getStockInfoData[0]?.price}
             tableData={DataSourceAnalyzerResult(predictStockData?.result)}
             cellRenderers={cellRunRenderer}
             columnOrder={columnRunOrder}

@@ -6,7 +6,13 @@ import CommunityMain from "./main";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import useMediaSize from "@/hooks/use-mediasize";
 import { useUserSession } from "@/app/context/user-context";
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import * as signalR from "@microsoft/signalr";
 
 import {
@@ -21,8 +27,11 @@ import {
   mapApiToCommentSignalR,
 } from "@/utils";
 import { CommentData, IComments } from "@/interface/comment";
-
-const Community = () => {
+import { useAdminSession } from "@/app/context/admin-context";
+interface RoleTYpe {
+  roleType: string;
+}
+const Community: React.FC<RoleTYpe> = ({ roleType }) => {
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null
   );
@@ -37,7 +46,7 @@ const Community = () => {
     selectedChannel,
     selectedReplyChannel,
     setRedirectModalOpen,
-  } = useUserSession();
+  } = roleType == "User" ? useUserSession() : useAdminSession();
 
   const {
     setChannelCategoryCountFilter,
@@ -125,7 +134,7 @@ const Community = () => {
       newConnection.stop();
     };
   }, []);
-  console.log("Reply message list", messageReplyList);
+
   // 👇 Handle connection start and message receiving
   useEffect(() => {
     if (
@@ -144,11 +153,9 @@ const Community = () => {
         // Register handler once
         connection.off("ReceiveChannelMessage"); // Prevent duplicate handlers
         connection.on("ReceiveChannelMessage", (message) => {
-          console.log("Received message:", message);
-
           if (message.roomId === selectedChannelRef.current) {
             const newComment = mapApiToCommentSignalR(message);
-            console.log("New comment:", newComment);
+
             setCommunityList((prevList) => [...prevList, newComment]);
           }
         });
@@ -204,7 +211,10 @@ const Community = () => {
     <div className="max-w-[1440px] mx-auto">
       <Box display="flex" gap={4} overflowY="auto" my={4} justifyContent="end">
         <div className="md:block hidden">
-          <CommunityLeftContent data={getChannelCategoryCountData} />
+          <CommunityLeftContent
+            data={getChannelCategoryCountData}
+            roleType={roleType}
+          />
         </div>
         <Box
           flex="1"
@@ -212,6 +222,7 @@ const Community = () => {
           justifySelf="end"
         >
           <CommunityMain
+            roleType={roleType}
             commentDataInfo={messageReplyList}
             data={communityList}
             funSend={sendMessage}
@@ -223,7 +234,10 @@ const Community = () => {
 
         <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
           <DialogContent className="left-0 w-[20rem] h-screen overflow-y-auto bg-white p-[2rem] pt-[3.5rem]">
-            <CommunityLeftContent data={getChannelCategoryCountData} />
+            <CommunityLeftContent
+              data={getChannelCategoryCountData}
+              roleType={roleType}
+            />
           </DialogContent>
         </Dialog>
       </Box>

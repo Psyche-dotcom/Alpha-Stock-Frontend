@@ -1269,7 +1269,8 @@ export function formatMoneyNumber(value: string | number): string {
   }
 }
 export function formatMoneyNumber2(
-  value: string | number | null | undefined
+  value: string | number | null | undefined,
+  ommit: boolean = false
 ): string {
   if (value === null || value === undefined || value === "") return "";
 
@@ -1282,6 +1283,9 @@ export function formatMoneyNumber2(
     if (isPercentage) {
       const num = parseFloat(value.replace("%", "").trim());
       if (isNaN(num)) return value; // return original if not a valid number
+      if (ommit) {
+        return num.toFixed(2) + "%";
+      }
       return (num * 100).toFixed(2) + "%";
     }
 

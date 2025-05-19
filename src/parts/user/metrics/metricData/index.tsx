@@ -126,8 +126,11 @@ const MetricData: React.FC<IMetricData> = ({
                       fontSize={{ base: "12px", sm: "14px" }}
                       color="#111928"
                     >
-                      {/* @ts-ignore */}
-                      {formatMoneyNumber2(value)}
+                      {key.toLowerCase() == "avgroic5yrs"
+                        ? // @ts-ignore
+                          formatMoneyNumber2(value, true)
+                        : // @ts-ignore
+                          formatMoneyNumber2(value)}
                     </Text>
                   </Box>
                 )

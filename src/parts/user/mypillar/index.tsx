@@ -291,7 +291,7 @@ export default function PillarScreener() {
           <div className="flex justify-center">
             <Button
               className={`sm:w-[60%] w-full py-1 px-2 text-white ${
-                selectedFilters.length !== length
+                selectedFilters.length < 1
                   ? "bg-gray-400 pointer-events-none"
                   : "bg-[#351F05]"
               }`}

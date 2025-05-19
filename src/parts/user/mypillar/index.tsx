@@ -199,8 +199,12 @@ export default function PillarScreener() {
   };
 
   const handleSearch = () => {
-    if (selectedFilters.length !== length) {
-      showErrorAlert("You should select exactly 8 filters");
+    if (selectedFilters.length < 1) {
+      showErrorAlert("You should select aleast 1 filters");
+      return;
+    }
+    if (selectedFilters.length > length) {
+      showErrorAlert("You selection should not be more than 8 filters");
       return;
     }
     myAddPillerPayload(selectedFilters);

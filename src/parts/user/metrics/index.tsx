@@ -36,11 +36,12 @@ import {
   formatMoneyNumber2,
 } from "@/components/util";
 import MetricData from "./metricData";
+import { useUserSession } from "@/app/context/user-context";
 
 const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<number>(1);
   const [period, setPeriod] = useState<string>("annual");
-
+  const { setCompanyIdentity } = useUserSession();
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
@@ -162,7 +163,12 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
       eventSource.close();
     };
   }, []);
-
+  useEffect(() => {
+    const companyName = getStockInfoData[0]?.companyName;
+    if (companyName) {
+      setCompanyIdentity(companyName);
+    }
+  }, [getStockInfoData]);
   return (
     <Box>
       <div className="lg:flex xl:gap-4 gap-2 mb-[34.5px]">

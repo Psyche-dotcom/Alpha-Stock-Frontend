@@ -19,6 +19,8 @@ interface UserSessionContextType {
   setRedirectModalOpen: (value: boolean) => void;
   showSavedMessages: string;
   setShowSavedMessages: (value: string) => void;
+  companyIdentity: string;
+  setCompanyIdentity: (value: string) => void;
 }
 
 const UserSessionContext = React.createContext<UserSessionContextType | null>(
@@ -41,6 +43,7 @@ export function UserSessionProvider({ children }: Props) {
     React.useState<string>("community");
   const [redirectModalOpen, setRedirectModalOpen] =
     React.useState<boolean>(false);
+  const [companyIdentity, setCompanyIdentity] = React.useState<string>("");
 
   React.useEffect(() => {
     if (profileError) {
@@ -78,6 +81,8 @@ export function UserSessionProvider({ children }: Props) {
         setRedirectModalOpen,
         showSavedMessages,
         setShowSavedMessages,
+        companyIdentity,
+        setCompanyIdentity,
       }}
     >
       {children}

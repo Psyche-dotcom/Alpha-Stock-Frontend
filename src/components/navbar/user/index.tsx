@@ -64,10 +64,27 @@ const UserNavbar = () => {
   };
 
   return (
-    <div className="bg-white px-4 sticky z-10 top-0 shadow-xl">
+    <div className="bg-white px-4 sticky z-10 top-0 shadow-xl py-3 sm:py-5">
       <div className="flex items-center justify-between lg:gap-[36px] xl:gap-[96px] max-w-[1440px] mx-auto ">
         <Link href={ROUTES.USER.HOME} passHref>
-          <CompanyIcon />
+          <div className="hidden lg:block">
+            <Image
+              src="/assets/images/alpha-desktop.png"
+              width={100}
+              height={60}
+              alt="Company logo"
+              className="w-full"
+            />
+          </div>
+          <div className="block lg:hidden">
+            <Image
+              src="/assets/images/company-mobile.png"
+              width={60}
+              height={40}
+              alt="Company logo"
+              className="w-full"
+            />
+          </div>
         </Link>
         <div
           className="lg:hidden cursor-pointer"

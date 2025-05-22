@@ -26,12 +26,10 @@ const Navbar = () => {
       <div className="py-3 flex items-center lg:gap-[64px] xl:gap-[96px] justify-between max-w-[1440px] mx-auto">
         <Link href={"/"} passHref>
           <div className="hidden lg:block">
-            <Image
+            <img
               src="/assets/images/alpha-desktop.png"
-              width={100}
-              height={60}
               alt="Company logo"
-              className="w-full"
+              className="w-full h-[40px] object-cover"
             />
           </div>
           <div className="block lg:hidden">

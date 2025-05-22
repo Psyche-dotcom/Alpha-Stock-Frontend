@@ -4,7 +4,7 @@ import { Box, Text } from "@chakra-ui/react";
 import MetricsSkeleton from "@/components/card/skeleton/MetricsSkeleton";
 
 import { getStockLabel } from "@/utils";
-import { formatMoneyNumber2 } from "@/components/util";
+import { formatMoneyNumber, formatMoneyNumber2 } from "@/components/util";
 import { IMetricData } from "@/interface/stock";
 const MetricData: React.FC<IMetricData> = ({
   getMetricsIsLoading,

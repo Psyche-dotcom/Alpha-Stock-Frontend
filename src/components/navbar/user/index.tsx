@@ -64,19 +64,18 @@ const UserNavbar = () => {
   };
 
   return (
-    <div className="bg-white px-4 sticky z-10 top-0 shadow-xl py-3 sm:py-5">
+    <div className="bg-white px-4 sticky z-10 top-0 shadow-xl">
       <div className="flex items-center justify-between lg:gap-[36px] xl:gap-[96px] max-w-[1440px] mx-auto ">
-        <Link href={ROUTES.USER.HOME} passHref>
-          <div className="hidden lg:block">
-            <Image
-              src="/assets/images/alpha-desktop.png"
-              width={100}
-              height={60}
-              alt="Company logo"
-              className="w-full"
-            />
-          </div>
-          <div className="block lg:hidden">
+        <Link href={ROUTES.USER.HOME} passHref className="hidden lg:block">
+          <img
+            src="/assets/images/alpha-desktop.png"
+            alt="Company logo"
+            className="w-full h-[40px] object-cover my-4"
+          />
+        </Link>
+
+        <div className="block lg:hidden my-4">
+          <Link href={ROUTES.USER.HOME} passHref>
             <Image
               src="/assets/images/company-mobile.png"
               width={60}
@@ -84,8 +83,9 @@ const UserNavbar = () => {
               alt="Company logo"
               className="w-full"
             />
-          </div>
-        </Link>
+          </Link>
+        </div>
+
         <div
           className="lg:hidden cursor-pointer"
           onClick={() => setShowNavbar(!showNavbar)}

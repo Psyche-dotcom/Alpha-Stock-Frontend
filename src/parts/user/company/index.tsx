@@ -13,6 +13,7 @@ import { useUserSession } from "@/app/context/user-context";
 import { useEffect, useState } from "react";
 import { ChevronRight, House } from "lucide-react";
 import { HomeSpecIcon } from "@/utils/icons";
+import Link from "next/link";
 interface iProps {
   symbol: string;
 }
@@ -48,36 +49,43 @@ const Company: React.FC<iProps> = ({ symbol }) => {
 
   return (
     <>
-      <div className="flex mt-5 max-w-[1440px] mx-auto">
-        <div className="flex gap-2 mb-8 bg-white rounded-lg py-2 md:px-4 px-2">
-          {searchTab.map((tab, index: number) => (
-            <Button
-              variant={
-                activeTab === "" || tab?.value === activeTab
-                  ? "secondary"
-                  : "ghost"
-              }
-              key={index}
-              btnText={tab?.title}
-              onClick={() =>
-                handlePush(`/user/company/${symbol}?tab=${tab.value}`)
-              }
-              className={`font-normal xl:text-base text-xs lg:text-base sm:text-sm ${
-                tab?.value === activeTab
-                  ? "bg-[#351F05] text-white py-3 sm:px-4 px-2"
-                  : "p-0 text-[#6B7280]"
-              }`}
-            />
-          ))}
+      <section className="max-w-[1440px] mx-auto">
+        <div className="flex mt-5 ">
+          <div className="flex gap-2 mb-8 bg-white rounded-lg py-2 md:px-4 px-2">
+            {searchTab.map((tab, index: number) => (
+              <Button
+                variant={
+                  activeTab === "" || tab?.value === activeTab
+                    ? "secondary"
+                    : "ghost"
+                }
+                key={index}
+                btnText={tab?.title}
+                onClick={() =>
+                  handlePush(`/user/company/${symbol}?tab=${tab.value}`)
+                }
+                className={`font-normal xl:text-base text-xs lg:text-base sm:text-sm ${
+                  tab?.value === activeTab
+                    ? "bg-[#351F05] text-white py-3 sm:px-4 px-2"
+                    : "p-0 text-[#6B7280]"
+                }`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className="mb-4 bg-[#351F05] text-sm w-fit flex font-medium items-center gap-4 px-3 py-2 rounded-md text-white">
-        <HomeSpecIcon />
-        <p>Market</p>
-        <ChevronRight size={16} color="#A4998C" />
-        <p className="uppercase">{companyIdentity}</p>
-      </div>
+        <div className="mb-4 bg-[#351F05] text-sm w-fit flex font-medium items-center gap-4 px-3 py-2 rounded-md text-white">
+          <Link
+            href={`/user/company/${symbol}?tab=metrics`}
+            passHref
+            className="flex gap-4"
+          >
+            <HomeSpecIcon />
+            <p>Market</p>
+          </Link>
+          <ChevronRight size={16} color="#A4998C" />
+          <p className="uppercase">{companyIdentity}</p>
+        </div>
+      </section>
 
       <div className="max-w-[1440px] mx-auto">{renderItem()}</div>
     </>

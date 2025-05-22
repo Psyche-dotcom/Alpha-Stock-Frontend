@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { Box } from "@chakra-ui/react";
 import { useHandlePush } from "@/hooks/handlePush";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -22,9 +23,26 @@ const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
   return (
     <div className="bg-white px-4">
-      <div className="flex items-center lg:gap-[64px] xl:gap-[96px] justify-between max-w-[1440px] mx-auto">
+      <div className="py-3 flex items-center lg:gap-[64px] xl:gap-[96px] justify-between max-w-[1440px] mx-auto">
         <Link href={"/"} passHref>
-          <CompanyIcon />
+          <div className="hidden lg:block">
+            <Image
+              src="/assets/images/alpha-desktop.png"
+              width={100}
+              height={60}
+              alt="Company logo"
+              className="w-full"
+            />
+          </div>
+          <div className="block lg:hidden">
+            <Image
+              src="/assets/images/company-mobile.png"
+              width={60}
+              height={40}
+              alt="Company logo"
+              className="w-full"
+            />
+          </div>
         </Link>
         <div className="lg:gap-[64px] xl:gap-[96px] hidden lg:flex items-center flex-1">
           <div className="flex me-auto lg:gap-1 gl:gap-2  items-center justify-between">

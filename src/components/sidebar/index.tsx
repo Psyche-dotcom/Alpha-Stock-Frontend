@@ -7,6 +7,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { LinkButton } from "../button/link-button";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const Sidebar = () => {
   const path = usePathname();
@@ -22,7 +23,13 @@ const Sidebar = () => {
       overflowY={"auto"}
     >
       <Box mb={4} display="flex" justifyContent="center">
-        <CompanyIcon />
+        <Image
+          src="/assets/images/alpha-desktop.png"
+          width={100}
+          height={60}
+          alt="Company logo"
+          className="w-full"
+        />
       </Box>
       <Flex flexDirection={"column"} gap="16px">
         {sidebarList.map((sidebar: ISidebar, index: number) => (

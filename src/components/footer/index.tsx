@@ -43,8 +43,9 @@ const Footer = () => {
       gridTemplateColumns={{ md: "repeat(2, 1fr)" }}
       justifyContent={{ md: "center" }}
       gap={4}
-      mt={"103px"}
+      mt={{ base: "30px", sm: "60px", lg: "80px" }}
       flexDirection={{ base: "column", sm: "row" }}
+      mx={4}
     >
       <Flex
         alignItems={"center"}

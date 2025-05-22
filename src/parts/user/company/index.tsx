@@ -10,7 +10,9 @@ import Financials from "../financials";
 import Fundamentals from "../fundamentals";
 import Analyzer from "../analyzer";
 import { useUserSession } from "@/app/context/user-context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ChevronRight, House } from "lucide-react";
+import { HomeSpecIcon } from "@/utils/icons";
 interface iProps {
   symbol: string;
 }
@@ -19,7 +21,8 @@ const Company: React.FC<iProps> = ({ symbol }) => {
   const param = useSearchParams();
   const activeTab = param.get("tab");
   const { handlePush } = useHandlePush();
-  const { profileData, setRedirectModalOpen } = useUserSession();
+  const { profileData, setRedirectModalOpen, companyIdentity } =
+    useUserSession();
   useEffect(() => {
     if (!profileData?.result?.isSubActive) {
       setRedirectModalOpen(true);
@@ -68,6 +71,14 @@ const Company: React.FC<iProps> = ({ symbol }) => {
           ))}
         </div>
       </div>
+
+      <div className="mb-4 bg-[#351F05] text-sm w-fit flex font-medium items-center gap-4 px-3 py-2 rounded-md text-white">
+        <HomeSpecIcon />
+        <p>Market</p>
+        <ChevronRight size={16} color="#A4998C" />
+        <p className="uppercase">{companyIdentity}</p>
+      </div>
+
       <div className="max-w-[1440px] mx-auto">{renderItem()}</div>
     </>
   );

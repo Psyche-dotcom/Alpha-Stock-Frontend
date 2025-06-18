@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "npm run lint:fix && next build",
+    "vercel-build": "npm install --legacy-peer-deps && next build",
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {

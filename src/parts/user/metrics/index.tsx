@@ -260,19 +260,19 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
         </div>
       </div> */}
       <div className="bg-white p-4 rounded-[12px] max-h-[500px]">
-        {getStockInfoEodIsLoadingChart ? null : getStockInfoEodIsLoadingChart ===
+        {/* {getStockInfoEodIsLoadingChart ? null : getStockInfoEodIsLoadingChart ===
             false && getStockInfoEodDataChart?.length > 0 ? (
-          <>
+          <> */}
             {/* <StockChartSwitcher stockData={getStockInfoEodDataChart} /> */}
             <div className="w-full h-[400px] mx-auto px-1 rounded">
               <TradingviewWidget symbol={symbol} />
             </div>
-          </>
+          {/* </>
         ) : (
           <p className="text-center">
             There is no EOD chart data for the date range selected
           </p>
-        )}
+        )} */}
       </div>
       <MetricData
         getMetricsIsLoading={getMetricsIsLoading}

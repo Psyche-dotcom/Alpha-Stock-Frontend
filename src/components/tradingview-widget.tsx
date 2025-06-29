@@ -5,7 +5,7 @@ import { LineChart, CandlestickChart } from "lucide-react";
 
 function TradingViewWidget({ symbol }: { symbol: string }) {
   const container = useRef<HTMLDivElement | null>(null);
-  const [chartType, setChartType] = useState<"candlesticks" | "area">("candlesticks");
+  const [chartType, setChartType] = useState<"candlesticks" | "area">("area");
 
   useEffect(() => {
     if (!container.current) return;

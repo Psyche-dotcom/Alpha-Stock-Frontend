@@ -29,9 +29,10 @@ const MarketMoveContent = () => {
           url: "/assets/images/card-image.png",
           agent: stock.symbol,
           price: stock.price.toFixed(2),
-          changeValue: stock.change,
+          name: stock.name,
+          changeValue: stock.change.toFixed(2),
           changeProgress: stock.change > 0,
-          changePercent: stock.changesPercentage,
+          changePercent: stock.changesPercentage.toFixed(2),
           changePercentProgress: stock.change > 0,
         }));
 
@@ -48,8 +49,11 @@ const MarketMoveContent = () => {
   }, [marketFilter]);
 
   const cellRenderers = {
+    name: (record: MarketMove) => (
+      <p className="font-semibold text-left">{record?.name}</p>
+    ),
     symbol: (record: MarketMove) => (
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center justify-center">
         {/* <div className="h-6 w-6">
           <Image
             src={record?.url || "/assets/images/card-image.png"}
@@ -59,11 +63,13 @@ const MarketMoveContent = () => {
             className="rounded-full object-cover h-full w-full"
           />
         </div> */}
-        <p className="font-semibold text-xs text-[#111928]">{record?.agent}</p>
+        <p className="font-semibold text-xs text-center text-[#111928]">
+          {record?.agent}
+        </p>
       </div>
     ),
     price: (item: MarketMove) => (
-      <p className="font-semibold text-center">{item?.price}</p>
+      <p className="font-semibold text-center">{item?.price} $</p>
     ),
     change: (record: MarketMove) => (
       <p
@@ -71,7 +77,7 @@ const MarketMoveContent = () => {
           record?.changeProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
         }`}
       >
-        {record?.changeValue}
+        {record?.changeValue} $
       </p>
     ),
     changePercent: (record: MarketMove) => (
@@ -80,12 +86,13 @@ const MarketMoveContent = () => {
           record?.changePercentProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
         }`}
       >
-        {record?.changePercent}
+        {record?.changePercent} %
       </p>
     ),
   };
 
   const columnOrder: (keyof MarketMove)[] = [
+    "name",
     "symbol",
     "price",
     "change",
@@ -93,6 +100,7 @@ const MarketMoveContent = () => {
   ];
 
   const columnLabels = {
+    name: "NAME",
     symbol: "SYMBOL",
     price: "LAST PRICE",
     change: "CHANGE",

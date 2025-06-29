@@ -265,7 +265,7 @@ export const AlldataSourceFinance = (
       dataSources = [
         {
           id: 17,
-          title: "Ebit",
+          title: "EBIT",
           row1: Data[0]?.ebit,
           row2: Data[1]?.ebit,
           row3: Data[2]?.ebit,
@@ -275,7 +275,7 @@ export const AlldataSourceFinance = (
 
         {
           id: 29,
-          title: "Eps",
+          title: "EPS",
           row1: Data[0]?.eps,
           row2: Data[1]?.eps,
           row3: Data[2]?.eps,
@@ -297,7 +297,7 @@ export const AlldataSourceFinance = (
       dataSources = [
         {
           id: 18,
-          title: "Ebitda",
+          title: "EBITDA",
           row1: Data[0]?.ebitda,
           row2: Data[1]?.ebitda,
           row3: Data[2]?.ebitda,
@@ -307,7 +307,7 @@ export const AlldataSourceFinance = (
 
         {
           id: 30,
-          title: "Eps Diluted",
+          title: "EPS Diluted",
           row1: Data[0]?.epsDiluted,
           row2: Data[1]?.epsDiluted,
           row3: Data[2]?.epsDiluted,
@@ -330,7 +330,7 @@ export const AlldataSourceFinance = (
       dataSources = [
         {
           id: 31,
-          title: "Weighted Average Shs Out",
+          title: "Average Basic Shares Outstanding",
           row1: Data[0]?.weightedAverageShsOut,
           row2: Data[1]?.weightedAverageShsOut,
           row3: Data[2]?.weightedAverageShsOut,
@@ -339,7 +339,7 @@ export const AlldataSourceFinance = (
         },
         {
           id: 32,
-          title: "Weighted Average Shs Out Dil",
+          title: "Average Diluted Shares Outstanding",
           row1: Data[0]?.weightedAverageShsOutDil,
           row2: Data[1]?.weightedAverageShsOutDil,
           row3: Data[2]?.weightedAverageShsOutDil,

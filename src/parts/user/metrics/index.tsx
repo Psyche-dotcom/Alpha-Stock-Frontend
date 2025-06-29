@@ -38,6 +38,8 @@ import {
 import MetricData from "./metricData";
 import { useUserSession } from "@/app/context/user-context";
 import TradingviewWidget from "@/components/tradingview-widget";
+import CompanyInfoCard from "@/components/card/company-info-card";
+import { ArrowRight } from "lucide-react";
 
 const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<number>(1);
@@ -278,7 +280,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
       />
 
       <Box display={{ md: "flex" }} gap={4} mt={{ base: 4, md: 8 }}>
-        <div className="rounded-[12px] p-2.5 bg-white w-full mb-6">
+        <div className="rounded-[12px] p-4 bg-white w-full mb-6">
           {getStockInfoIsLoading ? (
             <>
               <Skeleton height="28px" width="50%" mb="10px" />
@@ -286,16 +288,29 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
             </>
           ) : getStockInfoData?.length > 0 ? (
             <>
-              <Text fontWeight={700} fontSize={24} color="#111928" mb="10px">
-                About {getStockInfoData[0]?.companyName}
-              </Text>
-              <Text fontWeight={400} fontSize={16}>
+              {/* Title and Button aligned */}
+              <div className="flex justify-between items-center mb-3">
+                <Text fontWeight={700} fontSize={24} color="#111928">
+                  About {getStockInfoData[0]?.companyName}
+                </Text>
+
+                <a
+                  href={`https://www.sec.gov/edgar/browse/?CIK=${getStockInfoData[0]?.cik}`}
+                  target="_blank"
+                  className="flex items-center gap-2 bg-[#351F05] text-white px-4 py-2 rounded-md hover:opacity-80 transition text-sm font-semibold shadow-sm"
+                >
+                  Annual Reports
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+
+              <Text fontWeight={400} fontSize={16} color="#4B5563">
                 {getStockInfoData[0]?.description}
               </Text>
             </>
           ) : null}
         </div>
-        <Box
+        {/* <Box
           borderRadius="12px"
           p={"10px"}
           mt={{ base: 4, lg: 0 }}
@@ -324,7 +339,18 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
                   )
                 )}
           </Grid>
-        </Box>
+        </Box> */}
+        {getStockInfoIsLoading ? (
+          <Skeleton height="200px" />
+        ) : getStockInfoData?.length > 0 ? (
+          <CompanyInfoCard
+            ceo={getStockInfoData[0]?.ceo}
+            foundationDate={getStockInfoData[0]?.ipoDate}
+            location={`${getStockInfoData[0]?.city} (${getStockInfoData[0]?.state}), ${getStockInfoData[0]?.country}`}
+            website={getStockInfoData[0]?.website}
+            fullTimeEmployees={getStockInfoData[0]?.fullTimeEmployees}
+          />
+        ) : null}
       </Box>
     </Box>
   );

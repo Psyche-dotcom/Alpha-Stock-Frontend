@@ -110,7 +110,7 @@ const User: React.FC = () => {
           ))}
         </Grid>
         <div className="flex items-center justify-center mt-4 cursor-pointer text-[#351F05] hover:underline">
-          <Link href="/blog">See more</Link>
+          <Link href="/user/news">See more</Link>
         </div>
       </div>
     </div>

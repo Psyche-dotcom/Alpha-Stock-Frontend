@@ -5,6 +5,7 @@ import { Spinner } from "@chakra-ui/react";
 import Link from "next/link";
 import { useGetCompanies } from "@/services/home";
 import { useUserSession } from "@/app/context/user-context";
+import { Search } from "lucide-react";
 
 interface iProps {
   isAuth?: boolean;
@@ -26,11 +27,11 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
     companiesRefetch,
   } = useGetCompanies({ enabled: enableSearch });
 
-  const handleFocus = () => {
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
-  };
+  // const handleFocus = () => {
+  //   if (inputRef.current) {
+  //     inputRef.current.blur();
+  //   }
+  // };
 
   // const handleBlur = (event: any) => {
   //   if (
@@ -83,14 +84,18 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
       <div className="flex-1 flex justify-end md:justify-between items-center gap-3 lg:gap-6">
         <div className="flex-1 hidden md:block">
           <div className="max-w-[500px] relative">
-            <input
-              placeholder="Find a stock"
-              onChange={handleInputChange}
-              value={searchQuery}
-              onFocus={handleFocus}
-              // onBlur={handleBlur}
-              className="w-full custom-input rounded-xl"
-            />
+            <div className="relative w-full max-w-[500px]">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Find a stock"
+                onChange={handleInputChange}
+                value={searchQuery}
+                // onFocus={handleFocus}
+                ref={inputRef}
+                className="w-full py-2 pl-12 pr-4 rounded-3xl border border-gray-300 focus:outline-none"
+              />
+            </div>
 
             <div ref={dropdownRef}>
               {searchQuery !== "" && showDropdown && (

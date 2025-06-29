@@ -47,6 +47,7 @@ export interface MarketMove extends DataItem {
   url: string;
   agent: string;
   price: number;
+  name: string;
   changeValue: number;
   changeProgress: boolean;
   changePercent: number;

@@ -7,11 +7,54 @@ import { IButtonFilter2 } from "@/interface/button-filter";
 import { IStock, IStockData } from "@/interface/stock-view";
 import { MarketMove } from "@/types";
 import { ShineIcon } from "@/utils/icons";
+import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useGetIsWishListAdded } from "@/services/stock";
+import { useDeleteWishlist } from "@/services/wishlist";
+import AddWishlist from "@/parts/user/profiles/watchlist/add-wishlist";
+import DeleteContent from "@/components/delete-content";
+import { record } from "zod";
 
 const MarketMoveContent = () => {
   const [marketFilter, setMarketFilter] = useState<string>("MostTraded");
+  const [isWishListAddedState, setIsWishListAddedState] =
+    useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const {
+    getWishlistIsAddedData,
+    getWishlistIsAddedFilter,
+    getWishlistIsAddedIsLoading,
+    setWishlistIsAddedFilter,
+    refetchGetWishlistIsAdded,
+    getWishlistIsAddedError,
+  } = useGetIsWishListAdded({ enabled: isWishListAddedState });
+  // useEffect(() => {
+  //   setWishlistIsAddedFilter({ symbol: symbol });
+  //   setIsWishListAddedState(true);
+  // }, []);
+  const { deleteWishlistData, deleteWishlistIsLoading, deleteWishlistPayload } =
+    useDeleteWishlist((res: any) => {
+      refetchGetWishlistIsAdded();
+      setIsOpen(false);
+    });
+  const payload = {
+    stockwishlistId: getWishlistIsAddedData?.wishListId,
+  };
+  const renderItem = () => {
+    return (
+      <DeleteContent
+        setOpen={() => setIsOpen(false)}
+        header="Remove Stock From Watchlist"
+        description="Are you sure you want to delete stock wishlist?"
+        handleDelete={() => deleteWishlistPayload(payload)}
+        loading={deleteWishlistIsLoading}
+      />
+    );
+  };
+
   const [stockNewData, setNewStockData] = useState<MarketMove[]>([]);
   useEffect(() => {
     const eventSource = new EventSource(
@@ -89,6 +132,32 @@ const MarketMoveContent = () => {
         {record?.changePercent} %
       </p>
     ),
+    watchlist: (record: MarketMove) => (
+      <>
+        <Plus
+          className="h-4 w-4 text-center border rounded-md"
+          onClick={() => {
+            setIsAddOpen(true);
+          }}
+        />
+        <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
+          <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
+            {renderItem()}
+          </DialogContent>
+        </Dialog>
+        <Dialog open={isAddOpen} onOpenChange={() => setIsAddOpen(false)}>
+          <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
+            <AddWishlist
+              handleSuccess={() => {
+                refetchGetWishlistIsAdded();
+                setIsAddOpen(false);
+              }}
+              symbol={record?.agent}
+            />
+          </DialogContent>
+        </Dialog>
+      </>
+    ),
   };
 
   const columnOrder: (keyof MarketMove)[] = [
@@ -97,6 +166,7 @@ const MarketMoveContent = () => {
     "price",
     "change",
     "changePercent",
+    "watchlist",
   ];
 
   const columnLabels = {
@@ -105,6 +175,7 @@ const MarketMoveContent = () => {
     price: "LAST PRICE",
     change: "CHANGE",
     changePercent: "%CHANGE",
+    watchlist: "",
   };
 
   return (

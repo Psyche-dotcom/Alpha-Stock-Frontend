@@ -11,6 +11,11 @@ export const AlldataSourceFinance = (
     row3?: any;
     row4?: any;
     row5?: any;
+    row6?: any;
+    row7?: any;
+    row8?: any;
+    row9?: any;
+    row10?: any;
   }[] = [];
 
   if (filter == "income-statements") {
@@ -24,6 +29,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.revenue,
           row4: Data[3]?.revenue,
           row5: Data[4]?.revenue,
+          row6: Data[5]?.revenue,
+          row7: Data[6]?.revenue,
+          row8: Data[7]?.revenue,
+          row9: Data[8]?.revenue,
+          row10: Data[9]?.revenue,
         },
         {
           id: 4,
@@ -33,6 +43,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.costOfRevenue,
           row4: Data[3]?.costOfRevenue,
           row5: Data[4]?.costOfRevenue,
+          row6: Data[5]?.costOfRevenue,
+          row7: Data[6]?.costOfRevenue,
+          row8: Data[7]?.costOfRevenue,
+          row9: Data[8]?.costOfRevenue,
+          row10: Data[9]?.costOfRevenue,
         },
         {
           id: 12,
@@ -42,6 +57,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.costAndExpenses,
           row4: Data[3]?.costAndExpenses,
           row5: Data[4]?.costAndExpenses,
+          row6: Data[5]?.costAndExpenses,
+          row7: Data[6]?.costAndExpenses,
+          row8: Data[7]?.costAndExpenses,
+          row9: Data[8]?.costAndExpenses,
+          row10: Data[9]?.costAndExpenses,
         },
         {
           id: 5,
@@ -51,6 +71,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.grossProfit,
           row4: Data[3]?.grossProfit,
           row5: Data[4]?.grossProfit,
+          row6: Data[5]?.grossProfit,
+          row7: Data[6]?.grossProfit,
+          row8: Data[7]?.grossProfit,
+          row9: Data[8]?.grossProfit,
+          row10: Data[9]?.grossProfit,
         },
         {
           id: 6,
@@ -60,6 +85,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.researchAndDevelopmentExpenses,
           row4: Data[3]?.researchAndDevelopmentExpenses,
           row5: Data[4]?.researchAndDevelopmentExpenses,
+          row6: Data[5]?.researchAndDevelopmentExpenses,
+          row7: Data[6]?.researchAndDevelopmentExpenses,
+          row8: Data[7]?.researchAndDevelopmentExpenses,
+          row9: Data[8]?.researchAndDevelopmentExpenses,
+          row10: Data[9]?.researchAndDevelopmentExpenses,
         },
 
         {
@@ -70,6 +100,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.sellingAndMarketingExpenses,
           row4: Data[3]?.sellingAndMarketingExpenses,
           row5: Data[4]?.sellingAndMarketingExpenses,
+          row6: Data[5]?.sellingAndMarketingExpenses,
+          row7: Data[6]?.sellingAndMarketingExpenses,
+          row8: Data[7]?.sellingAndMarketingExpenses,
+          row9: Data[8]?.sellingAndMarketingExpenses,
+          row10: Data[9]?.sellingAndMarketingExpenses,
         },
         {
           id: 9,
@@ -79,6 +114,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.sellingGeneralAndAdministrativeExpenses,
           row4: Data[3]?.sellingGeneralAndAdministrativeExpenses,
           row5: Data[4]?.sellingGeneralAndAdministrativeExpenses,
+          row6: Data[5]?.sellingGeneralAndAdministrativeExpenses,
+          row7: Data[6]?.sellingGeneralAndAdministrativeExpenses,
+          row8: Data[7]?.sellingGeneralAndAdministrativeExpenses,
+          row9: Data[8]?.sellingGeneralAndAdministrativeExpenses,
+          row10: Data[9]?.sellingGeneralAndAdministrativeExpenses,
         },
         {
           id: 21,
@@ -88,6 +128,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalOtherIncomeExpensesNet,
           row4: Data[3]?.totalOtherIncomeExpensesNet,
           row5: Data[4]?.totalOtherIncomeExpensesNet,
+          row6: Data[5]?.totalOtherIncomeExpensesNet,
+          row7: Data[6]?.totalOtherIncomeExpensesNet,
+          row8: Data[7]?.totalOtherIncomeExpensesNet,
+          row9: Data[8]?.totalOtherIncomeExpensesNet,
+          row10: Data[9]?.totalOtherIncomeExpensesNet,
         },
         {
           id: 11,
@@ -97,6 +142,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.operatingExpenses,
           row4: Data[3]?.operatingExpenses,
           row5: Data[4]?.operatingExpenses,
+          row6: Data[5]?.operatingExpenses,
+          row7: Data[6]?.operatingExpenses,
+          row8: Data[7]?.operatingExpenses,
+          row9: Data[8]?.operatingExpenses,
+          row10: Data[9]?.operatingExpenses,
         },
         {
           id: 20,
@@ -106,6 +156,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.operatingIncome,
           row4: Data[3]?.operatingIncome,
           row5: Data[4]?.operatingIncome,
+          row6: Data[5]?.operatingIncome,
+          row7: Data[6]?.operatingIncome,
+          row8: Data[7]?.operatingIncome,
+          row9: Data[8]?.operatingIncome,
+          row10: Data[9]?.operatingIncome,
         },
         {
           id: 10,
@@ -115,6 +170,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherExpenses,
           row4: Data[3]?.otherExpenses,
           row5: Data[4]?.otherExpenses,
+          row6: Data[5]?.otherExpenses,
+          row7: Data[6]?.otherExpenses,
+          row8: Data[7]?.otherExpenses,
+          row9: Data[8]?.otherExpenses,
+          row10: Data[9]?.otherExpenses,
         },
         {
           id: 35,
@@ -124,6 +184,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netInterestIncome,
           row4: Data[3]?.netInterestIncome,
           row5: Data[4]?.netInterestIncome,
+          row6: Data[5]?.netInterestIncome,
+          row7: Data[6]?.netInterestIncome,
+          row8: Data[7]?.netInterestIncome,
+          row9: Data[8]?.netInterestIncome,
+          row10: Data[9]?.netInterestIncome,
         },
         {
           id: 14,
@@ -133,6 +198,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.interestIncome,
           row4: Data[3]?.interestIncome,
           row5: Data[4]?.interestIncome,
+          row6: Data[5]?.interestIncome,
+          row7: Data[6]?.interestIncome,
+          row8: Data[7]?.interestIncome,
+          row9: Data[8]?.interestIncome,
+          row10: Data[9]?.interestIncome,
         },
         {
           id: 23,
@@ -142,6 +212,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.incomeBeforeTax,
           row4: Data[3]?.incomeBeforeTax,
           row5: Data[4]?.incomeBeforeTax,
+          row6: Data[5]?.incomeBeforeTax,
+          row7: Data[6]?.incomeBeforeTax,
+          row8: Data[7]?.incomeBeforeTax,
+          row9: Data[8]?.incomeBeforeTax,
+          row10: Data[9]?.incomeBeforeTax,
         },
         {
           id: 24,
@@ -151,6 +226,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.incomeTaxExpense,
           row4: Data[3]?.incomeTaxExpense,
           row5: Data[4]?.incomeTaxExpense,
+          row6: Data[5]?.incomeTaxExpense,
+          row7: Data[6]?.incomeTaxExpense,
+          row8: Data[7]?.incomeTaxExpense,
+          row9: Data[8]?.incomeTaxExpense,
+          row10: Data[9]?.incomeTaxExpense,
         },
 
         {
@@ -161,6 +241,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.interestExpense,
           row4: Data[3]?.interestExpense,
           row5: Data[4]?.interestExpense,
+          row6: Data[5]?.interestExpense,
+          row7: Data[6]?.interestExpense,
+          row8: Data[7]?.interestExpense,
+          row9: Data[8]?.interestExpense,
+          row10: Data[9]?.interestExpense,
         },
 
         {
@@ -171,6 +256,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netIncomeDeductions,
           row4: Data[3]?.netIncomeDeductions,
           row5: Data[4]?.netIncomeDeductions,
+          row6: Data[5]?.netIncomeDeductions,
+          row7: Data[6]?.netIncomeDeductions,
+          row8: Data[7]?.netIncomeDeductions,
+          row9: Data[8]?.netIncomeDeductions,
+          row10: Data[9]?.netIncomeDeductions,
         },
         {
           id: 24,
@@ -180,6 +270,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netIncomeFromContinuingOperations,
           row4: Data[3]?.netIncomeFromContinuingOperations,
           row5: Data[4]?.netIncomeFromContinuingOperations,
+          row6: Data[5]?.netIncomeFromContinuingOperations,
+          row7: Data[6]?.netIncomeFromContinuingOperations,
+          row8: Data[7]?.netIncomeFromContinuingOperations,
+          row9: Data[8]?.netIncomeFromContinuingOperations,
+          row10: Data[9]?.netIncomeFromContinuingOperations,
         },
         {
           id: 25,
@@ -189,6 +284,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netIncomeFromDiscontinuedOperations,
           row4: Data[3]?.netIncomeFromDiscontinuedOperations,
           row5: Data[4]?.netIncomeFromDiscontinuedOperations,
+          row6: Data[5]?.netIncomeFromDiscontinuedOperations,
+          row7: Data[6]?.netIncomeFromDiscontinuedOperations,
+          row8: Data[7]?.netIncomeFromDiscontinuedOperations,
+          row9: Data[8]?.netIncomeFromDiscontinuedOperations,
+          row10: Data[9]?.netIncomeFromDiscontinuedOperations,
         },
 
         {
@@ -199,6 +299,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.nonOperatingIncomeExcludingInterest,
           row4: Data[3]?.nonOperatingIncomeExcludingInterest,
           row5: Data[4]?.nonOperatingIncomeExcludingInterest,
+          row6: Data[5]?.nonOperatingIncomeExcludingInterest,
+          row7: Data[6]?.nonOperatingIncomeExcludingInterest,
+          row8: Data[7]?.nonOperatingIncomeExcludingInterest,
+          row9: Data[8]?.nonOperatingIncomeExcludingInterest,
+          row10: Data[9]?.nonOperatingIncomeExcludingInterest,
         },
 
         {
@@ -209,6 +314,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.bottomLineNetIncome,
           row4: Data[3]?.bottomLineNetIncome,
           row5: Data[4]?.bottomLineNetIncome,
+          row6: Data[5]?.bottomLineNetIncome,
+          row7: Data[6]?.bottomLineNetIncome,
+          row8: Data[7]?.bottomLineNetIncome,
+          row9: Data[8]?.bottomLineNetIncome,
+          row10: Data[9]?.bottomLineNetIncome,
         },
 
         {
@@ -219,6 +329,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.depreciationAndAmortization,
           row4: Data[3]?.depreciationAndAmortization,
           row5: Data[4]?.depreciationAndAmortization,
+          row6: Data[5]?.depreciationAndAmortization,
+          row7: Data[6]?.depreciationAndAmortization,
+          row8: Data[7]?.depreciationAndAmortization,
+          row9: Data[8]?.depreciationAndAmortization,
+          row10: Data[9]?.depreciationAndAmortization,
         },
 
         {
@@ -229,6 +344,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.generalAndAdministrativeExpenses,
           row4: Data[3]?.generalAndAdministrativeExpenses,
           row5: Data[4]?.generalAndAdministrativeExpenses,
+          row6: Data[5]?.generalAndAdministrativeExpenses,
+          row7: Data[6]?.generalAndAdministrativeExpenses,
+          row8: Data[7]?.generalAndAdministrativeExpenses,
+          row9: Data[8]?.generalAndAdministrativeExpenses,
+          row10: Data[9]?.generalAndAdministrativeExpenses,
         },
 
         {
@@ -239,6 +359,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherAdjustmentsToNetIncome,
           row4: Data[3]?.otherAdjustmentsToNetIncome,
           row5: Data[4]?.otherAdjustmentsToNetIncome,
+          row6: Data[5]?.otherAdjustmentsToNetIncome,
+          row7: Data[6]?.otherAdjustmentsToNetIncome,
+          row8: Data[7]?.otherAdjustmentsToNetIncome,
+          row9: Data[8]?.otherAdjustmentsToNetIncome,
+          row10: Data[9]?.otherAdjustmentsToNetIncome,
         },
 
         {
@@ -249,6 +374,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netIncome,
           row4: Data[3]?.netIncome,
           row5: Data[4]?.netIncome,
+          row6: Data[5]?.netIncome,
+          row7: Data[6]?.netIncome,
+          row8: Data[7]?.netIncome,
+          row9: Data[8]?.netIncome,
+          row10: Data[9]?.netIncome,
         },
         {
           id: 100,
@@ -258,6 +388,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -271,6 +406,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.ebit,
           row4: Data[3]?.ebit,
           row5: Data[4]?.ebit,
+          row6: Data[5]?.ebit,
+          row7: Data[6]?.ebit,
+          row8: Data[7]?.ebit,
+          row9: Data[8]?.ebit,
+          row10: Data[9]?.ebit,
         },
 
         {
@@ -281,6 +421,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.eps,
           row4: Data[3]?.eps,
           row5: Data[4]?.eps,
+          row6: Data[5]?.eps,
+          row7: Data[6]?.eps,
+          row8: Data[7]?.eps,
+          row9: Data[8]?.eps,
+          row10: Data[9]?.eps,
         },
         {
           id: 100,
@@ -290,6 +435,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -303,6 +453,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.ebitda,
           row4: Data[3]?.ebitda,
           row5: Data[4]?.ebitda,
+          row6: Data[5]?.ebitda,
+          row7: Data[6]?.ebitda,
+          row8: Data[7]?.ebitda,
+          row9: Data[8]?.ebitda,
+          row10: Data[9]?.ebitda,
         },
 
         {
@@ -313,6 +468,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.epsDiluted,
           row4: Data[3]?.epsDiluted,
           row5: Data[4]?.epsDiluted,
+          row6: Data[5]?.epsDiluted,
+          row7: Data[6]?.epsDiluted,
+          row8: Data[7]?.epsDiluted,
+          row9: Data[8]?.epsDiluted,
+          row10: Data[9]?.epsDiluted,
         },
         {
           id: 100,
@@ -322,6 +482,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -336,15 +501,25 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.weightedAverageShsOut,
           row4: Data[3]?.weightedAverageShsOut,
           row5: Data[4]?.weightedAverageShsOut,
+          row6: Data[5]?.weightedAverageShsOut,
+          row7: Data[6]?.weightedAverageShsOut,
+          row8: Data[7]?.weightedAverageShsOut,
+          row9: Data[8]?.weightedAverageShsOut,
+          row10: Data[9]?.weightedAverageShsOut,
         },
         {
           id: 32,
           title: "Average Diluted Shares Outstanding",
-          row1: Data[0]?.weightedAverageShsOutDil,
+          row1: Data[0]?.accountPayables,
           row2: Data[1]?.weightedAverageShsOutDil,
           row3: Data[2]?.weightedAverageShsOutDil,
           row4: Data[3]?.weightedAverageShsOutDil,
           row5: Data[4]?.weightedAverageShsOutDil,
+          row6: Data[5]?.weightedAverageShsOutDil,
+          row7: Data[6]?.weightedAverageShsOutDil,
+          row8: Data[7]?.weightedAverageShsOutDil,
+          row9: Data[8]?.weightedAverageShsOutDil,
+          row10: Data[9]?.weightedAverageShsOutDil,
         },
         {
           id: 100,
@@ -354,6 +529,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -368,6 +548,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.cashAndCashEquivalents,
           row4: Data[3]?.cashAndCashEquivalents,
           row5: Data[4]?.cashAndCashEquivalents,
+          row6: Data[5]?.cashAndCashEquivalents,
+          row7: Data[6]?.cashAndCashEquivalents,
+          row8: Data[7]?.cashAndCashEquivalents,
+          row9: Data[8]?.cashAndCashEquivalents,
+          row10: Data[9]?.cashAndCashEquivalents,
         },
         {
           id: 33,
@@ -377,6 +562,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.shortTermInvestments,
           row4: Data[3]?.shortTermInvestments,
           row5: Data[4]?.shortTermInvestments,
+          row6: Data[5]?.shortTermInvestments,
+          row7: Data[6]?.shortTermInvestments,
+          row8: Data[7]?.shortTermInvestments,
+          row9: Data[8]?.shortTermInvestments,
+          row10: Data[9]?.shortTermInvestments,
         },
         {
           id: 16,
@@ -386,6 +576,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.longTermInvestments,
           row4: Data[3]?.longTermInvestments,
           row5: Data[4]?.longTermInvestments,
+          row6: Data[5]?.longTermInvestments,
+          row7: Data[6]?.longTermInvestments,
+          row8: Data[7]?.longTermInvestments,
+          row9: Data[8]?.longTermInvestments,
+          row10: Data[9]?.longTermInvestments,
         },
 
         {
@@ -396,6 +591,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.cashAndShortTermInvestments,
           row4: Data[3]?.cashAndShortTermInvestments,
           row5: Data[4]?.cashAndShortTermInvestments,
+          row6: Data[5]?.cashAndShortTermInvestments,
+          row7: Data[6]?.cashAndShortTermInvestments,
+          row8: Data[7]?.cashAndShortTermInvestments,
+          row9: Data[8]?.cashAndShortTermInvestments,
+          row10: Data[9]?.cashAndShortTermInvestments,
         },
         {
           id: 2,
@@ -405,6 +605,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.accountsReceivables,
           row4: Data[3]?.accountsReceivables,
           row5: Data[4]?.accountsReceivables,
+          row6: Data[5]?.accountsReceivables,
+          row7: Data[6]?.accountsReceivables,
+          row8: Data[7]?.accountsReceivables,
+          row9: Data[8]?.accountsReceivables,
+          row10: Data[9]?.accountsReceivables,
         },
         {
           id: 15,
@@ -414,6 +619,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.inventory,
           row4: Data[3]?.inventory,
           row5: Data[4]?.inventory,
+          row6: Data[5]?.inventory,
+          row7: Data[6]?.inventory,
+          row8: Data[7]?.inventory,
+          row9: Data[8]?.inventory,
+          row10: Data[9]?.inventory,
         },
 
         {
@@ -424,6 +634,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherCurrentAssets,
           row4: Data[3]?.otherCurrentAssets,
           row5: Data[4]?.otherCurrentAssets,
+          row6: Data[5]?.otherCurrentAssets,
+          row7: Data[6]?.otherCurrentAssets,
+          row8: Data[7]?.otherCurrentAssets,
+          row9: Data[8]?.otherCurrentAssets,
+          row10: Data[9]?.otherCurrentAssets,
         },
 
         {
@@ -434,6 +649,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherPayables,
           row4: Data[3]?.otherPayables,
           row5: Data[4]?.otherPayables,
+          row6: Data[5]?.otherPayables,
+          row7: Data[6]?.otherPayables,
+          row8: Data[7]?.otherPayables,
+          row9: Data[8]?.otherPayables,
+          row10: Data[9]?.otherPayables,
         },
         {
           id: 24,
@@ -443,6 +663,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherNonCurrentAssets,
           row4: Data[3]?.otherNonCurrentAssets,
           row5: Data[4]?.otherNonCurrentAssets,
+          row6: Data[5]?.otherNonCurrentAssets,
+          row7: Data[6]?.otherNonCurrentAssets,
+          row8: Data[7]?.otherNonCurrentAssets,
+          row9: Data[8]?.otherNonCurrentAssets,
+          row10: Data[9]?.otherNonCurrentAssets,
         },
 
         {
@@ -453,6 +678,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherReceivables,
           row4: Data[3]?.otherReceivables,
           row5: Data[4]?.otherReceivables,
+          row6: Data[5]?.otherReceivables,
+          row7: Data[6]?.otherReceivables,
+          row8: Data[7]?.otherReceivables,
+          row9: Data[8]?.otherReceivables,
+          row10: Data[9]?.otherReceivables,
         },
 
         {
@@ -463,6 +693,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.commonStock,
           row4: Data[3]?.commonStock,
           row5: Data[4]?.commonStock,
+          row6: Data[5]?.commonStock,
+          row7: Data[6]?.commonStock,
+          row8: Data[7]?.commonStock,
+          row9: Data[8]?.commonStock,
+          row10: Data[9]?.commonStock,
         },
         {
           id: 9,
@@ -472,6 +707,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.deferredRevenue,
           row4: Data[3]?.deferredRevenue,
           row5: Data[4]?.deferredRevenue,
+          row6: Data[5]?.deferredRevenue,
+          row7: Data[6]?.deferredRevenue,
+          row8: Data[7]?.deferredRevenue,
+          row9: Data[8]?.deferredRevenue,
+          row10: Data[9]?.deferredRevenue,
         },
         {
           id: 12,
@@ -481,6 +721,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.goodwill,
           row4: Data[3]?.goodwill,
           row5: Data[4]?.goodwill,
+          row6: Data[5]?.goodwill,
+          row7: Data[6]?.goodwill,
+          row8: Data[7]?.goodwill,
+          row9: Data[8]?.goodwill,
+          row10: Data[9]?.goodwill,
         },
         {
           id: 13,
@@ -490,6 +735,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.goodwillAndIntangibleAssets,
           row4: Data[3]?.goodwillAndIntangibleAssets,
           row5: Data[4]?.goodwillAndIntangibleAssets,
+          row6: Data[5]?.goodwillAndIntangibleAssets,
+          row7: Data[6]?.goodwillAndIntangibleAssets,
+          row8: Data[7]?.goodwillAndIntangibleAssets,
+          row9: Data[8]?.goodwillAndIntangibleAssets,
+          row10: Data[9]?.goodwillAndIntangibleAssets,
         },
         {
           id: 18,
@@ -499,6 +749,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netDebt,
           row4: Data[3]?.netDebt,
           row5: Data[4]?.netDebt,
+          row6: Data[5]?.netDebt,
+          row7: Data[6]?.netDebt,
+          row8: Data[7]?.netDebt,
+          row9: Data[8]?.netDebt,
+          row10: Data[9]?.netDebt,
         },
         {
           id: 19,
@@ -508,6 +763,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netReceivables,
           row4: Data[3]?.netReceivables,
           row5: Data[4]?.netReceivables,
+          row6: Data[5]?.netReceivables,
+          row7: Data[6]?.netReceivables,
+          row8: Data[7]?.netReceivables,
+          row9: Data[8]?.netReceivables,
+          row10: Data[9]?.netReceivables,
         },
         {
           id: 42,
@@ -517,6 +777,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalNonCurrentAssets,
           row4: Data[3]?.totalNonCurrentAssets,
           row5: Data[4]?.totalNonCurrentAssets,
+          row6: Data[5]?.totalNonCurrentAssets,
+          row7: Data[6]?.totalNonCurrentAssets,
+          row8: Data[7]?.totalNonCurrentAssets,
+          row9: Data[8]?.totalNonCurrentAssets,
+          row10: Data[9]?.totalNonCurrentAssets,
         },
 
         {
@@ -527,6 +792,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalPayables,
           row4: Data[3]?.totalPayables,
           row5: Data[4]?.totalPayables,
+          row6: Data[5]?.totalPayables,
+          row7: Data[6]?.totalPayables,
+          row8: Data[7]?.totalPayables,
+          row9: Data[8]?.totalPayables,
+          row10: Data[9]?.totalPayables,
         },
         {
           id: 45,
@@ -536,6 +806,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalStockholdersEquity,
           row4: Data[3]?.totalStockholdersEquity,
           row5: Data[4]?.totalStockholdersEquity,
+          row6: Data[5]?.totalStockholdersEquity,
+          row7: Data[6]?.totalStockholdersEquity,
+          row8: Data[7]?.totalStockholdersEquity,
+          row9: Data[8]?.totalStockholdersEquity,
+          row10: Data[9]?.totalStockholdersEquity,
         },
         {
           id: 100,
@@ -545,6 +820,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -558,6 +838,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.accountPayables,
           row4: Data[3]?.accountPayables,
           row5: Data[4]?.accountPayables,
+          row6: Data[5]?.accountPayables,
+          row7: Data[6]?.accountPayables,
+          row8: Data[7]?.accountPayables,
+          row9: Data[8]?.accountPayables,
+          row10: Data[9]?.accountPayables,
         },
 
         {
@@ -568,6 +853,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.accruedExpenses,
           row4: Data[3]?.accruedExpenses,
           row5: Data[4]?.accruedExpenses,
+          row6: Data[5]?.accruedExpenses,
+          row7: Data[6]?.accruedExpenses,
+          row8: Data[7]?.accruedExpenses,
+          row9: Data[8]?.accruedExpenses,
+          row10: Data[9]?.accruedExpenses,
         },
         {
           id: 22,
@@ -577,6 +867,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherCurrentLiabilities,
           row4: Data[3]?.otherCurrentLiabilities,
           row5: Data[4]?.otherCurrentLiabilities,
+          row6: Data[5]?.otherCurrentLiabilities,
+          row7: Data[6]?.otherCurrentLiabilities,
+          row8: Data[7]?.otherCurrentLiabilities,
+          row9: Data[8]?.otherCurrentLiabilities,
+          row10: Data[9]?.otherCurrentLiabilities,
         },
         {
           id: 23,
@@ -586,6 +881,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherLiabilities,
           row4: Data[3]?.otherLiabilities,
           row5: Data[4]?.otherLiabilities,
+          row6: Data[5]?.otherLiabilities,
+          row7: Data[6]?.otherLiabilities,
+          row8: Data[7]?.otherLiabilities,
+          row9: Data[8]?.otherLiabilities,
+          row10: Data[9]?.otherLiabilities,
         },
 
         {
@@ -596,6 +896,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherNonCurrentLiabilities,
           row4: Data[3]?.otherNonCurrentLiabilities,
           row5: Data[4]?.otherNonCurrentLiabilities,
+          row6: Data[5]?.otherNonCurrentLiabilities,
+          row7: Data[6]?.otherNonCurrentLiabilities,
+          row8: Data[7]?.otherNonCurrentLiabilities,
+          row9: Data[8]?.otherNonCurrentLiabilities,
+          row10: Data[9]?.otherNonCurrentLiabilities,
         },
 
         {
@@ -606,6 +911,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.accumulatedOtherComprehensiveIncomeLoss,
           row4: Data[3]?.accumulatedOtherComprehensiveIncomeLoss,
           row5: Data[4]?.accumulatedOtherComprehensiveIncomeLoss,
+          row6: Data[5]?.accumulatedOtherComprehensiveIncomeLoss,
+          row7: Data[6]?.accumulatedOtherComprehensiveIncomeLoss,
+          row8: Data[7]?.accumulatedOtherComprehensiveIncomeLoss,
+          row9: Data[8]?.accumulatedOtherComprehensiveIncomeLoss,
+          row10: Data[9]?.accumulatedOtherComprehensiveIncomeLoss,
         },
         {
           id: 5,
@@ -615,6 +925,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.additionalPaidInCapital,
           row4: Data[3]?.additionalPaidInCapital,
           row5: Data[4]?.additionalPaidInCapital,
+          row6: Data[5]?.additionalPaidInCapital,
+          row7: Data[6]?.additionalPaidInCapital,
+          row8: Data[7]?.additionalPaidInCapital,
+          row9: Data[8]?.additionalPaidInCapital,
+          row10: Data[9]?.additionalPaidInCapital,
         },
 
         {
@@ -625,6 +940,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.treasuryStock,
           row4: Data[3]?.treasuryStock,
           row5: Data[4]?.treasuryStock,
+          row6: Data[5]?.treasuryStock,
+          row7: Data[6]?.treasuryStock,
+          row8: Data[7]?.treasuryStock,
+          row9: Data[8]?.treasuryStock,
+          row10: Data[9]?.treasuryStock,
         },
         {
           id: 47,
@@ -634,6 +954,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.capitalLeaseObligations,
           row4: Data[3]?.capitalLeaseObligations,
           row5: Data[4]?.capitalLeaseObligations,
+          row6: Data[5]?.capitalLeaseObligations,
+          row7: Data[6]?.capitalLeaseObligations,
+          row8: Data[7]?.capitalLeaseObligations,
+          row9: Data[8]?.capitalLeaseObligations,
+          row10: Data[9]?.capitalLeaseObligations,
         },
         {
           id: 48,
@@ -643,6 +968,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.capitalLeaseObligationsCurrent,
           row4: Data[3]?.capitalLeaseObligationsCurrent,
           row5: Data[4]?.capitalLeaseObligationsCurrent,
+          row6: Data[5]?.capitalLeaseObligationsCurrent,
+          row7: Data[6]?.capitalLeaseObligationsCurrent,
+          row8: Data[7]?.capitalLeaseObligationsCurrent,
+          row9: Data[8]?.capitalLeaseObligationsCurrent,
+          row10: Data[9]?.capitalLeaseObligationsCurrent,
         },
 
         {
@@ -653,6 +983,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalDebt,
           row4: Data[3]?.totalDebt,
           row5: Data[4]?.totalDebt,
+          row6: Data[5]?.totalDebt,
+          row7: Data[6]?.totalDebt,
+          row8: Data[7]?.totalDebt,
+          row9: Data[8]?.totalDebt,
+          row10: Data[9]?.totalDebt,
         },
         {
           id: 36,
@@ -662,6 +997,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalAssets,
           row4: Data[3]?.totalAssets,
           row5: Data[4]?.totalAssets,
+          row6: Data[5]?.totalAssets,
+          row7: Data[6]?.totalAssets,
+          row8: Data[7]?.totalAssets,
+          row9: Data[8]?.totalAssets,
+          row10: Data[9]?.totalAssets,
         },
         {
           id: 37,
@@ -671,6 +1011,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalCurrentAssets,
           row4: Data[3]?.totalCurrentAssets,
           row5: Data[4]?.totalCurrentAssets,
+          row6: Data[5]?.totalCurrentAssets,
+          row7: Data[6]?.totalCurrentAssets,
+          row8: Data[7]?.totalCurrentAssets,
+          row9: Data[8]?.totalCurrentAssets,
+          row10: Data[9]?.totalCurrentAssets,
         },
 
         {
@@ -681,6 +1026,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalInvestments,
           row4: Data[3]?.totalInvestments,
           row5: Data[4]?.totalInvestments,
+          row6: Data[5]?.totalInvestments,
+          row7: Data[6]?.totalInvestments,
+          row8: Data[7]?.totalInvestments,
+          row9: Data[8]?.totalInvestments,
+          row10: Data[9]?.totalInvestments,
         },
         {
           id: 38,
@@ -690,6 +1040,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalCurrentLiabilities,
           row4: Data[3]?.totalCurrentLiabilities,
           row5: Data[4]?.totalCurrentLiabilities,
+          row6: Data[5]?.totalCurrentLiabilities,
+          row7: Data[6]?.totalCurrentLiabilities,
+          row8: Data[7]?.totalCurrentLiabilities,
+          row9: Data[8]?.totalCurrentLiabilities,
+          row10: Data[9]?.totalCurrentLiabilities,
         },
         {
           id: 40,
@@ -699,6 +1054,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalLiabilities,
           row4: Data[3]?.totalLiabilities,
           row5: Data[4]?.totalLiabilities,
+          row6: Data[5]?.totalLiabilities,
+          row7: Data[6]?.totalLiabilities,
+          row8: Data[7]?.totalLiabilities,
+          row9: Data[8]?.totalLiabilities,
+          row10: Data[9]?.totalLiabilities,
         },
         {
           id: 43,
@@ -708,6 +1068,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalNonCurrentLiabilities,
           row4: Data[3]?.totalNonCurrentLiabilities,
           row5: Data[4]?.totalNonCurrentLiabilities,
+          row6: Data[5]?.totalNonCurrentLiabilities,
+          row7: Data[6]?.totalNonCurrentLiabilities,
+          row8: Data[7]?.totalNonCurrentLiabilities,
+          row9: Data[8]?.totalNonCurrentLiabilities,
+          row10: Data[9]?.totalNonCurrentLiabilities,
         },
 
         {
@@ -718,6 +1083,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalLiabilitiesAndTotalEquity,
           row4: Data[3]?.totalLiabilitiesAndTotalEquity,
           row5: Data[4]?.totalLiabilitiesAndTotalEquity,
+          row6: Data[5]?.totalLiabilitiesAndTotalEquity,
+          row7: Data[6]?.totalLiabilitiesAndTotalEquity,
+          row8: Data[7]?.totalLiabilitiesAndTotalEquity,
+          row9: Data[8]?.totalLiabilitiesAndTotalEquity,
+          row10: Data[9]?.totalLiabilitiesAndTotalEquity,
         },
 
         {
@@ -728,6 +1098,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -741,6 +1116,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.retainedEarnings,
           row4: Data[3]?.retainedEarnings,
           row5: Data[4]?.retainedEarnings,
+          row6: Data[5]?.retainedEarnings,
+          row7: Data[6]?.retainedEarnings,
+          row8: Data[7]?.retainedEarnings,
+          row9: Data[8]?.retainedEarnings,
+          row10: Data[9]?.retainedEarnings,
         },
         {
           id: 30,
@@ -750,6 +1130,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.propertyPlantEquipmentNet,
           row4: Data[3]?.propertyPlantEquipmentNet,
           row5: Data[4]?.propertyPlantEquipmentNet,
+          row6: Data[5]?.propertyPlantEquipmentNet,
+          row7: Data[6]?.propertyPlantEquipmentNet,
+          row8: Data[7]?.propertyPlantEquipmentNet,
+          row9: Data[8]?.propertyPlantEquipmentNet,
+          row10: Data[9]?.propertyPlantEquipmentNet,
         },
 
         {
@@ -760,6 +1145,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.shortTermDebt,
           row4: Data[3]?.shortTermDebt,
           row5: Data[4]?.shortTermDebt,
+          row6: Data[5]?.shortTermDebt,
+          row7: Data[6]?.shortTermDebt,
+          row8: Data[7]?.shortTermDebt,
+          row9: Data[8]?.shortTermDebt,
+          row10: Data[9]?.shortTermDebt,
         },
         {
           id: 28,
@@ -769,6 +1159,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.preferredStock,
           row4: Data[3]?.preferredStock,
           row5: Data[4]?.preferredStock,
+          row6: Data[5]?.preferredStock,
+          row7: Data[6]?.preferredStock,
+          row8: Data[7]?.preferredStock,
+          row9: Data[8]?.preferredStock,
+          row10: Data[9]?.preferredStock,
         },
         {
           id: 29,
@@ -778,6 +1173,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.prepaids,
           row4: Data[3]?.prepaids,
           row5: Data[4]?.prepaids,
+          row6: Data[5]?.prepaids,
+          row7: Data[6]?.prepaids,
+          row8: Data[7]?.prepaids,
+          row9: Data[8]?.prepaids,
+          row10: Data[9]?.prepaids,
         },
 
         {
@@ -788,6 +1188,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.taxAssets,
           row4: Data[3]?.taxAssets,
           row5: Data[4]?.taxAssets,
+          row6: Data[5]?.taxAssets,
+          row7: Data[6]?.taxAssets,
+          row8: Data[7]?.taxAssets,
+          row9: Data[8]?.taxAssets,
+          row10: Data[9]?.taxAssets,
         },
         {
           id: 35,
@@ -797,6 +1202,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.taxPayables,
           row4: Data[3]?.taxPayables,
           row5: Data[4]?.taxPayables,
+          row6: Data[5]?.taxPayables,
+          row7: Data[6]?.taxPayables,
+          row8: Data[7]?.taxPayables,
+          row9: Data[8]?.taxPayables,
+          row10: Data[9]?.taxPayables,
         },
         {
           id: 51,
@@ -806,6 +1216,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.totalEquity,
           row4: Data[3]?.totalEquity,
           row5: Data[4]?.totalEquity,
+          row6: Data[5]?.totalEquity,
+          row7: Data[6]?.totalEquity,
+          row8: Data[7]?.totalEquity,
+          row9: Data[8]?.totalEquity,
+          row10: Data[9]?.totalEquity,
         },
 
         {
@@ -816,6 +1231,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherTotalStockholdersEquity,
           row4: Data[3]?.otherTotalStockholdersEquity,
           row5: Data[4]?.otherTotalStockholdersEquity,
+          row6: Data[5]?.otherTotalStockholdersEquity,
+          row7: Data[6]?.otherTotalStockholdersEquity,
+          row8: Data[7]?.otherTotalStockholdersEquity,
+          row9: Data[8]?.otherTotalStockholdersEquity,
+          row10: Data[9]?.otherTotalStockholdersEquity,
         },
         {
           id: 100,
@@ -825,6 +1245,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -839,6 +1264,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netIncome,
           row4: Data[3]?.netIncome,
           row5: Data[4]?.netIncome,
+          row6: Data[5]?.netIncome,
+          row7: Data[6]?.netIncome,
+          row8: Data[7]?.netIncome,
+          row9: Data[8]?.netIncome,
+          row10: Data[9]?.netIncome,
         },
         {
           id: 12,
@@ -848,6 +1278,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.depreciationAndAmortization,
           row4: Data[3]?.depreciationAndAmortization,
           row5: Data[4]?.depreciationAndAmortization,
+          row6: Data[5]?.depreciationAndAmortization,
+          row7: Data[6]?.depreciationAndAmortization,
+          row8: Data[7]?.depreciationAndAmortization,
+          row9: Data[8]?.depreciationAndAmortization,
+          row10: Data[9]?.depreciationAndAmortization,
         },
         {
           id: 11,
@@ -857,6 +1292,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.deferredIncomeTax,
           row4: Data[3]?.deferredIncomeTax,
           row5: Data[4]?.deferredIncomeTax,
+          row6: Data[5]?.deferredIncomeTax,
+          row7: Data[6]?.deferredIncomeTax,
+          row8: Data[7]?.deferredIncomeTax,
+          row9: Data[8]?.deferredIncomeTax,
+          row10: Data[9]?.deferredIncomeTax,
         },
         {
           id: 39,
@@ -866,6 +1306,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.stockBasedCompensation,
           row4: Data[3]?.stockBasedCompensation,
           row5: Data[4]?.stockBasedCompensation,
+          row6: Data[5]?.stockBasedCompensation,
+          row7: Data[6]?.stockBasedCompensation,
+          row8: Data[7]?.stockBasedCompensation,
+          row9: Data[8]?.stockBasedCompensation,
+          row10: Data[9]?.stockBasedCompensation,
         },
         {
           id: 33,
@@ -875,6 +1320,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherNonCashItems,
           row4: Data[3]?.otherNonCashItems,
           row5: Data[4]?.otherNonCashItems,
+          row6: Data[5]?.otherNonCashItems,
+          row7: Data[6]?.otherNonCashItems,
+          row8: Data[7]?.otherNonCashItems,
+          row9: Data[8]?.otherNonCashItems,
+          row10: Data[9]?.otherNonCashItems,
         },
         {
           id: 2,
@@ -884,6 +1334,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.accountsReceivables,
           row4: Data[3]?.accountsReceivables,
           row5: Data[4]?.accountsReceivables,
+          row6: Data[5]?.accountsReceivables,
+          row7: Data[6]?.accountsReceivables,
+          row8: Data[7]?.accountsReceivables,
+          row9: Data[8]?.accountsReceivables,
+          row10: Data[9]?.accountsReceivables,
         },
         {
           id: 16,
@@ -893,6 +1348,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.inventory,
           row4: Data[3]?.inventory,
           row5: Data[4]?.inventory,
+          row6: Data[5]?.inventory,
+          row7: Data[6]?.inventory,
+          row8: Data[7]?.inventory,
+          row9: Data[8]?.inventory,
+          row10: Data[9]?.inventory,
         },
         {
           id: 34,
@@ -902,6 +1362,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherWorkingCapital,
           row4: Data[3]?.otherWorkingCapital,
           row5: Data[4]?.otherWorkingCapital,
+          row6: Data[5]?.otherWorkingCapital,
+          row7: Data[6]?.otherWorkingCapital,
+          row8: Data[7]?.otherWorkingCapital,
+          row9: Data[8]?.otherWorkingCapital,
+          row10: Data[9]?.otherWorkingCapital,
         },
 
         {
@@ -912,6 +1377,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.changeInWorkingCapital,
           row4: Data[3]?.changeInWorkingCapital,
           row5: Data[4]?.changeInWorkingCapital,
+          row6: Data[5]?.changeInWorkingCapital,
+          row7: Data[6]?.changeInWorkingCapital,
+          row8: Data[7]?.changeInWorkingCapital,
+          row9: Data[8]?.changeInWorkingCapital,
+          row10: Data[9]?.changeInWorkingCapital,
         },
         {
           id: 100,
@@ -921,6 +1391,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -934,6 +1409,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.capitalExpenditure,
           row4: Data[3]?.capitalExpenditure,
           row5: Data[4]?.capitalExpenditure,
+          row6: Data[5]?.capitalExpenditure,
+          row7: Data[6]?.capitalExpenditure,
+          row8: Data[7]?.capitalExpenditure,
+          row9: Data[8]?.capitalExpenditure,
+          row10: Data[9]?.capitalExpenditure,
         },
         {
           id: 14,
@@ -943,6 +1423,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.freeCashFlow,
           row4: Data[3]?.freeCashFlow,
           row5: Data[4]?.freeCashFlow,
+          row6: Data[5]?.freeCashFlow,
+          row7: Data[6]?.freeCashFlow,
+          row8: Data[7]?.freeCashFlow,
+          row9: Data[8]?.freeCashFlow,
+          row10: Data[9]?.freeCashFlow,
         },
         {
           id: 3,
@@ -952,6 +1437,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.acquisitionsNet,
           row4: Data[3]?.acquisitionsNet,
           row5: Data[4]?.acquisitionsNet,
+          row6: Data[5]?.acquisitionsNet,
+          row7: Data[6]?.acquisitionsNet,
+          row8: Data[7]?.acquisitionsNet,
+          row9: Data[8]?.acquisitionsNet,
+          row10: Data[9]?.acquisitionsNet,
         },
         {
           id: 21,
@@ -961,6 +1451,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netCashProvidedByInvestingActivities,
           row4: Data[3]?.netCashProvidedByInvestingActivities,
           row5: Data[4]?.netCashProvidedByInvestingActivities,
+          row6: Data[5]?.netCashProvidedByInvestingActivities,
+          row7: Data[6]?.netCashProvidedByInvestingActivities,
+          row8: Data[7]?.netCashProvidedByInvestingActivities,
+          row9: Data[8]?.netCashProvidedByInvestingActivities,
+          row10: Data[9]?.netCashProvidedByInvestingActivities,
         },
         {
           id: 31,
@@ -970,6 +1465,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherFinancingActivities,
           row4: Data[3]?.otherFinancingActivities,
           row5: Data[4]?.otherFinancingActivities,
+          row6: Data[5]?.otherFinancingActivities,
+          row7: Data[6]?.otherFinancingActivities,
+          row8: Data[7]?.otherFinancingActivities,
+          row9: Data[8]?.otherFinancingActivities,
+          row10: Data[9]?.otherFinancingActivities,
         },
         {
           id: 32,
@@ -979,6 +1479,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.otherInvestingActivities,
           row4: Data[3]?.otherInvestingActivities,
           row5: Data[4]?.otherInvestingActivities,
+          row6: Data[5]?.otherInvestingActivities,
+          row7: Data[6]?.otherInvestingActivities,
+          row8: Data[7]?.otherInvestingActivities,
+          row9: Data[8]?.otherInvestingActivities,
+          row10: Data[9]?.otherInvestingActivities,
         },
         {
           id: 100,
@@ -988,6 +1493,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -1001,6 +1511,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.longTermNetDebtIssuance,
           row4: Data[3]?.longTermNetDebtIssuance,
           row5: Data[4]?.longTermNetDebtIssuance,
+          row6: Data[5]?.longTermNetDebtIssuance,
+          row7: Data[6]?.longTermNetDebtIssuance,
+          row8: Data[7]?.longTermNetDebtIssuance,
+          row9: Data[8]?.longTermNetDebtIssuance,
+          row10: Data[9]?.longTermNetDebtIssuance,
         },
         {
           id: 38,
@@ -1010,6 +1525,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.shortTermNetDebtIssuance,
           row4: Data[3]?.shortTermNetDebtIssuance,
           row5: Data[4]?.shortTermNetDebtIssuance,
+          row6: Data[5]?.shortTermNetDebtIssuance,
+          row7: Data[6]?.shortTermNetDebtIssuance,
+          row8: Data[7]?.shortTermNetDebtIssuance,
+          row9: Data[8]?.shortTermNetDebtIssuance,
+          row10: Data[9]?.shortTermNetDebtIssuance,
         },
         {
           id: 25,
@@ -1019,6 +1539,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netDebtIssuance,
           row4: Data[3]?.netDebtIssuance,
           row5: Data[4]?.netDebtIssuance,
+          row6: Data[5]?.netDebtIssuance,
+          row7: Data[6]?.netDebtIssuance,
+          row8: Data[7]?.netDebtIssuance,
+          row9: Data[8]?.netDebtIssuance,
+          row10: Data[9]?.netDebtIssuance,
         },
         {
           id: 8,
@@ -1028,6 +1553,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.commonStockIssuance,
           row4: Data[3]?.commonStockIssuance,
           row5: Data[4]?.commonStockIssuance,
+          row6: Data[5]?.commonStockIssuance,
+          row7: Data[6]?.commonStockIssuance,
+          row8: Data[7]?.commonStockIssuance,
+          row9: Data[8]?.commonStockIssuance,
+          row10: Data[9]?.commonStockIssuance,
         },
         {
           id: 7,
@@ -1037,6 +1567,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.commonDividendsPaid,
           row4: Data[3]?.commonDividendsPaid,
           row5: Data[4]?.commonDividendsPaid,
+          row6: Data[5]?.commonDividendsPaid,
+          row7: Data[6]?.commonDividendsPaid,
+          row8: Data[7]?.commonDividendsPaid,
+          row9: Data[8]?.commonDividendsPaid,
+          row10: Data[9]?.commonDividendsPaid,
         },
         {
           id: 9,
@@ -1046,6 +1581,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.commonStockRepurchased,
           row4: Data[3]?.commonStockRepurchased,
           row5: Data[4]?.commonStockRepurchased,
+          row6: Data[5]?.commonStockRepurchased,
+          row7: Data[6]?.commonStockRepurchased,
+          row8: Data[7]?.commonStockRepurchased,
+          row9: Data[8]?.commonStockRepurchased,
+          row10: Data[9]?.commonStockRepurchased,
         },
         {
           id: 24,
@@ -1055,6 +1595,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netCommonStockIssuance,
           row4: Data[3]?.netCommonStockIssuance,
           row5: Data[4]?.netCommonStockIssuance,
+          row6: Data[5]?.netCommonStockIssuance,
+          row7: Data[6]?.netCommonStockIssuance,
+          row8: Data[7]?.netCommonStockIssuance,
+          row9: Data[8]?.netCommonStockIssuance,
+          row10: Data[9]?.netCommonStockIssuance,
         },
         {
           id: 20,
@@ -1064,6 +1609,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netCashProvidedByFinancingActivities,
           row4: Data[3]?.netCashProvidedByFinancingActivities,
           row5: Data[4]?.netCashProvidedByFinancingActivities,
+          row6: Data[5]?.netCashProvidedByFinancingActivities,
+          row7: Data[6]?.netCashProvidedByFinancingActivities,
+          row8: Data[7]?.netCashProvidedByFinancingActivities,
+          row9: Data[8]?.netCashProvidedByFinancingActivities,
+          row10: Data[9]?.netCashProvidedByFinancingActivities,
         },
         {
           id: 100,
@@ -1073,6 +1623,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -1086,6 +1641,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.cashAtBeginningOfPeriod,
           row4: Data[3]?.cashAtBeginningOfPeriod,
           row5: Data[4]?.cashAtBeginningOfPeriod,
+          row6: Data[5]?.cashAtBeginningOfPeriod,
+          row7: Data[6]?.cashAtBeginningOfPeriod,
+          row8: Data[7]?.cashAtBeginningOfPeriod,
+          row9: Data[8]?.cashAtBeginningOfPeriod,
+          row10: Data[9]?.cashAtBeginningOfPeriod,
         },
         {
           id: 23,
@@ -1095,6 +1655,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netChangeInCash,
           row4: Data[3]?.netChangeInCash,
           row5: Data[4]?.netChangeInCash,
+          row6: Data[5]?.netChangeInCash,
+          row7: Data[6]?.netChangeInCash,
+          row8: Data[7]?.netChangeInCash,
+          row9: Data[8]?.netChangeInCash,
+          row10: Data[9]?.netChangeInCash,
         },
         {
           id: 5,
@@ -1104,6 +1669,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.cashAtEndOfPeriod,
           row4: Data[3]?.cashAtEndOfPeriod,
           row5: Data[4]?.cashAtEndOfPeriod,
+          row6: Data[5]?.cashAtEndOfPeriod,
+          row7: Data[6]?.cashAtEndOfPeriod,
+          row8: Data[7]?.cashAtEndOfPeriod,
+          row9: Data[8]?.cashAtEndOfPeriod,
+          row10: Data[9]?.cashAtEndOfPeriod,
         },
         {
           id: 100,
@@ -1113,6 +1683,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }
@@ -1126,6 +1701,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.capitalExpenditure,
           row4: Data[3]?.capitalExpenditure,
           row5: Data[4]?.capitalExpenditure,
+          row6: Data[5]?.capitalExpenditure,
+          row7: Data[6]?.capitalExpenditure,
+          row8: Data[7]?.capitalExpenditure,
+          row9: Data[8]?.capitalExpenditure,
+          row10: Data[9]?.capitalExpenditure,
         },
 
         {
@@ -1136,6 +1716,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netStockIssuance,
           row4: Data[3]?.netStockIssuance,
           row5: Data[4]?.netStockIssuance,
+          row6: Data[5]?.netStockIssuance,
+          row7: Data[6]?.netStockIssuance,
+          row8: Data[7]?.netStockIssuance,
+          row9: Data[8]?.netStockIssuance,
+          row10: Data[9]?.netStockIssuance,
         },
         {
           id: 28,
@@ -1145,6 +1730,11 @@ export const AlldataSourceFinance = (
           row3: Data[2]?.netPreferredStockIssuance,
           row4: Data[3]?.netPreferredStockIssuance,
           row5: Data[4]?.netPreferredStockIssuance,
+          row6: Data[5]?.netPreferredStockIssuance,
+          row7: Data[6]?.netPreferredStockIssuance,
+          row8: Data[7]?.netPreferredStockIssuance,
+          row9: Data[8]?.netPreferredStockIssuance,
+          row10: Data[9]?.netPreferredStockIssuance,
         },
         {
           id: 100,
@@ -1154,6 +1744,11 @@ export const AlldataSourceFinance = (
           row3: "",
           row4: "",
           row5: "",
+          row6: "",
+          row7: "",
+          row8: "",
+          row9: "",
+          row10: "",
         },
       ];
     }

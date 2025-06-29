@@ -33,15 +33,15 @@ export const routes = {
   getStockInfoEod: (symbol, startdate, endDate) =>
     `/api/stock/historical/eod?symbol=${symbol}&startDate=${startdate}&endDate=${endDate}`,
   getStockIncomeStatementUrl: (symbol, period) =>
-    `/api/stock/income-statement?symbol=${symbol}&period=${period}`,
+    `/api/stock/income-statement?symbol=${symbol}&period=${period}&duration=10`,
   getStockMetricsUrl: (symbol, period) =>
     `/api/stock/fundamental-metric?symbol=${symbol}&period=${period}`,
   getStockWishListIsAddedUrl: (symbol) =>
     `/api/stock/get-wishlist-is-added?symbol=${symbol}`,
   balanceSheetUrl: (symbol, period) =>
-    `/api/stock/balance-sheet?symbol=${symbol}&period=${period}`,
+    `/api/stock/balance-sheet?symbol=${symbol}&period=${period}&duration=10`,
   cashFlowUrl: (symbol, period) =>
-    `/api/stock/cash-flow?symbol=${symbol}&period=${period}`,
+    `/api/stock/cash-flow?symbol=${symbol}&period=${period}&duration=10`,
   stockAnalysisStatsUrl: (symbol, period) =>
     `/api/stock/stock-analyer-stats?symbol=${symbol}&period=${period}`,
   stockAlphaStatsUrl: (symbol, period) =>

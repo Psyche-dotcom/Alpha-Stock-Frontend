@@ -21,7 +21,7 @@ const StockNews: React.FC<IStockComponent> = ({ symbol }) => {
   }, []);
 
   const { getBlogsData, getBlogsError, getBlogsIsLoading } = useGetStockNews(
-    symbol.toUpperCase()
+    symbol.split(".")[0].toUpperCase()
   );
 
   const splitArray = () => {

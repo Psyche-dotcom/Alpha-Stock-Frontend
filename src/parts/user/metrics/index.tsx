@@ -172,6 +172,13 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
       setCompanyIdentity(companyName);
     }
   }, [getStockInfoData]);
+
+  function getShortDescription(text: string = "", limit = 1000) {
+    if (text.length <= limit) return text;
+    const trimmed = text.slice(0, limit);
+    return trimmed.slice(0, trimmed.lastIndexOf(" ")) + "…";
+  }
+
   return (
     <Box>
       <div className="lg:flex xl:gap-4 gap-2 mb-[34.5px]">
@@ -183,6 +190,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
             companyName={getStockInfoData[0]?.companyName}
             urlCompanyImg={getStockInfoData[0]?.image}
             price={getStockInfoData[0]?.price}
+            exchange={getStockInfoData[0]?.exchange}
           />
         )}
 
@@ -263,11 +271,11 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
         {/* {getStockInfoEodIsLoadingChart ? null : getStockInfoEodIsLoadingChart ===
             false && getStockInfoEodDataChart?.length > 0 ? (
           <> */}
-            {/* <StockChartSwitcher stockData={getStockInfoEodDataChart} /> */}
-            <div className="w-full h-[400px] mx-auto px-1 rounded">
-              <TradingviewWidget symbol={symbol} />
-            </div>
-          {/* </>
+        {/* <StockChartSwitcher stockData={getStockInfoEodDataChart} /> */}
+        <div className="w-full h-[400px] mx-auto px-1 rounded">
+          <TradingviewWidget symbol={symbol} />
+        </div>
+        {/* </>
         ) : (
           <p className="text-center">
             There is no EOD chart data for the date range selected
@@ -305,7 +313,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
               </div>
 
               <Text fontWeight={400} fontSize={16} color="#4B5563">
-                {getStockInfoData[0]?.description}
+                {getShortDescription(getStockInfoData[0]?.description)}
               </Text>
             </>
           ) : null}

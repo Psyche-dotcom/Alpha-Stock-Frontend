@@ -14,6 +14,7 @@ const CompanyCard: React.FC<ICompanyCard> = ({
   companyName,
   price,
   symbol,
+  exchange
 }) => {
   const [isWishListAddedState, setIsWishListAddedState] =
     useState<boolean>(false);
@@ -60,17 +61,20 @@ const CompanyCard: React.FC<ICompanyCard> = ({
             style={{
               borderRadius: "9999px",
             }}
-            width={60}
-            height={60}
+            width={40}
+            height={40}
           />
         </div>
-        <h2 className="xl:text-[36px] lg:text-[32px] text-[28px] font-bold text-[#111928]">
-          {companyName}
-        </h2>
+        <div>
+          <h2 className="xl:text-[36px] lg:text-[32px] text-[28px] font-bold text-[#111928]">
+            {companyName}
+          </h2>
+          <p className="text-xs text-[#6B7280]">Market | {exchange}</p>
+        </div>
       </div>
       <div className="justify-between md:flex items-center">
-        <h6 className="font-normal text-xs  mb-2 md:mb-0 text-[#6B7280]">
-          ${price} - Real Time Price Currency in USD
+        <h6 className="font-normal text-xs mb-2 md:mb-0 text-[#6B7280]">
+          ${price} - Real Time Price Currency in USD
         </h6>
         {!getWishlistIsAddedData?.isAdded ? (
           <div

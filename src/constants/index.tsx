@@ -56,6 +56,10 @@ export const searchTab = [
     title: "Stock Analyser",
     value: "stock-analyser",
   },
+    {
+    title: "Stock News",
+    value: "stock-news",
+  },
 ];
 
 export const trendingList = [

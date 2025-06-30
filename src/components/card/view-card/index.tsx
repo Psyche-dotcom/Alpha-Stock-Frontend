@@ -11,7 +11,7 @@ interface IViewProps {
   isAuth?: boolean;
 }
 
-const ViewCard: React.FC<IViewProps> = ({
+const ViewCard: React.FC<any> = ({
   card,
   showAuthor = false,
   isAuth = false,
@@ -19,7 +19,7 @@ const ViewCard: React.FC<IViewProps> = ({
   return (
     <Link
       passHref
-      href={isAuth ? `/user/blog/${card?.id}` : `/blog/${card?.id}`}
+      href={isAuth ? `${card?.url}` : `${card?.url}`}
     >
       <Box
         borderRadius="12px"
@@ -27,7 +27,7 @@ const ViewCard: React.FC<IViewProps> = ({
         h={"345px"}
         display={"flex"}
         alignItems={"end"}
-        bgImage={`url(${card?.blogThumbnailUrl})`}
+        bgImage={`url(${card?.image})`}
         bgSize="cover"
         bgPosition="auto"
         bgRepeat="no-repeat"
@@ -65,7 +65,7 @@ const ViewCard: React.FC<IViewProps> = ({
                   />
                 </Box>
                 <Text color={"#180E03"} fontSize={"14px"} fontWeight={600}>
-                  {card?.publisherName || "Jeffrey"}
+                  {card?.publisher || "Jeffrey"}
                 </Text>
               </Box>
             </Box>

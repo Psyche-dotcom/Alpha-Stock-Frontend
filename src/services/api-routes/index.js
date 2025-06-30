@@ -7,7 +7,9 @@ export const routes = {
   profile: () => "/api/user/info",
   retrievePlans: () => "/api/subscription/retrieve/all",
   updateProfile: (email) => `/api/user/update_details/${email}`,
-  blog: () => "/api/blog/post/retrieve/all",
+  blog: (page, limit) => `/api/stock/news/general?page=${page}&limit=${limit}`,
+  stockNews: (symbol) =>
+    `/api/stock/news/specific_stock_news?symbol=${symbol}&page=1&limit=11`,
   createBlog: () => "/api/blog/create",
   getSingleBlog: () => "/api/blog/post/retrieve/single",
   deleteBlog: (id) => `/api/blog/delete/${id}`,

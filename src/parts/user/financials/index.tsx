@@ -112,102 +112,122 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
 
     row1: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row1)}
+        {typeof item?.row1 === "number"
+          ? `$${formatMoneyNumber(item.row1)}`
+          : ""}
       </Text>
     ),
     row2: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row2)}
+        {typeof item?.row2 === "number"
+          ? `$${formatMoneyNumber(item.row2)}`
+          : ""}
       </Text>
     ),
     row3: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row3)}
+        {typeof item?.row3 === "number"
+          ? `$${formatMoneyNumber(item.row3)}`
+          : ""}
       </Text>
     ),
     row4: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row4)}
+        {typeof item?.row4 === "number"
+          ? `$${formatMoneyNumber(item.row4)}`
+          : ""}
       </Text>
     ),
     row5: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row5)}
+        {typeof item?.row5 === "number"
+          ? `$${formatMoneyNumber(item.row5)}`
+          : ""}
       </Text>
     ),
     row6: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row6)}
+        {typeof item?.row6 === "number"
+          ? `$${formatMoneyNumber(item.row6)}`
+          : ""}
       </Text>
     ),
     row7: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row7)}
+        {typeof item?.row7 === "number"
+          ? `$${formatMoneyNumber(item.row7)}`
+          : ""}
       </Text>
     ),
     row8: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row8)}
+        {typeof item?.row8 === "number"
+          ? `$${formatMoneyNumber(item.row8)}`
+          : ""}
       </Text>
     ),
     row9: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row9)}
+        {typeof item?.row9 === "number"
+          ? `$${formatMoneyNumber(item.row9)}`
+          : ""}
       </Text>
     ),
     row10: (item: DataType) => (
       <Text
-        fontSize={14}
+        fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {formatMoneyNumber(item?.row10)}
+        {typeof item?.row10 === "number"
+          ? `$${formatMoneyNumber(item.row10)}`
+          : ""}
       </Text>
     ),
   };

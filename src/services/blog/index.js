@@ -3,6 +3,7 @@ import { routes } from "../api-routes";
 import { ErrorHandler } from "../errorHandler";
 import httpService from "../httpService";
 import useMutateItem from "../useMutateItem";
+import useFetchItem from "../useFetchItem";
 
 export const useTrendingAnalysis = (handleSuccess) => {
   const { data, error, isPending, mutateAsync } = useMutateItem({
@@ -46,24 +47,33 @@ export const useAboutMarket = (handleSuccess) => {
   };
 };
 
-export const useGetBlogs = (handleSuccess) => {
-  const { data, error, isPending, mutateAsync } = useMutateItem({
-    mutationFn: (payload) =>
-      httpService.postDataWithoutToken(payload, routes.blog()),
-    onSuccess: (requestParams) => {
-      const resData = requestParams?.result || {};
-      handleSuccess(resData);
-    },
-    onError: (error) => {
-      showErrorAlert(error?.response?.data?.errorMessages[0]);
-    },
+export const useGetBlogs = (page, limit) => {
+  const { isLoading, error, data } = useFetchItem({
+    queryKey: ["general-news", limit], // make queryKey dynamic
+    queryFn: () => httpService.getData(routes.blog(page, limit)),
+    enabled: true,
+    retry: 1,
   });
 
   return {
-    getBlogsData: data?.data?.result || {},
+    getBlogsData: data?.data?.result || [],
     getBlogsError: ErrorHandler(error),
-    getBlogsIsLoading: isPending,
-    getBlogsPayload: (requestPayload) => mutateAsync(requestPayload),
+    getBlogsIsLoading: isLoading,
+  };
+};
+
+export const useGetStockNews = (symbol) => {
+  const { isLoading, error, data } = useFetchItem({
+    queryKey: ["specific-stock-news", symbol], // make queryKey dynamic
+    queryFn: () => httpService.getData(routes.stockNews(symbol)),
+    enabled: true,
+    retry: 1,
+  });
+
+  return {
+    getBlogsData: data?.data?.result || [],
+    getBlogsError: ErrorHandler(error),
+    getBlogsIsLoading: isLoading,
   };
 };
 

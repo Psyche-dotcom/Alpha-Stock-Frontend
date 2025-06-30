@@ -1,17 +1,18 @@
 "use client";
 
+import React from "react";
 import { useUserSession } from "@/app/context/user-context";
 import SingleCardSkeleton from "@/components/card/skeleton/single-view";
 import SkeletonViewCard from "@/components/card/skeleton/view";
 import ViewCard from "@/components/card/view-card";
 import SingleViewCard from "@/components/card/view-card/single-view-card";
 import { Pagination } from "@/components/ui/pagination";
-import { IViewCard } from "@/interface/card-view";
-import { useGetBlogs } from "@/services/blog";
+import { useGetStockNews } from "@/services/blog";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { IStockComponent } from "@/interface/stock";
 
-const Blog = () => {
+const StockNews: React.FC<IStockComponent> = ({ symbol }) => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [blogsData, setBlogsData] = useState<any>([]);
   const { setRedirectModalOpen } = useUserSession();
@@ -19,7 +20,9 @@ const Blog = () => {
     setRedirectModalOpen(false);
   }, []);
 
-  const { getBlogsData, getBlogsError, getBlogsIsLoading } = useGetBlogs(pageNumber, 10);
+  const { getBlogsData, getBlogsError, getBlogsIsLoading } = useGetStockNews(
+    symbol.toUpperCase()
+  );
 
   const splitArray = () => {
     if (blogsData && blogsData?.length > 0) {
@@ -123,4 +126,5 @@ const Blog = () => {
     </Box>
   );
 };
-export default Blog;
+
+export default StockNews;

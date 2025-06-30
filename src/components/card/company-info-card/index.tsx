@@ -1,11 +1,11 @@
 import { Briefcase, Calendar, MapPin, Globe, Users } from "lucide-react";
 
 interface CompanyInfoCardProps {
-  ceo: string;
-  foundationDate: string;
-  location: string;
-  website: string;
-  fullTimeEmployees: string | number;
+  ceo: string | null;
+  foundationDate: string | null;
+  location: string | null;
+  website: string | null;
+  fullTimeEmployees: string | number | null;
 }
 
 export default function CompanyInfoCard({
@@ -15,32 +15,58 @@ export default function CompanyInfoCard({
   website,
   fullTimeEmployees,
 }: CompanyInfoCardProps) {
+  // Format foundation date to a readable format (e.g., Feb 20, 2023)
+  const formattedDate = foundationDate
+    ? new Date(foundationDate).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : "N/A";
+
+  // Clean location
+  const cleanLocation =
+    location && location.toLowerCase() !== "null" ? location : "N/A";
+
+  // Format website
+  const cleanWebsite = website && website.toLowerCase() !== "null"
+    ? website.replace(/^https?:\/\//, "")
+    : null;
+
+  const websiteLink = cleanWebsite ? `https://${cleanWebsite}` : null;
+
+  // Format employee number
+  const formattedEmployees =
+    fullTimeEmployees && Number(fullTimeEmployees) > 0
+      ? Number(fullTimeEmployees).toLocaleString()
+      : "N/A";
+
   const rows = [
     {
       icon: <Briefcase className="h-4 w-4 text-gray-500" />,
       label: "Executive Director",
-      value: ceo,
+      value: ceo || "N/A",
     },
     {
       icon: <Calendar className="h-4 w-4 text-gray-500" />,
       label: "Foundation",
-      value: foundationDate,
+      value: formattedDate,
     },
     {
       icon: <MapPin className="h-4 w-4 text-gray-500" />,
       label: "Site",
-      value: location,
+      value: cleanLocation,
     },
     {
       icon: <Globe className="h-4 w-4 text-gray-500" />,
       label: "Website",
-      value: website.replace(/^https?:\/\//, ""),
-      link: `https://${website.replace(/^https?:\/\//, "")}`,
+      value: cleanWebsite || "N/A",
+      link: websiteLink,
     },
     {
       icon: <Users className="h-4 w-4 text-gray-500" />,
       label: "Employees",
-      value: Number(fullTimeEmployees).toLocaleString(),
+      value: formattedEmployees,
     },
   ];
 
@@ -48,7 +74,10 @@ export default function CompanyInfoCard({
     <div className="bg-white rounded-xl shadow-md w-full max-w-sm p-0 mb-6">
       <div className="h-full flex flex-col justify-around">
         {rows.map((row, index) => (
-          <div key={index} className="flex justify-between items-center px-6 py-3 border-b border-gray-200 last:border-b-0">
+          <div
+            key={index}
+            className="flex justify-between items-center px-6 py-3 border-b border-gray-200 last:border-b-0"
+          >
             <div className="flex items-center gap-2 text-gray-600">
               {row.icon}
               <span className="text-sm">{row.label}</span>

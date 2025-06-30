@@ -51,12 +51,14 @@ export function TableComponent<T extends DataItem>({
     );
 
   const formatColumnName = (name: string) => {
-    return (
-      columnLabels[name as keyof T] ||
-      name.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
-        return str.toUpperCase();
-      })
-    );
+    const label = columnLabels[name as keyof T];
+
+    if (label === "") return null; // Skip rendering label
+    if (label) return label;
+
+    return name
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (str) => str.toUpperCase());
   };
 
   const renderCellContent = (item: T, column: keyof T) => {
@@ -81,7 +83,7 @@ export function TableComponent<T extends DataItem>({
                   )}
                   key={String(column)}
                 >
-                  {formatColumnName(String(column))}
+                  {formatColumnName(String(column)) ?? ""}
                 </TableHead>
               ))}
             </TableRow>

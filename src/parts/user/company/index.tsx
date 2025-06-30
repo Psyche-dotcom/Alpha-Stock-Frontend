@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { ChevronRight, House } from "lucide-react";
 import { HomeSpecIcon } from "@/utils/icons";
 import Link from "next/link";
+import StockNews from "../stock-news";
 interface iProps {
   symbol: string;
 }
@@ -41,6 +42,8 @@ const Company: React.FC<iProps> = ({ symbol }) => {
         return <Fundamentals symbol={symbol} />;
       case "stock-analyser":
         return <Analyzer symbol={symbol} />;
+      case "stock-news":
+        return <StockNews symbol={symbol} />;
 
       default:
         return <Metrics symbol={symbol} />;

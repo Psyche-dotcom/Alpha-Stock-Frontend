@@ -10,4 +10,5 @@ export interface ICompanyCard {
   symbol: string;
   urlCompanyImg: string;
   price: number;
+  exchange: string;
 }

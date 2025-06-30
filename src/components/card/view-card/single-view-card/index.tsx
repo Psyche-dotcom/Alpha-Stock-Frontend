@@ -8,7 +8,7 @@ interface IViewProps {
   isAuth?: boolean;
 }
 
-const SingleViewCard: React.FC<IViewProps> = ({ card, isAuth = false }) => {
+const SingleViewCard: React.FC<any> = ({ card, isAuth = false }) => {
   const { handlePush } = useHandlePush();
   return (
     <Box
@@ -16,15 +16,13 @@ const SingleViewCard: React.FC<IViewProps> = ({ card, isAuth = false }) => {
       p={2}
       display={"flex"}
       alignItems={"end"}
-      bgImage={`url(${card?.blogThumbnailUrl})`}
+      bgImage={`url(${card?.image})`}
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
       flex={1}
       cursor={"pointer"}
-      onClick={() =>
-        handlePush(isAuth ? `/user/blog/${card?.id}` : `/blog/${card?.id}`)
-      }
+      onClick={() => handlePush(isAuth ? `${card?.url}` : `${card?.url}`)}
     >
       <Box
         borderRadius={12}
@@ -62,13 +60,13 @@ const SingleViewCard: React.FC<IViewProps> = ({ card, isAuth = false }) => {
               <Image
                 width={32}
                 height={32}
-                src={card?.publisherImgUrl || "/assets/images/card-image.png"}
+                src={card?.publisherImage || "/assets/images/card-image.png"}
                 alt="Single blog view"
                 className="rounded-full object-cover h-full w-full"
               />
             </Box>
             <Text color={"#180E03"} fontSize={"14px"} fontWeight={600}>
-              {card?.publisherName}
+              {card?.publisher}
             </Text>
           </Box>
         </Box>

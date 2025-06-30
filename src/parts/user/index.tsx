@@ -12,24 +12,11 @@ import Link from "next/link";
 
 const User: React.FC = () => {
   const { profileData, setRedirectModalOpen } = useUserSession();
-  const { getBlogsData, getBlogsError, getBlogsIsLoading, getBlogsPayload } =
-    useGetBlogs((res: any) => {});
+  const { getBlogsData, getBlogsError, getBlogsIsLoading } = useGetBlogs(1, 4);
   useEffect(() => {
     setRedirectModalOpen(false);
   }, []);
 
-  useEffect(() => {
-    const payload = {
-      pageNumber: 1,
-      perPageSize: 4,
-      category: "All",
-      status: "Published",
-      userId: profileData?.results?.id || "",
-      sinceDate: "",
-      search: "",
-    };
-    getBlogsPayload(payload);
-  }, [profileData?.results?.id]);
   const handleClick = (e: React.MouseEvent) => {
     if (!profileData?.result?.isSubActive) {
       e.preventDefault();
@@ -103,7 +90,7 @@ const User: React.FC = () => {
             xl: "repeat(2, 1fr)",
           }}
         >
-          {getBlogsData?.result?.map((trend: IViewCard, index: number) => (
+          {getBlogsData?.map((trend: any, index: number) => (
             <GridItem key={index}>
               <ViewCard card={trend} isAuth={true} />
             </GridItem>

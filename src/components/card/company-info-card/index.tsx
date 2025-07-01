@@ -49,7 +49,7 @@ export default function CompanyInfoCard({
     },
     {
       icon: <Calendar className="h-4 w-4 text-gray-500" />,
-      label: "Foundation",
+      label: "IPO Date",
       value: formattedDate,
     },
     {

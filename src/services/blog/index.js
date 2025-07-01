@@ -49,7 +49,7 @@ export const useAboutMarket = (handleSuccess) => {
 
 export const useGetBlogs = (page, limit) => {
   const { isLoading, error, data } = useFetchItem({
-    queryKey: ["general-news", limit], // make queryKey dynamic
+    queryKey: ["general-news", page, limit],
     queryFn: () => httpService.getData(routes.blog(page, limit)),
     enabled: true,
     retry: 1,
@@ -62,10 +62,10 @@ export const useGetBlogs = (page, limit) => {
   };
 };
 
-export const useGetStockNews = (symbol) => {
+export const useGetStockNews = (symbol, page, limit) => {
   const { isLoading, error, data } = useFetchItem({
-    queryKey: ["specific-stock-news", symbol], // make queryKey dynamic
-    queryFn: () => httpService.getData(routes.stockNews(symbol)),
+    queryKey: ["specific-stock-news", symbol, page, limit], // make queryKey dynamic
+    queryFn: () => httpService.getData(routes.stockNews(symbol, page, limit)),
     enabled: true,
     retry: 1,
   });

@@ -173,7 +173,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
     }
   }, [getStockInfoData]);
 
-  function getShortDescription(text: string = "", limit = 1000) {
+  function getShortDescription(text: string = "", limit = 800) {
     if (text.length <= limit) return text;
     const trimmed = text.slice(0, limit);
     return trimmed.slice(0, trimmed.lastIndexOf(" ")) + "…";

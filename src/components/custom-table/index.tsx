@@ -20,6 +20,7 @@ export interface EnhancedTableProps<T extends DataItem> extends ITableProps<T> {
   cellRenderers?: Partial<Record<keyof T, CellRenderer<T>>>;
   columnOrder?: (keyof T)[];
   columnLabels?: Partial<Record<keyof T, string>>;
+  fixed?: boolean; // NEW optional prop
 }
 
 export function TableComponent<T extends DataItem>({
@@ -32,9 +33,12 @@ export function TableComponent<T extends DataItem>({
   columnLabels = {},
   className,
   isLoading = false,
+  fixed = false, // default false
 }: EnhancedTableProps<T>) {
   const columns = columnOrder || (Object.keys(tableData[0]) as (keyof T)[]);
+
   if (isLoading) return <TableSkeleton columns={columns} />;
+
   if (tableData.length === 0)
     return (
       <div
@@ -72,14 +76,16 @@ export function TableComponent<T extends DataItem>({
   return (
     <div className="w-full">
       <div className="rounded-md overflow-auto">
-        <Table>
+        <Table className={cn(fixed ? "table-fixed w-full" : "")}>
           <TableHeader className="bg-[#351F05]">
             <TableRow className="border-none">
               {columns.map((column, index) => (
                 <TableHead
                   className={cn(
                     "whitespace-pre py-2 font-bold text-xs text-white",
-                    index === 0 ? "pl-6 text-start" : "text-center"
+                    index === 0
+                      ? cn("pl-6 text-start", fixed ? "w-96" : "")
+                      : "text-center"
                   )}
                   key={String(column)}
                 >
@@ -96,7 +102,10 @@ export function TableComponent<T extends DataItem>({
               >
                 {columns.map((column, colIndex) => (
                   <TableCell
-                    className={cn("py-2 ", colIndex === 0 ? "pl-6" : "")}
+                    className={cn(
+                      "py-2",
+                      colIndex === 0 ? cn("pl-6", fixed ? "w-96" : "") : ""
+                    )}
                     key={String(column)}
                   >
                     {renderCellContent(item, column)}

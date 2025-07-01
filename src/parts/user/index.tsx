@@ -96,8 +96,14 @@ const User: React.FC = () => {
             </GridItem>
           ))}
         </Grid>
-        <div className="flex items-center justify-center mt-4 cursor-pointer text-[#351F05] hover:underline">
-          <Link href="/user/news">See more</Link>
+        <div className="flex items-center justify-center mt-4 cursor-pointer">
+          <Link
+            href="/user/news"
+            className="font-medium rounded-md text-xs
+                  bg-[#351F05] text-white py-3 px-4 hover:bg-[#351f05]/80"
+          >
+            See more
+          </Link>
         </div>
       </div>
     </div>

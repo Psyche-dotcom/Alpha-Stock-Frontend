@@ -11,8 +11,8 @@ import {
 } from "@/services/stock";
 import { DataItem } from "@/types";
 import { CautionIcon } from "@/utils/icons";
-import { Box, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Select, Text } from "@chakra-ui/react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -61,22 +61,29 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const [isFetchStock, setIsFetchStock] = useState<boolean>(false);
   const [showAnalysisResult, setShowAnalysisResult] = useState<boolean>(false);
   const [year, setYear] = useState<number>(1);
+  const [assumptionLevel, setAssumptionLevel] = useState<number>(3); // 1: Low, 2: Low, Mid, 3: Low, Mid, High
   const [showAnalysisHistory, setShowAnalysisHistory] =
     useState<boolean>(false);
   const [queryHistory, setQueryHistory] = useState<string>("");
+
   const [tableState, setTableState] = useState<
-    Record<string, Record<RangeKey, number>>
+    Record<string, Partial<Record<RangeKey, string>>>
   >({
-    roic: { low: 0, mid: 0, high: 0 },
-    desiredAnnReturn: { low: 0, mid: 0, high: 0 },
-    revGrowth: { low: 0, mid: 0, high: 0 },
-    profitMargin: { low: 0, mid: 0, high: 0 },
-    freeCashFlowMargin: { low: 0, mid: 0, high: 0 },
-    peRatio: { low: 0, mid: 0, high: 0 },
-    pfcf: { low: 0, mid: 0, high: 0 },
+    roic: { low: "", mid: "", high: "" },
+    desiredAnnReturn: { low: "", mid: "", high: "" },
+    revGrowth: { low: "", mid: "", high: "" },
+    profitMargin: { low: "", mid: "", high: "" },
+    freeCashFlowMargin: { low: "", mid: "", high: "" },
+    peRatio: { low: "", mid: "", high: "" },
+    pfcf: { low: "", mid: "", high: "" },
   });
+
   const handleDropdownChange = (value: number) => {
     setYear(value);
+  };
+
+  const handleAssumptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setAssumptionLevel(Number(e.target.value));
   };
 
   const {
@@ -103,6 +110,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       predictStockIsLoading: boolean;
       predictStockPayload: (payload: any) => void;
     };
+
   useEffect(() => {
     setGetStockInfoFilter({ symbol: symbol });
     setGetStockAnalysisStatFilter({
@@ -116,7 +124,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const handleInputChange = (
     category: string,
     range: RangeKey,
-    value: number
+    value: string
   ) => {
     setTableState((prevState) => ({
       ...prevState,
@@ -176,61 +184,107 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       </Text>
     ),
     low: (item: DataType) => (
-      <Box className="flex justify-center relative">
-        <Input
-          name="low"
-          style={{ maxWidth: "54px" }}
-          value={tableState[item.category!]?.low || 0}
-          onChange={(e) =>
-            handleInputChange(item.category!, "low", Number(e.target.value))
-          }
-          className="h-8 w-[10.6rem]"
-        />
-        {item?.showPercent && (
-          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
-            %
-          </Box>
-        )}
+      <Box className="relative w-full flex justify-center">
+        {/* We want the percentage sign to be relative to the Input, not the outer Box.
+            So, let's put the Input inside its own relative container. */}
+        <div className="relative">
+          <Input
+            name="low"
+            value={tableState[item.category!]?.low ?? ""}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (/^\d*\.?\d*$/.test(val)) {
+                handleInputChange(item.category!, "low", val);
+              }
+            }}
+            className="h-8 w-[54px] text-right"
+            style={{ paddingRight: "22px" }} // This padding is key to make space for the %
+            inputMode="decimal"
+            placeholder=""
+          />
+          {item?.showPercent && (
+            <Box
+              className="absolute text-gray-500 text-sm pointer-events-none select-none"
+              style={{
+                right: "6px", // Position relative to the Input's right edge
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              %
+            </Box>
+          )}
+        </div>
       </Box>
     ),
 
     medium: (item: DataType) => (
-      <Box className="flex justify-center relative">
-        <Input
-          name="mid"
-          style={{ maxWidth: "54px" }}
-          value={tableState[item.category!]?.mid || 0}
-          onChange={(e) =>
-            handleInputChange(item.category!, "mid", Number(e.target.value))
-          }
-          className="h-8 w-[10.6rem]"
-        />
-        {item?.showPercent && (
-          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
-            %
-          </Box>
-        )}
+      <Box className="relative w-full flex justify-center">
+        <div className="relative">
+          <Input
+            name="medium"
+            value={tableState[item.category!]?.mid ?? ""}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (/^\d*\.?\d*$/.test(val)) {
+                handleInputChange(item.category!, "mid", val);
+              }
+            }}
+            className="h-8 w-[54px] text-right"
+            style={{ paddingRight: "22px" }}
+            inputMode="decimal"
+            placeholder=""
+          />
+          {item?.showPercent && (
+            <Box
+              className="absolute text-gray-500 text-sm pointer-events-none select-none"
+              style={{
+                right: "6px",
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              %
+            </Box>
+          )}
+        </div>
       </Box>
     ),
+
     high: (item: DataType) => (
-      <Box className="flex justify-center relative">
-        <Input
-          name="high"
-          style={{ maxWidth: "54px" }}
-          value={tableState[item.category!]?.high || 0}
-          onChange={(e) =>
-            handleInputChange(item.category!, "high", Number(e.target.value))
-          }
-          className="h-8 w-[10.6rem]"
-        />
-        {item?.showPercent && (
-          <Box className="absolute right-1 xl:right-5 md:right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">
-            %
-          </Box>
-        )}
+      <Box className="relative w-full flex justify-center">
+        <div className="relative">
+          <Input
+            name="high"
+            value={tableState[item.category!]?.high ?? ""}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (/^\d*\.?\d*$/.test(val)) {
+                handleInputChange(item.category!, "high", val);
+              }
+            }}
+            className="h-8 w-[54px] text-right"
+            style={{ paddingRight: "22px" }}
+            inputMode="decimal"
+            placeholder=""
+          />
+          {item?.showPercent && (
+            <Box
+              className="absolute text-gray-500 text-sm pointer-events-none select-none"
+              style={{
+                right: "6px",
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              %
+            </Box>
+          )}
+        </div>
       </Box>
     ),
   };
+
   const cellRunRenderer = {
     feature: (item: DataTypes) => <p className="flex">{item?.feature}</p>,
     low: (item: DataTypes) => (
@@ -250,25 +304,35 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     ),
   };
 
-  const columnOrder: (keyof DataType)[] = [
-    "feature",
-    "year1",
-    "year5",
-    "year10",
-    "low",
-    "medium",
-    "high",
-  ];
+  const { dynamicColumnOrder, dynamicColumnLabels } = useMemo(() => {
+    const order: (keyof DataType)[] = [
+      "feature",
+      "year1",
+      "year5",
+      "year10",
+    ];
+    const labels: Record<keyof DataType, string> = {
+      feature: "FEATURE",
+      year1: "1 Year",
+      year5: "5 Years",
+      year10: "10 Years",
+      low: "LOW",
+      medium: "MID",
+      high: "HIGH",
+      id: "ID",
+      category: "Category",
+      showPercent: "Show Percent",
+    };
 
-  const columnLabels = {
-    feature: "FEATURE",
-    year1: "1 Year",
-    year5: "5 Years",
-    year10: "10 Years",
-    low: "LOW",
-    medium: "MID",
-    high: "HIGH",
-  };
+    if (assumptionLevel === 1) {
+      order.push("low");
+    } else if (assumptionLevel === 2) {
+      order.push("low", "medium");
+    } else if (assumptionLevel === 3) {
+      order.push("low", "medium", "high");
+    }
+    return { dynamicColumnOrder: order, dynamicColumnLabels: labels };
+  }, [assumptionLevel]);
 
   const columnRunOrder: (keyof DataTypes)[] = [
     "feature",
@@ -279,7 +343,6 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
 
   const columnRunLabel = {
     feature: "Feature",
-
     low: "Low",
     medium: "Medium",
     high: "High",
@@ -333,50 +396,57 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     },
   ];
 
+  const parseNumber = (str: string | undefined): number => {
+    if (!str || str.trim() === "") return 0;
+    const n = Number(str);
+    return isNaN(n) ? 0 : n;
+  };
+
   const RunAnalysis = () => {
     const payload = {
       symbol: symbol,
       years: year,
+      selection: assumptionLevel,
       roic: {
-        low: tableState?.roic?.low || 0,
-        mid: tableState?.roic?.mid || 0,
-        high: tableState?.roic?.high || 0,
+        low: parseNumber(tableState?.roic?.low),
+        mid: parseNumber(tableState?.roic?.mid),
+        high: parseNumber(tableState?.roic?.high),
       },
       desiredAnnReturn: {
-        low: tableState?.desiredAnnReturn?.low || 0,
-        mid: tableState?.desiredAnnReturn?.mid || 0,
-        high: tableState?.desiredAnnReturn?.high || 0,
+        low: parseNumber(tableState?.desiredAnnReturn?.low),
+        mid: parseNumber(tableState?.desiredAnnReturn?.mid),
+        high: parseNumber(tableState?.desiredAnnReturn?.high),
       },
       revGrowth: {
-        low: tableState?.revGrowth?.low || 0,
-        mid: tableState?.revGrowth?.mid || 0,
-        high: tableState?.revGrowth?.high || 0,
+        low: parseNumber(tableState?.revGrowth?.low),
+        mid: parseNumber(tableState?.revGrowth?.mid),
+        high: parseNumber(tableState?.revGrowth?.high),
       },
       profitMargin: {
-        low: tableState?.profitMargin?.mid || 0,
-        mid: tableState?.profitMargin?.mid || 0,
-        high: tableState?.profitMargin?.mid || 0,
+        low: parseNumber(tableState?.profitMargin?.low),
+        mid: parseNumber(tableState?.profitMargin?.mid),
+        high: parseNumber(tableState?.profitMargin?.high),
       },
       freeCashFlowMargin: {
-        low: tableState?.profitMargin?.mid || 0,
-        mid: tableState?.freeCashFlowMargin?.mid || 0,
-        high: tableState?.freeCashFlowMargin?.mid || 0,
+        low: parseNumber(tableState?.freeCashFlowMargin?.low),
+        mid: parseNumber(tableState?.freeCashFlowMargin?.mid),
+        high: parseNumber(tableState?.freeCashFlowMargin?.high),
       },
       peRatio: {
-        low: tableState?.peRatio?.mid || 0,
-        mid: tableState?.peRatio?.mid || 0,
-        high: tableState?.peRatio?.mid || 0,
+        low: parseNumber(tableState?.peRatio?.low),
+        mid: parseNumber(tableState?.peRatio?.mid),
+        high: parseNumber(tableState?.peRatio?.high),
       },
       pfcf: {
-        low: tableState?.pfcf?.mid || 0,
-        mid: tableState?.pfcf?.mid || 0,
-        high: tableState?.pfcf?.mid || 0,
+        low: parseNumber(tableState?.pfcf?.low),
+        mid: parseNumber(tableState?.pfcf?.mid),
+        high: parseNumber(tableState?.pfcf?.high),
       },
     };
     predictStockPayload(payload);
-
     setShowAnalysisResult(true);
   };
+
   return (
     <Box py={4}>
       <Box bg="#fff" borderRadius="8px" pt={4}>
@@ -396,6 +466,13 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
                 value={year}
                 onChange={handleDropdownChange}
               />
+            </Box>
+            <Box>
+              <Select value={assumptionLevel} onChange={handleAssumptionChange}>
+                <option value={1}>(Low)</option>
+                <option value={2}>(Low, Mid)</option>
+                <option value={3}>(Low, Mid, High)</option>
+              </Select>
             </Box>
             <Button
               className="border-[#351F05] px-3 py-2 font-medium text-[#351F05] text-xs"
@@ -417,8 +494,8 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
               <TableComponentNew<DataType>
                 tableData={DataSourceAnalyzer(getStockAnalysisStatData)}
                 cellRenderers={cellRenderers}
-                columnOrder={columnOrder}
-                columnLabels={columnLabels}
+                columnOrder={dynamicColumnOrder}
+                columnLabels={dynamicColumnLabels}
                 className="!text-[#6B7280] text-sm font-normal"
               />
             </div>
@@ -440,21 +517,22 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
               >
                 Run Analysis
               </Button>
-              {/* <Button
-                className="border-[#351F05] px-3 py-3 font-medium text-[#351F05] text-base"
-                variant={"outline"}
-              >
-                Save Analysis
-              </Button> */}
             </Box>
           </Box>
           <Box className="p-4 rounded-[6px] bg-white flex gap-4 lg:max-w-[400px] border-2 border-[#E5E7EB] mx-2 h-full">
-            {/* <CautionIcon /> */}
             <Box className="text-[#3A2206] flex-1">
               <Text className="font-bold text-base mb-1">Disclaimer:</Text>
 
               <Text className="font-normal text-sm">
-                Alpha Strategy’s software is not an investment adviser, and it is not registered as such with the U.S. Securities & Exchange Commission or any other state or federal authority under the Investment Advisers Act of 1940 or any other law. The results generated by the Stock Analyzer are for informational and educational purposes only and are not, and should not be considered, investment advice or a recommendation to buy, sell, or hold a particular security, make a particular investment, or follow a particular investing strategy.
+                Alpha Strategy’s software is not an investment adviser, and it
+                is not registered as such with the U.S. Securities & Exchange
+                Commission or any other state or federal authority under the
+                Investment Advisers Act of 1940 or any other law. The results
+                generated by the Stock Analyzer are for informational and
+                educational purposes only and are not, and should not be
+                considered, investment advice or a recommendation to buy, sell,
+                or hold a particular security, make a particular investment, or
+                follow a particular investing strategy.
               </Text>
             </Box>
           </Box>

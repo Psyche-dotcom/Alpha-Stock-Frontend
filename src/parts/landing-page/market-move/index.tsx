@@ -122,18 +122,26 @@ const MarketMoveContent = () => {
         getWishlistIsAddedData?.wishListId && currentSymbol === record.agent;
 
       return (
-        <div className="flex justify-center">
-          {isInWishlist ? (
-            <Minus
-              className="h-4 w-4 cursor-pointer text-red-500"
-              onClick={() => handleDeleteClick(record.agent)}
-            />
-          ) : (
-            <Plus
-              className="h-4 w-4 cursor-pointer text-green-600"
-              onClick={() => handleAddClick(record.agent)}
-            />
-          )}
+        <div className="flex justify-end pr-4 relative">
+          <div
+            className="group relative flex items-center"
+            onClick={() =>
+              isInWishlist
+                ? handleDeleteClick(record.agent)
+                : handleAddClick(record.agent)
+            }
+          >
+            {isInWishlist ? (
+              <Minus className="h-4 w-4 text-red-500 cursor-pointer" />
+            ) : (
+              <Plus className="h-4 w-4 text-green-600 cursor-pointer" />
+            )}
+
+            {/* Tooltip - shifted to the LEFT */}
+            <div className="absolute right-full mr-2 top-1/2 -translate-y-1/2 w-max bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition pointer-events-none z-40 whitespace-nowrap">
+              {isInWishlist ? "Remove from Watchlist" : "Add to Watchlist"}
+            </div>
+          </div>
         </div>
       );
     },

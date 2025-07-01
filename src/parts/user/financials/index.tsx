@@ -412,6 +412,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         columnOrder={columnOrder}
         columnLabels={columnLabels}
         className="text-[#111928] font-semibold"
+        fixed={true}
       />
       <TableComponent<DataType>
         //@ts-ignore
@@ -429,6 +430,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         cellRenderers={cellRenderers}
         columnOrder={columnOrder}
         columnLabels={columnLabels2}
+        fixed={true}
       />
       <TableComponent<DataType>
         //@ts-ignore
@@ -446,6 +448,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         cellRenderers={cellRenderers}
         columnOrder={columnOrder}
         columnLabels={columnLabels3}
+        fixed={true}
       />
       {btnFilter != "balance-sheet" && (
         <TableComponent<DataType>
@@ -462,6 +465,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
           cellRenderers={cellRenderers}
           columnOrder={columnOrder}
           columnLabels={columnLabels4}
+          fixed={true}
         />
       )}
       {btnFilter == "cashflow" && (
@@ -475,6 +479,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
           cellRenderers={cellRenderers}
           columnOrder={columnOrder}
           columnLabels={columnLabels5}
+          fixed={true}
         />
       )}
     </Box>

@@ -8,8 +8,8 @@ export const routes = {
   retrievePlans: () => "/api/subscription/retrieve/all",
   updateProfile: (email) => `/api/user/update_details/${email}`,
   blog: (page, limit) => `/api/stock/news/general?page=${page}&limit=${limit}`,
-  stockNews: (symbol) =>
-    `/api/stock/news/specific_stock_news?symbol=${symbol}&page=1&limit=11`,
+  stockNews: (symbol, page, limit) =>
+    `/api/stock/news/specific_stock_news?symbol=${symbol}&page=${page}&limit=${limit}`,
   createBlog: () => "/api/blog/create",
   getSingleBlog: () => "/api/blog/post/retrieve/single",
   deleteBlog: (id) => `/api/blog/delete/${id}`,

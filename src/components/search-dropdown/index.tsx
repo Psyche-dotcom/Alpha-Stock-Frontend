@@ -27,24 +27,14 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [enableSearch, setEnableSearch] = useState<boolean>(false);
 
-  console.log("logos", logos);
+  const { companiesData, companiesFilter, companiesIsLoading } = useGetCompanies({ enabled: enableSearch });
 
-  const { companiesData, companiesFilter, companiesIsLoading } =
-    useGetCompanies({ enabled: enableSearch });
-
-  // Fetch logo dynamically
   const fetchLogo = async (rawSymbol: string) => {
-    const symbol = rawSymbol.split(".")[0]; // Clean symbol like "AAPL"
+    const symbol = rawSymbol.split(".")[0];
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/stock/info/profile?symbol=${symbol}`
-      );
-
-      if (!res.ok) {
-        console.error(`Failed to fetch logo for ${symbol}: ${res.status}`);
-        return;
-      }
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stock/info/profile?symbol=${symbol}`);
+      if (!res.ok) return;
 
       const data = await res.json();
       const image = data?.result?.[0]?.image;
@@ -52,8 +42,8 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
       if (image) {
         setLogos((prev) => ({
           ...prev,
-          [symbol]: image, // for "AAPL"
-          [rawSymbol]: image, // for "AAPL.L"
+          [symbol]: image,
+          [rawSymbol]: image,
         }));
       }
     } catch (err) {
@@ -61,11 +51,10 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
     }
   };
 
-  // Watch for new companies and fetch their logos
   useEffect(() => {
     if (companiesData?.length) {
       companiesData.forEach((company: Company) => {
-        const cleanSymbol = company.symbol.split(".")[0]; // 👈 trim after "."
+        const cleanSymbol = company.symbol.split(".")[0];
         if (!logos[cleanSymbol]) {
           fetchLogo(cleanSymbol);
         }
@@ -75,10 +64,7 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
       }
     };
@@ -100,8 +86,7 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
       return;
     }
 
-    const value = event.target.value;
-    setSearchQuery(value);
+    setSearchQuery(event.target.value);
     setShowDropdown(true);
   };
 
@@ -121,16 +106,27 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
   };
 
   const saveSearchToLocal = (company: Company) => {
-    const existing = JSON.parse(
-      localStorage.getItem("previousSearches") || "[]"
-    );
-
-    const updated = [
-      company,
-      ...existing.filter((s: Company) => s.symbol !== company.symbol),
-    ].slice(0, 5);
-
+    const existing = JSON.parse(localStorage.getItem("previousSearches") || "[]");
+    const updated = [company, ...existing.filter((s: Company) => s.symbol !== company.symbol)].slice(0, 5);
     localStorage.setItem("previousSearches", JSON.stringify(updated));
+  };
+
+  const renderLogo = (symbol: string) => {
+    const cleanSymbol = symbol.split(".")[0];
+    const logoUrl = logos[symbol] || logos[cleanSymbol];
+
+    if (logoUrl) {
+      return (
+        <img
+          src={logoUrl}
+          alt={`${symbol} logo`}
+          className="w-8 h-8 rounded-full object-contain bg-gray-100"
+        />
+      );
+    }
+
+    // Empty space if no logo
+    return <div className="w-8 h-8 rounded-full bg-gray-100"></div>;
   };
 
   return (
@@ -153,13 +149,10 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
           <div ref={dropdownRef}>
             {showDropdown && (
               <div className="shadow-lg bg-white absolute w-full shadow-custom-1 p-4 rounded-lg max-h-80 overflow-y-auto z-10">
-                {/* Show recent searches */}
                 {searchQuery === "" ? (
                   previousSearches.length > 0 ? (
                     <>
-                      <p className="text-xs text-gray-500 mb-1">
-                        Recent Searches
-                      </p>
+                      <p className="text-xs text-gray-500 mb-1">Recent Searches</p>
                       <ul>
                         {previousSearches.map((item, index) => (
                           <li
@@ -171,18 +164,9 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
                             }}
                             className="cursor-pointer flex items-center gap-3 px-2 py-2 hover:bg-gray-100 rounded"
                           >
-                            {item.logo && (
-                              <img
-                                src={item.logo}
-                                alt={`${item.name} logo`}
-                                className="w-6 h-6 rounded-full object-contain bg-gray-100"
-                              />
-                            )}
+                            {renderLogo(item.symbol)}
                             <span className="text-sm">
-                              <span className="uppercase font-semibold">
-                                {item.symbol}
-                              </span>{" "}
-                              - {item.name}
+                              <span className="uppercase font-semibold">{item.symbol}</span> - {item.name}
                             </span>
                           </li>
                         ))}
@@ -210,23 +194,10 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
                           }}
                           className="flex items-center gap-3"
                         >
-                          {(logos[result.symbol] ||
-                            logos[result.symbol.split(".")[0]]) && (
-                            <img
-                              src={
-                                logos[result.symbol] ||
-                                logos[result.symbol.split(".")[0]]
-                              }
-                              alt={`${result.name} logo`}
-                              className="w-8 h-8 rounded-full object-contain bg-gray-100"
-                            />
-                          )}
+                          {renderLogo(result.symbol)}
                           <div>
                             <p className="text-sm font-medium">
-                              <span className="uppercase font-semibold">
-                                {result.symbol}
-                              </span>{" "}
-                              - {result.name}
+                              <span className="uppercase font-semibold">{result.symbol}</span> - {result.name}
                             </p>
                           </div>
                         </Link>

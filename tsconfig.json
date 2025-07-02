@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     "next.config.mjs",
     "src/utils/storage.js",
-    "src/services/profile/index.js"
+    "src/services/profile/index.js",
+    "src/app/api/auth/[...nextauth]"
   ],
   "exclude": ["node_modules"]
 }

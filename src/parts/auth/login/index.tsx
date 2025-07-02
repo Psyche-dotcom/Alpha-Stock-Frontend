@@ -12,6 +12,7 @@ import { Form } from "@/components/ui/form";
 import InputForm from "@/components/form/InputForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
 import { useLogin } from "@/services/auth";
 import { setCookie } from "cookies-next";
@@ -108,6 +109,16 @@ const Login: React.FC = () => {
               Sign-up here
             </Link>
           </div>
+
+          <button
+            onClick={() =>
+              signIn("google", {
+                callbackUrl: "/google-auth", // 👈 redirect here after Google login
+              })
+            }
+          >
+            Sign in with Google
+          </button>
         </CardContent>
       </Card>
       <div className="w-fit-content hidden md:block">

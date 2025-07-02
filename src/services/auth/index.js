@@ -28,6 +28,28 @@ export const useLogin = (handleSuccess) => {
     loginPayload: (requestPayload) => mutateAsync(requestPayload),
   };
 };
+export const useLoginSocial = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postDataWithoutToken(payload, routes.socialLogin()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+      Storage.set("token", requestParams?.data?.result?.jwt);
+      Storage.set("role", requestParams?.data?.result?.userRole[0] || "");
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0] || error?.message);
+    },
+  });
+
+  return {
+    loginData: data,
+    loginDataError: ErrorHandler(error),
+    loginIsLoading: isPending,
+    loginPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
 
 export const useSignup = (handleSuccess) => {
   const { data, error, isPending, mutateAsync } = useMutateItem({

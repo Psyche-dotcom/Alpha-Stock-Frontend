@@ -40,6 +40,7 @@ import { useUserSession } from "@/app/context/user-context";
 import TradingviewWidget from "@/components/tradingview-widget";
 import CompanyInfoCard from "@/components/card/company-info-card";
 import { ArrowRight } from "lucide-react";
+import FmpChart from "@/components/fmp-chart";
 
 const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<number>(1);
@@ -274,6 +275,7 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
         {/* <StockChartSwitcher stockData={getStockInfoEodDataChart} /> */}
         <div className="w-full h-[400px] mx-auto px-1 rounded">
           <TradingviewWidget symbol={symbol} />
+          {/* <FmpChart symbol={symbol} /> */}
         </div>
         {/* </>
         ) : (

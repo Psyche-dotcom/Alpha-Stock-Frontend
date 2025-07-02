@@ -14,7 +14,7 @@ const CompanyCard: React.FC<ICompanyCard> = ({
   companyName,
   price,
   symbol,
-  exchange
+  exchange,
 }) => {
   const [isWishListAddedState, setIsWishListAddedState] =
     useState<boolean>(false);

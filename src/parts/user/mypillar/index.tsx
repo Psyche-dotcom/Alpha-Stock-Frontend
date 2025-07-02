@@ -27,23 +27,28 @@ import {
 type PillarFilter = {
   pillerName: string;
   comparison: ">" | "<";
-  value: string;
-  format: string;
+  value: string; // Keep as string for input flexibility (e.g., "1.", before final number)
+  format: string; // e.g., "$", "%", ""
 };
 
 type PillarOption = {
   label: string;
-  value: string;
-  format: string;
+  value: string; // e.g., "netIcome fifth", "marketCap"
+  format: string; // e.g., "$", "%", ""
   category: string;
 };
 
+// Define the expected format for each fundamental key
 const formatMap: Record<string, string> = {
-  marketCap: "$",
+  netIcome: "$",
   roic: "%",
-  revGrowth: "%",
-  profitMargin: "%",
+  averageShareOutstanding: "", // This is a count, no specific unit like $ or %
   freeCashFlowMargin: "%",
+  revGrowth: "%", // Revenue Growth is a percentage
+  pfcf: "", // P/FCF is a multiple, no unit
+  peRatio: "", // P/E Ratio is a multiple, no unit
+  profitMargin: "%",
+  marketCap: "$", // Market Cap is a currency
 };
 
 const labelMap: Record<string, string> = {
@@ -54,35 +59,66 @@ const labelMap: Record<string, string> = {
 
 // 💡 Categorize based on key naming
 function getCategory(key: string): string {
-  if (key.includes("Growth")) return "Growth";
-  if (key.includes("Margin") || key.includes("profit")) return "Margins";
-  if (key.includes("Cap") || key.includes("pe") || key.includes("pfcf"))
+  // Normalize key for categorization if needed
+  const normalizedKey = key.toLowerCase();
+  if (normalizedKey.includes("growth")) return "Growth";
+  if (normalizedKey.includes("margin") || normalizedKey.includes("profit"))
+    return "Margins";
+  if (
+    normalizedKey.includes("cap") ||
+    normalizedKey.includes("pe") ||
+    normalizedKey.includes("pfcf") ||
+    normalizedKey.includes("value") // For Enterprise Value, EV/Sales etc.
+  )
     return "Valuation";
-  return "Performance";
+  return "Performance"; // Default category
 }
 
-function generatePillarOptions(result: any): PillarOption[] {
+function generatePillarOptions(apiData: any): PillarOption[] {
   const options: PillarOption[] = [];
 
-  Object.entries(result).forEach(([key, val]) => {
-    if (typeof val === "object" && val !== null) {
-      Object.entries(val).forEach(([subKey, subVal]) => {
+  // Assuming apiData structure roughly matches what's used in generateFundamentalsList
+  // We need to iterate over the keys in `apiData` to build pillar options.
+  // This is a simplified mapping; you might need to adjust based on your exact ApiData structure.
+
+  // Example for common fields (adjust keys as per your ApiData)
+  // These are often the 'main' keys that might have 'first', 'fifth', 'ten' sub-keys
+  const relevantKeys = [
+    "netIcome",
+    "roic",
+    "averageShareOutstanding",
+    "freeCashFlowMargin",
+    "revGrowth",
+    "pfcf",
+    "peRatio",
+    "profitMargin",
+    "marketCap",
+    // Add other relevant keys from your ApiData that can be filtered
+  ];
+
+  relevantKeys.forEach((key) => {
+    const value = apiData[key];
+
+    if (typeof value === "object" && value !== null) {
+      // Handle objects with periods (e.g., netIcome: { fifth: "...", first: "..." })
+      Object.entries(value).forEach(([subKey, subVal]) => {
         if (subVal !== null) {
-          const label = `${labelMap[subKey] || subKey} ${key}`.replace(
+          const formattedLabel = `${labelMap[subKey] || subKey} ${key}`.replace(
             /([a-z])([A-Z])/g,
             "$1 $2"
-          );
+          ); // "fifth netIcome" -> "5Yr Net Income"
           options.push({
-            label,
-            value: `${key} ${subKey}`,
+            label: formattedLabel,
+            value: `${key} ${subKey}`, // e.g., "netIcome fifth"
             format: formatMap[key] || "",
             category: getCategory(key),
           });
         }
       });
-    } else if (val !== null) {
+    } else if (value !== null) {
+      // Handle direct string/number values (e.g., marketCap: "...")
       options.push({
-        label: key.replace(/([a-z])([A-Z])/g, "$1 $2"),
+        label: key.replace(/([a-z])([A-Z])/g, "$1 $2"), // "marketCap" -> "Market Cap"
         value: key,
         format: formatMap[key] || "",
         category: getCategory(key),
@@ -124,39 +160,58 @@ export default function PillarScreener() {
     getMyCurrentAlphaError,
     refetchGetMyCurrentAlpha,
   } = useGetMyCurrentAlpha({ enabled: true });
+
   useEffect(() => {
+    // This effect should only run once on mount
     setGetStockAlphaStatFilter({
-      symbol: "AAPL",
+      symbol: "AAPL", // Assuming "AAPL" is a default or placeholder symbol
       period: "annual",
     });
     refetchGetMyCurrentAlpha();
-  }, []);
+  }, [setGetStockAlphaStatFilter, refetchGetMyCurrentAlpha]); // Dependencies for useEffect
 
   useEffect(() => {
-    setSelectedFilters(getMyCurrentAlphaData);
+    if (getMyCurrentAlphaData) {
+      setSelectedFilters(getMyCurrentAlphaData);
+    }
   }, [getMyCurrentAlphaData]);
 
   const { myAddPillerData, myAddPillerIsLoading, myAddPillerPayload } =
-    useAddMyPiller((res: { statusCode: number; result: any }) => {});
+    useAddMyPiller((res: { statusCode: number; result: any }) => {
+      // Handle success or error of adding pillars here if needed
+      if (res.statusCode === 200) {
+        // Optionally refetch current pillars or show success message
+        refetchGetMyCurrentAlpha();
+        // console.log("Pillars updated successfully!");
+      } else {
+        showErrorAlert("Failed to update pillars.");
+      }
+    });
 
   useEffect(() => {
-    const opts = generatePillarOptions(getStockAlphaStatData);
-    setPillarOptions(opts);
-    setGroupedOptions(groupPillarOptions(opts));
+    if (getStockAlphaStatData) {
+      const opts = generatePillarOptions(getStockAlphaStatData);
+      setPillarOptions(opts);
+      setGroupedOptions(groupPillarOptions(opts));
+    }
   }, [getStockAlphaStatData]);
 
   const updateFilter = (
     pillarKey: string,
-    comparison: string,
+    comparison: ">" | "<", // Strongly type comparison
     inputValue: string
   ) => {
+    // 💡 Client-side validation: Filter out non-numeric characters
+    // Allows numbers, a single decimal point, and leading minus sign
+    const sanitizedInputValue = inputValue.replace(/[^0-9.-]/g, "").replace(/(.*)\./, "$1.").replace(/(\..*)\./g, "$1");
+
     const format =
       pillarOptions.find((p) => p.value === pillarKey)?.format || "";
 
     const updated: PillarFilter = {
       pillerName: pillarKey,
-      comparison: comparison as ">" | "<",
-      value: inputValue,
+      comparison: comparison,
+      value: sanitizedInputValue, // Use the sanitized value
       format,
     };
 
@@ -182,15 +237,17 @@ export default function PillarScreener() {
       if (exists) {
         return prev.filter((f) => f.pillerName !== pillarKey);
       } else {
-        const newFilter = pillarOptions.find((p) => p.value === pillarKey);
-        return newFilter
+        const newFilterOption = pillarOptions.find(
+          (p) => p.value === pillarKey
+        );
+        return newFilterOption
           ? [
               ...prev,
               {
-                pillerName: newFilter.value,
-                comparison: ">",
-                value: "",
-                format: newFilter.format,
+                pillerName: newFilterOption.value,
+                comparison: ">", // Default comparison
+                value: "", // Default empty value
+                format: newFilterOption.format,
               },
             ]
           : prev;
@@ -200,15 +257,27 @@ export default function PillarScreener() {
 
   const handleSearch = () => {
     if (selectedFilters.length < 1) {
-      showErrorAlert("You should select aleast 1 filters");
+      showErrorAlert("You should select at least 1 filter.");
       return;
     }
     if (selectedFilters.length > length) {
-      showErrorAlert("You selection should not be more than 8 filters");
+      showErrorAlert(`You selection should not be more than ${length} filters.`);
       return;
     }
+
+    // Optional: Validate that all selected filters have a non-empty numeric value
+    const hasInvalidValue = selectedFilters.some(filter => {
+      const numValue = parseFloat(filter.value);
+      return filter.value.trim() === "" || isNaN(numValue);
+    });
+
+    if (hasInvalidValue) {
+        showErrorAlert("All selected filters must have a valid numerical value.");
+        return;
+    }
+
     myAddPillerPayload(selectedFilters);
-    // alert(JSON.stringify(selectedFilters, null, 2));
+    // alert(JSON.stringify(selectedFilters, null, 2)); // For debugging
   };
 
   return (
@@ -234,10 +303,19 @@ export default function PillarScreener() {
                       const selected = selectedFilters.find(
                         (f) => f.pillerName === pillar.value
                       );
+
+                      // Determine placeholder based on format
+                      const inputPlaceholder =
+                        pillar.format === "$"
+                          ? "e.g., 1000000 (1M)"
+                          : pillar.format === "%"
+                          ? "e.g., 15 (%)"
+                          : "e.g., 1.5"; // For multiples or counts
+
                       return (
                         <div
                           key={pillar.value}
-                          className="flex flex-col sm:grid sm:grid-cols-2 sm:items-center gap-2 bg-muted/50 rounded"
+                          className="flex flex-col sm:grid sm:grid-cols-2 sm:items-center gap-2 bg-muted/50 rounded p-2"
                         >
                           <div className="flex gap-2 items-start">
                             <Checkbox
@@ -250,11 +328,11 @@ export default function PillarScreener() {
                           </div>
                           <div className="flex flex-col sm:flex-row gap-2 w-full">
                             <Select
-                              value={selected?.comparison || ""}
+                              value={selected?.comparison || ">"} // Set a default value to avoid uncontrolled component warning
                               onValueChange={(val) =>
                                 updateFilter(
                                   pillar.value,
-                                  val,
+                                  val as ">" | "<",
                                   selected?.value || ""
                                 )
                               }
@@ -265,10 +343,13 @@ export default function PillarScreener() {
                               <SelectContent className="bg-white">
                                 <SelectItem value=">">Greater</SelectItem>
                                 <SelectItem value="<">Less</SelectItem>
+                                <SelectItem value="=">Equal</SelectItem>
                               </SelectContent>
                             </Select>
                             <Input
-                              placeholder="1.5"
+                              type="number" // Restrict to number input
+                              step="any" // Allow decimal numbers
+                              placeholder={inputPlaceholder} // Dynamic placeholder for better UX
                               value={selected?.value || ""}
                               className="w-full sm:w-32 h-9"
                               onChange={(e) =>
@@ -291,11 +372,12 @@ export default function PillarScreener() {
           <div className="flex justify-center">
             <Button
               className={`sm:w-[60%] w-full py-1 px-2 text-white ${
-                selectedFilters.length < 1
-                  ? "bg-gray-400 pointer-events-none"
+                selectedFilters.length < 1 || selectedFilters.some(f => f.value.trim() === "" || isNaN(parseFloat(f.value)))
+                  ? "bg-gray-400 pointer-events-none" // Disable if no filters or any filter has invalid value
                   : "bg-[#351F05]"
               }`}
               onClick={handleSearch}
+              disabled={selectedFilters.length < 1 || selectedFilters.some(f => f.value.trim() === "" || isNaN(parseFloat(f.value)))} // Also disable button directly
             >
               Update My Pillars
             </Button>
@@ -305,24 +387,37 @@ export default function PillarScreener() {
           <div className="flex justify-between mb-6">
             <h3 className="font-bold text-lg">My Pillars</h3>
             <p className="font-semibold text-sm">
-              {selectedFilters.length} / {length} Pillars
+              {selectedFilters.length} Pillars
             </p>
           </div>
           <div className="flex flex-wrap gap-2 bg-[#FFF8F0] sm:px-4 px-2 sm:py-8 py-3 rounded-md shadow-sm min-h-[150px]">
-            {selectedFilters.map((filter) => (
-              <div
-                key={filter.pillerName}
-                className="h-fit flex items-center bg-[#351F05] text-white rounded-full sm:px-3 px-2 py-1 sm:text-sm text-xs text-nowrap"
-              >
-                {filter.pillerName} {filter.comparison} {filter.value}
-                <button
-                  onClick={() => removeFilter(filter.pillerName)}
-                  className="ml-2"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ))}
+            {selectedFilters.map((filter) => {
+                const displayValue = filter.format === "$"
+                    ? `${filter.value}` // We'll handle full formatting on the display side (where `generateFundamentalsList2` is used)
+                    : filter.format === "%"
+                    ? `${filter.value}` // Same here
+                    : filter.value; // For plain numbers
+
+                return (
+                  <div
+                    key={filter.pillerName}
+                    className="h-fit flex items-center bg-[#351F05] text-white rounded-full sm:px-3 px-2 py-1 sm:text-sm text-xs text-nowrap"
+                  >
+                    {filter.pillerName.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^(.)/, (match) => match.toUpperCase())} {/* Format pillar name for display */}
+                    {" "}
+                    {filter.comparison}
+                    {" "}
+                    {displayValue}
+                    {filter.format === "%" && filter.value.trim() !== "" ? "%" : ""} {/* Add % if applicable and value exists */}
+                    <button
+                      onClick={() => removeFilter(filter.pillerName)}
+                      className="ml-2"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                );
+            })}
           </div>
         </div>
       </div>

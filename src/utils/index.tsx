@@ -225,8 +225,8 @@ export const downloadPaymentPDF = (data: any) => {
 };
 
 export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
-  const formatCurrency = (numStr: string) => {
-    const num = parseFloat(numStr);
+  const formatCurrency = (numStr: string | number) => {
+    const num = parseFloat(String(numStr));
     if (isNaN(num)) return "-";
     if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
     if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
@@ -234,12 +234,39 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
     return `$${num.toFixed(2)}`;
   };
 
-  const formatPercentage = (val: string) => {
-    const num = parseFloat(val);
+  const formatPercentage = (val: string | number) => {
+    const num = parseFloat(String(val));
     return isNaN(num) ? "-" : `${num.toFixed(2)}%`;
   };
 
-  const parseNumber = (val: string) => parseFloat(val.replace("%", ""));
+  const formatLargeNumber = (numStr: string | number) => {
+    const num = parseFloat(String(numStr));
+    if (isNaN(num)) return "-";
+    if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
+    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
+    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
+    return num.toFixed(2);
+  };
+
+
+  const parseNumber = (val: string) => {
+    if (!val) return NaN;
+    let numStr = val.replace(/[%$]/g, "").trim();
+    let multiplier = 1;
+
+    if (numStr.endsWith("T")) {
+      multiplier = 1e12;
+      numStr = numStr.slice(0, -1);
+    } else if (numStr.endsWith("B")) {
+      multiplier = 1e9;
+      numStr = numStr.slice(0, -1);
+    } else if (numStr.endsWith("M")) {
+      multiplier = 1e6;
+      numStr = numStr.slice(0, -1);
+    }
+    const num = parseFloat(numStr);
+    return isNaN(num) ? NaN : num * multiplier;
+  };
 
   const periodMap: Record<string, string> = {
     first: "1Y",
@@ -249,15 +276,6 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
 
   const fundamentals: FundamentalsItem[] = [];
 
-  // Add Market Cap
-  // if (apiData.marketCap) {
-  //   fundamentals.push({
-  //     header: "Market Cap",
-  //     amount: formatCurrency(apiData.marketCap),
-  //     isActive: true,
-  //   });
-  // }
-
   // Definitions of the 8-pillar indicators
   const rules: {
     key: keyof ApiData;
@@ -265,7 +283,8 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
     condition: (val: number) => boolean;
     label: string;
     description: string;
-    format: "currency" | "percentage";
+    // Explicitly define the expected format for clarity
+    displayFormat: "currency" | "percentage" | "number_with_suffix" | "number";
   }[] = [
     {
       key: "netIcome",
@@ -273,7 +292,7 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
       condition: (v) => v < 10e9,
       label: "Net Income",
       description: "< 10B",
-      format: "currency",
+      displayFormat: "currency",
     },
     {
       key: "roic",
@@ -281,7 +300,7 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
       condition: (v) => v < 20,
       label: "ROIC",
       description: "< 20%",
-      format: "percentage",
+      displayFormat: "percentage",
     },
     {
       key: "averageShareOutstanding",
@@ -289,7 +308,7 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
       condition: (v) => v > 1.75e9,
       label: "Avg Share Outstanding",
       description: "> 1.75B",
-      format: "currency",
+      displayFormat: "number_with_suffix", // Corrected: This is a count, not a percentage or currency
     },
     {
       key: "freeCashFlowMargin",
@@ -297,15 +316,15 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
       condition: (v) => v < 22,
       label: "Free Cash Flow Margin",
       description: "< 22%",
-      format: "percentage",
+      displayFormat: "percentage",
     },
     {
-      key: "revGrowth",
+      key: "revGrowth", // Revenue Growth
       period: "fifth",
       condition: (v) => v > 5,
       label: "Revenue Growth",
       description: "> 5%",
-      format: "percentage",
+      displayFormat: "percentage", // Corrected: Revenue Growth is a percentage
     },
     {
       key: "pfcf",
@@ -313,7 +332,7 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
       condition: (v) => v < 200,
       label: "P/FCF",
       description: "< 200",
-      format: "currency",
+      displayFormat: "number", // P/FCF is a multiple, no unit
     },
     {
       key: "peRatio",
@@ -321,7 +340,7 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
       condition: (v) => v > 22,
       label: "P/E Ratio",
       description: "> 22",
-      format: "currency",
+      displayFormat: "number", // P/E Ratio is a multiple, no unit
     },
     {
       key: "profitMargin",
@@ -329,7 +348,7 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
       condition: (v) => v > 20,
       label: "Profit Margin",
       description: "> 20%",
-      format: "percentage",
+      displayFormat: "percentage",
     },
   ];
 
@@ -337,17 +356,38 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
     const raw =
       typeof apiData[rule.key] === "object" && apiData[rule.key] !== null
         ? (apiData[rule.key] as Record<string, string | null>)[rule.period]
-        : null;
-    if (!raw) continue;
+        : apiData[rule.key] as string | null; // Added direct access for keys not objects (e.g., marketCap)
 
-    const valueNum = parseNumber(raw);
-    const amount =
-      rule.key == "peRatio" || rule.key == "pfcf"
-        ? raw
-        : rule.format === "currency"
-        ? formatCurrency(raw)
-        : formatPercentage(raw);
-    const isActive = rule.condition(valueNum);
+    if (raw === null || raw === undefined) continue;
+
+    let valueNum: number = parseNumber(String(raw));
+    let amount: string;
+
+    // If parsing for condition failed, it means the raw value might be something like "N/A"
+    if (isNaN(valueNum)) {
+      amount = "-"; // Or whatever default representation you prefer for non-numeric data
+    } else {
+      switch (rule.displayFormat) {
+        case "currency":
+          amount = formatCurrency(valueNum);
+          break;
+        case "percentage":
+          amount = formatPercentage(valueNum);
+          break;
+        case "number_with_suffix":
+          amount = formatLargeNumber(valueNum); // For shares outstanding
+          break;
+        case "number":
+          amount = valueNum.toFixed(2); // For P/E, P/FCF, etc.
+          break;
+        default:
+          amount = String(valueNum); // Fallback
+      }
+    }
+
+    // Only apply condition check if valueNum is a valid number
+    const isActive = isNaN(valueNum) ? false : rule.condition(valueNum);
+
 
     fundamentals.push({
       header: `${rule.label} (${periodMap[rule.period]}) ${rule.description}`,
@@ -362,28 +402,41 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
 interface AlphaPreference {
   pillerName: string;
   comparison: ">" | "<";
-  format: "%" | "$" | "";
-  value: string;
+  format: "%" | "$" | ""; // Represents the desired display format for the result ("" means default for the metric)
+  value: string; // The threshold value
 }
 
 const KEY_LABEL_MAP: Record<string, string> = {
   profitMargin: "Profit Margin",
-  netIcome: "Net Icome",
-  freeCashFlowMargin: "Free CashFlow Margin",
+  netIcome: "Net Income", // Corrected typo for consistency
+  freeCashFlowMargin: "Free Cash Flow Margin",
   marketCap: "Market Cap",
   revGrowth: "Revenue Growth",
   averageShareOutstanding: "Avg Share Outstanding",
-  peRatio: "P/E Ratio", // If applicable
+  peRatio: "P/E Ratio",
   pfcf: "P/FCF",
-  roic: "ROIC", // If you meant this too
+  roic: "ROIC",
+};
+
+// Define default formats for keys if the user preference format is empty ("")
+const DEFAULT_KEY_FORMAT: Record<string, "%" | "$" | "number_with_suffix" | "number"> = {
+    profitMargin: "%",
+    netIcome: "$",
+    freeCashFlowMargin: "%",
+    marketCap: "$", // Market cap is currency
+    revGrowth: "%", // Revenue Growth is a percentage
+    averageShareOutstanding: "number_with_suffix", // Shares outstanding is a count
+    peRatio: "number",
+    pfcf: "number",
+    roic: "%",
 };
 
 export function generateFundamentalsList2(
   apiData: ApiData,
   userAlphaPreferences: AlphaPreference[]
 ): FundamentalsItem[] {
-  const formatCurrency = (numStr: string) => {
-    const num = parseFloat(numStr);
+  const formatCurrency = (numStr: string | number) => {
+    const num = parseFloat(String(numStr));
     if (isNaN(num)) return "-";
     if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
     if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
@@ -391,12 +444,39 @@ export function generateFundamentalsList2(
     return `$${num.toFixed(2)}`;
   };
 
-  const formatPercentage = (val: string) => {
-    const num = parseFloat(val);
+  const formatPercentage = (val: string | number) => {
+    const num = parseFloat(String(val));
     return isNaN(num) ? "-" : `${num.toFixed(2)}%`;
   };
 
-  const parseNumber = (val: string) => parseFloat(val.replace(/[%$]/g, ""));
+  const formatLargeNumber = (numStr: string | number) => {
+    const num = parseFloat(String(numStr));
+    if (isNaN(num)) return "-";
+    if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
+    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
+    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
+    return num.toFixed(2);
+  };
+
+  // Improved parseNumber to handle %, $, T, B, M suffixes
+  const parseNumber = (val: string) => {
+    if (!val) return NaN;
+    let numStr = val.replace(/[%$]/g, "").trim();
+    let multiplier = 1;
+
+    if (numStr.endsWith("T")) {
+      multiplier = 1e12;
+      numStr = numStr.slice(0, -1);
+    } else if (numStr.endsWith("B")) {
+      multiplier = 1e9;
+      numStr = numStr.slice(0, -1);
+    } else if (numStr.endsWith("M")) {
+      multiplier = 1e6;
+      numStr = numStr.slice(0, -1);
+    }
+    const num = parseFloat(numStr);
+    return isNaN(num) ? NaN : num * multiplier;
+  };
 
   const periodMap: Record<string, string> = {
     first: "1Y",
@@ -407,53 +487,80 @@ export function generateFundamentalsList2(
   const fundamentals: FundamentalsItem[] = [];
 
   for (const pref of userAlphaPreferences) {
-    const [key, period] = pref.pillerName.split(" ");
-    const valKey = key as keyof ApiData;
-    const valPeriod = period as keyof ApiData["averageShareOutstanding"];
+    const [keyPart, periodPart] = pref.pillerName.split(" ");
+    const valKey = keyPart as keyof ApiData;
+    const valPeriod = periodPart as keyof ApiData["averageShareOutstanding"];
 
-    const raw =
+    const rawValue =
       typeof apiData[valKey] === "object" && apiData[valKey] !== null
         ? (apiData[valKey] as Record<string, string | null>)[valPeriod]
         : (apiData[valKey] as string | null);
 
-    if (!raw) continue;
+    if (rawValue === null || rawValue === undefined) continue;
 
-    const valueNum = parseNumber(raw);
-    const threshold = parseFloat(pref.value);
+    const valueNum = parseNumber(String(rawValue));
+    const threshold = parseNumber(pref.value);
     let isActive = false;
 
-    if (pref.comparison === ">") {
+    if (isNaN(valueNum) || isNaN(threshold)) {
+      // If parsing fails for either value, the condition cannot be met
+      isActive = false;
+    } else if (pref.comparison === ">") {
       isActive = valueNum > threshold;
     } else if (pref.comparison === "<") {
       isActive = valueNum < threshold;
     }
 
-    const formattedValue =
-      pref.format === "$"
-        ? formatCurrency(raw)
-        : pref.format === "%"
-        ? formatPercentage(raw)
-        : key == "netIcome"
-        ? formatCurrency(raw)
-        : key == "averageShareOutstanding"
-        ? formatCurrency(raw)
-        : raw;
+    // Determine the format to use for display
+    // Prioritize user preference, otherwise use default
+    const effectiveFormat = pref.format === "" ? DEFAULT_KEY_FORMAT[keyPart] : pref.format;
 
-    const keyLabel = KEY_LABEL_MAP[key] ?? key;
+    let formattedValue: string;
+    switch (effectiveFormat) {
+      case "$":
+        formattedValue = formatCurrency(rawValue);
+        break;
+      case "%":
+        formattedValue = formatPercentage(rawValue);
+        break;
+      case "number_with_suffix":
+        formattedValue = formatLargeNumber(rawValue);
+        break;
+      case "number":
+        const numVal = parseFloat(String(rawValue));
+        formattedValue = isNaN(numVal) ? "-" : numVal.toFixed(2);
+        break;
+      default:
+        formattedValue = String(rawValue); // Fallback
+        break;
+    }
+
+    let formattedThreshold: string;
+    switch (effectiveFormat) {
+      case "$":
+        formattedThreshold = formatCurrency(pref.value);
+        break;
+      case "%":
+        formattedThreshold = formatPercentage(pref.value);
+        break;
+      case "number_with_suffix":
+        formattedThreshold = formatLargeNumber(pref.value);
+        break;
+      case "number":
+        const numThresh = parseFloat(String(pref.value));
+        formattedThreshold = isNaN(numThresh) ? "" : numThresh.toFixed(2);
+        break;
+      default:
+        formattedThreshold = String(pref.value); // Fallback
+        break;
+    }
+
+    const keyLabel = KEY_LABEL_MAP[keyPart] ?? keyPart;
 
     const periodLabel =
-      key === "marketCap" ? "" : ` (${periodMap[period] ?? ""})`;
-
-    const formattedThreshold =
-      pref.format === "$"
-        ? formatCurrency(pref.value)
-        : pref.format === "%"
-        ? formatPercentage(pref.value)
-        : key == "netIcome"
-        ? formatCurrency(pref.value)
-        : key == "averageShareOutstanding"
-        ? formatCurrency(pref.value)
-        : pref.value;
+      keyPart === "marketCap" || !periodPart
+        ? ""
+        : ` (${periodMap[periodPart] ?? periodPart})`; // Use periodPart if periodMap doesn't have it
 
     const label = `${keyLabel}${periodLabel} ${pref.comparison} ${formattedThreshold}`;
 

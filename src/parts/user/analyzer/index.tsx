@@ -7,6 +7,7 @@ import { IStockComponent } from "@/interface/stock";
 import {
   useGetStockAnalysisStat,
   useGetStockInfo,
+  useGetStockInfoEod,
   usePredictStock,
 } from "@/services/stock";
 import { DataItem } from "@/types";
@@ -30,6 +31,7 @@ import DropdownSelect from "@/components/DropdownSelect";
 import YearDropdownSelect from "@/components/yearSelectdropdown";
 import { TableComponent2 } from "@/components/custom-table2";
 import { TableComponentNew } from "@/components/custom-table-new";
+import CompanyAnalysisCardText from "@/components/card/company-analysis-card-text";
 
 interface DataType extends DataItem {
   id: number;
@@ -93,10 +95,18 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     setGetStockInfoFilter,
     getStockInfoError,
   } = useGetStockInfo({ enabled: isFetchStock });
+
+  const {
+    getStockInfoEodData,
+    getStockInfoEodFilter,
+    getStockInfoEodIsLoading,
+    setGetStockInfoEodFilter,
+    getStockInfoEodError,
+  } = useGetStockInfoEod({ enabled: true, queryKey: "stockInfo" });
+
   const {
     getStockAnalysisStatData,
     getStockAnalysisStatFilter,
-    getStockAnalysisStatIsLoading,
     setGetStockAnalysisStatFilter,
     getStockAnalysisStatError,
   } = useGetStockAnalysisStat({ enabled: isFetchStats });
@@ -111,8 +121,35 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       predictStockPayload: (payload: any) => void;
     };
 
+  const currentDate = new Date();
+
+  const getPreviousTradingDay = (date: Date, daysBack: number): Date => {
+    let previousDate = new Date(date);
+    while (daysBack > 0) {
+      previousDate.setDate(previousDate.getDate() - 1);
+      const day = previousDate.getDay();
+      if (day !== 0 && day !== 6) {
+        daysBack--;
+      }
+    }
+    return previousDate;
+  };
+
+  const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
+  const oneDayBefore = getPreviousTradingDay(currentDate, 1);
+  const twoDaysBefore = getPreviousTradingDay(currentDate, 2);
+
+  const oneDayBeforeFormatted = formatDate(oneDayBefore);
+  const twoDaysBeforeFormatted = formatDate(twoDaysBefore);
+
   useEffect(() => {
     setGetStockInfoFilter({ symbol: symbol });
+    setGetStockInfoEodFilter({
+      symbol: symbol,
+      endDate: oneDayBeforeFormatted,
+      startDate: twoDaysBeforeFormatted,
+    });
     setGetStockAnalysisStatFilter({
       symbol: symbol,
       period: "annual",
@@ -289,28 +326,23 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
     feature: (item: DataTypes) => <p className="flex">{item?.feature}</p>,
     low: (item: DataTypes) => (
       <p className="flex justify-center">
-        {item?.low ? parseFloat(String(item.low)).toFixed(2) : "-"}
+        {item?.low ? `$${parseFloat(String(item.low)).toFixed(2)}` : "-"}
       </p>
     ),
     medium: (item: DataTypes) => (
       <p className="flex justify-center">
-        {item?.medium ? parseFloat(String(item.medium)).toFixed(2) : "-"}
+        {item?.medium ? `$${parseFloat(String(item.medium)).toFixed(2)}` : "-"}
       </p>
     ),
     high: (item: DataTypes) => (
       <p className="flex justify-center">
-        {item?.high ? parseFloat(String(item.high)).toFixed(2) : "-"}
+        {item?.high ? `$${parseFloat(String(item.high)).toFixed(2)}` : "-"}
       </p>
     ),
   };
 
   const { dynamicColumnOrder, dynamicColumnLabels } = useMemo(() => {
-    const order: (keyof DataType)[] = [
-      "feature",
-      "year1",
-      "year5",
-      "year10",
-    ];
+    const order: (keyof DataType)[] = ["feature", "year1", "year5", "year10"];
     const labels: Record<keyof DataType, string> = {
       feature: "FEATURE",
       year1: "1 Year",
@@ -483,8 +515,20 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
             </Button>
           </div>
         </Box>
-        <Box className="flex lg:flex md:gap-4 gap-4 flex-col lg:flex-row md:p-4 p-2">
-          <Box className="w-full">
+
+        {/* --- NEW WRAPPER BOX FOR MAIN SECTIONS --- */}
+        {/*
+          - Use flex-col for mobile (stacks vertically)
+          - Use lg:flex-row for desktop (stacks horizontally)
+          - Apply gap to space out the items.
+        */}
+        <Box className="flex flex-col lg:flex-row md:gap-4 gap-4 md:p-4 p-2">
+          {/*
+            --- HISTORICAL DATA (TABLE) SECTION ---
+            - On desktop (lg), it remains at the start (default order).
+            - On mobile, it's explicitly ordered first (order-1).
+          */}
+          <Box className="w-full order-1 lg:order-none">
             <div className="bg-[#351F05] text-white border-b border-[#351F05] py-4 rounded-tr-lg text-center rounded-lt-lg uppercase font-semibold text-xs grid grid-cols-3">
               <h6></h6>
               <h6>Historical Data</h6>
@@ -507,8 +551,12 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
               gap={3}
             >
               <div className=" px-3 py-3 font-medium text-[#111928] text-base flex gap-2">
-                Current Price:
-                <p className="font-bold ">US${getStockInfoData[0]?.price}</p>
+                <CompanyAnalysisCardText
+                  count={getStockInfoEodData[0]?.close}
+                  isProgressive={getStockInfoEodData[0]?.change > 0}
+                  value={getStockInfoEodData[0]?.changePercent.toFixed(2)}
+                  isOpen={false}
+                />
               </div>
               <Button
                 className="bg-[#291804] text-white px-3 py-3 font-medium text-base"
@@ -519,17 +567,60 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
               </Button>
             </Box>
           </Box>
-          <Box className="p-4 rounded-[6px] bg-white flex gap-4 lg:max-w-[400px] border-2 border-[#E5E7EB] mx-2 h-full">
+
+          {/*
+            --- ANALYSIS RESULT SECTION ---
+            - Now conditionally rendered directly inside the main flex container.
+            - On mobile, it's explicitly ordered second (order-2).
+            - On desktop, `lg:order-none` allows it to flow naturally (which will be after the table).
+            - Adjust `my-5` if it creates too much space in the new flex context; `mt-4` might be more appropriate.
+          */}
+          {showAnalysisResult && (
+            <Box className="my-5 bg-white rounded-lg w-full order-2 lg:order-none">
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb={7}
+                mx={4}
+                pt={4}
+              >
+                <Text fontWeight={400} fontSize={18} color="#111928">
+                  Analysis Result
+                </Text>
+                <Box textAlign="right">
+                  <Text fontWeight={400} fontSize={18} color="#111928">
+                    My Assumptions
+                  </Text>
+                </Box>
+              </Box>
+
+              <TableComponent2<DataTypes>
+                basePrice={getStockInfoData[0]?.price}
+                tableData={DataSourceAnalyzerResult(predictStockData?.result)}
+                cellRenderers={cellRunRenderer}
+                columnOrder={columnRunOrder}
+                columnLabels={columnRunLabel}
+              />
+            </Box>
+          )}
+
+          {/*
+            --- DISCLAIMER SECTION ---
+            - On mobile, it's explicitly ordered third (order-3).
+            - On desktop, `lg:order-none` allows it to flow naturally (which will be the last item in the row).
+            - Consider adding `w-full` for mobile if `lg:max-w-[400px]` makes it too small there.
+          */}
+          <Box className="p-4 rounded-[6px] bg-white flex gap-4 lg:max-w-[400px] border-2 border-[#E5E7EB] mx-2 h-full order-3 lg:order-none">
             <Box className="text-[#3A2206] flex-1">
               <Text className="font-bold text-base mb-1">Disclaimer:</Text>
-
               <Text className="font-normal text-sm">
                 Alpha Strategy’s software is not an investment adviser, and it
-                is not registered as such with the U.S. Securities & Exchange
-                Commission or any other state or federal authority under the
-                Investment Advisers Act of 1940 or any other law. The results
-                generated by the Stock Analyzer are for informational and
-                educational purposes only and are not, and should not be
+                is not registered as such with the U.S. Securities &amp;
+                Exchange Commission or any other state or federal authority
+                under the Investment Advisers Act of 1940 or any other law. The
+                results generated by the Stock Analyzer are for informational
+                and educational purposes only and are not, and should not be
                 considered, investment advice or a recommendation to buy, sell,
                 or hold a particular security, make a particular investment, or
                 follow a particular investing strategy.
@@ -538,31 +629,6 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
           </Box>
         </Box>
       </Box>
-
-      {showAnalysisResult && (
-        <Box className="my-5 bg-white rounded-lg">
-          <Box
-            display="flex"
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            mb={7}
-            mx={4}
-            pt={4}
-          >
-            <Text fontWeight={400} fontSize={18} color="#111928">
-              Analysis Result
-            </Text>
-          </Box>
-
-          <TableComponent2<DataTypes>
-            basePrice={getStockInfoData[0]?.price}
-            tableData={DataSourceAnalyzerResult(predictStockData?.result)}
-            cellRenderers={cellRunRenderer}
-            columnOrder={columnRunOrder}
-            columnLabels={columnRunLabel}
-          />
-        </Box>
-      )}
 
       <Dialog
         open={showAnalysisHistory}

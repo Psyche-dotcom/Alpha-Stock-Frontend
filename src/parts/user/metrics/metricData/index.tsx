@@ -88,13 +88,17 @@ const MetricData: React.FC<IMetricData> = ({
   ) => {
     if (!metricData) return null;
 
-    return Object.entries(metricData).map(([key, value]) => (
+    const entries = Object.entries(metricData);
+
+    return entries.map(([key, value], index) => (
       <Box
         p={2}
         display="flex"
         justifyContent={"space-between"}
         alignItems={"center"}
         key={key}
+        // Add borderBottom for all but the last item
+        borderBottom={index < entries.length - 1 ? "1px solid #E5E7EB" : "none"}
         className="cursor-pointer hover:bg-gray-50 transition-colors"
         onClick={() => openFormulaModal(key)}
       >
@@ -129,6 +133,7 @@ const MetricData: React.FC<IMetricData> = ({
     >
       <Box
         borderRadius="12px"
+        border="1px solid #E5E7EB"
         bg={"#fff"}
         mb={{ base: 2, md: 4 }}
         className="w-full h-fit"
@@ -137,18 +142,33 @@ const MetricData: React.FC<IMetricData> = ({
           ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
           : renderMetricBoxes(getMetricsData?.metricFirst)}
       </Box>
-      <Box borderRadius="12px" bg={"#fff"} mb={4} className="w-full h-fit">
+      <Box
+        borderRadius="12px"
+        border="1px solid #E5E7EB"
+        bg={"#fff"}
+        mb={4}
+        className="w-full h-fit"
+      >
         {getMetricsIsLoading
           ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
           : renderMetricBoxes(getMetricsData?.metricSecond)}
       </Box>
       <div className="w-full h-fit ">
-        <Box borderRadius="12px" bg={"#fff"} mb={{ base: 2, md: 4 }}>
+        <Box
+          borderRadius="12px"
+          border="1px solid #E5E7EB"
+          bg={"#fff"}
+          mb={{ base: 2, md: 4 }}
+        >
           {getMetricsIsLoading
             ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
             : renderMetricBoxes(getMetricsData?.metricThird)}
         </Box>
-        <Box borderRadius="12px" bg={"#fff"}>
+        <Box
+          borderRadius="12px"
+          border="1px solid #E5E7EB"
+          bg={"#fff"}
+        >
           {getMetricsIsLoading
             ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
             : renderMetricBoxes(getMetricsData?.metricFourth)}
@@ -158,14 +178,15 @@ const MetricData: React.FC<IMetricData> = ({
       {/* Formula Modal/Dialog */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent
-          // Added classes to explicitly center the dialog
-          className="fixed left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 bg-white text-black p-6 shadow-lg rounded-lg sm:max-w-[425px]"
+          className="fixed left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2
+                     bg-white text-black p-8 shadow-lg rounded-lg
+                     w-[90vw] sm:max-w-md md:max-w-lg lg:max-w-xl"
         >
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-black">
               {modalTitle}
             </DialogTitle>
-            <DialogDescription className="text-gray-700 mt-2">
+            <DialogDescription className="text-gray-700 mt-2 text-base">
               {modalFormula}
             </DialogDescription>
           </DialogHeader>

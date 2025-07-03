@@ -14,46 +14,25 @@ import { useAboutMarket, useTrendingAnalysis } from "@/services/blog";
 import SkeletonViewCard from "@/components/card/skeleton/view";
 import StockCardSkeleton from "@/components/card/skeleton/StockCardSkeleton";
 import { MouseMoveEffect } from "@/components/mouseEvent";
+import { useGetBlogs } from "@/services/blog";
 
 const Home = () => {
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [blogsData, setBlogsData] = useState<any>([]);
   const [stockData, setStockData] = useState<IStock[]>([]);
-  const {
-    trendPayload,
-    getTrendingData,
-    getTrendingIsLoading,
-    getTrendingError,
-  } = useTrendingAnalysis((res: any) => {});
 
-  const {
-    aboutMarketPayload,
-    getAboutMarketData,
-    getAboutMarketIsLoading,
-    getAboutMarketError,
-  } = useAboutMarket((res: any) => {});
+  // Fetch blogs for the current page
+  const { getBlogsData, getBlogsError, getBlogsIsLoading } = useGetBlogs(
+    pageNumber,
+    8
+  );
 
+  // Append new blogs when data loads
   useEffect(() => {
-    const payload = {
-      pageNumber: 1,
-      perPageSize: 4,
-      category: "TS",
-      status: "Published",
-      userId: "",
-      sinceDate: "",
-      search: "",
-    };
-    const aboutPayload = {
-      pageNumber: 1,
-      perPageSize: 4,
-      category: "LM",
-      status: "Published",
-      userId: "",
-      sinceDate: "",
-      search: "",
-    };
-
-    trendPayload(payload);
-    aboutMarketPayload(aboutPayload);
-  }, []);
+    if (getBlogsData?.length > 0) {
+      setBlogsData((prev: any) => [...prev, ...getBlogsData]);
+    }
+  }, [getBlogsData]);
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -132,7 +111,7 @@ const Home = () => {
                 </div>
               ))}
         </div>
-        <div className="mb-[64px]">
+        {/* <div className="mb-[64px]">
           <HeaderCard text="Trending Analysis" href="/blog" />
           {getTrendingIsLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
@@ -151,10 +130,10 @@ const Home = () => {
               ))}
             </div>
           )}
-        </div>
+        </div> */}
         <div className="mb-[64px]">
-          <HeaderCard text="Learn About The Market" href="/blog" />
-          {getAboutMarketIsLoading ? (
+          <HeaderCard text="Learn About The Market" href="/user/news" />
+          {getBlogsIsLoading && blogsData.length === 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
               {Array.from({ length: 4 }).map((_, index) => (
                 <div key={index}>
@@ -164,7 +143,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
-              {getAboutMarketData.map((trend: IViewCard, index: number) => (
+              {blogsData.map((trend: IViewCard, index: number) => (
                 <div key={index}>
                   <ViewCard card={trend} />
                 </div>

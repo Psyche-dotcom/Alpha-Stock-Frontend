@@ -17,8 +17,8 @@ export const navbarList = [
     path: ROUTES.HOME,
   },
   {
-    title: "Blog",
-    path: ROUTES.BLOG,
+    title: "News",
+    path: ROUTES.NEWS,
   },
 ];
 

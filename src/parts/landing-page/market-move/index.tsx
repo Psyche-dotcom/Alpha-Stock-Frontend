@@ -118,6 +118,12 @@ const MarketMoveContent = () => {
       </p>
     ),
     watchlist: (record: MarketMove) => {
+      // Check if current path is root. If so, return null to hide content.
+      // This is a client-side check.
+      if (typeof window !== 'undefined' && window.location.pathname === '/') {
+        return null;
+      }
+
       const isInWishlist =
         getWishlistIsAddedData?.wishListId && currentSymbol === record.agent;
 
@@ -147,13 +153,16 @@ const MarketMoveContent = () => {
     },
   };
 
+  // Dynamically build columnOrder and columnLabels based on URL
+  // This uses window.location.pathname which is only available on client side.
+  const isRootPath = typeof window !== 'undefined' && window.location.pathname === '/';
+
   const columnOrder: (keyof MarketMove)[] = [
     "name",
     "symbol",
     "price",
     "change",
     "changePercent",
-    "watchlist",
   ];
 
   const columnLabels = {
@@ -162,8 +171,13 @@ const MarketMoveContent = () => {
     price: "LAST PRICE",
     change: "CHANGE",
     changePercent: "%CHANGE",
-    watchlist: "",
+    watchlist: "", // This label will only be used if watchlist is pushed to columnOrder
   };
+
+  // Add 'watchlist' column only if not on the root path
+  if (!isRootPath) {
+    columnOrder.push("watchlist");
+  }
 
   return (
     <div className="bg-white pt-4 flex-1 rounded-md">
@@ -198,36 +212,40 @@ const MarketMoveContent = () => {
         columnLabels={columnLabels}
       />
 
-      {/* Dialogs */}
-      <Dialog open={isAddOpen} onOpenChange={() => setIsAddOpen(false)}>
-        <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
-          {currentSymbol && (
-            <AddWishlist
-              symbol={currentSymbol}
-              handleSuccess={() => {
-                refetchGetWishlistIsAdded();
-                setIsAddOpen(false);
-              }}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Dialogs - only render if not on the root path */}
+      { !isRootPath && (
+        <>
+          <Dialog open={isAddOpen} onOpenChange={() => setIsAddOpen(false)}>
+            <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
+              {currentSymbol && (
+                <AddWishlist
+                  symbol={currentSymbol}
+                  handleSuccess={() => {
+                    refetchGetWishlistIsAdded();
+                    setIsAddOpen(false);
+                  }}
+                />
+              )}
+            </DialogContent>
+          </Dialog>
 
-      <Dialog open={isDeleteOpen} onOpenChange={() => setIsDeleteOpen(false)}>
-        <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
-          <DeleteContent
-            setOpen={() => setIsDeleteOpen(false)}
-            header="Remove Stock From Watchlist"
-            description="Are you sure you want to delete stock wishlist?"
-            handleDelete={() =>
-              deleteWishlistPayload({
-                stockwishlistId: getWishlistIsAddedData?.wishListId,
-              })
-            }
-            loading={deleteWishlistIsLoading}
-          />
-        </DialogContent>
-      </Dialog>
+          <Dialog open={isDeleteOpen} onOpenChange={() => setIsDeleteOpen(false)}>
+            <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
+              <DeleteContent
+                setOpen={() => setIsDeleteOpen(false)}
+                header="Remove Stock From Watchlist"
+                description="Are you sure you want to delete stock wishlist?"
+                handleDelete={() =>
+                  deleteWishlistPayload({
+                    stockwishlistId: getWishlistIsAddedData?.wishListId,
+                  })
+                }
+                loading={deleteWishlistIsLoading}
+              />
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
     </div>
   );
 };

@@ -36,7 +36,17 @@ const Blog = () => {
   return (
     <Box mt={8} className="max-w-[1440px] mx-auto">
       {getBlogsIsLoading && blogsData.length === 0 ? (
-        <Grid gap={4} mb={16} templateColumns="repeat(4, 1fr)">
+        <Grid
+          gap={4}
+          mb={16}
+          // Responsive columns for skeleton cards
+          templateColumns={{
+            base: "repeat(1, 1fr)", // 1 column on extra small and small screens
+            md: "repeat(2, 1fr)", // 2 columns on medium screens (tablets)
+            lg: "repeat(3, 1fr)", // 3 columns on large screens (small desktops)
+            xl: "repeat(4, 1fr)", // 4 columns on extra large screens (large desktops)
+          }}
+        >
           {Array.from({ length: 8 }).map((_, index) => (
             <div key={index}>
               <SkeletonViewCard />
@@ -44,7 +54,17 @@ const Blog = () => {
           ))}
         </Grid>
       ) : (
-        <Grid gap={4} mb={16} templateColumns="repeat(4, 1fr)">
+        <Grid
+          gap={4}
+          mb={16}
+          // Responsive columns for actual blog cards
+          templateColumns={{
+            base: "repeat(1, 1fr)", // 1 column on extra small and small screens
+            md: "repeat(2, 1fr)", // 2 columns on medium screens (tablets)
+            lg: "repeat(3, 1fr)", // 3 columns on large screens (small desktops)
+            xl: "repeat(4, 1fr)", // 4 columns on extra large screens (large desktops)
+          }}
+        >
           {blogsData.map((blog: any, index: number) => (
             <GridItem key={index}>
               <ViewCard card={blog} isAuth={true} />

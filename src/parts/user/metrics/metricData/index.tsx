@@ -12,52 +12,66 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-
 // --- Formula Mapping ---
 const metricFormulas: Record<string, string> = {
-  marketCap: "Market Cap = Share Price x Shares Outstanding",
-  revenueTTM: "Revenue (TTM) = Total Revenue over Trailing Twelve Months",
-  netIcomeTTM: "Net Income (TTM) = Net Profit over Trailing Twelve Months",
-  netIcomeTTM5year:
-    "Avg Net Income (5 yr) = Sum of Net Income for last 5 years / 5",
-  pToERatioTTM: "P/E (TTM) = Share Price / Earnings Per Share (TTM)",
-  pToEAvgNetIncomeFive5yrs:
-    "P/E Avg Net Income (5 yr) = Share Price / Average Earnings Per Share (5 yr)",
-  psRatioTTM: "P/S (TTM) = Market Cap / Revenue (TTM)",
-  profitMarginTTM: "Profit Margin (TTM) = Net Income (TTM) / Revenue (TTM)",
-  avgProfitMargin5yrs:
-    "Avg Profit Margin (5 yr) = Sum of Profit Margins for last 5 years / 5",
-  grossProfitMarginTTM:
-    "Gross Profit Margin (TTM) = (Revenue - Cost of Goods Sold) / Revenue",
-
+  marketCap:
+    "The total value of a company’s shares in the stock market. It’s calculated by multiplying the share price by the number of shares.",
   freeCashFlow:
-    "Free Cash Flow (FCF) (TTM) = Operating Cash Flow - Capital Expenditures (TTM)",
-  avgFCF5Yrs: "Avg FCF (5 yr) = Sum of FCF for last 5 years / 5",
-  priceToFCFTTM: "Price/FCF (TTM) = Market Cap / Free Cash Flow (TTM)",
-  dividendsYieldTTM:
-    "Dividend Yield (TTM) = Annual Dividends Per Share / Share Price",
-  enterpriseValue:
-    "Enterprise Value = Market Cap + Total Debt - Cash & Cash Equivalents",
-  evToNet: "EV/Net Income = Enterprise Value / Net Income (TTM)",
-  evToFCF: "EV/FCF = Enterprise Value / Free Cash Flow (TTM)",
-
+    "The cash a company generates from its operations after paying for necessary expenses like equipment and buildings over the last 12 months. It shows how much money is available for growth, debt repayment, or dividends.",
   returnOnAsset:
-    "Return on Assets (ROA) = Net Income (TTM) / Average Total Assets",
+    "Shows how efficiently a company uses its assets to generate profit. It’s the percentage of profit earned for every €1 of assets owned.",
+  aYearHigh:
+    "The highest price at which a stock has traded during the past 52 weeks (one year). It shows the peak value investors have paid recently.",
+  revenueTTM:
+    "The total amount of money a company earned from its sales over the past 12 months (TTM = Trailing Twelve Months). It shows how much the company brings in before any costs or expenses.",
+  avgFCF5Yrs:
+    "The average amount of cash a company generated each year after expenses over the last 5 years. It shows the company’s ability to produce cash consistently.",
   returnOnEquity:
-    "Return on Equity (ROE) = Net Income (TTM) / Average Shareholder Equity",
+    "Measures how much profit a company generates with the money shareholders have invested. It shows the return earned on every €1 of equity.",
+  aYearlow:
+    "The lowest price at which a stock has traded during the past 52 weeks (one year). It shows the lowest value investors have paid recently.",
+  netIcomeTTM:
+    "The profit a company makes after subtracting all costs, taxes, and expenses from its revenue. It shows how much money the company truly earned. Also called: net profit or bottom line.",
+  priceToFCFTTM:
+    "The ratio that shows how much investors pay for each €1 of free cash flow generated in the last 12 months. It helps evaluate if a stock is expensive based on cash generation.",
   returnOnInvestedCapitalTTM:
-    "Return on Invested Capital (ROIC) (TTM) = NOPAT / Invested Capital (TTM)",
-  avgROIC5yrs: "Avg ROIC (5 yr) = Sum of ROIC for last 5 years / 5",
-  priceToBookRatio: "Price-to-Book Ratio = Share Price / Book Value Per Share",
+    "Shows how well a company uses all its invested money (debt + equity) to generate profit over the last 12 months. It measures efficiency in turning capital into returns.",
+  allTimeHigh:
+    "The highest price ever reached by a stock since it started trading. It shows the peak value investors have ever paid.", // Added this as it was in the text but not in the original object
+  netIcomeTTM5year:
+    "The average profit the company made each year over the last 5 years. It smooths out good and bad years to show long-term performance.",
+  dividendsYieldTTM:
+    "The percentage of a company’s current share price that is paid out as dividends over the last 12 months. It shows the return investors get from dividends alone.",
+  avgROIC5yrs:
+    "The average return a company generated on its invested capital each year over the past 5 years. It shows consistent efficiency in using capital to create profits.",
+  pToERatioTTM:
+    "The Price-to-Earnings ratio using earnings from the last 12 months. It shows how much investors are paying for €1 of the company’s earnings.",
+  dividendsPaid:
+    "The total amount of money a company has distributed to its shareholders as dividends. It shows how much cash the company returns to investors.", // Added this as it was in the text but not in the original object
+  priceToBookRatio:
+    "Compares a company’s market price to its book value (the net asset value). It shows how much investors pay for each €1 of the company’s net assets.",
+  pToEAvgNetIncomeFive5yrs:
+    "The Price-to-Earnings ratio based on the average earnings over the past 5 years. It helps smooth out short-term ups and downs to show a more stable valuation.",
+  enterpriseValue:
+    "The total value of a company, including its market cap, debt, and cash. It shows what it would cost to buy the whole company, not just its shares.",
   compRevGrowth3yrs:
-    "3 yr Compound Revenue Growth = ((Current Revenue / Revenue 3 years ago)^(1/3)) - 1",
+    "The average annual growth rate of a company’s revenue over the past 3 years, showing how quickly sales have increased each year on average.",
+  psRatioTTM:
+    "The Price-to-Sales ratio using revenue from the last 12 months. It shows how much investors are paying for each €1 of the company’s sales.",
+  evToNet:
+    "The ratio comparing Enterprise Value (total company value) to its net profit. It helps investors see how much they’re paying for each €1 of actual profit.",
   compRevGrowth5yrs:
-    "5 yr Compound Revenue Growth = ((Current Revenue / Revenue 5 years ago)^(1/5)) - 1",
+    "The average annual growth rate of a company’s revenue over the past 5 years. It shows the steady pace at which sales have grown each year on average.",
+  profitMarginTTM:
+    "The percentage of revenue that the company kept as profit over the last 12 months. It shows how efficiently the company turns sales into profit.",
+  evToFCF:
+    "The ratio that compares Enterprise Value to Free Cash Flow. It shows how much investors pay for each €1 of cash the company generates after expenses.",
   compRevGrowth10yrs:
-    "10 yr Compound Revenue Growth = ((Current Revenue / Revenue 10 years ago)^(1/10)) - 1",
-
-  aYearHigh: "52 Week High = Highest trading price in the last 52 weeks",
-  aYearlow: "52 Week Low = Lowest trading price in the last 52 weeks",
+    "The average yearly growth rate of a company’s revenue over the last 10 years. It shows how consistently the company’s sales have increased over a decade.",
+  avgProfitMargin5yrs:
+    "The average percentage of revenue kept as profit each year over the last 5 years. It shows the company’s long-term profitability efficiency.",
+  grossProfitMarginTTM:
+    "The percentage of revenue left after subtracting the direct costs of making products or services over the last 12 months. It shows how efficiently a company produces its goods.",
 };
 
 const MetricData: React.FC<IMetricData> = ({
@@ -164,11 +178,7 @@ const MetricData: React.FC<IMetricData> = ({
             ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
             : renderMetricBoxes(getMetricsData?.metricThird)}
         </Box>
-        <Box
-          borderRadius="12px"
-          border="1px solid #E5E7EB"
-          bg={"#fff"}
-        >
+        <Box borderRadius="12px" border="1px solid #E5E7EB" bg={"#fff"}>
           {getMetricsIsLoading
             ? [...Array(10)].map((_, index) => <MetricsSkeleton key={index} />)
             : renderMetricBoxes(getMetricsData?.metricFourth)}

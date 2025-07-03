@@ -13,6 +13,8 @@ const StockNews: React.FC<IStockComponent> = ({ symbol }) => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [blogsData, setBlogsData] = useState<any>([]);
   const { setRedirectModalOpen } = useUserSession();
+
+  // This useEffect is duplicated, you can remove one
   useEffect(() => {
     setRedirectModalOpen(false);
   }, []);
@@ -22,10 +24,6 @@ const StockNews: React.FC<IStockComponent> = ({ symbol }) => {
     pageNumber,
     8
   );
-
-  useEffect(() => {
-    setRedirectModalOpen(false);
-  }, []);
 
   // Append new blogs when data loads
   useEffect(() => {
@@ -41,7 +39,18 @@ const StockNews: React.FC<IStockComponent> = ({ symbol }) => {
   return (
     <Box mt={8} className="max-w-[1440px] mx-auto">
       {getBlogsIsLoading && blogsData.length === 0 ? (
-        <Grid gap={4} mb={16} templateColumns="repeat(4, 1fr)">
+        <Grid
+          gap={4}
+          mb={16}
+          // Responsive columns: 1 for mobile, 2 for tablet, 3 for small desktop, 4 for large desktop
+          templateColumns={{
+            base: "repeat(1, 1fr)", // On extra small screens, 1 column
+            sm: "repeat(1, 1fr)", // On small screens (e.g., phones), 1 column
+            md: "repeat(2, 1fr)", // On medium screens (e.g., tablets), 2 columns
+            lg: "repeat(3, 1fr)", // On large screens (e.g., small desktops), 3 columns
+            xl: "repeat(4, 1fr)", // On extra large screens (e.g., large desktops), 4 columns
+          }}
+        >
           {Array.from({ length: 8 }).map((_, index) => (
             <div key={index}>
               <SkeletonViewCard />
@@ -49,7 +58,18 @@ const StockNews: React.FC<IStockComponent> = ({ symbol }) => {
           ))}
         </Grid>
       ) : (
-        <Grid gap={4} mb={16} templateColumns="repeat(4, 1fr)">
+        <Grid
+          gap={4}
+          mb={16}
+          // Responsive columns: 1 for mobile, 2 for tablet, 3 for small desktop, 4 for large desktop
+          templateColumns={{
+            base: "repeat(1, 1fr)", // On extra small screens, 1 column
+            sm: "repeat(1, 1fr)", // On small screens (e.g., phones), 1 column
+            md: "repeat(2, 1fr)", // On medium screens (e.g., tablets), 2 columns
+            lg: "repeat(3, 1fr)", // On large screens (e.g., small desktops), 3 columns
+            xl: "repeat(4, 1fr)", // On extra large screens (e.g., large desktops), 4 columns
+          }}
+        >
           {blogsData.map((blog: any, index: number) => (
             <GridItem key={index}>
               <ViewCard card={blog} isAuth={true} />

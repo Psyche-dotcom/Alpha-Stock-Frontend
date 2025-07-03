@@ -457,7 +457,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   // Memoized value to determine if analysis can be run (all required fields are filled)
   const canRunAnalysis = useMemo(() => {
     const categories = [
-      "roic",
+      // "roic", // Removed ROIC from validation
       "desiredAnnReturn",
       "revGrowth",
       "profitMargin",

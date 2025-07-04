@@ -104,7 +104,7 @@ const CompanyAnalysisCardText: React.FC<ICompanyAnalysis> = ({
           {isProgressive ? <StockRiseIcon /> : <StockFallIcon />}
         </MotionBox>
         <Text color={isProgressive ? "#0E9F6E" : "#E74694"}>
-          ${value} ({percentageChange}%)
+          ${value} ({percentageChange})
         </Text>
       </div>
     </>

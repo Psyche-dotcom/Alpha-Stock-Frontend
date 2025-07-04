@@ -77,7 +77,7 @@ const StockCard: React.FC<IStockProps> = ({ stock }) => {
         {/* Text for value and percent */}
         <Box>
           <Text color={stock?.isProgressive ? "#0E9F6E" : "#E74694"}>
-            ${formatToTwoDecimals(stock?.value)} ({formatToTwoDecimals(stock?.percent)}) {/* Formatted to 2 decimal places */}
+            ${formatToTwoDecimals(stock?.value)} ({formatToTwoDecimals(stock?.percent)}%) {/* Formatted to 2 decimal places */}
           </Text>
         </Box>
         {/* Bouncing icon moved to the other side */}

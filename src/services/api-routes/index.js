@@ -9,6 +9,7 @@ export const routes = {
   retrievePlans: () => "/api/subscription/retrieve/all",
   updateProfile: (email) => `/api/user/update_details/${email}`,
   blog: (page, limit) => `/api/stock/news/general?page=${page}&limit=${limit}`,
+  pressRelease: (page, limit) => `/api/stock/news/general/press_release?page=${page}&limit=${limit}`,
   stockNews: (symbol, page, limit) =>
     `/api/stock/news/specific_stock_news?symbol=${symbol}&page=${page}&limit=${limit}`,
   createBlog: () => "/api/blog/create",

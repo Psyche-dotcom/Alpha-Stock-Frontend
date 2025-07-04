@@ -62,6 +62,21 @@ export const useGetBlogs = (page, limit) => {
   };
 };
 
+export const useGetPressRelease = (page, limit) => {
+  const { isLoading, error, data } = useFetchItem({
+    queryKey: ["press-release", page, limit],
+    queryFn: () => httpService.getData(routes.pressRelease(page, limit)),
+    enabled: true,
+    retry: 1,
+  });
+
+  return {
+    getPressReleaseData: data?.data?.result || [],
+    getPressReleaseError: ErrorHandler(error),
+    getPressReleaseIsLoading: isLoading,
+  };
+};
+
 export const useGetStockNews = (symbol, page, limit) => {
   const { isLoading, error, data } = useFetchItem({
     queryKey: ["specific-stock-news", symbol, page, limit], // make queryKey dynamic

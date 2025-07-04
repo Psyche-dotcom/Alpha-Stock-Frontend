@@ -10,7 +10,11 @@ import TradeDecision from "../trade-decision";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Image from "next/image";
-import { useAboutMarket, useTrendingAnalysis } from "@/services/blog"; // Consider if these are actually used
+import {
+  useAboutMarket,
+  useGetPressRelease,
+  useTrendingAnalysis,
+} from "@/services/blog"; // Consider if these are actually used
 import SkeletonViewCard from "@/components/card/skeleton/view";
 import StockCardSkeleton from "@/components/card/skeleton/StockCardSkeleton";
 import { MouseMoveEffect } from "@/components/mouseEvent";
@@ -18,7 +22,8 @@ import { useGetBlogs } from "@/services/blog";
 
 const Home = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [blogsData, setBlogsData] = useState<any>([]); // This is your accumulated data
+  const [blogsData, setBlogsData] = useState<any>([]);
+  const [pressReleaseData, setPressReleaseData] = useState<any>([]);
   const [stockData, setStockData] = useState<IStock[]>([]);
 
   // Fetch blogs for the current page
@@ -27,7 +32,16 @@ const Home = () => {
     4 // Always fetching 4 blogs for this Home component
   );
 
-  // --- MODIFICATION START ---
+  // Fetch blogs for the current page
+  const {
+    getPressReleaseData,
+    getPressReleaseError,
+    getPressReleaseIsLoading,
+  } = useGetPressRelease(
+    pageNumber,
+    4 // Always fetching 4 blogs for this Home component
+  );
+
   useEffect(() => {
     // If we are on the first page, we should reset blogsData completely
     // This ensures that when navigating back to Home, the accumulation starts fresh.
@@ -38,15 +52,14 @@ const Home = () => {
     if (getBlogsData?.length > 0) {
       // Basic check for duplicates, assumes blog items have a unique 'id' property
       const newUniqueBlogs = getBlogsData.filter(
-        (newBlog: any) => !blogsData.some((existingBlog: any) => existingBlog.id === newBlog.id)
+        (newBlog: any) =>
+          !blogsData.some((existingBlog: any) => existingBlog.id === newBlog.id)
       );
       if (newUniqueBlogs.length > 0) {
         setBlogsData((prev: any) => [...prev, ...newUniqueBlogs]);
       }
     }
   }, [getBlogsData, pageNumber]); // Add pageNumber to dependencies
-  // --- MODIFICATION END ---
-
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -125,6 +138,30 @@ const Home = () => {
                 </div>
               ))}
         </div>
+
+        {/* The "Press Release" section */}
+        <div className="mb-[64px]">
+          <HeaderCard text="Press Release" href="/news" />
+          {getPressReleaseIsLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div key={index}>
+                  <SkeletonViewCard />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
+              {getPressReleaseData.map((trend: any, index: number) => (
+                <div key={index}>
+                  {/* IMPORTANT: Use a stable unique key if available (e.g., blog.id) */}
+                  <ViewCard card={trend} />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* The "Learn About The Market" section (your blogs) */}
         <div className="mb-[64px]">
           <HeaderCard text="Learn About The Market" href="/news" />

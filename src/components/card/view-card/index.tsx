@@ -20,6 +20,7 @@ const ViewCard: React.FC<any> = ({
     <Link
       passHref
       href={card?.url}
+      target="_blank"
     >
       <Box
         borderRadius="12px"

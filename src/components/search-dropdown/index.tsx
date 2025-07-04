@@ -131,7 +131,7 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
 
   return (
     <div className="flex-1 flex justify-end md:justify-between items-center gap-3 lg:gap-6">
-      <div className="flex-1 hidden md:block">
+      <div className="flex-1 block">
         <div className="max-w-[500px] relative">
           <div className="relative w-full">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 pointer-events-none" />

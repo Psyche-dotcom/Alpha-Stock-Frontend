@@ -6,7 +6,7 @@ export const ROUTES = {
     RESETPASSWORD: "/reset-password",
     CONFIRMEMAIL: "/confirm-email",
   },
-  NEWS: "/user/news",
+  NEWS: "/news",
   HOME: "/",
   USER: {
     HOME: "/user",

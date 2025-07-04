@@ -1,22 +1,16 @@
 "use client";
 
-import { useUserSession } from "@/app/context/user-context";
 import SkeletonViewCard from "@/components/card/skeleton/view";
 import ViewCard from "@/components/card/view-card";
 import { useGetBlogs } from "@/services/blog";
-import { Box, Grid, GridItem, Button, Text, Center } from "@chakra-ui/react"; // Import Text and Center
+import { Box, Grid, GridItem, Button, Text, Center } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 const Blog = () => {
-  const pageSize = 8; // Define page size for clarity
+  const pageSize = 8;
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [blogsData, setBlogsData] = useState<any>([]);
-  const [hasMoreBlogs, setHasMoreBlogs] = useState<boolean>(true); // State to control "Load More" button visibility
-  const { setRedirectModalOpen } = useUserSession();
-
-  useEffect(() => {
-    setRedirectModalOpen(false);
-  }, []);
+  const [blogsData, setBlogsData] = useState<any>([]); // This is your accumulated data
+  const [hasMoreBlogs, setHasMoreBlogs] = useState<boolean>(true);
 
   // Fetch blogs for the current page
   const { getBlogsData, getBlogsError, getBlogsIsLoading } = useGetBlogs(
@@ -24,22 +18,39 @@ const Blog = () => {
     pageSize
   );
 
-  // Append new blogs when data loads and determine if there are more pages
   useEffect(() => {
-    if (getBlogsData) { // Check if getBlogsData is not null/undefined
+    if (pageNumber === 1) {
+      setBlogsData([]); // Clear any previous accumulated data
+    }
+    
+    if (getBlogsData) {
+      // Check if getBlogsData is not null/undefined
       if (getBlogsData.length > 0) {
+        console.log(
+          "Appending new blogs. Current blogsData length:",
+          blogsData.length,
+          "New blogs length:",
+          getBlogsData.length
+        );
         setBlogsData((prev: any) => [...prev, ...getBlogsData]);
+      } else {
+        console.log("getBlogsData is empty for page", pageNumber);
       }
+
       // If the number of blogs fetched is less than the page size, it means there are no more blogs
+      // This logic is crucial for `hasMoreBlogs`.
       if (getBlogsData.length < pageSize) {
         setHasMoreBlogs(false);
+        console.log("Set hasMoreBlogs to false (less than pageSize)");
       } else {
         setHasMoreBlogs(true); // Reset to true if a full page was received, indicating more might exist
+        console.log("Set hasMoreBlogs to true (full page received)");
       }
     }
-  }, [getBlogsData, pageSize]);
+  }, [getBlogsData, pageSize]); // pageSize is a stable prop, but it's good to include if it could theoretically change
 
   const handleLoadMore = () => {
+    console.log("Load More clicked. Incrementing pageNumber.");
     setPageNumber((prev) => prev + 1);
   };
 
@@ -47,7 +58,10 @@ const Blog = () => {
     <Box mt={8} className="max-w-[1440px] mx-auto">
       {/* Conditional rendering based on loading state and data presence */}
       {getBlogsIsLoading && blogsData.length === 0 ? (
-        // Show skeleton cards when initially loading and no data is present
+        // --- Scenario 1: Initial Loading (show skeletons) ---
+        // This runs if:
+        //   1. getBlogsIsLoading is TRUE (meaning useGetBlogs is active)
+        //   2. AND blogsData.length is 0 (meaning no data has been accumulated yet)
         <Grid
           gap={4}
           mb={16}
@@ -65,14 +79,18 @@ const Blog = () => {
           ))}
         </Grid>
       ) : blogsData.length === 0 && !getBlogsIsLoading ? (
-        // Show "No Stock News Available" message if no blogs are found after loading
+        // --- Scenario 2: No Data After Loading (show "No Stock News") ---
+        // This runs if:
+        //   1. blogsData.length is 0 (meaning no data was ever added to the state)
+        //   2. AND getBlogsIsLoading is FALSE (meaning the fetching process has completed)
         <Center py={20}>
           <Text fontSize="xl" fontWeight="bold" color="gray.500">
             No Stock News Available
           </Text>
         </Center>
       ) : (
-        // Show actual blog cards when data is available
+        // --- Scenario 3: Data Available (show blog cards) ---
+        // This is the desired state if data is present.
         <Grid
           gap={4}
           mb={16}
@@ -85,7 +103,8 @@ const Blog = () => {
         >
           {blogsData.map((blog: any, index: number) => (
             <GridItem key={index}>
-              <ViewCard card={blog} isAuth={true} />
+              <ViewCard card={blog} isAuth={true} />{" "}
+              {/* Assuming 'blog' is the correct prop name */}
             </GridItem>
           ))}
         </Grid>

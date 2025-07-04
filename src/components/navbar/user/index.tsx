@@ -86,12 +86,39 @@ const UserNavbar = () => {
           </Link>
         </div>
 
-        <div
-          className="lg:hidden cursor-pointer"
-          onClick={() => setShowNavbar(!showNavbar)}
-        >
-          <BurgerIcon />
+        {/* Mobile: Profile image dropdown + hamburger */}
+        <div className="lg:hidden flex items-center gap-3 my-4">
+          <Menu>
+            <MenuButton className="focus:outline-none p-0 m-0">
+              <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
+                <Image
+                  src={
+                    profileData?.result?.profilePicture ||
+                    "/assets/images/card-image.png"
+                  }
+                  width={32}
+                  height={32}
+                  alt="Profile"
+                  className="rounded-full object-cover w-full h-full"
+                />
+              </div>
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => handlePush(ROUTES.USER.SETTINGS)}>
+                Settings
+              </MenuItem>
+              <MenuItem onClick={() => setOpen(true)}>Log out</MenuItem>
+            </MenuList>
+          </Menu>
+
+          <div
+            className="cursor-pointer"
+            onClick={() => setShowNavbar(!showNavbar)}
+          >
+            <BurgerIcon />
+          </div>
         </div>
+
         <div className="flex-1  justify-between   gap-5 lg:flex hidden">
           <div className="justify-between items-center gap-2 flex">
             {userNavbarList.map((nav, index) => (
@@ -151,7 +178,9 @@ const UserNavbar = () => {
         </div>
       </div>
       {showNavbar && (
-        <div className="mt-4">
+        <div className="mt-4 pb-10">
+          {" "}
+          {/* <-- Add pb-10 here */}
           <div className="flex-col gap-2 flex">
             {userNavbarList.map((nav, index) => (
               <Link
@@ -173,10 +202,12 @@ const UserNavbar = () => {
               </Link>
             ))}
           </div>
-
-          <SearchDropdown isAuth={true} />
+          <div className="mt-4 px-2">
+            <SearchDropdown isAuth={true} />
+          </div>
         </div>
       )}
+
       <Logout open={open} setOpen={setOpen} />
     </div>
   );

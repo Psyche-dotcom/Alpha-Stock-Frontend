@@ -20,6 +20,7 @@ const CompanyCard: React.FC<ICompanyCard> = ({
     useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const [imageError, setImageError] = useState(false);
   const {
     getWishlistIsAddedData,
     getWishlistIsAddedFilter,
@@ -51,19 +52,38 @@ const CompanyCard: React.FC<ICompanyCard> = ({
       />
     );
   };
+
   return (
     <Box className="flex-1 py-[10px] px-[17px] bg-white rounded-[12px] mb-2 lg:mb-0">
       <div className="flex items-center gap-[10px] mb-2.5">
-        <div className="p-1 bg-[#111928] rounded-full">
-          <Image
-            src={urlCompanyImg}
-            alt="stock symbol"
-            style={{
-              borderRadius: "9999px",
-            }}
-            width={40}
-            height={40}
-          />
+        {/* Fixed size container for the image */}
+        <div
+          className="p-1 bg-[#111928] rounded-full flex-shrink-0"
+          style={{
+            width: "48px",
+            height: "48px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {!imageError ? (
+            <Image
+              src={urlCompanyImg}
+              alt="stock symbol"
+              style={{
+                borderRadius: "9999px",
+              }}
+              width={40}
+              height={40}
+              onError={() => setImageError(true)} // Set error state if image fails
+            />
+          ) : (
+            // Fallback content when image fails to load
+            <div className="w-[40px] h-[40px] rounded-full bg-gray-500 flex items-center justify-center text-white text-xs">
+              N/A
+            </div>
+          )}
         </div>
         <div>
           <h2 className="xl:text-[36px] lg:text-[32px] text-[28px] font-bold text-[#111928]">

@@ -19,7 +19,7 @@ const ViewCard: React.FC<any> = ({
   return (
     <Link
       passHref
-      href={isAuth ? `${card?.url}` : `${card?.url}`}
+      href={card?.url}
     >
       <Box
         borderRadius="12px"

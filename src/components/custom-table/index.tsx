@@ -20,7 +20,7 @@ export interface EnhancedTableProps<T extends DataItem> extends ITableProps<T> {
   cellRenderers?: Partial<Record<keyof T, CellRenderer<T>>>;
   columnOrder?: (keyof T)[];
   columnLabels?: Partial<Record<keyof T, string>>;
-  fixed?: boolean; // NEW optional prop
+  fixed?: boolean; // Existing optional prop
 }
 
 export function TableComponent<T extends DataItem>({
@@ -57,7 +57,7 @@ export function TableComponent<T extends DataItem>({
   const formatColumnName = (name: string) => {
     const label = columnLabels[name as keyof T];
 
-    if (label === "") return null; // Skip rendering label
+    if (label === "") return null;
     if (label) return label;
 
     return name
@@ -75,8 +75,15 @@ export function TableComponent<T extends DataItem>({
 
   return (
     <div className="w-full">
-      <div className="rounded-md overflow-auto">
-        <Table className={cn(fixed ? "table-fixed w-full" : "")}>
+      <div className="rounded-md overflow-auto"> {/* This wrapper provides the scrollbar */}
+        <Table className={cn(
+            // --- CRUCIAL CHANGES HERE ---
+            // On small screens (up to 'md' breakpoint by default in Tailwind), apply these:
+            "md:table", // Ensure it goes back to 'display: table' on medium screens and up
+            "block sm:min-w-[700px]", // 'block' on small screens, and a 'min-width' to force overflow
+                                    // Adjust '700px' based on your content's total minimum width
+            fixed ? "table-fixed w-full" : "min-w-fit", // Existing fixed behavior
+        )}>
           <TableHeader className="bg-[#351F05]">
             <TableRow className="border-none">
               {columns.map((column, index) => (
@@ -84,8 +91,10 @@ export function TableComponent<T extends DataItem>({
                   className={cn(
                     "whitespace-pre py-2 font-bold text-xs text-white",
                     index === 0
-                      ? cn("pl-6 text-start", fixed ? "w-96" : "")
-                      : "text-center"
+                      ? cn("pl-6 text-start", fixed ? "w-96" : "min-w-[120px]")
+                      : "text-center",
+                    // Ensure all columns contribute to width, esp. on small screens
+                    "min-w-[100px]" // Always apply a minimum width to ensure content doesn't shrink
                   )}
                   key={String(column)}
                 >
@@ -104,7 +113,8 @@ export function TableComponent<T extends DataItem>({
                   <TableCell
                     className={cn(
                       "py-2",
-                      colIndex === 0 ? cn("pl-6", fixed ? "w-96" : "") : ""
+                      colIndex === 0 ? cn("pl-6", fixed ? "w-96" : "min-w-[120px]") : "",
+                      "min-w-[100px]" // Apply minimum width to cell content too
                     )}
                     key={String(column)}
                   >

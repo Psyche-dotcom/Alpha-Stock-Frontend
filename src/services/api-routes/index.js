@@ -25,12 +25,16 @@ export const routes = {
   },
   suspendUser: (email) => `/api/admin/suspend_user/${email}`,
   buyPlan: (planid) => `/api/payment/create/buy_plan?plainid=${planid}`,
+  buyPlanStripe: (planid) =>
+    `/api/payment/stripe/create/buy_plan?plainid=${planid}`,
   unSuspendUser: (email) => `/api/admin/unsuspend_user/${email}`,
   deleteUser: (email) => `/api/user/delete_user/${email}`,
   getSubscriptions: () => "/api/subscription/retrieve/all",
   getSubscription: (id) => `/api/subscription/info/${id}`,
   confirmSubscription: (token) =>
     `/api/payment/webhook/confirm-payment?token=${token}`,
+  confirmStripeSubscription: (token) =>
+    `/api/payment/webhook/stripe/confirm-payment?session_id=${token}`,
   Alpha8PillerScreener: (symbol) =>
     `/api/stock/alpha-8-piller-screener?symbol=${symbol}&period=annual`,
   getStockInfo: (symbol) => `/api/stock/info/profile?symbol=${symbol}`,

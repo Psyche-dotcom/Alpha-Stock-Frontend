@@ -23,6 +23,24 @@ export const useConfirmSubscriptionsPayment = ({ enabled = false }) => {
     setConfirmSubscriptionsFilter: setFilter,
   };
 };
+export const useConfirmSubscriptionsPaymentStripe = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["stripe-confirmSubscriptions"],
+    queryFn: ({ token }) =>
+      httpService.getData(routes.confirmStripeSubscription(token)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    confirmSubscriptionsIsLoadingStripe: isLoading,
+    confirmSubscriptionsDataStripe: data?.data || [],
+    confirmSubscriptionsFilterStripe: filter,
+    confirmSubscriptionsErrorStripe: ErrorHandler(error),
+    refetchConfirmSubscriptionsStripe: refetch,
+    setConfirmSubscriptionsFilterStripe: setFilter,
+  };
+};
 export const useGetSubscriptions = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
     queryKey: ["fetchSubscriptions"],
@@ -120,5 +138,26 @@ export const useBuySubscription = (handleSuccess) => {
     buySubscriptionError: ErrorHandler(error),
     buySubscriptionIsLoading: isPending,
     buySubscriptionPayload: (requestPayload) => mutateAsync(requestPayload),
+  };
+};
+export const useBuySubscriptionStripe = (handleSuccess) => {
+  const { data, error, isPending, mutateAsync } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.buyPlanStripe(payload.Id)),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data?.result || {};
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    buySubscriptionDataStripe: data,
+    buySubscriptionErrorStripe: ErrorHandler(error),
+    buySubscriptionIsLoadingStripe: isPending,
+    buySubscriptionPayloadStripe: (requestPayload) =>
+      mutateAsync(requestPayload),
   };
 };

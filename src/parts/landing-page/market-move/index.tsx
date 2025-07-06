@@ -5,7 +5,7 @@ import { TableComponent } from "@/components/custom-table";
 import { Button } from "@/components/ui/button";
 import { marketMoveFilterList } from "@/constants";
 import { IButtonFilter2 } from "@/interface/button-filter";
-import { MarketMove } from "@/types";
+import { MarketMove } from "@/types"; // Ensure MarketMove extends DataItem and has an 'id' property
 import { ShineIcon } from "@/utils/icons";
 import { Plus, Minus } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -13,6 +13,9 @@ import { useGetIsWishListAdded } from "@/services/stock";
 import { useDeleteWishlist } from "@/services/wishlist";
 import AddWishlist from "@/parts/user/profiles/watchlist/add-wishlist";
 import DeleteContent from "@/components/delete-content";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React from 'react';
 
 const MarketMoveContent = () => {
   const [marketFilter, setMarketFilter] = useState<string>("MostTraded");
@@ -20,6 +23,7 @@ const MarketMoveContent = () => {
   const [currentSymbol, setCurrentSymbol] = useState<string | null>(null);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const router = useRouter();
 
   const {
     getWishlistIsAddedData,
@@ -41,23 +45,57 @@ const MarketMoveContent = () => {
       `${process.env.NEXT_PUBLIC_API_URL}/api/stock/stream/market_performance?leaderType=${marketFilter}`
     );
 
-    eventSource.onmessage = (event) => {
+    eventSource.onmessage = async (event) => {
       const parsedData = JSON.parse(event.data);
       const parsedCompleteData = JSON.parse(parsedData);
-      const transformedData: MarketMove[] = parsedCompleteData
-        .slice(0, 5)
-        .map((stock: any) => ({
-          id: stock.symbol,
-          url: "/assets/images/card-image.png",
-          agent: stock.symbol,
-          price: stock.price.toFixed(2),
-          name: stock.name,
-          changeValue: stock.change.toFixed(2),
-          changeProgress: stock.change > 0,
-          changePercent: stock.changesPercentage.toFixed(2),
-          changePercentProgress: stock.change > 0,
-        }));
+      console.log("Parsed Complete Data", parsedCompleteData);
 
+      const transformedDataPromises = parsedCompleteData
+        .slice(0, 5) // Limit to first 5 items as per your original code
+        .map(async (stock: any) => {
+          const symbol = stock.symbol;
+          // Default placeholder, which might still be shown if the API doesn't return an image,
+          // but the onError will handle if this URL itself is broken.
+          let imageUrl = "/assets/images/card-image.png";
+
+          try {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/api/stock/info/profile?symbol=${symbol}`
+            );
+            if (res.ok) {
+              const data = await res.json();
+              if (data?.result?.[0]?.image) {
+                imageUrl = data.result[0].image;
+              }
+            } else {
+              console.warn(
+                `Failed to fetch profile for ${symbol}. Status: ${res.status}`
+              );
+              // If fetch fails, explicitly set to an empty string or null
+              // This helps distinguish between 'no image URL from API' vs 'broken image URL'
+              imageUrl = ''; // Set to empty string to trigger fallback in StockLogo
+            }
+          } catch (error) {
+            console.error(`Error fetching profile for ${symbol}:`, error);
+            imageUrl = ''; // Set to empty string on network/parsing error
+          }
+
+          return {
+            id: symbol,
+            url: imageUrl,
+            agent: symbol,
+            price: stock.price.toFixed(2),
+            name: stock.name,
+            changeValue: stock.change.toFixed(2),
+            changeProgress: stock.change > 0,
+            changePercent: stock.changesPercentage.toFixed(2),
+            changePercentProgress: stock.change > 0,
+          };
+        });
+
+      const transformedData: MarketMove[] = await Promise.all(
+        transformedDataPromises
+      );
       setNewStockData(transformedData);
     };
 
@@ -74,21 +112,54 @@ const MarketMoveContent = () => {
   const handleDeleteClick = (symbol: string) => {
     setCurrentSymbol(symbol);
     setWishlistIsAddedFilter({ symbol });
-    refetchGetWishlistIsAdded(); // Ensure data is fresh
+    refetchGetWishlistIsAdded();
     setIsDeleteOpen(true);
+  };
+
+  const marketMoveLinkFormatter = (record: MarketMove) => {
+    return `/user/company/${record.agent}?tab=metrics`;
   };
 
   const cellRenderers = {
     name: (record: MarketMove) => (
-      <p
-        className="font-semibold text-left text-blue-600 hover:underline cursor-pointer"
-        onClick={() =>
-          (window.location.href = `/user/company/${record.agent}?tab=metrics`)
-        }
-      >
+      <p className="font-semibold text-left text-blue-600 hover:underline">
         {record?.name}
       </p>
     ),
+    logo: (record: MarketMove) => {
+      const StockLogo: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
+        const [imageError, setImageError] = useState(false);
+
+        useEffect(() => {
+          setImageError(false); // Reset error state when src changes
+        }, [src]);
+
+        // If there's an error OR the src is explicitly empty/null (from API fetch error/no image)
+        if (imageError || !src) {
+          // Return the placeholder circle without the Image component
+          return (
+            <div className="flex items-center justify-center w-11 h-11 rounded-full overflow-hidden bg-gray-100">
+              {/* Optional: Add a small placeholder icon or text here if desired, e.g., <span className="text-sm text-gray-500">?</span> */}
+            </div>
+          );
+        }
+
+        return (
+          <div className="flex items-center justify-center w-11 h-11 rounded-full overflow-hidden bg-gray-100">
+            <Image
+              src={src}
+              alt={alt}
+              width={44}
+              height={44}
+              className="object-cover"
+              onError={() => setImageError(true)} // Set error state on image load failure
+            />
+          </div>
+        );
+      };
+
+      return <StockLogo src={record.url} alt={record.agent} />;
+    },
     symbol: (record: MarketMove) => (
       <div className="flex items-center justify-center">
         <p className="font-semibold text-xs text-center text-[#111928]">
@@ -117,10 +188,8 @@ const MarketMoveContent = () => {
         {record?.changePercent} %
       </p>
     ),
-    watchlist: (record: MarketMove) => {
-      // Check if current path is root. If so, return null to hide content.
-      // This is a client-side check.
-      if (typeof window !== 'undefined' && window.location.pathname === '/') {
+    w: (record: MarketMove) => {
+      if (typeof window !== "undefined" && window.location.pathname === "/") {
         return null;
       }
 
@@ -128,9 +197,10 @@ const MarketMoveContent = () => {
         getWishlistIsAddedData?.wishListId && currentSymbol === record.agent;
 
       return (
-        <div className="flex justify-end pr-4 relative">
+        <div className="flex justify-end relative">
           <div
             className="group relative flex items-center"
+            data-no-row-click="true"
             onClick={() =>
               isInWishlist
                 ? handleDeleteClick(record.agent)
@@ -143,7 +213,6 @@ const MarketMoveContent = () => {
               <Plus className="h-4 w-4 text-green-600 cursor-pointer" />
             )}
 
-            {/* Tooltip - shifted to the LEFT */}
             <div className="absolute right-full mr-2 top-1/2 -translate-y-1/2 w-max bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition pointer-events-none z-40 whitespace-nowrap">
               {isInWishlist ? "Remove from Watchlist" : "Add to Watchlist"}
             </div>
@@ -153,12 +222,12 @@ const MarketMoveContent = () => {
     },
   };
 
-  // Dynamically build columnOrder and columnLabels based on URL
-  // This uses window.location.pathname which is only available on client side.
-  const isRootPath = typeof window !== 'undefined' && window.location.pathname === '/';
+  const isRootPath =
+    typeof window !== "undefined" && window.location.pathname === "/";
 
   const columnOrder: (keyof MarketMove)[] = [
     "name",
+    "logo",
     "symbol",
     "price",
     "change",
@@ -167,16 +236,24 @@ const MarketMoveContent = () => {
 
   const columnLabels = {
     name: "NAME",
+    logo: "LOGO",
     symbol: "SYMBOL",
     price: "LAST PRICE",
     change: "CHANGE",
     changePercent: "%CHANGE",
-    watchlist: "", // This label will only be used if watchlist is pushed to columnOrder
+    w: "",
   };
 
-  // Add 'watchlist' column only if not on the root path
+  const headerCellClasses = {
+    logo: "text-center",
+    price: "text-center",
+    change: "text-center",
+    changePercent: "text-center",
+    w: "text-start",
+  };
+
   if (!isRootPath) {
-    columnOrder.push("watchlist");
+    columnOrder.push("w");
   }
 
   return (
@@ -210,10 +287,12 @@ const MarketMoveContent = () => {
         cellRenderers={cellRenderers}
         columnOrder={columnOrder}
         columnLabels={columnLabels}
+        headerCellClasses={headerCellClasses}
+        isLink={true}
+        linkFormatter={marketMoveLinkFormatter}
       />
 
-      {/* Dialogs - only render if not on the root path */}
-      { !isRootPath && (
+      {!isRootPath && (
         <>
           <Dialog open={isAddOpen} onOpenChange={() => setIsAddOpen(false)}>
             <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
@@ -229,7 +308,10 @@ const MarketMoveContent = () => {
             </DialogContent>
           </Dialog>
 
-          <Dialog open={isDeleteOpen} onOpenChange={() => setIsDeleteOpen(false)}>
+          <Dialog
+            open={isDeleteOpen}
+            onOpenChange={() => setIsDeleteOpen(false)}
+          >
             <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
               <DeleteContent
                 setOpen={() => setIsDeleteOpen(false)}

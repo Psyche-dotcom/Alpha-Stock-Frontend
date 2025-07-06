@@ -12,7 +12,7 @@ const FundamentalsCard: React.FC<IFundamentalProp> = ({ fundamental }) => {
       py={2}
       borderRadius="12px"
       bg="#fff"
-      minHeight="110px" // Minimum height for the entire card
+      minHeight="100px" // Minimum height for the entire card
       display="flex"
       flexDirection="column"
       justifyContent="space-between"

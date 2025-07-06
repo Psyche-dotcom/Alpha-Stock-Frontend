@@ -20,7 +20,6 @@ import { DataItem } from "@/types";
 import { getFontWeightByTitle } from "@/utils";
 import { ShineIcon } from "@/utils/icons";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import Table, { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 
 interface DataType extends DataItem {
@@ -46,55 +45,66 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   const [isFetchFin, setisFetchFin] = useState<boolean>(false);
   const [isFetchCash, setisFetchCash] = useState<boolean>(false);
 
-  const {
-    getIncomeStatementData,
-    getIncomeStatementFilter,
-    getIncomeStatementIsLoading,
-    setGetIncomeStatementFilter,
-    getIncomeStatementError,
-  } = useGetIncomeStatement({ enabled: isFetchIncome });
-  const {
-    getBalanceSheetData,
-    getBalanceSheetFilter,
-    getBalanceSheetIsLoading,
-    setGetBalanceSheetFilter,
-    getBalanceSheetError,
-  } = useGetBalanceSheet({ enabled: isFetchFin });
-  const {
-    getCashFlowData,
-    getCashFlowFilter,
-    getCashFlowIsLoading,
-    setGetCashFlowFilter,
-    getCashFlowError,
-  } = useGetCashFlow({ enabled: isFetchCash });
+  const { getIncomeStatementData, setGetIncomeStatementFilter } =
+    useGetIncomeStatement({ enabled: isFetchIncome });
+  const { getBalanceSheetData, setGetBalanceSheetFilter } = useGetBalanceSheet(
+    { enabled: isFetchFin }
+  );
+  const { getCashFlowData, setGetCashFlowFilter } = useGetCashFlow({
+    enabled: isFetchCash,
+  });
+
   useEffect(() => {
-    if (btnFilter == "income-statements") {
+    setisFetchIncome(false);
+    setisFetchFin(false);
+    setisFetchCash(false);
+
+    if (btnFilter === "income-statements") {
       setGetIncomeStatementFilter({ symbol: symbol, period: period });
       setisFetchIncome(true);
-    } else if (btnFilter == "balance-sheet") {
+    } else if (btnFilter === "balance-sheet") {
       setGetBalanceSheetFilter({ symbol: symbol, period: period });
       setisFetchFin(true);
-    } else if (btnFilter == "cashflow") {
+    } else if (btnFilter === "cashflow") {
       setGetCashFlowFilter({ symbol: symbol, period: period });
       setisFetchCash(true);
     }
-  }, [btnFilter, period]);
+  }, [btnFilter, period, symbol]);
 
   useEffect(() => {
-    if (btnFilter == "income-statements") {
+    if (btnFilter === "income-statements") {
       setData(getIncomeStatementData);
-    } else if (btnFilter == "balance-sheet") {
+    } else if (btnFilter === "balance-sheet") {
       setData(getBalanceSheetData);
-    } else if (btnFilter == "cashflow") {
+    } else if (btnFilter === "cashflow") {
       setData(getCashFlowData);
     }
-  }, [
-    getCashFlowData,
-    getIncomeStatementData,
-    getCashFlowData,
-    btnFilter,
-    period,
-  ]);
+  }, [getIncomeStatementData, getBalanceSheetData, getCashFlowData, btnFilter]);
+
+  // Helper function to render financial numbers with or without a dollar sign, ALWAYS formatted
+  const renderFinancialNumber = (
+    value: number | undefined,
+    itemTitle: string,
+    sectionType: string
+  ) => {
+    if (typeof value !== "number") {
+      return "";
+    }
+
+    // 1. Always format the number first
+    const formattedValue = formatMoneyNumber(value);
+
+    // 2. Then, decide whether to prepend a dollar sign
+    const isShareDataTable = btnFilter === "income-statements" && sectionType === "share";
+
+    if (isShareDataTable) {
+      // Return the formatted value without a dollar sign
+      return formattedValue;
+    } else {
+      // Return the formatted value with a dollar sign
+      return `$${formattedValue}`;
+    }
+  };
 
   const cellRenderers = {
     title: (item: DataType) => (
@@ -104,130 +114,110 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
           fontWeight: getFontWeightByTitle(item?.title),
         }}
       >
-        {item?.title == ""
+        {item?.title === ""
           ? "                                                                "
           : item?.title}
       </span>
     ),
-
-    row1: (item: DataType) => (
+    // Each row renderer now accepts 'item' and 'section' directly
+    row1: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row1 === "number"
-          ? `$${formatMoneyNumber(item.row1)}`
-          : ""}
+        {renderFinancialNumber(item.row1, item.title, section)}
       </Text>
     ),
-    row2: (item: DataType) => (
+    row2: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row2 === "number"
-          ? `$${formatMoneyNumber(item.row2)}`
-          : ""}
+        {renderFinancialNumber(item.row2, item.title, section)}
       </Text>
     ),
-    row3: (item: DataType) => (
+    row3: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row3 === "number"
-          ? `$${formatMoneyNumber(item.row3)}`
-          : ""}
+        {renderFinancialNumber(item.row3, item.title, section)}
       </Text>
     ),
-    row4: (item: DataType) => (
+    row4: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row4 === "number"
-          ? `$${formatMoneyNumber(item.row4)}`
-          : ""}
+        {renderFinancialNumber(item.row4, item.title, section)}
       </Text>
     ),
-    row5: (item: DataType) => (
+    row5: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row5 === "number"
-          ? `$${formatMoneyNumber(item.row5)}`
-          : ""}
+        {renderFinancialNumber(item.row5, item.title, section)}
       </Text>
     ),
-    row6: (item: DataType) => (
+    row6: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row6 === "number"
-          ? `$${formatMoneyNumber(item.row6)}`
-          : ""}
+        {renderFinancialNumber(item.row6, item.title, section)}
       </Text>
     ),
-    row7: (item: DataType) => (
+    row7: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row7 === "number"
-          ? `$${formatMoneyNumber(item.row7)}`
-          : ""}
+        {renderFinancialNumber(item.row7, item.title, section)}
       </Text>
     ),
-    row8: (item: DataType) => (
+    row8: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row8 === "number"
-          ? `$${formatMoneyNumber(item.row8)}`
-          : ""}
+        {renderFinancialNumber(item.row8, item.title, section)}
       </Text>
     ),
-    row9: (item: DataType) => (
+    row9: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row9 === "number"
-          ? `$${formatMoneyNumber(item.row9)}`
-          : ""}
+        {renderFinancialNumber(item.row9, item.title, section)}
       </Text>
     ),
-    row10: (item: DataType) => (
+    row10: (item: DataType, section: string) => (
       <Text
         fontSize={13}
         color="#111928"
         textAlign={"center"}
         fontWeight={getFontWeightByTitle(item?.title)}
       >
-        {typeof item?.row10 === "number"
-          ? `$${formatMoneyNumber(item.row10)}`
-          : ""}
+        {renderFinancialNumber(item.row10, item.title, section)}
       </Text>
     ),
   };
@@ -248,11 +238,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
 
   const columnLabels = {
     title:
-      btnFilter == "income-statements"
+      btnFilter === "income-statements"
         ? "INCOME"
-        : btnFilter == "balance-sheet"
+        : btnFilter === "balance-sheet"
         ? "ASSET"
-        : btnFilter == "cashflow"
+        : btnFilter === "cashflow"
         ? "CASHFLOW"
         : "NULL",
     row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
@@ -268,11 +258,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   };
   const columnLabels2 = {
     title:
-      btnFilter == "income-statements"
+      btnFilter === "income-statements"
         ? "BASIC EPS"
-        : btnFilter == "balance-sheet"
+        : btnFilter === "balance-sheet"
         ? "LIABILITIES"
-        : btnFilter == "cashflow"
+        : btnFilter === "cashflow"
         ? "CASHFLOW - INVESTING"
         : "NULL",
     row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
@@ -288,11 +278,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   };
   const columnLabels3 = {
     title:
-      btnFilter == "income-statements"
+      btnFilter === "income-statements"
         ? "DILUTED EPS"
-        : btnFilter == "balance-sheet"
+        : btnFilter === "balance-sheet"
         ? "SHAREHOLDER EQUITY"
-        : btnFilter == "cashflow"
+        : btnFilter === "cashflow"
         ? "CASHFLOW - FINANCING"
         : "NULL",
     row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
@@ -308,11 +298,9 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   };
   const columnLabels4 = {
     title:
-      btnFilter == "income-statements"
+      btnFilter === "income-statements"
         ? "SHARES DATA"
-        : btnFilter == "balance-sheet"
-        ? "ASSET"
-        : btnFilter == "cashflow"
+        : btnFilter === "cashflow"
         ? "ENDING CASH"
         : "NULL",
     row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
@@ -328,11 +316,11 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   };
   const columnLabels5 = {
     title:
-      btnFilter == "income-statements"
-        ? "SHARES DATA"
-        : btnFilter == "balance-sheet"
+      btnFilter === "income-statements"
+        ? "ADDITIONAL ITEMS (e.g., Shares)"
+        : btnFilter === "balance-sheet"
         ? "ASSET"
-        : btnFilter == "cashflow"
+        : btnFilter === "cashflow"
         ? "ADDITIONAL ITEMS"
         : "NULL",
     row1: formatDateToHumanReadableNew(Data[0]?.acceptedDate),
@@ -368,9 +356,9 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     <Box bg="#fff" pt={4} mb={16}>
       <Box mb={4} mx={4}>
         <Text fontWeight={700} fontSize={20} color="#111928" mb={4}>
-          {btnFilter == "income-statements"
+          {btnFilter === "income-statements"
             ? "Income Statements"
-            : btnFilter == "balance-sheet"
+            : btnFilter === "balance-sheet"
             ? "Balance Sheet"
             : "Cash Flow"}
         </Text>
@@ -396,19 +384,19 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         </Flex>
       </Box>
       <TableComponent<DataType>
-        //@ts-ignore
+        //@ts-ignore (This ignore might still be needed if AlldataSourceFinance returns 'any' or has type complexities)
         tableData={AlldataSourceFinance(
           btnFilter,
-          btnFilter === "income-statements"
-            ? "Income"
-            : btnFilter === "balance-sheet"
-            ? "ASSET"
-            : btnFilter === "cashflow"
-            ? "CASH"
-            : "",
+          "Income", // Section type
           Data
         )}
-        cellRenderers={cellRenderers}
+        // Now, we can directly pass the 'cellRenderers' object and the 'section' for this table
+        cellRenderers={Object.fromEntries(
+          Object.entries(cellRenderers).map(([key, renderer]) => [
+            key,
+            (item: DataType) => (renderer as any)(item, "Income"),
+          ])
+        )}
         columnOrder={columnOrder}
         columnLabels={columnLabels}
         className="text-[#111928] font-semibold"
@@ -427,7 +415,19 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
             : "",
           Data
         )}
-        cellRenderers={cellRenderers}
+        cellRenderers={Object.fromEntries(
+          Object.entries(cellRenderers).map(([key, renderer]) => {
+            let currentSection = "";
+            if (btnFilter === "income-statements") {
+              currentSection = "BasicEps";
+            } else if (btnFilter === "balance-sheet") {
+              currentSection = "LIABLE";
+            } else if (btnFilter === "cashflow") {
+              currentSection = "Investing";
+            }
+            return [key, (item: DataType) => (renderer as any)(item, currentSection)];
+          })
+        )}
         columnOrder={columnOrder}
         columnLabels={columnLabels2}
         fixed={true}
@@ -445,12 +445,24 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
             : "",
           Data
         )}
-        cellRenderers={cellRenderers}
+        cellRenderers={Object.fromEntries(
+          Object.entries(cellRenderers).map(([key, renderer]) => {
+            let currentSection = "";
+            if (btnFilter === "income-statements") {
+              currentSection = "DiEps";
+            } else if (btnFilter === "balance-sheet") {
+              currentSection = "SHARE";
+            } else if (btnFilter === "cashflow") {
+              currentSection = "Financing";
+            }
+            return [key, (item: DataType) => (renderer as any)(item, currentSection)];
+          })
+        )}
         columnOrder={columnOrder}
         columnLabels={columnLabels3}
         fixed={true}
       />
-      {btnFilter != "balance-sheet" && (
+      {btnFilter !== "balance-sheet" && (
         <TableComponent<DataType>
           //@ts-ignore
           tableData={AlldataSourceFinance(
@@ -462,21 +474,36 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
               : "",
             Data
           )}
-          cellRenderers={cellRenderers}
+          cellRenderers={Object.fromEntries(
+            Object.entries(cellRenderers).map(([key, renderer]) => {
+              let currentSection = "";
+              if (btnFilter === "income-statements") {
+                  currentSection = "share"; // This passes 'share' for the SHARES DATA table
+              } else if (btnFilter === "cashflow") {
+                  currentSection = "cashbeginning";
+              }
+              return [key, (item: DataType) => (renderer as any)(item, currentSection)];
+            })
+          )}
           columnOrder={columnOrder}
           columnLabels={columnLabels4}
           fixed={true}
         />
       )}
-      {btnFilter == "cashflow" && (
+      {btnFilter === "cashflow" && (
         <TableComponent<DataType>
           //@ts-ignore
           tableData={AlldataSourceFinance(
             btnFilter,
-            btnFilter === "cashflow" ? "Items" : "",
+            "Items",
             Data
           )}
-          cellRenderers={cellRenderers}
+          cellRenderers={Object.fromEntries(
+            Object.entries(cellRenderers).map(([key, renderer]) => [
+              key,
+              (item: DataType) => (renderer as any)(item, "Items"),
+            ])
+          )}
           columnOrder={columnOrder}
           columnLabels={columnLabels5}
           fixed={true}

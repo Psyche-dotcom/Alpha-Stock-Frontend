@@ -10,14 +10,13 @@ import {
   useGetStockInfoEod,
   usePredictStock,
 } from "@/services/stock";
-import { DataItem } from "@/types"; // Corrected import syntax: 'from' instead of '=>'
+import { DataItem } from "@/types";
 import { CautionIcon } from "@/utils/icons"; // This import seems unused, but kept.
 import { Box, Select, Text } from "@chakra-ui/react";
 import { useEffect, useState, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription, // This import seems unused, but kept.
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -44,7 +43,7 @@ interface DataType extends DataItem {
   high?: number;
   category: string;
   showPercent?: boolean;
-  [key: string]: any; // Added index signature to satisfy DataItem constraint
+  [key: string]: any;
 }
 interface DataTypes extends DataItem {
   id: number;
@@ -55,7 +54,7 @@ interface DataTypes extends DataItem {
   low?: number;
   medium?: number;
   high?: number;
-  [key: string]: any; // Added index signature to satisfy DataItem constraint
+  [key: string]: any;
 }
 
 type RangeKey = "low" | "mid" | "high";
@@ -96,27 +95,19 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   // Fetch stock information
   const {
     getStockInfoData,
-    getStockInfoFilter, // Unused, but kept for context
-    getStockInfoIsLoading, // Unused, but kept for context
     setGetStockInfoFilter,
-    getStockInfoError, // Unused, but kept for context
   } = useGetStockInfo({ enabled: isFetchStock });
 
   // Fetch end-of-day stock information
   const {
     getStockInfoEodData,
-    getStockInfoEodFilter, // Unused, but kept for context
-    getStockInfoEodIsLoading, // Unused, but kept for context
     setGetStockInfoEodFilter,
-    getStockInfoEodError, // Unused, but kept for context
   } = useGetStockInfoEod({ enabled: true, queryKey: "stockInfo" });
 
   // Fetch stock analysis statistics
   const {
     getStockAnalysisStatData,
-    getStockAnalysisStatFilter, // Unused, but kept for context
     setGetStockAnalysisStatFilter,
-    getStockAnalysisStatError, // Unused, but kept for context
   } = useGetStockAnalysisStat({ enabled: isFetchStats });
 
   // Predict stock hook
@@ -368,9 +359,9 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       low: "LOW",
       medium: "MID",
       high: "HIGH",
-      id: "ID", // Placeholder, not actually displayed
-      category: "Category", // Placeholder, not actually displayed
-      showPercent: "Show Percent", // Placeholder, not actually displayed
+      id: "ID",
+      category: "Category",
+      showPercent: "Show Percent",
     };
 
     if (assumptionLevel === 1) {
@@ -449,7 +440,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
 
   // Helper to parse number from string, returns 0 if empty or invalid
   const parseNumber = (str: string | undefined): number => {
-    if (!str || str.trim() === "") return 0; // Treat empty/whitespace as 0 or invalid
+    if (!str || str.trim() === "") return 0;
     const n = Number(str);
     return isNaN(n) ? 0 : n;
   };
@@ -457,7 +448,6 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   // Memoized value to determine if analysis can be run (all required fields are filled)
   const canRunAnalysis = useMemo(() => {
     const categories = [
-      // "roic", // Removed ROIC from validation
       "desiredAnnReturn",
       "revGrowth",
       "profitMargin",
@@ -468,17 +458,14 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
 
     for (const category of categories) {
       const state = tableState[category];
-      if (!state) return false; // Should not happen if initial state is complete
+      if (!state) return false;
 
-      // Check 'low' field if assumptionLevel is 1, 2, or 3
       if (assumptionLevel >= 1 && (state.low === undefined || state.low.trim() === "")) {
         return false;
       }
-      // Check 'mid' field if assumptionLevel is 2 or 3
       if (assumptionLevel >= 2 && (state.mid === undefined || state.mid.trim() === "")) {
         return false;
       }
-      // Check 'high' field if assumptionLevel is 3
       if (assumptionLevel >= 3 && (state.high === undefined || state.high.trim() === "")) {
         return false;
       }
@@ -489,10 +476,8 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
 
   // Function to run the analysis
   const RunAnalysis = () => {
-    // Only run if validation passes
     if (!canRunAnalysis) {
       console.log("Please enter all required key data before running analysis.");
-      // Optionally, show a user-friendly message or toast here
       return;
     }
 
@@ -545,12 +530,12 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
       <Box bg="#fff" borderRadius="8px" pt={4}>
         {/* Header Section */}
         <Box
-          className="flex flex-col md:flex-row" // Stack on mobile, row on medium+
+          className="flex flex-col md:flex-row"
           justifyContent={"space-between"}
           alignItems={"center"}
           mb={7}
           mx={4}
-          gap={4} // Add gap for spacing on smaller screens
+          gap={4}
         >
           <Text fontWeight={600} fontSize={18} color="#111928">
             Stock Analyser
@@ -645,9 +630,45 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
             </Box>
           </Box>
 
-          {/* Analysis Result Section - shown conditionally below the first row */}
+          {/* Analysis Result Section (Desktop View) */}
           {showAnalysisResult && (
-            <Box className="bg-white rounded-lg w-full">
+            <Box
+              className="bg-white rounded-lg w-full"
+              display={{ base: "none", md: "block" }} // Hide on mobile, show on md and larger
+            >
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb={7}
+                mx={4}
+                pt={4}
+              >
+                <Text fontWeight={400} fontSize={18} color="#111928">
+                  Analysis Result
+                </Text>
+                <Box textAlign="right">
+                  <Text fontWeight={400} fontSize={18} color="#111928">
+                    My Assumptions
+                  </Text>
+                </Box>
+              </Box>
+              <TableComponent2<DataTypes>
+                basePrice={getStockInfoData[0]?.price}
+                tableData={DataSourceAnalyzerResult(predictStockData?.result)}
+                cellRenderers={cellRunRenderer}
+                columnOrder={columnRunOrder}
+                columnLabels={columnRunLabel}
+              />
+            </Box>
+          )}
+
+          {/* Analysis Result Section (Mobile View - after disclaimer) */}
+          {showAnalysisResult && (
+            <Box
+              className="bg-white rounded-lg w-full"
+              display={{ base: "block", md: "none" }} // Show on mobile, hide on md and larger
+            >
               <Box
                 display="flex"
                 justifyContent="space-between"

@@ -1,18 +1,18 @@
-import {
-  ICompanyStockCard,
-  IWatchlistData,
-} from "@/interface/company-stock-card";
+import { IWatchlistData } from "@/interface/company-stock-card";
 import {
   AlarmIcon,
-  ArrowDownIcon,
-  ArrowUpIcon,
   DeletePreferenceIcon,
-  MetaIcon,
-  StockFallIcon,
-  StockRiseIcon,
+  StockFallIcon, // Re-import StockFallIcon
+  StockRiseIcon, // Re-import StockRiseIcon
 } from "@/utils/icons";
 import { Box, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+
+// Create a motion-enabled Chakra Box component
+const MotionBox = motion(Box);
+
 interface IWatchlistProp {
   watchlist: IWatchlistData;
   handlePreference: () => void;
@@ -24,65 +24,110 @@ const WatchlistCard: React.FC<IWatchlistProp> = ({
   handleDelete,
   handlePreference,
 }) => {
+  // State to manage image source for fallback.
+  const [currentImgSrc, setCurrentImgSrc] = useState<string | null>(
+    watchlist?.imgUrl || null
+  );
+
+  // Reset currentImgSrc when watchlist.imgUrl changes to try loading new image
+  useEffect(() => {
+    setCurrentImgSrc(watchlist?.imgUrl || null);
+  }, [watchlist?.imgUrl]);
+
   return (
-    <Box border="1px solid #C2BAB2" px={4} py={2} borderRadius="12px" bg="#fff">
+    <Box
+      border="1px solid"
+      borderColor="gray.300"
+      px={4}
+      py={4}
+      borderRadius="12px"
+      bg="white"
+      boxShadow="sm"
+      display="flex"
+      flexDirection="column"
+      gap={4}
+      width="100%"
+    >
+      {/* Top Section: Company Logo, Symbol, and Current Price */}
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box display="flex" alignItems="center" gap={2.5}>
+          {/* Stock Logo Container */}
+          <Box
+            className="w-10 h-10 flex-shrink-0"
+            borderRadius="full"
+            bg="white"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            overflow="hidden"
+            border="1px solid"
+            borderColor="gray.200"
+          >
+            {currentImgSrc ? (
+              <Image
+                width={40}
+                height={40}
+                alt={`${watchlist?.stockSymbols} company logo`}
+                src={currentImgSrc}
+                className="rounded-full object-cover w-full h-full"
+                onError={() => setCurrentImgSrc(null)}
+              />
+            ) : null}
+          </Box>
+          <Text fontSize="xl" fontWeight="bold" color="gray.800">
+            {watchlist?.stockSymbols}
+          </Text>
+        </Box>
+        <Text fontSize="3xl" fontWeight="semibold" color="gray.700">
+          ${watchlist?.price?.toFixed(2) || "N/A"}
+        </Text>
+      </Box>
+
+      {/* Limits Section: Upper and Lower Limits with Animated Stock Icons */}
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        {/* Upper Limit */}
+        <Box display="flex" alignItems="center" gap={2}>
+          <StockRiseIcon /> {/* Use StockRiseIcon */}
+          <Text fontSize="md" fontWeight="semibold" color="gray.600">
+            High: ${watchlist?.upperLimit?.toFixed(2) || "N/A"}
+          </Text>
+        </Box>
+
+        {/* Lower Limit */}
+        <Box display="flex" alignItems="center" gap={2}>
+          <StockFallIcon /> {/* Use StockFallIcon */}
+          <Text fontSize="md" fontWeight="semibold" color="gray.600">
+            Low: ${watchlist?.lowerLimit?.toFixed(2) || "N/A"}
+          </Text>
+        </Box>
+      </Box>
+
+      {/* Bottom Section: Action Buttons */}
       <Box
         display="flex"
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        mb={4}
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
       >
-        <Text color={watchlist?.isProgressive ? "#0E9F6E" : "#E74694"}>
-          {watchlist?.price}%
-        </Text>
-        <Box>
-          {watchlist?.isProgressive ? <StockRiseIcon /> : <StockFallIcon />}
-        </Box>
-      </Box>
-      <Box display="flex" justifyContent={"space-between"} mb={4}>
-        <Box className="flex items-center gap-[10px] mb-2.5">
-          <div className="w-10 h-10">
-            <Image
-              width={40}
-              height={40}
-              alt="Company icon"
-              src={watchlist?.imgUrl}
-              className="rounded-full"
-            />
-          </div>
-          <h2 className="text-[20px] font-bold text-[#111928]">
-            {watchlist?.stockSymbols}
-          </h2>
-        </Box>
-        <Text color="#6B7280" fontSize="30px" fontWeight={600}>
-          ${watchlist?.price}
-        </Text>
-      </Box>
-      <Box display="flex" justifyContent={"space-between"} mb={4}>
-        <Box className="flex items-center gap-[10px] mb-2.5">
-          <ArrowUpIcon />
-          <h2 className="text-base font-semibold text-[#6B7280]">
-            ${watchlist?.upperLimit}
-          </h2>
-        </Box>
-        <Box className="flex items-center gap-[10px] mb-2.5">
-          <ArrowDownIcon />
-          <h2 className="text-base font-semibold text-[#6B7280]">
-            ${watchlist?.lowerLimit}
-          </h2>
-        </Box>
-      </Box>
-      <Box display="flex" justifyContent={"space-between"}>
         <Box
-          className="flex items-center gap-[10px] mb-2.5 cursor-pointer"
+          display="flex"
+          alignItems="center"
+          gap={2}
+          cursor="pointer"
           onClick={handlePreference}
+          _hover={{ opacity: 0.8 }}
         >
           <AlarmIcon />
-          <h2 className="text-base font-semibold text-[#111928]">
+          <Text fontSize="md" fontWeight="semibold">
             Edit Preferences
-          </h2>
+          </Text>
         </Box>
-        <Box onClick={handleDelete} className="cursor-pointer">
+        <Box
+          cursor="pointer"
+          onClick={handleDelete}
+          color="red.500"
+          _hover={{ opacity: 0.8 }}
+        >
           <DeletePreferenceIcon />
         </Box>
       </Box>

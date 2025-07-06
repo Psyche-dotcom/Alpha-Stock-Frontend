@@ -10,19 +10,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import InputForm from "@/components/form/InputForm";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"; // Make sure Button is imported
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
 import { useLogin } from "@/services/auth";
 import { setCookie } from "cookies-next";
+
 const Login: React.FC = () => {
   const { loginData, loginIsLoading, loginPayload, loginDataError } = useLogin(
     (res: any) => {
       setCookie("token", res?.jwt);
       if (res?.userRole[0].toLowerCase() === "user") {
         window.location.href = ROUTES.USER.HOME;
-
         return;
       }
       window.location.href = "/admin/users";
@@ -87,15 +87,27 @@ const Login: React.FC = () => {
           </Form>
 
           <Separator className="bg-[#E5E7EB] h-1 my-8" />
-          {/* <p className="text-sm font-normal text-center mb-8 text-[#6B7280]">
+
+          {/* This is the new Google Sign-in button section */}
+          <p className="text-sm font-normal text-center mb-8 text-[#6B7280]">
             Or sign in with
           </p>
-          <Button
-            btnText="Google"
-            variant="outline"
-            className="w-full text-base font-medium"
-            icon={<GoogleIcon />}
-          /> */}
+          <div className="flex justify-center"> {/* Added for centering the button */}
+            <Button
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: "/google-auth", // 👈 redirect here after Google login
+                })
+              }
+              btnText="Google" // Text for the button
+              variant="outline" // Use your outline variant
+              className="w-full max-w-[280px] text-base font-medium flex items-center justify-center gap-2" // Adjust width and ensure icon spacing
+              icon={<GoogleIcon />} // Pass the GoogleIcon component
+            >
+              Sign in with Google {/* This text will be overridden by btnText prop if your Button component uses it */}
+            </Button>
+          </div>
+
           <div className="flex gap-2 items-center justify-center mt-8">
             <p className="font-medium text-sm text-[#6B7280]">
               New to the our platform?
@@ -109,16 +121,6 @@ const Login: React.FC = () => {
               Sign-up here
             </Link>
           </div>
-
-          <button
-            onClick={() =>
-              signIn("google", {
-                callbackUrl: "/google-auth", // 👈 redirect here after Google login
-              })
-            }
-          >
-            Sign in with Google
-          </button>
         </CardContent>
       </Card>
       <div className="w-fit-content hidden md:block">

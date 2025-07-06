@@ -1944,11 +1944,21 @@ export function formatDateToHumanReadable(
   return date.toLocaleDateString(locale, options);
 }
 
-export function formatDateToHumanReadableNew(isoDateString: string): string {
+export function formatDateToHumanReadableNew(isoDateString: string | undefined | null): string {
+  // Check if isoDateString is null, undefined, or an empty string
+  if (!isoDateString) {
+    return "-";
+  }
+
   const date = new Date(isoDateString);
+
+  // Check if the date object is valid after parsing the string
+  if (isNaN(date.getTime())) {
+    return "-"; // Return a hyphen if the date string was invalid
+  }
+
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  //return `${year}-${month}`;
+  // const month = String(date.getMonth() + 1).padStart(2, "0"); // Commented out as per your function
   return `${year}`;
 }
 

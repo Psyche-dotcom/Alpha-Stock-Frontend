@@ -15,7 +15,7 @@ import AddWishlist from "@/parts/user/profiles/watchlist/add-wishlist";
 import DeleteContent from "@/components/delete-content";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from 'react';
+import React from "react";
 
 const MarketMoveContent = () => {
   const [marketFilter, setMarketFilter] = useState<string>("MostTraded");
@@ -73,11 +73,11 @@ const MarketMoveContent = () => {
               );
               // If fetch fails, explicitly set to an empty string or null
               // This helps distinguish between 'no image URL from API' vs 'broken image URL'
-              imageUrl = ''; // Set to empty string to trigger fallback in StockLogo
+              imageUrl = ""; // Set to empty string to trigger fallback in StockLogo
             }
           } catch (error) {
             console.error(`Error fetching profile for ${symbol}:`, error);
-            imageUrl = ''; // Set to empty string on network/parsing error
+            imageUrl = ""; // Set to empty string on network/parsing error
           }
 
           return {
@@ -122,12 +122,15 @@ const MarketMoveContent = () => {
 
   const cellRenderers = {
     name: (record: MarketMove) => (
-      <p className="font-semibold text-left text-blue-600 hover:underline">
+      <p className="font-semibold text-left">
         {record?.name}
       </p>
     ),
     logo: (record: MarketMove) => {
-      const StockLogo: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
+      const StockLogo: React.FC<{ src: string; alt: string }> = ({
+        src,
+        alt,
+      }) => {
         const [imageError, setImageError] = useState(false);
 
         useEffect(() => {
@@ -158,7 +161,11 @@ const MarketMoveContent = () => {
         );
       };
 
-      return <StockLogo src={record.url} alt={record.agent} />;
+      return (
+        <div className="flex items-center justify-center">
+          <StockLogo src={record.url} alt={record.agent} />
+        </div>
+      );
     },
     symbol: (record: MarketMove) => (
       <div className="flex items-center justify-center">

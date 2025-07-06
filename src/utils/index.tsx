@@ -90,6 +90,7 @@ export const getStockLabel = (key: string): string => {
     revenuettm: "Revenue (TTM)",
     neticomettm: "Net Income (TTM)",
     evtonet: "EV/Net income",
+    dividendspaidttm: "Dividends Paid (TTM)",
     ptoeavgnetincomefive5yrs: "P/E Avg Net Income (5 yr)",
     psratiottm: "P/S (TTM)",
     avgprofitmargin5yrs: "Avg Profit Margin (5 yr)",
@@ -248,7 +249,6 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
     return num.toFixed(2);
   };
 
-
   const parseNumber = (val: string) => {
     if (!val) return NaN;
     let numStr = val.replace(/[%$]/g, "").trim();
@@ -356,7 +356,7 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
     const raw =
       typeof apiData[rule.key] === "object" && apiData[rule.key] !== null
         ? (apiData[rule.key] as Record<string, string | null>)[rule.period]
-        : apiData[rule.key] as string | null; // Added direct access for keys not objects (e.g., marketCap)
+        : (apiData[rule.key] as string | null); // Added direct access for keys not objects (e.g., marketCap)
 
     if (raw === null || raw === undefined) continue;
 
@@ -388,7 +388,6 @@ export function generateFundamentalsList(apiData: ApiData): FundamentalsItem[] {
     // Only apply condition check if valueNum is a valid number
     const isActive = isNaN(valueNum) ? false : rule.condition(valueNum);
 
-
     fundamentals.push({
       header: `${rule.label} (${periodMap[rule.period]}) ${rule.description}`,
       amount,
@@ -419,16 +418,19 @@ const KEY_LABEL_MAP: Record<string, string> = {
 };
 
 // Define default formats for keys if the user preference format is empty ("")
-const DEFAULT_KEY_FORMAT: Record<string, "%" | "$" | "number_with_suffix" | "number"> = {
-    profitMargin: "%",
-    netIcome: "$",
-    freeCashFlowMargin: "%",
-    marketCap: "$", // Market cap is currency
-    revGrowth: "%", // Revenue Growth is a percentage
-    averageShareOutstanding: "number_with_suffix", // Shares outstanding is a count
-    peRatio: "number",
-    pfcf: "number",
-    roic: "%",
+const DEFAULT_KEY_FORMAT: Record<
+  string,
+  "%" | "$" | "number_with_suffix" | "number"
+> = {
+  profitMargin: "%",
+  netIcome: "$",
+  freeCashFlowMargin: "%",
+  marketCap: "$", // Market cap is currency
+  revGrowth: "%", // Revenue Growth is a percentage
+  averageShareOutstanding: "number_with_suffix", // Shares outstanding is a count
+  peRatio: "number",
+  pfcf: "number",
+  roic: "%",
 };
 
 export function generateFundamentalsList2(
@@ -513,7 +515,8 @@ export function generateFundamentalsList2(
 
     // Determine the format to use for display
     // Prioritize user preference, otherwise use default
-    const effectiveFormat = pref.format === "" ? DEFAULT_KEY_FORMAT[keyPart] : pref.format;
+    const effectiveFormat =
+      pref.format === "" ? DEFAULT_KEY_FORMAT[keyPart] : pref.format;
 
     let formattedValue: string;
     switch (effectiveFormat) {

@@ -37,10 +37,9 @@ import {
 } from "@/components/util";
 import MetricData from "./metricData";
 import { useUserSession } from "@/app/context/user-context";
-import TradingviewWidget from "@/components/tradingview-widget";
+
 import CompanyInfoCard from "@/components/card/company-info-card";
 import { ArrowRight } from "lucide-react";
-import FmpChart from "@/components/fmp-chart";
 
 const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
   const [btnFilter, setBtnFilter] = useState<number>(1);

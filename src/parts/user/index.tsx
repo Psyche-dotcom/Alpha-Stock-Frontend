@@ -13,6 +13,7 @@ import Link from "next/link";
 const User: React.FC = () => {
   const { profileData, setRedirectModalOpen } = useUserSession();
   const { getBlogsData, getBlogsError, getBlogsIsLoading } = useGetBlogs(1, 4);
+
   useEffect(() => {
     setRedirectModalOpen(false);
   }, []);
@@ -25,11 +26,13 @@ const User: React.FC = () => {
   };
 
   return (
-    <div className="xl:flex gap-4 h-full max-w-[1440px] mx-auto">
-      <div className="flex-1">
-        <div className="flex gap-4 flex-col md:flex-row xl:flex-col w-full md:mb-8 mb-4 xl:mb-0">
-          <div className="md:mb-8 mb-5 flex sm:flex-row flex-col sm:gap-4 gap-3 h-ful md:h-auto flex-1">
-            <div className="flex flex-col sm:gap-4 gap-3 sm:h-[215px] h-auto">
+    <div className="xl:flex xl:gap-4 h-full max-w-[1440px] mx-auto">
+      {/* Left Column */}
+      <div className="w-full xl:w-1/2">
+        <div className="flex gap-4 flex-col md:flex-row xl:flex-col w-auto xl:w-full md:mb-8 mb-4 xl:mb-0">
+          {/* Cards Section */}
+          <div className="md:mb-8 mb-5 flex sm:flex-row flex-col sm:gap-4 gap-3 flex-1">
+            <div className="flex flex-col sm:gap-4 gap-3 sm:h-[215px] h-auto flex-1">
               <Link
                 href={"/user/company/aapl?tab=metrics"}
                 onClick={(e) => handleClick(e)}
@@ -50,18 +53,17 @@ const User: React.FC = () => {
                   </h6>
                 </Link>
                 <p className="font-normal text-sm text-[#614E38]">
-                  Get visual insights to help inform your next investment
-                  strategy.
+                  Get visual insights to help inform your next investment strategy.
                 </p>
               </div>
             </div>
-            <div className="flex flex-col sm:gap-4 gap-3 text-[#351F05] hover:text-[#351F05]/60">
+            <div className="flex flex-col sm:gap-4 gap-3 text-[#351F05] hover:text-[#351F05]/60 flex-1">
               <Link
                 href={"/user/company/aapl?tab=financials"}
                 onClick={(e) => handleClick(e)}
               >
                 <div className="border border-[#614E38] hover:border-[#614E38]/80 hover:shadow-md transition-shadow pt-[1.75rem] p-4 rounded-[12px] bg-white">
-                  <h6 className="text-base font-semibold  flex items-center gap-4">
+                  <h6 className="text-base font-semibold flex items-center gap-4">
                     Financials <RightArrowLong />
                   </h6>
                 </div>
@@ -78,10 +80,14 @@ const User: React.FC = () => {
               </Link>
             </div>
           </div>
+
+          {/* Market Move Table */}
           <MarketMoveContent />
         </div>
       </div>
-      <div className="flex-1">
+
+      {/* Right Column */}
+      <div className="w-full xl:w-1/2">
         <Grid
           gap={{ base: 2, md: 4 }}
           templateColumns={{
@@ -96,11 +102,11 @@ const User: React.FC = () => {
             </GridItem>
           ))}
         </Grid>
+
         <div className="flex items-center justify-center mt-4 cursor-pointer">
           <Link
             href="/user/news"
-            className="font-medium rounded-md text-xs
-                  bg-[#351F05] text-white py-3 px-4 hover:bg-[#351f05]/80"
+            className="font-medium rounded-md text-xs bg-[#351F05] text-white py-3 px-4 hover:bg-[#351f05]/80"
           >
             See more
           </Link>

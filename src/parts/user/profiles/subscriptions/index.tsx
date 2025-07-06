@@ -14,7 +14,7 @@ import { TableComponent } from "@/components/custom-table";
 import { Pagination } from "@/components/ui/pagination";
 import { useGetPayment } from "@/services/payment";
 import { useUserSession } from "@/app/context/user-context";
-import { formatDateTime } from "@/utils";
+import { formatDate, formatDateTime } from "@/utils";
 import TableSkeleton from "@/components/table-skeleton";
 
 const Subscriptions = () => {
@@ -150,7 +150,8 @@ const Subscriptions = () => {
             {profileData?.result?.activeSubcriptionName || "Free"} Plan
           </Text>
           <Text color="#fff" fontWeight={600} fontSize={24} mb={2}>
-            Expires on 27th March, 2025
+            Expires on{" "}
+            {formatDate(profileData?.result?.activeSubcriptionEndDate)}
           </Text>
           <Flex gap={"16px"} alignItems={"center"}>
             <Link

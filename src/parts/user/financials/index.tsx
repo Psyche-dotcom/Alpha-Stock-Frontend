@@ -47,9 +47,9 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
 
   const { getIncomeStatementData, setGetIncomeStatementFilter } =
     useGetIncomeStatement({ enabled: isFetchIncome });
-  const { getBalanceSheetData, setGetBalanceSheetFilter } = useGetBalanceSheet(
-    { enabled: isFetchFin }
-  );
+  const { getBalanceSheetData, setGetBalanceSheetFilter } = useGetBalanceSheet({
+    enabled: isFetchFin,
+  });
   const { getCashFlowData, setGetCashFlowFilter } = useGetCashFlow({
     enabled: isFetchCash,
   });
@@ -95,7 +95,8 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     const formattedValue = formatMoneyNumber(value);
 
     // 2. Then, decide whether to prepend a dollar sign
-    const isShareDataTable = btnFilter === "income-statements" && sectionType === "share";
+    const isShareDataTable =
+      btnFilter === "income-statements" && sectionType === "share";
 
     if (isShareDataTable) {
       // Return the formatted value without a dollar sign
@@ -384,22 +385,36 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         </Flex>
       </Box>
       <TableComponent<DataType>
-        //@ts-ignore (This ignore might still be needed if AlldataSourceFinance returns 'any' or has type complexities)
+        //@ts-ignore
         tableData={AlldataSourceFinance(
           btnFilter,
-          "Income", // Section type
+          btnFilter === "income-statements"
+            ? "Income"
+            : btnFilter === "balance-sheet"
+            ? "ASSET"
+            : btnFilter === "cashflow"
+            ? "CASH"
+            : "",
           Data
         )}
-        // Now, we can directly pass the 'cellRenderers' object and the 'section' for this table
         cellRenderers={Object.fromEntries(
-          Object.entries(cellRenderers).map(([key, renderer]) => [
-            key,
-            (item: DataType) => (renderer as any)(item, "Income"),
-          ])
+          Object.entries(cellRenderers).map(([key, renderer]) => {
+            let currentSection = "";
+            if (btnFilter === "income-statements") {
+              currentSection = "Income";
+            } else if (btnFilter === "balance-sheet") {
+              currentSection = "ASSET";
+            } else if (btnFilter === "cashflow") {
+              currentSection = "CASH";
+            }
+            return [
+              key,
+              (item: DataType) => (renderer as any)(item, currentSection),
+            ];
+          })
         )}
         columnOrder={columnOrder}
         columnLabels={columnLabels}
-        className="text-[#111928] font-semibold"
         fixed={true}
       />
       <TableComponent<DataType>
@@ -425,7 +440,10 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
             } else if (btnFilter === "cashflow") {
               currentSection = "Investing";
             }
-            return [key, (item: DataType) => (renderer as any)(item, currentSection)];
+            return [
+              key,
+              (item: DataType) => (renderer as any)(item, currentSection),
+            ];
           })
         )}
         columnOrder={columnOrder}
@@ -455,7 +473,10 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
             } else if (btnFilter === "cashflow") {
               currentSection = "Financing";
             }
-            return [key, (item: DataType) => (renderer as any)(item, currentSection)];
+            return [
+              key,
+              (item: DataType) => (renderer as any)(item, currentSection),
+            ];
           })
         )}
         columnOrder={columnOrder}
@@ -478,11 +499,14 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
             Object.entries(cellRenderers).map(([key, renderer]) => {
               let currentSection = "";
               if (btnFilter === "income-statements") {
-                  currentSection = "share"; // This passes 'share' for the SHARES DATA table
+                currentSection = "share"; // This passes 'share' for the SHARES DATA table
               } else if (btnFilter === "cashflow") {
-                  currentSection = "cashbeginning";
+                currentSection = "cashbeginning";
               }
-              return [key, (item: DataType) => (renderer as any)(item, currentSection)];
+              return [
+                key,
+                (item: DataType) => (renderer as any)(item, currentSection),
+              ];
             })
           )}
           columnOrder={columnOrder}
@@ -493,11 +517,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       {btnFilter === "cashflow" && (
         <TableComponent<DataType>
           //@ts-ignore
-          tableData={AlldataSourceFinance(
-            btnFilter,
-            "Items",
-            Data
-          )}
+          tableData={AlldataSourceFinance(btnFilter, "Items", Data)}
           cellRenderers={Object.fromEntries(
             Object.entries(cellRenderers).map(([key, renderer]) => [
               key,

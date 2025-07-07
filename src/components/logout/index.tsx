@@ -9,6 +9,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { LogoutInfoIcon } from "@/utils/icons";
 import { deleteCookie } from "cookies-next";
+import { signOut } from "next-auth/react";
 interface iProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,8 +20,7 @@ const Logout: React.FC<iProps> = ({ open, setOpen }) => {
     await deleteCookie("refresh-token");
     await deleteCookie("token");
     await deleteCookie("role");
-
-    window.location.href = "/login";
+    signOut({ callbackUrl: "/login" });
   }
   return (
     <>

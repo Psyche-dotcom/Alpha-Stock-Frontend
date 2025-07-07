@@ -164,7 +164,7 @@ const Plans = () => {
                       handleMakePayment();
                       setIsModalOpen(false);
                     }}
-                    className="px-6 py-3 bg-blue-600 text-white font-medium rounded hover:bg-blue-700"
+                    className="px-6 py-3 bg-[#291804] text-white font-medium rounded hover:bg-[#291804dc]"
                   >
                     Pay with PayPal
                   </button>
@@ -173,7 +173,7 @@ const Plans = () => {
                       handleStripePayment();
                       setIsModalOpen(false);
                     }}
-                    className="px-6 py-3 bg-purple-600 text-white font-medium rounded hover:bg-purple-700"
+                    className="px-6 py-3 bg-white text-[#291804] font-medium rounded border border-[#291804] hover:bg-[#29180434]"
                   >
                     Pay with Stripe
                   </button>

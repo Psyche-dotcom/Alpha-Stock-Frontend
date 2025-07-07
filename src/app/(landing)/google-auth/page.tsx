@@ -6,6 +6,7 @@ import { useSession, signIn } from "next-auth/react";
 import { setCookie } from "cookies-next";
 import { ROUTES } from "@/constants/routes";
 import { useLoginSocial } from "@/services/auth";
+import { Spinner } from "@chakra-ui/react";
 
 export default function GoogleAuth() {
   const { data: session, status } = useSession();
@@ -42,5 +43,9 @@ export default function GoogleAuth() {
     }
   }, [session, status]);
 
-  return <p>Authenticating with backend...</p>;
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <Spinner size="xl" color="white" thickness="4px" />
+    </div>
+  );
 }

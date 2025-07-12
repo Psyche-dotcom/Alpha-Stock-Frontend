@@ -1,21 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import { TableComponent } from "@/components/custom-table";
 import { Button } from "@/components/ui/button";
 import { marketMoveFilterList } from "@/constants";
 import { IButtonFilter2 } from "@/interface/button-filter";
-import { MarketMove } from "@/types"; // Ensure MarketMove extends DataItem and has an 'id' property
+import { MarketMove } from "@/types";
 import { ShineIcon } from "@/utils/icons";
 import { Plus, Minus } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+
 import { useGetIsWishListAdded } from "@/services/stock";
 import { useDeleteWishlist } from "@/services/wishlist";
+
 import AddWishlist from "@/parts/user/profiles/watchlist/add-wishlist";
 import DeleteContent from "@/components/delete-content";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React from "react";
 
 const MarketMoveContent = () => {
   const [marketFilter, setMarketFilter] = useState<string>("MostTraded");
@@ -23,22 +25,20 @@ const MarketMoveContent = () => {
   const [currentSymbol, setCurrentSymbol] = useState<string | null>(null);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   const router = useRouter();
 
   const {
     getWishlistIsAddedData,
     setWishlistIsAddedFilter,
     refetchGetWishlistIsAdded,
-  } = useGetIsWishListAdded({
-    enabled: !!currentSymbol,
-  });
+  } = useGetIsWishListAdded({ enabled: !!currentSymbol });
 
-  const { deleteWishlistPayload, deleteWishlistIsLoading } = useDeleteWishlist(
-    () => {
+  const { deleteWishlistPayload, deleteWishlistIsLoading } =
+    useDeleteWishlist(() => {
       refetchGetWishlistIsAdded();
       setIsDeleteOpen(false);
-    }
-  );
+    });
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -48,36 +48,28 @@ const MarketMoveContent = () => {
     eventSource.onmessage = async (event) => {
       const parsedData = JSON.parse(event.data);
       const parsedCompleteData = JSON.parse(parsedData);
-      console.log("Parsed Complete Data", parsedCompleteData);
 
       const transformedDataPromises = parsedCompleteData
-        .slice(0, 5) // Limit to first 5 items as per your original code
+        .slice(0, 5)
         .map(async (stock: any) => {
           const symbol = stock.symbol;
-          // Default placeholder, which might still be shown if the API doesn't return an image,
-          // but the onError will handle if this URL itself is broken.
           let imageUrl = "/assets/images/card-image.png";
 
           try {
             const res = await fetch(
               `${process.env.NEXT_PUBLIC_API_URL}/api/stock/info/profile?symbol=${symbol}`
             );
+
             if (res.ok) {
               const data = await res.json();
               if (data?.result?.[0]?.image) {
                 imageUrl = data.result[0].image;
               }
             } else {
-              console.warn(
-                `Failed to fetch profile for ${symbol}. Status: ${res.status}`
-              );
-              // If fetch fails, explicitly set to an empty string or null
-              // This helps distinguish between 'no image URL from API' vs 'broken image URL'
-              imageUrl = ""; // Set to empty string to trigger fallback in StockLogo
+              imageUrl = "";
             }
           } catch (error) {
-            console.error(`Error fetching profile for ${symbol}:`, error);
-            imageUrl = ""; // Set to empty string on network/parsing error
+            imageUrl = "";
           }
 
           return {
@@ -122,58 +114,35 @@ const MarketMoveContent = () => {
 
   const cellRenderers = {
     name: (record: MarketMove) => (
-      <p className="font-semibold text-left">
-        {record?.name}
-      </p>
+      <p className="font-semibold text-left">{record?.name}</p>
     ),
-    logo: (record: MarketMove) => {
-      const StockLogo: React.FC<{ src: string; alt: string }> = ({
-        src,
-        alt,
-      }) => {
-        const [imageError, setImageError] = useState(false);
+    symbol: (record: MarketMove) => {
+      const [imageError, setImageError] = useState(false);
 
-        useEffect(() => {
-          setImageError(false); // Reset error state when src changes
-        }, [src]);
-
-        // If there's an error OR the src is explicitly empty/null (from API fetch error/no image)
-        if (imageError || !src) {
-          // Return the placeholder circle without the Image component
-          return (
-            <div className="flex items-center justify-center w-11 h-11 rounded-full overflow-hidden bg-gray-100">
-              {/* Optional: Add a small placeholder icon or text here if desired, e.g., <span className="text-sm text-gray-500">?</span> */}
-            </div>
-          );
-        }
-
-        return (
-          <div className="flex items-center justify-center w-11 h-11 rounded-full overflow-hidden bg-gray-100">
-            <Image
-              src={src}
-              alt={alt}
-              width={44}
-              height={44}
-              className="object-cover"
-              onError={() => setImageError(true)} // Set error state on image load failure
-            />
-          </div>
-        );
-      };
+      useEffect(() => {
+        setImageError(false);
+      }, [record.url]);
 
       return (
-        <div className="flex items-center justify-center">
-          <StockLogo src={record.url} alt={record.agent} />
+        <div className="flex items-center gap-2 justify-center">
+          <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+            {!imageError && record.url ? (
+              <Image
+                src={record.url}
+                alt={record.agent}
+                width={24}
+                height={24}
+                className="object-cover"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className="w-6 h-6 bg-gray-200 rounded-full" />
+            )}
+          </div>
+          <p className="font-semibold text-xs text-[#111928]">{record?.agent}</p>
         </div>
       );
     },
-    symbol: (record: MarketMove) => (
-      <div className="flex items-center justify-center">
-        <p className="font-semibold text-xs text-center text-[#111928]">
-          {record?.agent}
-        </p>
-      </div>
-    ),
     price: (item: MarketMove) => (
       <p className="font-semibold text-center">{item?.price} $</p>
     ),
@@ -234,16 +203,18 @@ const MarketMoveContent = () => {
 
   const columnOrder: (keyof MarketMove)[] = [
     "name",
-    "logo",
     "symbol",
     "price",
     "change",
     "changePercent",
   ];
 
+  if (!isRootPath) {
+    columnOrder.push("w");
+  }
+
   const columnLabels = {
     name: "NAME",
-    logo: "LOGO",
     symbol: "SYMBOL",
     price: "LAST PRICE",
     change: "CHANGE",
@@ -252,16 +223,11 @@ const MarketMoveContent = () => {
   };
 
   const headerCellClasses = {
-    logo: "text-center",
     price: "text-center",
     change: "text-center",
     changePercent: "text-center",
     w: "text-start",
   };
-
-  if (!isRootPath) {
-    columnOrder.push("w");
-  }
 
   return (
     <div className="bg-white pt-4 flex-1 rounded-md">
@@ -272,6 +238,7 @@ const MarketMoveContent = () => {
             U.S. markets are open till 6:00 PM
           </p>
         </div>
+
         <div className="flex gap-2">
           {marketMoveFilterList.map((filter: IButtonFilter2, index: number) => (
             <Button
@@ -315,10 +282,7 @@ const MarketMoveContent = () => {
             </DialogContent>
           </Dialog>
 
-          <Dialog
-            open={isDeleteOpen}
-            onOpenChange={() => setIsDeleteOpen(false)}
-          >
+          <Dialog open={isDeleteOpen} onOpenChange={() => setIsDeleteOpen(false)}>
             <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
               <DeleteContent
                 setOpen={() => setIsDeleteOpen(false)}

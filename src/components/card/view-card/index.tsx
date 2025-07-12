@@ -23,75 +23,67 @@ const ViewCard: React.FC<any> = ({
       <Box
         borderRadius="12px"
         p={2}
-        h={"345px"}
-        display={"flex"}
-        alignItems={"end"}
-        position="relative" // Crucial for positioning the absolute image
-        overflow="hidden" // Ensures the image doesn't overflow rounded corners
-        bg="gray.100" // Fallback background color if image fails to load
+        h="345px"
+        display="flex"
+        alignItems="end"
+        position="relative"
+        overflow="hidden"
+        bg="gray.100"
       >
-        {/* Background Image using Next.js Image component */}
+        {/* Background Image that stretches 100% */}
         <Image
-          src={card?.image || "/assets/images/placeholder-image.png"} // Provide a fallback placeholder image
+          src={card?.image || "/assets/images/placeholder-image.png"}
           alt={card?.title || "Blog post image"}
-          fill // Makes the image fill the parent container
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Optimize image loading
+          fill
+          sizes="100vw"
           style={{
-            objectFit: "cover", // NEW: Ensures the image covers the entire area, cropping if necessary
-            objectPosition: "center", // Ensures the center of the image is prioritized
-            zIndex: 0, // Place image behind content
+            objectFit: "fill", // Stretch to fill card completely (even if distorted)
+            objectPosition: "center",
+            zIndex: 0,
           }}
-          className="absolute inset-0" // Stretch to fill the parent container
-          // Optional: Add onError to handle broken image links gracefully
+          className="absolute inset-0"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = "/assets/images/placeholder-image.png";
-            (e.target as HTMLImageElement).style.objectFit = "contain"; // Fallback to contain for placeholder
+            const target = e.target as HTMLImageElement;
+            target.src = "/assets/images/placeholder-image.png";
+            target.style.objectFit = "fill";
           }}
         />
-
-        {/* Semi-transparent overlay for text readability */}
-        <Box
-          position="absolute"
-          inset="0"
-          bg="linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)" // Gradient overlay
-          zIndex={1} // Place overlay above image
-          borderRadius="12px" // Match parent border-radius
-        />
-
-        {/* Content Box */}
+        
+        {/* Content Box (over image) */}
         <Box borderRadius={12} p={2.5} w="100%" bg="#FFFFFF" zIndex={2}>
           <Text
-            color={"#111928"}
-            fontSize={"16px"}
+            color="#111928"
+            fontSize="16px"
             fontWeight={600}
             mb={2.5}
-            noOfLines={2} // NEW: Limit title to 2 lines
-            overflow="hidden" // Ensures text doesn't overflow
-            textOverflow="ellipsis" // Adds "..." if text overflows
+            noOfLines={2}
+            overflow="hidden"
+            textOverflow="ellipsis"
           >
             {card?.title}
           </Text>
           <Text
-            color={"#6B7280"}
-            fontSize={"12px"}
+            color="#6B7280"
+            fontSize="12px"
             fontWeight={400}
-            noOfLines={1} // NEW: Limit date to 1 line
+            noOfLines={1}
             overflow="hidden"
             textOverflow="ellipsis"
           >
             {formatDate(card?.publishedDate)}
           </Text>
+
           {showAuthor && (
-            <Box display={"flex"}>
+            <Box display="flex">
               <Box
                 border="1px solid #614E38"
-                borderRadius={"16px"}
+                borderRadius="16px"
                 display="flex"
-                alignItems={"center"}
+                alignItems="center"
                 gap={2.5}
-                py={"2px"}
-                ps={"2px"}
-                pe={"8px"}
+                py="2px"
+                ps="2px"
+                pe="8px"
                 mt={2.5}
                 bg="#EBE9E6"
               >
@@ -107,10 +99,10 @@ const ViewCard: React.FC<any> = ({
                   />
                 </Box>
                 <Text
-                  color={"#180E03"}
-                  fontSize={"14px"}
+                  color="#180E03"
+                  fontSize="14px"
                   fontWeight={600}
-                  noOfLines={1} // NEW: Limit publisher name to 1 line
+                  noOfLines={1}
                   overflow="hidden"
                   textOverflow="ellipsis"
                 >

@@ -1368,7 +1368,6 @@ export const AlldataSourceFinance = (
           row9: Data[8]?.otherWorkingCapital,
           row10: Data[9]?.otherWorkingCapital,
         },
-
         {
           id: 6,
           title: "Change In Working Capital",
@@ -1382,6 +1381,20 @@ export const AlldataSourceFinance = (
           row8: Data[7]?.changeInWorkingCapital,
           row9: Data[8]?.changeInWorkingCapital,
           row10: Data[9]?.changeInWorkingCapital,
+        },
+        {
+          id: 92,
+          title: "Cash from Operations",
+          row1: Data[0]?.netCashProvidedByOperatingActivities,
+          row2: Data[1]?.netCashProvidedByOperatingActivities,
+          row3: Data[2]?.netCashProvidedByOperatingActivities,
+          row4: Data[3]?.netCashProvidedByOperatingActivities,
+          row5: Data[4]?.netCashProvidedByOperatingActivities,
+          row6: Data[5]?.netCashProvidedByOperatingActivities,
+          row7: Data[6]?.netCashProvidedByOperatingActivities,
+          row8: Data[7]?.netCashProvidedByOperatingActivities,
+          row9: Data[8]?.netCashProvidedByOperatingActivities,
+          row10: Data[9]?.netCashProvidedByOperatingActivities,
         },
         {
           id: 100,
@@ -1484,6 +1497,20 @@ export const AlldataSourceFinance = (
           row8: Data[7]?.otherInvestingActivities,
           row9: Data[8]?.otherInvestingActivities,
           row10: Data[9]?.otherInvestingActivities,
+        },
+        {
+          id: 93,
+          title: "Cash from Investing",
+          row1: Data[0]?.netCashProvidedByInvestingActivities,
+          row2: Data[1]?.netCashProvidedByInvestingActivities,
+          row3: Data[2]?.netCashProvidedByInvestingActivities,
+          row4: Data[3]?.netCashProvidedByInvestingActivities,
+          row5: Data[4]?.netCashProvidedByInvestingActivities,
+          row6: Data[5]?.netCashProvidedByInvestingActivities,
+          row7: Data[6]?.netCashProvidedByInvestingActivities,
+          row8: Data[7]?.netCashProvidedByInvestingActivities,
+          row9: Data[8]?.netCashProvidedByInvestingActivities,
+          row10: Data[9]?.netCashProvidedByInvestingActivities,
         },
         {
           id: 100,
@@ -1601,9 +1628,9 @@ export const AlldataSourceFinance = (
           row9: Data[8]?.netCommonStockIssuance,
           row10: Data[9]?.netCommonStockIssuance,
         },
-        {
+         {
           id: 20,
-          title: "Net Cash Provided By Financing Activities",
+          title: "Cash from Financing",
           row1: Data[0]?.netCashProvidedByFinancingActivities,
           row2: Data[1]?.netCashProvidedByFinancingActivities,
           row3: Data[2]?.netCashProvidedByFinancingActivities,

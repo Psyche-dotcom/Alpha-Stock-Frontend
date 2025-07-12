@@ -22,7 +22,7 @@ export const ROUTES = {
     PLANS: "/user/plans",
     BLOGS: "/user/blog",
     SUBSCRIPTION: "/user/subscription",
-    WISHLIST: "/user/wish-list",
+    WISHLIST: "/user/watchlist",
     SHOP: "/user/shop",
     Market: "/user/company/aapl?tab=metrics",
   },

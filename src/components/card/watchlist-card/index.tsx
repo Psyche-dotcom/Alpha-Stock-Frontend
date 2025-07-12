@@ -75,7 +75,7 @@ const WatchlistCard: React.FC<IWatchlistProp> = ({
             ) : null}
           </Box>
           <Text fontSize="xl" fontWeight="bold" color="gray.800">
-            {watchlist?.stockSymbols}
+            {watchlist?.stockSymbols.toUpperCase()}
           </Text>
         </Box>
         <Text fontSize="3xl" fontWeight="semibold" color="gray.700">

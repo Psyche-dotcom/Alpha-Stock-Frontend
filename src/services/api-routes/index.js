@@ -42,6 +42,13 @@ export const routes = {
     `/api/stock/historical/eod?symbol=${symbol}&startDate=${startdate}&endDate=${endDate}`,
   getStockIncomeStatementUrl: (symbol, period) =>
     `/api/stock/income-statement?symbol=${symbol}&period=${period}&duration=10`,
+  // TTM Endpoints
+  getStockIncomeStatementTTMUrl: (symbol) =>
+    `/api/stock/income-statement-ttm?symbol=${symbol}&duration=10`,
+  getStockBalanceSheetTTMUrl: (symbol) =>
+    `/api/stock/balance-sheet-ttm?symbol=${symbol}&duration=10`,
+  getStockCashFlowTTMUrl: (symbol) =>
+    `/api/stock/cash-flow-ttm?symbol=${symbol}&duration=10`,
   getStockMetricsUrl: (symbol, period) =>
     `/api/stock/fundamental-metric?symbol=${symbol}&period=${period}`,
   getStockWishListIsAddedUrl: (symbol) =>

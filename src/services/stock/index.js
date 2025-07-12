@@ -76,6 +76,67 @@ export const useGetIncomeStatement = ({ enabled = false }) => {
   };
 };
 
+// --- Income Statement TTM Hook ---
+export const useGetIncomeStatementTTM = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["income-statement-ttm"],
+    // TTM typically only needs the symbol, not period or duration
+    queryFn: ({ symbol }) =>
+      httpService.getDataWithoutToken(routes.getStockIncomeStatementTTMUrl(symbol)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getIncomeStatementTTMIsLoading: isLoading,
+    getIncomeStatementTTMData: data?.data?.result || [],
+    getIncomeStatementTTMFilter: filter,
+    getIncomeStatementTTMError: ErrorHandler(error),
+    refetchGetIncomeStatementTTM: refetch,
+    setGetIncomeStatementTTMFilter: setFilter,
+  };
+};
+
+// --- Balance Sheet TTM Hook ---
+export const useGetBalanceSheetTTM = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["balance-sheet-ttm"],
+    queryFn: ({ symbol }) =>
+      httpService.getDataWithoutToken(routes.getStockBalanceSheetTTMUrl(symbol)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getBalanceSheetTTMIsLoading: isLoading,
+    getBalanceSheetTTMData: data?.data?.result || [],
+    getBalanceSheetTTMFilter: filter,
+    getBalanceSheetTTMError: ErrorHandler(error),
+    refetchGetBalanceSheetTTM: refetch,
+    setGetBalanceSheetTTMFilter: setFilter,
+  };
+};
+
+// --- Cash Flow TTM Hook ---
+export const useGetCashFlowTTM = ({ enabled = false }) => {
+  const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
+    queryKey: ["cash-flow-ttm"],
+    queryFn: ({ symbol }) =>
+      httpService.getDataWithoutToken(routes.getStockCashFlowTTMUrl(symbol)),
+    enabled,
+    retry: 1,
+  });
+
+  return {
+    getCashFlowTTMIsLoading: isLoading,
+    getCashFlowTTMData: data?.data?.result || [],
+    getCashFlowTTMFilter: filter,
+    getCashFlowTTMError: ErrorHandler(error),
+    refetchGetCashFlowTTM: refetch,
+    setGetCashFlowTTMFilter: setFilter,
+  };
+};
+
 export const useGetMetrics = ({ enabled = false }) => {
   const { isLoading, error, data, refetch, setFilter, filter } = useFetchItem({
     queryKey: ["get-metrics"],

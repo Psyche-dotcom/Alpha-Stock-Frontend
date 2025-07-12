@@ -175,7 +175,7 @@ export function TableComponent<T extends DataItem>({
                         // Conditional padding for the first column
                         colIndex === 0
                           ? cn("pl-6", fixed ? "w-96" : "")
-                          : "px-2", // Default horizontal padding for other cells
+                          : "px-1", // Default horizontal padding for other cells
                         "", // Minimum width for all cells
 
                         // NEW: Specific text alignment for numeric/change columns

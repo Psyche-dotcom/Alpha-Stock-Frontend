@@ -34,11 +34,12 @@ const MarketMoveContent = () => {
     refetchGetWishlistIsAdded,
   } = useGetIsWishListAdded({ enabled: !!currentSymbol });
 
-  const { deleteWishlistPayload, deleteWishlistIsLoading } =
-    useDeleteWishlist(() => {
+  const { deleteWishlistPayload, deleteWishlistIsLoading } = useDeleteWishlist(
+    () => {
       refetchGetWishlistIsAdded();
       setIsDeleteOpen(false);
-    });
+    }
+  );
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -124,7 +125,7 @@ const MarketMoveContent = () => {
       }, [record.url]);
 
       return (
-        <div className="flex items-center gap-2 justify-center">
+        <div className="flex items-center gap-2 justify-start">
           <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
             {!imageError && record.url ? (
               <Image
@@ -139,7 +140,9 @@ const MarketMoveContent = () => {
               <div className="w-6 h-6 bg-gray-200 rounded-full" />
             )}
           </div>
-          <p className="font-semibold text-xs text-[#111928]">{record?.agent}</p>
+          <p className="font-semibold text-xs text-[#111928]">
+            {record?.agent}
+          </p>
         </div>
       );
     },
@@ -155,44 +158,39 @@ const MarketMoveContent = () => {
         {record?.changeValue} $
       </p>
     ),
-    changePercent: (record: MarketMove) => (
-      <p
-        className={`font-normal text-sm text-center ${
-          record?.changePercentProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
-        }`}
-      >
-        {record?.changePercent} %
-      </p>
-    ),
-    w: (record: MarketMove) => {
-      if (typeof window !== "undefined" && window.location.pathname === "/") {
-        return null;
-      }
-
+    changePercent: (record: MarketMove) => {
       const isInWishlist =
         getWishlistIsAddedData?.wishListId && currentSymbol === record.agent;
 
       return (
-        <div className="flex justify-end relative">
-          <div
-            className="group relative flex items-center"
-            data-no-row-click="true"
-            onClick={() =>
-              isInWishlist
-                ? handleDeleteClick(record.agent)
-                : handleAddClick(record.agent)
-            }
+        <div className="flex items-center justify-between px-2"> {/* Changed justify-center to justify-between and added horizontal padding */}
+          <p
+            className={`font-normal text-sm ${
+              record?.changePercentProgress ? "text-[#0E9F6E]" : "text-[#E74694]"
+            }`}
           >
-            {isInWishlist ? (
-              <Minus className="h-4 w-4 text-red-500 cursor-pointer" />
-            ) : (
-              <Plus className="h-4 w-4 text-green-600 cursor-pointer" />
-            )}
-
-            <div className="absolute right-full mr-2 top-1/2 -translate-y-1/2 w-max bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition pointer-events-none z-40 whitespace-nowrap">
-              {isInWishlist ? "Remove from Watchlist" : "Add to Watchlist"}
+            {record?.changePercent} %
+          </p>
+          {!isRootPath && ( // Conditionally render the button
+            <div
+              className="group relative flex items-center"
+              data-no-row-click="true"
+              onClick={() =>
+                isInWishlist
+                  ? handleDeleteClick(record.agent)
+                  : handleAddClick(record.agent)
+              }
+            >
+              {isInWishlist ? (
+                <Minus className="h-4 w-4 text-red-500 cursor-pointer" />
+              ) : (
+                <Plus className="h-4 w-4 text-green-600 cursor-pointer" />
+              )}
+              <div className="absolute right-full mr-2 top-1/2 -translate-y-1/2 w-max bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition pointer-events-none z-40 whitespace-nowrap">
+                {isInWishlist ? "Remove from Watchlist" : "Add to Watchlist"}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       );
     },
@@ -209,24 +207,19 @@ const MarketMoveContent = () => {
     "changePercent",
   ];
 
-  if (!isRootPath) {
-    columnOrder.push("w");
-  }
-
   const columnLabels = {
     name: "NAME",
     symbol: "SYMBOL",
     price: "LAST PRICE",
     change: "CHANGE",
     changePercent: "%CHANGE",
-    w: "",
   };
 
   const headerCellClasses = {
+    name: "text-left",
     price: "text-center",
     change: "text-center",
-    changePercent: "text-center",
-    w: "text-start",
+    changePercent: "text-left", // Align header to the left to match the start of the number
   };
 
   return (
@@ -282,7 +275,10 @@ const MarketMoveContent = () => {
             </DialogContent>
           </Dialog>
 
-          <Dialog open={isDeleteOpen} onOpenChange={() => setIsDeleteOpen(false)}>
+          <Dialog
+            open={isDeleteOpen}
+            onOpenChange={() => setIsDeleteOpen(false)}
+          >
             <DialogContent className="bg-white p-[2rem] pt-[3.5rem] left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]">
               <DeleteContent
                 setOpen={() => setIsDeleteOpen(false)}

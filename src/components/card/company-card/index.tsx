@@ -3,7 +3,7 @@ import { ICompanyCard } from "@/interface/stock";
 import { useGetIsWishListAdded } from "@/services/stock";
 import { useDeleteWishlist } from "@/services/wishlist";
 import { StarFillIcon, StarIcon } from "@/utils/icons";
-import { border, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -56,15 +56,17 @@ const CompanyCard: React.FC<ICompanyCard> = ({
   return (
     <Box className="flex-1 py-[10px] px-[17px] bg-white rounded-[12px] mb-2 lg:mb-0">
       <div className="flex items-center gap-[10px] mb-2.5">
-        {/* Fixed size container for the image */}
+        {/* Fixed size container for the image with a thin black border */}
         <div
-          className="p-1 bg-[#111928] rounded-full flex-shrink-0"
+          className="rounded-full flex-shrink-0" // Keeps the div itself rounded
           style={{
             width: "48px",
             height: "48px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            border: "1px solid #111928", // This creates the thin black line
+            // Removed p-1 and bg-[#111928] completely
           }}
         >
           {!imageError ? (
@@ -72,15 +74,15 @@ const CompanyCard: React.FC<ICompanyCard> = ({
               src={urlCompanyImg}
               alt="stock symbol"
               style={{
-                borderRadius: "9999px",
+                borderRadius: "9999px", // Ensure the image itself is circular
               }}
-              width={40}
-              height={40}
+              width={46} // Reduced to 46px to accommodate the 1px border (48 - 1*2)
+              height={46} // Reduced to 46px
               onError={() => setImageError(true)} // Set error state if image fails
             />
           ) : (
             // Fallback content when image fails to load
-            <div className="w-[40px] h-[40px] rounded-full bg-gray-500 flex items-center justify-center text-white text-xs">
+            <div className="w-[46px] h-[46px] rounded-full bg-gray-500 flex items-center justify-center text-white text-xs">
               N/A
             </div>
           )}

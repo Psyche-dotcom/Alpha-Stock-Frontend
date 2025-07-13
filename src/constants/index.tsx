@@ -56,7 +56,7 @@ export const searchTab = [
     title: "Stock Analyser",
     value: "stock-analyser",
   },
-    {
+  {
     title: "Stock News",
     value: "stock-news",
   },
@@ -162,6 +162,11 @@ export const marketMoveFilterList = [
     id: 3,
     text: "Top Losers",
     value: "MostLoser",
+  },
+  {
+    id: 4,
+    text: "Top Searched",
+    value: "MostSearched",
   },
 ];
 

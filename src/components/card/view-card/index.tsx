@@ -22,59 +22,80 @@ const ViewCard: React.FC<any> = ({
     <Link passHref href={card?.url} target="_blank">
       <Box
         borderRadius="12px"
-        p={2}
-        h="345px"
+        p={0}
+        minH="250px" // Changed h to minH
         display="flex"
-        alignItems="end"
-        position="relative"
+        flexDirection="column"
         overflow="hidden"
         bg="gray.100"
       >
-        {/* Background Image that stretches 100% */}
-        <Image
-          src={card?.image || "/assets/images/placeholder-image.png"}
-          alt={card?.title || "Blog post image"}
-          fill
-          sizes="100vw"
-          style={{
-            objectFit: "fill", // Stretch to fill card completely (even if distorted)
-            objectPosition: "center",
-            zIndex: 0,
-          }}
-          className="absolute inset-0"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = "/assets/images/placeholder-image.png";
-            target.style.objectFit = "fill";
-          }}
-        />
-        
-        {/* Content Box (over image) */}
-        <Box borderRadius={12} p={2.5} w="100%" bg="#FFFFFF" zIndex={2}>
-          <Text
-            color="#111928"
-            fontSize="16px"
-            fontWeight={600}
-            mb={2.5}
-            noOfLines={2}
-            overflow="hidden"
-            textOverflow="ellipsis"
-          >
-            {card?.title}
-          </Text>
-          <Text
-            color="#6B7280"
-            fontSize="12px"
-            fontWeight={400}
-            noOfLines={1}
-            overflow="hidden"
-            textOverflow="ellipsis"
-          >
-            {formatDate(card?.publishedDate)}
-          </Text>
+        {/* Image at the Top */}
+        <Box
+          position="relative"
+          width="100%"
+          height="180px"
+          overflow="hidden"
+          borderTopRadius="12px"
+        >
+          <Image
+            src={card?.image || "/assets/images/placeholder-image.png"}
+            alt={card?.title || "Blog post image"}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{
+              objectFit: "cover",
+              objectPosition: "center",
+            }}
+            className="rounded-t-[12px]"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "/assets/images/placeholder-image.png";
+              target.style.objectFit = "cover";
+            }}
+          />
+        </Box>
+
+        {/* Content Box (underneath the image) */}
+        <Box
+          // Removed flex="1"
+          p={2.5}
+          w="100%"
+          bg="#FFFFFF"
+          display="flex"
+          flexDirection="column"
+          // Removed justifyContent="space-between"
+          borderBottomRadius="12px"
+        >
+          <Box>
+            {" "}
+            {/* Wrapper for title and date */}
+            <Text
+              color="#111928"
+              fontSize="16px"
+              fontWeight={600}
+              mb={2.5}
+              noOfLines={2}
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {card?.title}
+            </Text>
+            <Text
+              color="#6B7280"
+              fontSize="12px"
+              fontWeight={400}
+              noOfLines={1}
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {formatDate(card?.publishedDate)}
+            </Text>
+          </Box>
 
           {showAuthor && (
-            <Box display="flex">
+            <Box mt={2.5}>
+              {" "}
+              {/* Margin top to separate from date, keeping consistent spacing */}
               <Box
                 border="1px solid #614E38"
                 borderRadius="16px"
@@ -84,10 +105,10 @@ const ViewCard: React.FC<any> = ({
                 py="2px"
                 ps="2px"
                 pe="8px"
-                mt={2.5}
                 bg="#EBE9E6"
+                width="fit-content"
               >
-                <Box h="32px" w="32px">
+                <Box h="32px" w="32px" borderRadius="full" overflow="hidden">
                   <Image
                     width={32}
                     height={32}
@@ -95,7 +116,7 @@ const ViewCard: React.FC<any> = ({
                       card?.publisherImgUrl || "/assets/images/card-image.png"
                     }
                     alt="Publisher avatar"
-                    className="rounded-full object-cover h-8 w-8"
+                    className="object-cover h-8 w-8"
                   />
                 </Box>
                 <Text

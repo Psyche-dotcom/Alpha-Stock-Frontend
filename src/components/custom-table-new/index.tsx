@@ -15,10 +15,21 @@ import { ReactNode } from "react";
 
 type CellRenderer<T> = (item: T, column: keyof T) => ReactNode;
 
+// NEW INTERFACE FOR GROUPED HEADER CONFIG
+export interface GroupedHeaderConfig<T extends DataItem> {
+  historicalDataLabel: string;
+  historicalDataColumns: (keyof T)[]; // e.g., ['year1', 'year5', 'year10']
+  myAssumptionsLabel: string;
+  myAssumptionsColumns: (keyof T)[]; // e.g., ['low', 'medium', 'high']
+}
+
 export interface EnhancedTableProps<T extends DataItem> extends ITableProps<T> {
   cellRenderers?: Partial<Record<keyof T, CellRenderer<T>>>;
   columnOrder?: (keyof T)[];
   columnLabels?: Partial<Record<keyof T, string>>;
+  className?: string;
+  // NEW OPTIONAL PROP
+  groupedHeaderConfig?: GroupedHeaderConfig<T>;
 }
 
 export function TableComponentNew<T extends DataItem>({
@@ -30,6 +41,7 @@ export function TableComponentNew<T extends DataItem>({
   columnOrder,
   columnLabels = {},
   className,
+  groupedHeaderConfig, // Destructure the new prop
 }: EnhancedTableProps<T>) {
   if (tableData.length === 0)
     return (
@@ -59,17 +71,65 @@ export function TableComponentNew<T extends DataItem>({
 
   const renderCellContent = (item: T, column: keyof T) => {
     if (cellRenderers[column]) {
+      // Pass both item and column to the renderer
       return cellRenderers[column]!(item, column);
     }
 
     return String(item[column]);
   };
 
+  // Calculate colSpan for grouped headers
+  const getColSpan = (colsToSpan: (keyof T)[]) => {
+    // Count how many of the 'colsToSpan' are actually present in the 'columns' array
+    return colsToSpan.filter((col) => columns.includes(col)).length;
+  };
+
+  const historicalDataColSpan = groupedHeaderConfig
+    ? getColSpan(groupedHeaderConfig.historicalDataColumns)
+    : 0;
+  const myAssumptionsColSpan = groupedHeaderConfig
+    ? getColSpan(groupedHeaderConfig.myAssumptionsColumns)
+    : 0;
+
   return (
     <div className="w-full">
       <div className="overflow-auto">
         <Table>
           <TableHeader className="bg-[#EBE9E6]">
+            {/* Conditional rendering for the grouped header row */}
+            {groupedHeaderConfig && (
+              <TableRow className="border-1 bg-[#351F05]">
+                {" "}
+                {/* Apply background here */}
+                {/* Empty cell for the 'feature' column */}
+                <TableHead
+                  className={cn(
+                    "whitespace-pre py-2 font-semibold text-xs text-white",
+                    "pl-6 text-start"
+                  )}
+                ></TableHead>
+                {/* Historical Data Header */}
+                {historicalDataColSpan > 0 && (
+                  <TableHead
+                    colSpan={historicalDataColSpan}
+                    className="whitespace-pre py-2 font-semibold text-xs text-white text-center"
+                  >
+                    {groupedHeaderConfig.historicalDataLabel}
+                  </TableHead>
+                )}
+                {/* My Assumptions Header */}
+                {myAssumptionsColSpan > 0 && (
+                  <TableHead
+                    colSpan={myAssumptionsColSpan}
+                    className="whitespace-pre py-2 font-semibold text-xs text-white text-center"
+                  >
+                    {groupedHeaderConfig.myAssumptionsLabel}
+                  </TableHead>
+                )}
+              </TableRow>
+            )}
+
+            {/* Existing row for individual column headers */}
             <TableRow className="border-1">
               {columns.map((column, index) => (
                 <TableHead

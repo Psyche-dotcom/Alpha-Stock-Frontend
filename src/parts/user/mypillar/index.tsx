@@ -32,8 +32,8 @@ type PillarFilter = {
 };
 
 type PillarOption = {
-  label: string;
-  value: string; // e.g., "netIcome fifth", "marketCap"
+  label: string; // This is the displayed text in the dropdown
+  value: string; // e.g., "netIcome fifth", "marketCap" - this remains the internal key
   format: string; // e.g., "$", "%", ""
   category: string;
 };
@@ -51,11 +51,37 @@ const formatMap: Record<string, string> = {
   marketCap: "$", // Market Cap is a currency
 };
 
-const labelMap: Record<string, string> = {
+const yearLabelMap: Record<string, string> = {
   first: "1Yr",
   fifth: "5Yr",
   ten: "10Yr",
 };
+
+// ** Explicit mapping for display labels **
+// Use this for any keys that require specific capitalization or wording
+const displayLabelMap: Record<string, string> = {
+  netIcome: "Net Income",
+  roic: "ROIC",
+  averageShareOutstanding: "Average Shares Outstanding",
+  freeCashFlowMargin: "Free Cash Flow Margin",
+  revGrowth: "Revenue Growth",
+  pfcf: "P/FCF",
+  peRatio: "P/E Ratio",
+  profitMargin: "Profit Margin",
+  marketCap: "Market Cap",
+  // Add any other keys from your API data here with their desired display names
+  // This map overrides the general toTitleCase for specific terms.
+};
+
+// Helper function to convert camelCase to Title Case (as a fallback)
+function toTitleCase(str: string): string {
+  if (!str) return "";
+  return str
+    .replace(/([A-Z])/g, " $1") // Add space before capital letters
+    .split(" ") // Split by spaces
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+    .join(" "); // Join back with spaces
+}
 
 // 💡 Categorize based on key naming
 function getCategory(key: string): string {
@@ -77,12 +103,6 @@ function getCategory(key: string): string {
 function generatePillarOptions(apiData: any): PillarOption[] {
   const options: PillarOption[] = [];
 
-  // Assuming apiData structure roughly matches what's used in generateFundamentalsList
-  // We need to iterate over the keys in `apiData` to build pillar options.
-  // This is a simplified mapping; you might need to adjust based on your exact ApiData structure.
-
-  // Example for common fields (adjust keys as per your ApiData)
-  // These are often the 'main' keys that might have 'first', 'fifth', 'ten' sub-keys
   const relevantKeys = [
     "netIcome",
     "roic",
@@ -99,17 +119,19 @@ function generatePillarOptions(apiData: any): PillarOption[] {
   relevantKeys.forEach((key) => {
     const value = apiData[key];
 
+    // Get the base display name for the key (e.g., "Net Income" for "netIcome")
+    // This ensures consistency for both direct and time-based pillars
+    const baseDisplayName = displayLabelMap[key] || toTitleCase(key);
+
     if (typeof value === "object" && value !== null) {
       // Handle objects with periods (e.g., netIcome: { fifth: "...", first: "..." })
       Object.entries(value).forEach(([subKey, subVal]) => {
         if (subVal !== null) {
-          const formattedLabel = `${labelMap[subKey] || subKey} ${key}`.replace(
-            /([a-z])([A-Z])/g,
-            "$1 $2"
-          ); // "fifth netIcome" -> "5Yr Net Income"
+          const yearLabel = yearLabelMap[subKey] || toTitleCase(subKey); // "1Yr", "5Yr", "10Yr"
+
           options.push({
-            label: formattedLabel,
-            value: `${key} ${subKey}`, // e.g., "netIcome fifth"
+            label: `${yearLabel} ${baseDisplayName}`, // This is the final display string for the dropdown
+            value: `${key} ${subKey}`, // e.g., "netIcome first" - this remains the internal identifier
             format: formatMap[key] || "",
             category: getCategory(key),
           });
@@ -118,7 +140,7 @@ function generatePillarOptions(apiData: any): PillarOption[] {
     } else if (value !== null) {
       // Handle direct string/number values (e.g., marketCap: "...")
       options.push({
-        label: key.replace(/([a-z])([A-Z])/g, "$1 $2"), // "marketCap" -> "Market Cap"
+        label: baseDisplayName, // This is the final display string for the dropdown
         value: key,
         format: formatMap[key] || "",
         category: getCategory(key),
@@ -203,7 +225,10 @@ export default function PillarScreener() {
   ) => {
     // 💡 Client-side validation: Filter out non-numeric characters
     // Allows numbers, a single decimal point, and leading minus sign
-    const sanitizedInputValue = inputValue.replace(/[^0-9.-]/g, "").replace(/(.*)\./, "$1.").replace(/(\..*)\./g, "$1");
+    const sanitizedInputValue = inputValue
+      .replace(/[^0-9.-]/g, "")
+      .replace(/(.*)\./, "$1.")
+      .replace(/(\..*)\./g, "$1");
 
     const format =
       pillarOptions.find((p) => p.value === pillarKey)?.format || "";
@@ -266,14 +291,14 @@ export default function PillarScreener() {
     }
 
     // Optional: Validate that all selected filters have a non-empty numeric value
-    const hasInvalidValue = selectedFilters.some(filter => {
+    const hasInvalidValue = selectedFilters.some((filter) => {
       const numValue = parseFloat(filter.value);
       return filter.value.trim() === "" || isNaN(numValue);
     });
 
     if (hasInvalidValue) {
-        showErrorAlert("All selected filters must have a valid numerical value.");
-        return;
+      showErrorAlert("All selected filters must have a valid numerical value.");
+      return;
     }
 
     myAddPillerPayload(selectedFilters);
@@ -323,7 +348,8 @@ export default function PillarScreener() {
                               onCheckedChange={() => toggleFilter(pillar.value)}
                             />
                             <div className="text-sm font-medium break-words w-full sm:w-48">
-                              {pillar.label}
+                              {pillar.label}{" "}
+                              {/* This `pillar.label` is now correctly pre-formatted */}
                             </div>
                           </div>
                           <div className="flex flex-col sm:flex-row gap-2 w-full">
@@ -372,12 +398,20 @@ export default function PillarScreener() {
           <div className="flex justify-center">
             <Button
               className={`sm:w-[60%] w-full py-1 px-2 text-white ${
-                selectedFilters.length < 1 || selectedFilters.some(f => f.value.trim() === "" || isNaN(parseFloat(f.value)))
+                selectedFilters.length < 1 ||
+                selectedFilters.some(
+                  (f) => f.value.trim() === "" || isNaN(parseFloat(f.value))
+                )
                   ? "bg-gray-400 pointer-events-none" // Disable if no filters or any filter has invalid value
                   : "bg-[#351F05]"
               }`}
               onClick={handleSearch}
-              disabled={selectedFilters.length < 1 || selectedFilters.some(f => f.value.trim() === "" || isNaN(parseFloat(f.value)))} // Also disable button directly
+              disabled={
+                selectedFilters.length < 1 ||
+                selectedFilters.some(
+                  (f) => f.value.trim() === "" || isNaN(parseFloat(f.value))
+                )
+              } // Also disable button directly
             >
               Update My Pillars
             </Button>
@@ -392,31 +426,44 @@ export default function PillarScreener() {
           </div>
           <div className="flex flex-wrap gap-2 bg-[#FFF8F0] sm:px-4 px-2 sm:py-8 py-3 rounded-md shadow-sm min-h-[150px]">
             {selectedFilters.map((filter) => {
-                const displayValue = filter.format === "$"
-                    ? `${filter.value}` // We'll handle full formatting on the display side (where `generateFundamentalsList2` is used)
-                    : filter.format === "%"
-                    ? `${filter.value}` // Same here
-                    : filter.value; // For plain numbers
+              // Convert "netIcome fifth" to "Net Income (5Yr)"
+              const [keyPart, yearPart] = filter.pillerName.split(" ");
+              // Use displayLabelMap for the base name, falling back to toTitleCase if not found
+              let formattedPillarName =
+                displayLabelMap[keyPart] || toTitleCase(keyPart);
+              if (yearPart) {
+                formattedPillarName = `${formattedPillarName} (${
+                  yearLabelMap[yearPart] || toTitleCase(yearPart)
+                })`;
+              }
 
-                return (
-                  <div
-                    key={filter.pillerName}
-                    className="h-fit flex items-center bg-[#351F05] text-white rounded-full sm:px-3 px-2 py-1 sm:text-sm text-xs text-nowrap"
+              const displayValue =
+                filter.format === "$"
+                  ? `${filter.value}`
+                  : filter.format === "%"
+                  ? `${filter.value}`
+                  : filter.value;
+
+              return (
+                <div
+                  key={filter.pillerName}
+                  className="h-fit flex items-center bg-[#351F05] text-white rounded-full sm:px-3 px-2 py-1 sm:text-sm text-xs text-nowrap"
+                >
+                  {formattedPillarName}{" "}
+                  {/* Use the already correctly formatted name */}
+                  {filter.comparison} {displayValue}
+                  {filter.format === "%" && filter.value.trim() !== ""
+                    ? "%"
+                    : ""}{" "}
+                  {/* Add % if applicable and value exists */}
+                  <button
+                    onClick={() => removeFilter(filter.pillerName)}
+                    className="ml-2"
                   >
-                    {filter.pillerName.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^(.)/, (match) => match.toUpperCase())} {/* Format pillar name for display */}
-                    {" "}
-                    {filter.comparison}
-                    {" "}
-                    {displayValue}
-                    {filter.format === "%" && filter.value.trim() !== "" ? "%" : ""} {/* Add % if applicable and value exists */}
-                    <button
-                      onClick={() => removeFilter(filter.pillerName)}
-                      className="ml-2"
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                );
+                    <X size={14} />
+                  </button>
+                </div>
+              );
             })}
           </div>
         </div>

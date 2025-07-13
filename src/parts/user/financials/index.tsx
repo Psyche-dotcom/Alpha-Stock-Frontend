@@ -107,120 +107,200 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     }
   };
 
+  // Helper function to determine if a row should be bold and underlined
+  const isTargetCashflowRow = (title: string, currentFilter: string) => {
+    if (currentFilter === "cashflow") {
+      // Add the titles of the specific rows you want to target in the cashflow section
+      const targetTitles = [
+        "Cash from Operations",
+        "Cash from Investing",
+        "Cash from Financing",
+      ]; // Example titles
+      return targetTitles.includes(title);
+    }
+    return false;
+  };
+
   const cellRenderers = {
-    title: (item: DataType) => (
-      <span
-        className="whitespace-pre text-[#111928] text-[16px] font-medium"
-        style={{
-          fontWeight: getFontWeightByTitle(item?.title),
-        }}
-      >
-        {item?.title === ""
-          ? "                                                                "
-          : item?.title}
-      </span>
-    ),
-    // Each row renderer now accepts 'item' and 'section' directly
-    row1: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row1, item.title, section)}
-      </Text>
-    ),
-    row2: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row2, item.title, section)}
-      </Text>
-    ),
-    row3: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row3, item.title, section)}
-      </Text>
-    ),
-    row4: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row4, item.title, section)}
-      </Text>
-    ),
-    row5: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row5, item.title, section)}
-      </Text>
-    ),
-    row6: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row6, item.title, section)}
-      </Text>
-    ),
-    row7: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row7, item.title, section)}
-      </Text>
-    ),
-    row8: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row8, item.title, section)}
-      </Text>
-    ),
-    row9: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row9, item.title, section)}
-      </Text>
-    ),
-    row10: (item: DataType, section: string) => (
-      <Text
-        fontSize={13}
-        color="#111928"
-        textAlign={"center"}
-        fontWeight={getFontWeightByTitle(item?.title)}
-      >
-        {renderFinancialNumber(item.row10, item.title, section)}
-      </Text>
-    ),
+    title: (item: DataType) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <span
+          className="whitespace-pre text-[#111928] text-[16px]"
+          style={{
+            // Apply "bold" if it's a target row, otherwise use the default from getFontWeightByTitle
+            fontWeight: shouldApplyStyle
+              ? "bold"
+              : getFontWeightByTitle(item?.title),
+            textDecoration: shouldApplyStyle ? "underline" : "none", // Apply underline if target
+          }}
+        >
+          {item?.title === ""
+            ? "                                                                                              "
+            : item?.title}
+        </span>
+      );
+    },
+    row1: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row1, item.title, section)}
+        </Text>
+      );
+    },
+    row2: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row2, item.title, section)}
+        </Text>
+      );
+    },
+    row3: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row3, item.title, section)}
+        </Text>
+      );
+    },
+    row4: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row4, item.title, section)}
+        </Text>
+      );
+    },
+    row5: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row5, item.title, section)}
+        </Text>
+      );
+    },
+    row6: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row6, item.title, section)}
+        </Text>
+      );
+    },
+    row7: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row7, item.title, section)}
+        </Text>
+      );
+    },
+    row8: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row8, item.title, section)}
+        </Text>
+      );
+    },
+    row9: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row9, item.title, section)}
+        </Text>
+      );
+    },
+    row10: (item: DataType, section: string) => {
+      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      return (
+        <Text
+          fontSize={13}
+          color="#111928"
+          textAlign={"center"}
+          fontWeight={
+            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
+          }
+          textDecoration={shouldApplyStyle ? "underline" : "none"}
+        >
+          {renderFinancialNumber(item.row10, item.title, section)}
+        </Text>
+      );
+    },
   };
 
   const columnOrder: (keyof DataType)[] = [

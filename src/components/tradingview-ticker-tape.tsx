@@ -1,63 +1,77 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
-import { Box } from '@chakra-ui/react';
+import React, { useEffect, useRef } from "react";
+import { Box } from "@chakra-ui/react";
+import { usePathname } from "next/navigation";
 
 const TradingViewTickerTape: React.FC = () => {
+  const pathname = usePathname();
+
+  // Show tape only if the pathname is exactly "/user"
+  const showTape = pathname === "/user";
+
+  if (!showTape) {
+    return null; // Don't render anything if the tape shouldn't be shown
+  }
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Ensure the script is loaded only once and container exists
-    if (!containerRef.current || document.getElementById('tradingview-ticker-tape-script')) {
+    if (
+      !containerRef.current ||
+      document.getElementById("tradingview-ticker-tape-script")
+    ) {
       return;
     }
 
-    const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+    const script = document.createElement("script");
+    script.src =
+      "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
     script.async = true;
-    script.id = 'tradingview-ticker-tape-script'; // Assign an ID to prevent duplicate loading
+    script.id = "tradingview-ticker-tape-script"; // Assign an ID to prevent duplicate loading
     script.innerHTML = JSON.stringify({
-      "symbols": [
+      symbols: [
         {
-          "proName": "FOREXCOM:SPXUSD",
-          "title": "S&P 500"
+          proName: "FOREXCOM:SPXUSD",
+          title: "S&P 500",
         },
         {
-          "proName": "FOREXCOM:NSXUSD",
-          "title": "US 100"
+          proName: "FOREXCOM:NSXUSD",
+          title: "US 100",
         },
         {
-          "proName": "FX_IDC:EURUSD",
-          "title": "EUR to USD"
+          proName: "FX_IDC:EURUSD",
+          title: "EUR to USD",
         },
         {
-          "proName": "BITSTAMP:BTCUSD",
-          "title": "Bitcoin"
+          proName: "BITSTAMP:BTCUSD",
+          title: "Bitcoin",
         },
         {
-          "proName": "BITSTAMP:ETHUSD",
-          "title": "Ethereum"
+          proName: "BITSTAMP:ETHUSD",
+          title: "Ethereum",
         },
         {
-          "description": "NVIDIA",
-          "proName": "NASDAQ:NVDA"
+          description: "NVIDIA",
+          proName: "NASDAQ:NVDA",
         },
         {
-          "description": "Apple",
-          "proName": "NASDAQ:AAPL"
+          description: "Apple",
+          proName: "NASDAQ:AAPL",
         },
         {
-          "description": "Microsoft",
-          "proName": "NASDAQ:MSFT"
-        }
+          description: "Microsoft",
+          proName: "NASDAQ:MSFT",
+        },
       ],
-      "showSymbolLogo": true,
+      showSymbolLogo: true,
       "is  hotmap": false, // Corrected typo here, should be "is_hotmap"
-      "colorTheme": "light",
-      "fontColor": "#111928", // Match your text color
-      "locales": "en",
-      "largeChartUrl": "", // No large chart on click
-      "displayMode": "adaptive"
+      colorTheme: "light",
+      fontColor: "#111928", // Match your text color
+      locales: "en",
+      largeChartUrl: "", // No large chart on click
+      displayMode: "adaptive",
     });
 
     containerRef.current.appendChild(script);
@@ -68,9 +82,11 @@ const TradingViewTickerTape: React.FC = () => {
         containerRef.current.removeChild(script);
       }
       // Also remove script from document head if it was added there for some reason
-      const existingScript = document.getElementById('tradingview-ticker-tape-script');
+      const existingScript = document.getElementById(
+        "tradingview-ticker-tape-script"
+      );
       if (existingScript && existingScript.parentNode) {
-          existingScript.parentNode.removeChild(existingScript);
+        existingScript.parentNode.removeChild(existingScript);
       }
     };
   }, []); // Empty dependency array ensures this runs once on mount

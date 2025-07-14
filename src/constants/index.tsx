@@ -163,11 +163,6 @@ export const marketMoveFilterList = [
     text: "Top Losers",
     value: "MostLoser",
   },
-  {
-    id: 4,
-    text: "Top Searched",
-    value: "MostSearched",
-  },
 ];
 
 export const trendingLists = [

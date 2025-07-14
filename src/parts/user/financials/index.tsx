@@ -124,33 +124,31 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   const cellRenderers = {
     title: (item: DataType) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
+
       return (
         <span
           className="whitespace-pre text-[#111928] text-[16px]"
           style={{
-            // Apply "bold" if it's a target row, otherwise use the default from getFontWeightByTitle
-            fontWeight: shouldApplyStyle
-              ? "bold"
-              : getFontWeightByTitle(item?.title),
-            textDecoration: shouldApplyStyle ? "underline" : "none", // Apply underline if target
+            fontWeight: shouldApplyStyle ? 800 : defaultFontWeight,
+            textDecoration: shouldApplyStyle ? "underline" : "none",
           }}
         >
           {item?.title === ""
-            ? "                                                                                              "
+            ? "                                                                                                   "
             : item?.title}
         </span>
       );
     },
     row1: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row1, item.title, section)}
@@ -159,14 +157,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row2: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row2, item.title, section)}
@@ -175,14 +172,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row3: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row3, item.title, section)}
@@ -191,14 +187,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row4: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row4, item.title, section)}
@@ -207,14 +202,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row5: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row5, item.title, section)}
@@ -223,14 +217,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row6: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row6, item.title, section)}
@@ -239,14 +232,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row7: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row7, item.title, section)}
@@ -255,14 +247,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row8: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row8, item.title, section)}
@@ -271,14 +262,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row9: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row9, item.title, section)}
@@ -287,14 +277,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     },
     row10: (item: DataType, section: string) => {
       const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
           fontSize={13}
           color="#111928"
           textAlign={"center"}
-          fontWeight={
-            shouldApplyStyle ? "bold" : getFontWeightByTitle(item?.title)
-          }
+          fontWeight={shouldApplyStyle ? 800 : defaultFontWeight}
           textDecoration={shouldApplyStyle ? "underline" : "none"}
         >
           {renderFinancialNumber(item.row10, item.title, section)}

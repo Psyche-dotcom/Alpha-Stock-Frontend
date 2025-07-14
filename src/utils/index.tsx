@@ -183,12 +183,33 @@ export const mapApiToCommentSignalR = (apiData: any): CommentData => {
     comment,
   };
 };
-export function getFontWeightByTitle(title?: string): number | string | undefined {
+export function getFontWeightByTitle(title?: string): number | undefined {
   if (!title) return undefined;
 
-  // For all other titles, return a standard, non-bold weight (e.g., 400 or 'normal')
-  // This is the key change to allow your conditional bolding to work.
-  return 400; // 'normal' also works
+  const lowerTitle = title.toLowerCase();
+
+  const boldTitles = [
+    "revenue",
+    "net income",
+    "net interest income",
+    "gross profit",
+    "research and development expenses",
+    "operating expenses",
+    "operating income",
+    "pre-tax income",
+    "inventories",
+    "goodwill & intangible assets",
+    "other total stockholders equity",
+    "depreciation and amortization",
+    "net cash provided by investing activities",
+    "free cash flow",
+    "capital expenditure",
+    "total liabilities",
+    "total current liabilities",
+    "cash & short term investments",
+  ];
+
+  return boldTitles.includes(lowerTitle) ? 800 : 600;
 }
 export const downloadPaymentPDF = (data: any) => {
   const doc = new jsPDF();

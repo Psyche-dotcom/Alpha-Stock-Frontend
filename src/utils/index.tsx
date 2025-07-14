@@ -194,6 +194,7 @@ export function getFontWeightByTitle(title?: string): number | undefined {
     "net interest income",
     "gross profit",
     "research and development expenses",
+    "selling general and administrative expenses",
     "operating expenses",
     "operating income",
     "pre-tax income",

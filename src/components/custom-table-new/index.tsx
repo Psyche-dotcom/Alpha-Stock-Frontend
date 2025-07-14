@@ -61,12 +61,21 @@ export function TableComponentNew<T extends DataItem>({
   const columns = columnOrder || (Object.keys(tableData[0]) as (keyof T)[]);
 
   const formatColumnName = (name: string) => {
-    return (
-      columnLabels[name as keyof T] ||
-      name.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
-        return str.toUpperCase();
-      })
-    );
+    // Check if a specific label is provided and is NOT an empty string
+    if (
+      columnLabels[name as keyof T] !== undefined &&
+      columnLabels[name as keyof T] !== ""
+    ) {
+      return columnLabels[name as keyof T];
+    }
+    // If an empty string is explicitly provided, return it to hide the label
+    if (columnLabels[name as keyof T] === "") {
+      return "";
+    }
+    // Fallback logic if no label is provided or it's implicitly undefined
+    return name.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
+      return str.toUpperCase();
+    });
   };
 
   const renderCellContent = (item: T, column: keyof T) => {
@@ -95,7 +104,7 @@ export function TableComponentNew<T extends DataItem>({
     <div className="w-full">
       <div className="overflow-auto">
         <Table>
-          <TableHeader className="bg-[#EBE9E6]">
+          <TableHeader className="bg-[#351F05]">
             {/* Conditional rendering for the grouped header row */}
             {groupedHeaderConfig && (
               <TableRow className="border-1 bg-[#351F05]">

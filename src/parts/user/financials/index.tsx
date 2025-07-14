@@ -108,22 +108,26 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   };
 
   // Helper function to determine if a row should be bold and underlined
-  const isTargetCashflowRow = (title: string, currentFilter: string) => {
-    if (currentFilter === "cashflow") {
-      // Add the titles of the specific rows you want to target in the cashflow section
-      const targetTitles = [
-        "Cash from Operations",
-        "Cash from Investing",
-        "Cash from Financing",
-      ]; // Example titles
-      return targetTitles.includes(title);
-    }
-    return false;
+  const isTargetBoldAndUnderlineRow = (title: string, currentFilter: string) => {
+    // Add the titles of the specific rows you want to target in the cashflow section
+    const targetTitles = [
+      "Revenue",
+      "Gross Profit",
+      "Net Income",
+      "Total Current Assets",
+      "Total Current Liabilities",
+      "Cash from Operations",
+      "Capital Expenditure",
+      "Free Cash Flow",
+      "Cash from Investing",
+      "Cash from Financing",
+    ]; // Example titles
+    return targetTitles.includes(title);
   };
 
   const cellRenderers = {
     title: (item: DataType) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
 
       return (
@@ -141,7 +145,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row1: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -156,7 +160,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row2: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -171,7 +175,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row3: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -186,7 +190,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row4: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -201,7 +205,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row5: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -216,7 +220,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row6: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -231,7 +235,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row7: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -246,7 +250,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row8: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -261,7 +265,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row9: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text
@@ -276,7 +280,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       );
     },
     row10: (item: DataType, section: string) => {
-      const shouldApplyStyle = isTargetCashflowRow(item?.title, btnFilter);
+      const shouldApplyStyle = isTargetBoldAndUnderlineRow(item?.title, btnFilter);
       const defaultFontWeight = getFontWeightByTitle(item?.title);
       return (
         <Text

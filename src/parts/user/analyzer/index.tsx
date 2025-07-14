@@ -331,7 +331,7 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
   const { dynamicColumnOrder, dynamicColumnLabels, groupedHeaderProps } = useMemo(() => {
     const order: (keyof DataType)[] = ["feature"]; // Always start with feature
     const labels: Record<keyof DataType, string> = {
-      feature: "FEATURE",
+      feature: "", // Feature column has no label
       year1: "1 Year",
       year5: "5 Years",
       year10: "10 Years",

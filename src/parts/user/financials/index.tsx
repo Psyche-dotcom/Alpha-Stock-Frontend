@@ -1,5 +1,4 @@
 "use client";
-
 import { ButtonIcon } from "@/components/button/button-icon";
 import { TableComponent } from "@/components/custom-table";
 import DropdownSelect from "@/components/DropdownSelect";
@@ -54,9 +53,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   const { getCashFlowData, setGetCashFlowFilter } = useGetCashFlow({
     enabled: isFetchCash,
   });
-
   useEffect(() => {
-    setisFetchIncome(false);
     setisFetchFin(false);
     setisFetchCash(false);
 
@@ -82,7 +79,6 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     }
   }, [getIncomeStatementData, getBalanceSheetData, getCashFlowData, btnFilter]);
 
-  // Helper function to render financial numbers with or without a dollar sign, ALWAYS formatted
   const renderFinancialNumber = (
     value: number | undefined,
     itemTitle: string,
@@ -92,18 +88,14 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       return "";
     }
 
-    // 1. Always format the number first
     const formattedValue = formatMoneyNumber(value);
 
-    // 2. Then, decide whether to prepend a dollar sign
     const isShareDataTable =
       btnFilter === "income-statements" && sectionType === "share";
 
     if (isShareDataTable) {
-      // Return the formatted value without a dollar sign
       return formattedValue;
     } else {
-      // Return the formatted value with a dollar sign
       return `$${formattedValue}`;
     }
   };

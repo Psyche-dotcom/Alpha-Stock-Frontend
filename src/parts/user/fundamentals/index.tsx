@@ -63,7 +63,7 @@ const Fundamentals: React.FC<IStockComponent> = ({ symbol }) => {
   } = useGetStockAlphaStat({ enabled: symbol !== null });
   const filterBtn = [
     {
-      text: "Alpha Pillars",
+      text: "Alpha Fundamental",
       value: "alpha-pillars",
     },
     { text: "My Pillars", value: "my-pillars" },

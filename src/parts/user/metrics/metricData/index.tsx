@@ -133,6 +133,8 @@ const MetricData: React.FC<IMetricData> = ({
         >
           {key.toLowerCase() === "avgroic5yrs"
             ? formatMoneyNumber2(value, true)
+            : key.toLowerCase() === "returnoninvestedcapitalttm"
+            ? formatMoneyNumber2(value, true)
             : formatMoneyNumber2(value)}
         </Text>
       </Box>

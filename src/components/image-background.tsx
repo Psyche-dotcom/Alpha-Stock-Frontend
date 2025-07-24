@@ -1,14 +1,21 @@
-"use client"; // This component needs to be a client component
+"use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation"; // Still imported but not used in the simplified version
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const ImageBackground: React.FC = () => {
-  // If you want the image to only show on specific paths,
-  // you can reintroduce usePathname and conditional rendering here.
-  // For now, assuming it's a static background image.
+  const pathname = usePathname();
 
+  // Determine if the image should be shown based on the pathname
+  const showImage = pathname === "/user";
+
+  // If the image shouldn't be shown, return null
+  if (!showImage) {
+    return null;
+  }
+
+  // Otherwise, render the Image component
   return (
     <Image
       src={"/assets/images/globe.jpg"}

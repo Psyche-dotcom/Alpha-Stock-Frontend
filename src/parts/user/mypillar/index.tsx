@@ -307,7 +307,7 @@ export default function PillarScreener() {
 
   return (
     <>
-      <p className="text-center text-[32px] font-bold mb-3">Pillar Screener</p>
+      <p className="text-center text-[32px] font-bold mb-3">Fundamental Screener</p>
       <div className="space-y-4 flex sm:flex-row flex-col xl:gap-14 sm:gap-8 lg:gap-10 gap-5 mb-10">
         <div className="flex flex-col gap-8 h-fit w-full">
           <h3 className="font-bold text-lg">Categories</h3>
@@ -413,15 +413,15 @@ export default function PillarScreener() {
                 )
               } // Also disable button directly
             >
-              Update My Pillars
+              Update My Fundamentals
             </Button>
           </div>
         </div>
         <div className="!mt-0 w-full">
           <div className="flex justify-between mb-6">
-            <h3 className="font-bold text-lg">My Pillars</h3>
+            <h3 className="font-bold text-lg">My Fundamentals</h3>
             <p className="font-semibold text-sm">
-              {selectedFilters.length} Pillars
+              {selectedFilters.length} Fundamentals
             </p>
           </div>
           <div className="flex flex-wrap gap-2 bg-[#FFF8F0] sm:px-4 px-2 sm:py-8 py-3 rounded-md shadow-sm min-h-[150px]">

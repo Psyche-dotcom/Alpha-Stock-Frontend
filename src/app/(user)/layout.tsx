@@ -4,8 +4,8 @@ import UserNavbar from "@/components/navbar/user";
 import { UserSessionProvider } from "../context/user-context";
 import RedirectContent from "@/components/redirect-modal";
 import Footer from "@/parts/user/user_main_footer";
-import VideoBackground from "@/components/video-background";
 import TradingViewTickerTape from "@/components/tradingview-ticker-tape";
+import ImageBackground from "@/components/image-background";
 
 export const metadata: Metadata = {
   title: "Nvidia",
@@ -20,8 +20,8 @@ export default function UserLayout({
   return (
     <UserSessionProvider>
       <Box className="relative min-h-screen overflow-hidden">
-        {/* Background Video */}
-        <VideoBackground />
+        {/* Background Image */}
+        <ImageBackground />
         {/* Foreground Content */}
         <Box className="relative z-10">
           <UserNavbar />

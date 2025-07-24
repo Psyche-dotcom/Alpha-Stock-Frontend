@@ -176,8 +176,18 @@ const Metrics: React.FC<IStockComponent> = ({ symbol }) => {
 
   function getShortDescription(text: string = "", limit = 800) {
     if (text.length <= limit) return text;
-    const trimmed = text.slice(0, limit);
-    return trimmed.slice(0, trimmed.lastIndexOf(" ")) + "…";
+
+    const nextFullStopIndex = text.indexOf(".", limit);
+
+    if (nextFullStopIndex !== -1) {
+      // If a full stop is found after the limit, cut there
+      return text.slice(0, nextFullStopIndex + 1);
+    } else {
+      // If no full stop is found, fall back to cutting at the last space before the limit,
+      // or you could choose to return the whole text or a different truncation
+      const trimmed = text.slice(0, limit); // Still need to trim to find the last space within the limit
+      return trimmed.slice(0, trimmed.lastIndexOf(" ")) + "…";
+    }
   }
 
   return (

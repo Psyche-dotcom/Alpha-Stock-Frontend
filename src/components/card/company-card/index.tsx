@@ -96,7 +96,7 @@ const CompanyCard: React.FC<ICompanyCard> = ({
       </div>
       <div className="justify-between md:flex items-center">
         <h6 className="font-normal text-xs mb-2 md:mb-0 text-[#6B7280]">
-          Real Time Price Currency in USD
+          Currency in USD
         </h6>
         {!getWishlistIsAddedData?.isAdded ? (
           <div

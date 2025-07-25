@@ -16,10 +16,6 @@ export const navbarList = [
     title: "Home",
     path: ROUTES.HOME,
   },
-  {
-    title: "News",
-    path: ROUTES.NEWS,
-  },
 ];
 
 export const userNavbarList = [

@@ -1,65 +1,16 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import HeaderCard from "@/components/card/header-card";
 import StockCard from "@/components/card/stock-card";
-import ViewCard from "@/components/card/view-card";
-import { IViewCard } from "@/interface/card-view";
 import { IStock, IStockData } from "@/interface/stock-view";
-import MarketMoveContent from "../market-move";
-import TradeDecision from "../trade-decision";
+import MarketDataTable from "@/components/MarketDataTable";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Image from "next/image";
-import {
-  useAboutMarket,
-  useGetPressRelease,
-  useTrendingAnalysis,
-} from "@/services/blog"; // Consider if these are actually used
-import SkeletonViewCard from "@/components/card/skeleton/view";
 import StockCardSkeleton from "@/components/card/skeleton/StockCardSkeleton";
-import { MouseMoveEffect } from "@/components/mouseEvent";
-import { useGetBlogs } from "@/services/blog";
 
 const Home = () => {
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [blogsData, setBlogsData] = useState<any>([]);
-  const [pressReleaseData, setPressReleaseData] = useState<any>([]);
   const [stockData, setStockData] = useState<IStock[]>([]);
-
-  // Fetch blogs for the current page
-  const { getBlogsData, getBlogsError, getBlogsIsLoading } = useGetBlogs(
-    pageNumber,
-    4 // Always fetching 4 blogs for this Home component
-  );
-
-  // Fetch blogs for the current page
-  const {
-    getPressReleaseData,
-    getPressReleaseError,
-    getPressReleaseIsLoading,
-  } = useGetPressRelease(
-    pageNumber,
-    4 // Always fetching 4 blogs for this Home component
-  );
-
-  useEffect(() => {
-    // If we are on the first page, we should reset blogsData completely
-    // This ensures that when navigating back to Home, the accumulation starts fresh.
-    if (pageNumber === 1) {
-      setBlogsData([]); // Clear previous data
-    }
-
-    if (getBlogsData?.length > 0) {
-      // Basic check for duplicates, assumes blog items have a unique 'id' property
-      const newUniqueBlogs = getBlogsData.filter(
-        (newBlog: any) =>
-          !blogsData.some((existingBlog: any) => existingBlog.id === newBlog.id)
-      );
-      if (newUniqueBlogs.length > 0) {
-        setBlogsData((prev: any) => [...prev, ...newUniqueBlogs]);
-      }
-    }
-  }, [getBlogsData, pageNumber]); // Add pageNumber to dependencies
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -92,9 +43,12 @@ const Home = () => {
     };
   }, []);
 
+  // Determine if this is the root path (Home page)
+  const isRootPath =
+    typeof window !== "undefined" && window.location.pathname === "/";
+
   return (
     <div>
-      {/* <MouseMoveEffect color="#22c55e" size={120} opacity={0.15} /> */}
       <header className="sticky top-0 z-10 shadow-lg">
         <Navbar />
       </header>
@@ -125,7 +79,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-16">
           {stockData.length == 0
             ? Array.from({ length: 4 }).map((_, index) => (
                 <div key={index}>
@@ -139,58 +93,37 @@ const Home = () => {
               ))}
         </div>
 
-        {/* The "Press Release" section */}
+        {/* Market Move Tables Section */}
         <div className="mb-[64px]">
-          <HeaderCard text="Press Release" href="/news" />
-          {getPressReleaseIsLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index}>
-                  <SkeletonViewCard />
-                </div>
-              ))}
+          <HeaderCard
+            text="Watch the market move in real time."
+            linkText="Get started"
+            href="#"
+          />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+            {" "}
+            {/* Responsive grid for tables */}
+            <div>
+              <h2 className="text-xl font-bold mb-4 text-[#180E03]">
+                Top Traded
+              </h2>
+              <MarketDataTable leaderType="MostTraded" />
             </div>
-          ) : (
-            <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
-              {getPressReleaseData.map((trend: any, index: number) => (
-                <div key={index}>
-                  {/* IMPORTANT: Use a stable unique key if available (e.g., blog.id) */}
-                  <ViewCard card={trend} />
-                </div>
-              ))}
+            <div>
+              <h2 className="text-xl font-bold mb-4 text-[#180E03]">
+                Top Gainers
+              </h2>
+              <MarketDataTable leaderType="MostGainer" />
             </div>
-          )}
+            <div>
+              <h2 className="text-xl font-bold mb-4 text-[#180E03]">
+                Top Losers
+              </h2>
+              <MarketDataTable leaderType="MostLoser" />
+            </div>
+          </div>
         </div>
 
-        {/* The "Learn About The Market" section (your blogs) */}
-        <div className="mb-[64px]">
-          <HeaderCard text="Learn About The Market" href="/news" />
-          {getBlogsIsLoading && blogsData.length === 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-12 xl:mb-16">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index}>
-                  <SkeletonViewCard />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
-              {blogsData.map((trend: any, index: number) => (
-                <div key={index}>
-                  {/* IMPORTANT: Use a stable unique key if available (e.g., blog.id) */}
-                  <ViewCard card={trend} />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <HeaderCard
-          text="Watch the market move in real time."
-          linkText="Get started"
-          href="#"
-        />
-        <MarketMoveContent />
-        <TradeDecision />
         <Footer />
       </div>
     </div>

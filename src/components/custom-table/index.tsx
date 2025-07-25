@@ -14,13 +14,12 @@ import { Folder } from "lucide-react";
 import { ReactNode } from "react";
 import TableSkeleton from "../card/skeleton/table";
 import { useRouter } from "next/navigation"; // NEW: Import useRouter
-import React from 'react'; // NEW: Import React for event types
+import React from "react"; // NEW: Import React for event types
 
 type CellRenderer<T> = (item: T, column: keyof T) => ReactNode;
 
 // NEW: Add a type for header cell classes (if not already present in your actual code)
 type HeaderCellClasses<T> = Partial<Record<keyof T, string>>;
-
 
 export interface EnhancedTableProps<T extends DataItem> extends ITableProps<T> {
   cellRenderers?: Partial<Record<keyof T, CellRenderer<T>>>;
@@ -56,7 +55,9 @@ export function TableComponent<T extends DataItem>({
 
   // Determine columns: use provided order, or keys from first data item if available
   // Fallback to empty array if tableData is empty to prevent errors
-  const columns = columnOrder || (tableData.length > 0 ? (Object.keys(tableData[0]) as (keyof T)[]) : []);
+  const columns =
+    columnOrder ||
+    (tableData.length > 0 ? (Object.keys(tableData[0]) as (keyof T)[]) : []);
 
   if (isLoading) return <TableSkeleton columns={columns} />;
 
@@ -94,7 +95,7 @@ export function TableComponent<T extends DataItem>({
 
     // Handle potential null/undefined values gracefully
     const value = item[column];
-    return value !== null && value !== undefined ? String(value) : '';
+    return value !== null && value !== undefined ? String(value) : "";
   };
 
   // NEW: Function to stop propagation for elements inside a cell that shouldn't trigger row click
@@ -104,11 +105,11 @@ export function TableComponent<T extends DataItem>({
     // or is a common interactive element like a button, link, or input.
     if (
       target.closest('[data-no-row-click="true"]') || // Custom attribute to prevent row click
-      target.closest('button') ||
-      target.closest('a') ||
-      target.closest('input') ||
-      target.closest('textarea') ||
-      target.closest('select')
+      target.closest("button") ||
+      target.closest("a") ||
+      target.closest("input") ||
+      target.closest("textarea") ||
+      target.closest("select")
     ) {
       e.stopPropagation();
     }
@@ -117,11 +118,13 @@ export function TableComponent<T extends DataItem>({
   return (
     <div className="w-full">
       <div className="rounded-md overflow-auto">
-        <Table className={cn(
+        <Table
+          className={cn(
             "md:table",
             "block sm:min-w-[700px]",
-            fixed ? "table-fixed w-full" : "min-w-fit",
-        )}>
+            fixed ? "table-fixed w-full" : "min-w-fit"
+          )}
+        >
           <TableHeader className="bg-[#351F05]">
             <TableRow className="border-none">
               {columns.map((column, index) => (
@@ -145,7 +148,10 @@ export function TableComponent<T extends DataItem>({
             {tableData.map((item, rowIndex) => {
               // NEW: Determine the key for the row. Prefer `item.id` if available, otherwise use `rowIndex`.
               // Ensure your DataItem type has an `id` property for stable keys.
-              const rowKey = (item as DataItem).id !== undefined ? (item as DataItem).id : rowIndex;
+              const rowKey =
+                (item as DataItem).id !== undefined
+                  ? (item as DataItem).id
+                  : rowIndex;
 
               // NEW: Handler for row click
               const handleRowClick = () => {
@@ -163,7 +169,9 @@ export function TableComponent<T extends DataItem>({
                   className={cn(
                     "border-b border-[#E5E7EB]",
                     // NEW: Apply cursor and hover styles only if it's a link
-                    isLink ? "cursor-pointer hover:bg-[#EBE9E6]/40 transition-colors duration-150" : ""
+                    isLink
+                      ? "cursor-pointer hover:bg-[#EBE9E6]/40 transition-colors duration-150"
+                      : ""
                   )}
                   // NEW: Add onClick handler to the row if it's a link
                   onClick={isLink ? handleRowClick : undefined}
@@ -179,7 +187,12 @@ export function TableComponent<T extends DataItem>({
                         "", // Minimum width for all cells
 
                         // NEW: Specific text alignment for numeric/change columns
-                        column === 'price' || column === 'change' || column === 'changePercent' ? 'text-center' : '',
+                        column === "symbol" ||
+                          column === "price" ||
+                          column === "change" ||
+                          column === "changePercent"
+                          ? "text-center"
+                          : ""
                       )}
                       key={String(column)}
                       // NEW: Add click handler to individual cells to stop propagation

@@ -7,7 +7,7 @@ import Image from "next/image"; // Import Next.js Image component
 import { useGetCompanies } from "@/services/home";
 import { useUserSession } from "@/app/context/user-context";
 import { Search } from "lucide-react";
-import React from 'react'; // Import React for the inner component
+import React from "react"; // Import React for the inner component
 
 interface iProps {
   isAuth?: boolean;
@@ -17,6 +17,7 @@ interface Company {
   symbol: string;
   name: string;
   logo?: string; // This will store the fetched logo URL if available
+  currency?: string; // Add currency property
 }
 
 const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
@@ -25,12 +26,16 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [previousSearches, setPreviousSearches] = useState<Company[]>([]);
   // Use a map to store logo fetch status for each symbol
-  const [logoStatus, setLogoStatus] = useState<Record<string, { url: string; error: boolean }>>({});
+  const [logoStatus, setLogoStatus] = useState<
+    Record<string, { url: string; error: boolean }>
+  >({});
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [enableSearch, setEnableSearch] = useState<boolean>(false);
 
-  const { companiesData, companiesFilter, companiesIsLoading } = useGetCompanies({ enabled: enableSearch });
+  // Assuming useGetCompanies also fetches currency or it's available in company data
+  const { companiesData, companiesFilter, companiesIsLoading } =
+    useGetCompanies({ enabled: enableSearch });
 
   const fetchLogo = async (rawSymbol: string) => {
     const symbol = rawSymbol.split(".")[0];
@@ -38,21 +43,26 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
     // Mark as loading or default placeholder initially
     setLogoStatus((prev) => ({
       ...prev,
-      [symbol]: { url: '', error: false }, // Set to empty url initially
+      [symbol]: { url: "", error: false }, // Set to empty url initially
     }));
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stock/info/profile?symbol=${symbol}`);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/stock/info/profile?symbol=${symbol}`
+      );
       if (!res.ok) {
-        console.warn(`Failed to fetch profile for ${symbol}. Status: ${res.status}`);
+        console.warn(
+          `Failed to fetch profile for ${symbol}. Status: ${res.status}`
+        );
         setLogoStatus((prev) => ({
           ...prev,
-          [symbol]: { url: '', error: true }, // Mark as error on bad response
+          [symbol]: { url: "", error: true }, // Mark as error on bad response
         }));
         return;
       }
 
       const data = await res.json();
+      console.log("Fetched Data", data);
       const image = data?.result?.[0]?.image;
 
       if (image) {
@@ -64,14 +74,14 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
         // No image URL found in the API response
         setLogoStatus((prev) => ({
           ...prev,
-          [symbol]: { url: '', error: true }, // Mark as error if no image in response
+          [symbol]: { url: "", error: true }, // Mark as error if no image in response
         }));
       }
     } catch (err) {
       console.error(`Logo fetch failed for ${symbol}:`, err);
       setLogoStatus((prev) => ({
         ...prev,
-        [symbol]: { url: '', error: true }, // Mark as error on network error
+        [symbol]: { url: "", error: true }, // Mark as error on network error
       }));
     }
   };
@@ -97,7 +107,6 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
       }
     });
   }, [previousSearches, logoStatus]);
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -150,15 +159,20 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
   };
 
   const saveSearchToLocal = (company: Company) => {
-    const existing = JSON.parse(localStorage.getItem("previousSearches") || "[]");
-    const updated = [company, ...existing.filter((s: Company) => s.symbol !== company.symbol)].slice(0, 5);
+    const existing = JSON.parse(
+      localStorage.getItem("previousSearches") || "[]"
+    );
+    const updated = [
+      company,
+      ...existing.filter((s: Company) => s.symbol !== company.symbol),
+    ].slice(0, 5);
     localStorage.setItem("previousSearches", JSON.stringify(updated));
   };
 
   // NEW: Refactored logo rendering into a dedicated component
   const LogoRenderer: React.FC<{ symbol: string }> = ({ symbol }) => {
     const cleanSymbol = symbol.split(".")[0];
-    const { url, error } = logoStatus[cleanSymbol] || { url: '', error: false }; // Default if not yet fetched
+    const { url, error } = logoStatus[cleanSymbol] || { url: "", error: false }; // Default if not yet fetched
 
     // If there's an error or no URL available, show the gray circle placeholder
     if (error || !url) {
@@ -179,15 +193,52 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
         className="rounded-full object-contain bg-gray-100"
         onError={() => {
           // This onError specifically handles cases where the fetched URL itself is broken
-          setLogoStatus(prev => ({
+          setLogoStatus((prev) => ({
             ...prev,
-            [cleanSymbol]: { ...prev[cleanSymbol], error: true }
+            [cleanSymbol]: { ...prev[cleanSymbol], error: true },
           }));
         }}
       />
     );
   };
 
+  // Function to render a list of companies
+  const renderCompanyList = (companies: Company[]) => (
+    <ul>
+      {companies.map((result: Company) => (
+        <li key={result.symbol} className="mb-2">
+          <Link
+            href={`/user/company/${result.symbol}?tab=metrics`}
+            onClick={() => {
+              const logoInfo = logoStatus[result.symbol.split(".")[0]];
+              saveSearchToLocal({
+                ...result,
+                logo: logoInfo?.url || undefined,
+              });
+              handleClearSearch();
+            }}
+            className="flex items-center gap-3"
+          >
+            <LogoRenderer symbol={result.symbol} />
+            <div>
+              <p className="text-sm font-medium">
+                <span className="uppercase font-semibold">{result.symbol}</span>{" "}
+                - {result.name}
+              </p>
+            </div>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+
+  // Categorize companiesData
+  const usStocks =
+    companiesData?.filter((company: Company) => company.currency === "USD") ||
+    [];
+  const foreignStocks =
+    companiesData?.filter((company: Company) => company.currency !== "USD") ||
+    [];
 
   return (
     <div className="flex-1 flex justify-end md:justify-between items-center gap-3 lg:gap-6">
@@ -212,27 +263,10 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
                 {searchQuery === "" ? (
                   previousSearches.length > 0 ? (
                     <>
-                      <p className="text-xs text-gray-500 mb-1">Recent Searches</p>
-                      <ul>
-                        {previousSearches.map((item, index) => (
-                          <li key={item.symbol || index}> {/* Use item.symbol for key for stability */}
-                            <Link // Use Link for navigation
-                              href={`/user/company/${item.symbol}?tab=metrics`}
-                              onClick={() => {
-                                // Save search if not already up to date (though previousSearches should handle this)
-                                // No need to call companiesFilter or setEnableSearch, just navigate
-                                handleClearSearch(); // Close dropdown after click
-                              }}
-                              className="cursor-pointer flex items-center gap-3 px-2 py-2 hover:bg-gray-100 rounded"
-                            >
-                              <LogoRenderer symbol={item.symbol} /> {/* Use the new component */}
-                              <span className="text-sm">
-                                <span className="uppercase font-semibold">{item.symbol}</span> - {item.name}
-                              </span>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
+                      <p className="text-xs text-gray-500 mb-1">
+                        Recent Searches
+                      </p>
+                      {renderCompanyList(previousSearches)}
                     </>
                   ) : (
                     <p className="text-sm text-gray-500">No recent searches</p>
@@ -241,37 +275,36 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
                   <div className="flex items-center justify-center p-4">
                     <Spinner />
                   </div>
-                ) : companiesData?.length ? (
-                  <ul>
-                    {companiesData.map((result: Company) => (
-                      <li key={result.symbol} className="mb-2">
-                        <Link
-                          href={`/user/company/${result.symbol}?tab=metrics`}
-                          onClick={() => {
-                            // Ensure logo data is available for saving to local storage
-                            const logoInfo = logoStatus[result.symbol.split('.')[0]];
-                            saveSearchToLocal({
-                              ...result,
-                              logo: logoInfo?.url || undefined, // Save the actual fetched logo or undefined
-                            });
-                            handleClearSearch();
-                          }}
-                          className="flex items-center gap-3"
-                        >
-                          <LogoRenderer symbol={result.symbol} /> {/* Use the new component */}
-                          <div>
-                            <p className="text-sm font-medium">
-                              <span className="uppercase font-semibold">{result.symbol}</span> - {result.name}
-                            </p>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
                 ) : (
-                  <p className="text-sm text-gray-500">
-                    No results found for &lsquo;{searchQuery}&rsquo;
-                  </p>
+                  <>
+                    {usStocks.length > 0 && (
+                      <>
+                        <h3 className="text-md font-semibold mb-2">
+                          US Stocks
+                        </h3>
+                        {renderCompanyList(usStocks)}
+                      </>
+                    )}
+
+                    {usStocks.length > 0 && foreignStocks.length > 0 && (
+                      <hr className="my-4 border-gray-200" />
+                    )}
+
+                    {foreignStocks.length > 0 && (
+                      <>
+                        <h3 className="text-md font-semibold mb-2">
+                          Foreign Stocks
+                        </h3>
+                        {renderCompanyList(foreignStocks)}
+                      </>
+                    )}
+
+                    {companiesData?.length === 0 && (
+                      <p className="text-sm text-gray-500">
+                        No results found for &lsquo;{searchQuery}&rsquo;
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
             )}

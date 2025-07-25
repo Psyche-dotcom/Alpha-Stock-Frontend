@@ -80,21 +80,6 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
   };
 
   const cellRenderers = {
-    name: (record: MarketMove) => {
-      const nameWords = record?.name ? record.name.split(" ") : [];
-      const shouldWrap = nameWords.length >= 2;
-
-      return (
-        <p
-          className={cn(
-            "font-semibold text-left",
-            shouldWrap ? "whitespace-normal break-words" : "whitespace-nowrap"
-          )}
-        >
-          {record?.name}
-        </p>
-      );
-    },
     symbol: (record: MarketMove) => {
       const [imageError, setImageError] = useState(false);
 
@@ -156,7 +141,6 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
   };
 
   const columnOrder: (keyof MarketMove)[] = [
-    "name",
     "symbol",
     "price",
     "change",
@@ -164,7 +148,6 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
   ];
 
   const columnLabels = {
-    name: "NAME",
     symbol: "SYMBOL",
     price: "LAST PRICE",
     change: "CHANGE",
@@ -172,7 +155,6 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
   };
 
   const headerCellClasses = {
-    name: "text-left",
     symbol: "text-left",
     price: "text-center",
     change: "text-center",

@@ -1,11 +1,22 @@
-import { IFundamentalCard } from "@/interface/fundamental-card";
-import { ActiveIcon, InactiveIcon } from "@/utils/icons";
+"use client";
+import React from "react";
 import { Box, Text } from "@chakra-ui/react";
-interface IFundamentalProp {
-  fundamental: IFundamentalCard;
+import { ActiveIcon, InactiveIcon } from "@/utils/icons";
+
+// Assuming IFundamentalCard is defined in "@/interface/fundamental-card"
+interface IFundamentalCard {
+  header: string;
+  amount: string | number;
+  isActive: boolean;
 }
 
-const FundamentalsCard: React.FC<IFundamentalProp> = ({ fundamental }) => {
+interface IFundamentalProp {
+  fundamental: IFundamentalCard;
+  // Added onCardClick prop to handle the click event
+  onCardClick: (fundamental: IFundamentalCard) => void;
+}
+
+const FundamentalsCard: React.FC<IFundamentalProp> = ({ fundamental, onCardClick }) => {
   return (
     <Box
       px={4}
@@ -17,6 +28,8 @@ const FundamentalsCard: React.FC<IFundamentalProp> = ({ fundamental }) => {
       flexDirection="column"
       justifyContent="space-between"
       boxShadow="md" // Added a subtle shadow for better visual separation
+      className="cursor-pointer hover:shadow-lg transition-shadow" // Added Tailwind classes for cursor and hover effect
+      onClick={() => onCardClick(fundamental)} // Added onClick handler
     >
       <h2 className="text-base font-medium text-[#111928] mb-2">
         {fundamental?.header}

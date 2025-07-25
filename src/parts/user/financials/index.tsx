@@ -364,7 +364,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       btnFilter === "income-statements"
         ? "INCOME"
         : btnFilter === "balance-sheet"
-        ? "ASSET"
+        ? "ASSETS"
         : btnFilter === "cashflow"
         ? "CASHFLOW"
         : "NULL",

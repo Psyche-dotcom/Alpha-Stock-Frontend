@@ -9,7 +9,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, X, ArrowLeft } from "lucide-react"; // Import ArrowLeft icon
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -23,6 +23,7 @@ import {
   useGetMyCurrentAlpha,
   useGetStockAlphaStat,
 } from "@/services/stock";
+import { useRouter } from "next/navigation"; // Import useRouter
 
 type PillarFilter = {
   pillerName: string;
@@ -162,6 +163,7 @@ function groupPillarOptions(options: PillarOption[]) {
 }
 
 export default function PillarScreener() {
+  const router = useRouter(); // Initialize useRouter
   const length = 8;
   const [selectedFilters, setSelectedFilters] = useState<PillarFilter[]>([]);
   const [pillarOptions, setPillarOptions] = useState<PillarOption[]>([]);
@@ -307,7 +309,17 @@ export default function PillarScreener() {
 
   return (
     <>
-      <p className="text-center text-[32px] font-bold mb-3">Fundamental Screener</p>
+      <div className="relative flex items-center justify-center">
+        {/* Back Button */}
+        <button
+          onClick={() => router.back()}
+          className="absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-200"
+          aria-label="Go back"
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <p className="text-center text-[32px] font-bold mb-3">Fundamental Screener</p>
+      </div>
       <div className="space-y-4 flex sm:flex-row flex-col xl:gap-14 sm:gap-8 lg:gap-10 gap-5 mb-10">
         <div className="flex flex-col gap-8 h-fit w-full">
           <h3 className="font-bold text-lg">Categories</h3>

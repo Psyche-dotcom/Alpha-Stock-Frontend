@@ -121,7 +121,7 @@ export function TableComponent<T extends DataItem>({
         <Table
           className={cn(
             "md:table",
-            "block sm:min-w-[700px]",
+            "block sm:min-w-[100px]",
             fixed ? "table-fixed w-full" : "min-w-fit"
           )}
         >

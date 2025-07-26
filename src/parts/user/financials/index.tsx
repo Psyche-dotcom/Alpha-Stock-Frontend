@@ -96,7 +96,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     if (isShareDataTable) {
       return formattedValue;
     } else {
-      return `$${formattedValue}`;
+      return `${formattedValue}`;
     }
   };
 
@@ -107,18 +107,30 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
   ) => {
     // Add the titles of the specific rows you want to target in the cashflow section
     const targetTitles = [
-      "Revenue",
-      "Gross Profit",
-      "Net Income",
-      "Total Current Assets",
-      "Total Current Liabilities",
-      "Cash from Operations",
-      "Capital Expenditure",
-      "Free Cash Flow",
-      "Cash from Investing",
-      "Cash from Financing",
+      "revenue",
+      "net income",
+      "gross profit",
+
+      "operating income",
+      "pre-tax income",
+      "net receivables",
+      "inventories",
+      "property plant equipment net",
+      "total non current assets",
+      "common dividends paid",
+
+      "net cash provided by investing activities",
+      "total assets",
+      "free cash flow",
+
+      "total liabilities",
+      "total current liabilities",
+      "total current liabilities",
+      "total non current liabilities",
+      "total equity",
+      "cash & short term investments",
     ]; // Example titles
-    return targetTitles.includes(title);
+    return targetTitles.includes(title.toLowerCase());
   };
 
   const cellRenderers = {
@@ -369,16 +381,16 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         ? "CASHFLOW"
         : "NULL",
     ttm: "TTM",
-    row1: formatDateToHumanReadableNew(Data[0]?.date),
-    row2: formatDateToHumanReadableNew(Data[1]?.date),
-    row3: formatDateToHumanReadableNew(Data[2]?.date),
-    row4: formatDateToHumanReadableNew(Data[3]?.date),
-    row5: formatDateToHumanReadableNew(Data[4]?.date),
-    row6: formatDateToHumanReadableNew(Data[5]?.date),
-    row7: formatDateToHumanReadableNew(Data[6]?.date),
-    row8: formatDateToHumanReadableNew(Data[7]?.date),
-    row9: formatDateToHumanReadableNew(Data[8]?.date),
-    row10: formatDateToHumanReadableNew(Data[9]?.date),
+    row1: formatDateToHumanReadableNew(Data[1]?.date),
+    row2: formatDateToHumanReadableNew(Data[2]?.date),
+    row3: formatDateToHumanReadableNew(Data[3]?.date),
+    row4: formatDateToHumanReadableNew(Data[4]?.date),
+    row5: formatDateToHumanReadableNew(Data[5]?.date),
+    row6: formatDateToHumanReadableNew(Data[6]?.date),
+    row7: formatDateToHumanReadableNew(Data[7]?.date),
+    row8: formatDateToHumanReadableNew(Data[8]?.date),
+    row9: formatDateToHumanReadableNew(Data[9]?.date),
+    row10: formatDateToHumanReadableNew(Data[10]?.date),
   };
   const columnLabels2 = {
     title:
@@ -390,16 +402,16 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         ? "CASHFLOW - INVESTING"
         : "NULL",
     ttm: "TTM",
-    row1: formatDateToHumanReadableNew(Data[0]?.date),
-    row2: formatDateToHumanReadableNew(Data[1]?.date),
-    row3: formatDateToHumanReadableNew(Data[2]?.date),
-    row4: formatDateToHumanReadableNew(Data[3]?.date),
-    row5: formatDateToHumanReadableNew(Data[4]?.date),
-    row6: formatDateToHumanReadableNew(Data[5]?.date),
-    row7: formatDateToHumanReadableNew(Data[6]?.date),
-    row8: formatDateToHumanReadableNew(Data[7]?.date),
-    row9: formatDateToHumanReadableNew(Data[8]?.date),
-    row10: formatDateToHumanReadableNew(Data[9]?.date),
+    row1: formatDateToHumanReadableNew(Data[1]?.date),
+    row2: formatDateToHumanReadableNew(Data[2]?.date),
+    row3: formatDateToHumanReadableNew(Data[3]?.date),
+    row4: formatDateToHumanReadableNew(Data[4]?.date),
+    row5: formatDateToHumanReadableNew(Data[5]?.date),
+    row6: formatDateToHumanReadableNew(Data[6]?.date),
+    row7: formatDateToHumanReadableNew(Data[7]?.date),
+    row8: formatDateToHumanReadableNew(Data[8]?.date),
+    row9: formatDateToHumanReadableNew(Data[9]?.date),
+    row10: formatDateToHumanReadableNew(Data[10]?.date),
   };
   const columnLabels3 = {
     title:
@@ -411,16 +423,16 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         ? "CASHFLOW - FINANCING"
         : "NULL",
     ttm: "TTM",
-    row1: formatDateToHumanReadableNew(Data[0]?.date),
-    row2: formatDateToHumanReadableNew(Data[1]?.date),
-    row3: formatDateToHumanReadableNew(Data[2]?.date),
-    row4: formatDateToHumanReadableNew(Data[3]?.date),
-    row5: formatDateToHumanReadableNew(Data[4]?.date),
-    row6: formatDateToHumanReadableNew(Data[5]?.date),
-    row7: formatDateToHumanReadableNew(Data[6]?.date),
-    row8: formatDateToHumanReadableNew(Data[7]?.date),
-    row9: formatDateToHumanReadableNew(Data[8]?.date),
-    row10: formatDateToHumanReadableNew(Data[9]?.date),
+    row1: formatDateToHumanReadableNew(Data[1]?.date),
+    row2: formatDateToHumanReadableNew(Data[2]?.date),
+    row3: formatDateToHumanReadableNew(Data[3]?.date),
+    row4: formatDateToHumanReadableNew(Data[4]?.date),
+    row5: formatDateToHumanReadableNew(Data[5]?.date),
+    row6: formatDateToHumanReadableNew(Data[6]?.date),
+    row7: formatDateToHumanReadableNew(Data[7]?.date),
+    row8: formatDateToHumanReadableNew(Data[8]?.date),
+    row9: formatDateToHumanReadableNew(Data[9]?.date),
+    row10: formatDateToHumanReadableNew(Data[10]?.date),
   };
   const columnLabels4 = {
     title:
@@ -430,16 +442,16 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         ? "ENDING CASH"
         : "NULL",
     ttm: "TTM",
-    row1: formatDateToHumanReadableNew(Data[0]?.date),
-    row2: formatDateToHumanReadableNew(Data[1]?.date),
-    row3: formatDateToHumanReadableNew(Data[2]?.date),
-    row4: formatDateToHumanReadableNew(Data[3]?.date),
-    row5: formatDateToHumanReadableNew(Data[4]?.date),
-    row6: formatDateToHumanReadableNew(Data[5]?.date),
-    row7: formatDateToHumanReadableNew(Data[6]?.date),
-    row8: formatDateToHumanReadableNew(Data[7]?.date),
-    row9: formatDateToHumanReadableNew(Data[8]?.date),
-    row10: formatDateToHumanReadableNew(Data[9]?.date),
+    row1: formatDateToHumanReadableNew(Data[1]?.date),
+    row2: formatDateToHumanReadableNew(Data[2]?.date),
+    row3: formatDateToHumanReadableNew(Data[3]?.date),
+    row4: formatDateToHumanReadableNew(Data[4]?.date),
+    row5: formatDateToHumanReadableNew(Data[5]?.date),
+    row6: formatDateToHumanReadableNew(Data[6]?.date),
+    row7: formatDateToHumanReadableNew(Data[7]?.date),
+    row8: formatDateToHumanReadableNew(Data[8]?.date),
+    row9: formatDateToHumanReadableNew(Data[9]?.date),
+    row10: formatDateToHumanReadableNew(Data[10]?.date),
   };
   const columnLabels5 = {
     title:
@@ -451,16 +463,16 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         ? "ADDITIONAL ITEMS"
         : "NULL",
     ttm: "TTM",
-    row1: formatDateToHumanReadableNew(Data[0]?.date),
-    row2: formatDateToHumanReadableNew(Data[1]?.date),
-    row3: formatDateToHumanReadableNew(Data[2]?.date),
-    row4: formatDateToHumanReadableNew(Data[3]?.date),
-    row5: formatDateToHumanReadableNew(Data[4]?.date),
-    row6: formatDateToHumanReadableNew(Data[5]?.date),
-    row7: formatDateToHumanReadableNew(Data[6]?.date),
-    row8: formatDateToHumanReadableNew(Data[7]?.date),
-    row9: formatDateToHumanReadableNew(Data[8]?.date),
-    row10: formatDateToHumanReadableNew(Data[9]?.date),
+    row1: formatDateToHumanReadableNew(Data[1]?.date),
+    row2: formatDateToHumanReadableNew(Data[2]?.date),
+    row3: formatDateToHumanReadableNew(Data[3]?.date),
+    row4: formatDateToHumanReadableNew(Data[4]?.date),
+    row5: formatDateToHumanReadableNew(Data[5]?.date),
+    row6: formatDateToHumanReadableNew(Data[6]?.date),
+    row7: formatDateToHumanReadableNew(Data[7]?.date),
+    row8: formatDateToHumanReadableNew(Data[8]?.date),
+    row9: formatDateToHumanReadableNew(Data[9]?.date),
+    row10: formatDateToHumanReadableNew(Data[10]?.date),
   };
 
   const btnList = [

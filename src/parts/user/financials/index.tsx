@@ -398,7 +398,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         : btnFilter === "balance-sheet"
         ? "LIABILITIES"
         : btnFilter === "cashflow"
-        ? "CASHFLOW - INVESTING"
+        ? "CASHFLOW FROM INVESTING ACTIVITIES"
         : "NULL",
     ttm: "TTM",
     row1: formatDateToHumanReadableNew(Data[1]?.date),
@@ -419,7 +419,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         : btnFilter === "balance-sheet"
         ? "SHAREHOLDER EQUITY"
         : btnFilter === "cashflow"
-        ? "CASHFLOW - FINANCING"
+        ? "CASHFLOW FROM FINANCING ACTIVITIES"
         : "NULL",
     ttm: "TTM",
     row1: formatDateToHumanReadableNew(Data[1]?.date),

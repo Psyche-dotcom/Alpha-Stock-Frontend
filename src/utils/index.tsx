@@ -83,7 +83,7 @@ export const getStockLabel = (key: string): string => {
     fcfttmtoequityttm: "FCF/Equity (TTM)",
     ptoeratiofive5yrs: "P/E Ratio 5yrs",
     fiveyearavgfreecashflowyield: "5 yrs Avg FCF Yield",
-    returnoninvestedcapitalttm: "Return on Invested Capital (TTM)",
+    returnoninvestedcapitalttm: "Return on Invested Capital (ROIC) (TTM)",
     avgroic5yrs: "Avg ROIC (5 yrs)",
     pricetofcfttm: "Price/FCF (TTM)",
     neticomettm5year: "Avg Net Income (5 yr)",
@@ -190,9 +190,10 @@ export function getFontWeightByTitle(title?: string): number | undefined {
 
   const boldTitles = [
     "revenue",
+    "cash from investing",
     "net income",
     "gross profit",
-
+    "total current assets",
     "operating income",
     "pre-tax income",
     "net receivables",

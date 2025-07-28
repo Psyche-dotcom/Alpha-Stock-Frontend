@@ -109,7 +109,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       "revenue",
       "net income",
       "gross profit",
-
+      "cash from investing",
       "operating income",
       "pre-tax income",
       "net receivables",
@@ -377,7 +377,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
         : btnFilter === "balance-sheet"
         ? "ASSETS"
         : btnFilter === "cashflow"
-        ? "CASHFLOW"
+        ? "CASHFLOW FROM OPERATING ACTIVITIES"
         : "NULL",
     ttm: "TTM",
     row1: formatDateToHumanReadableNew(Data[1]?.date),

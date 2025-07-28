@@ -192,7 +192,7 @@ export function getFontWeightByTitle(title?: string): number | undefined {
     "revenue",
     "net income",
     "gross profit",
-
+    "total current assets",
     "operating income",
     "pre-tax income",
     "net receivables",

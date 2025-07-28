@@ -19,7 +19,7 @@ const metricFormulas: Record<string, string> = {
   freeCashFlow:
     "The cash a company generates from its operations after paying for necessary expenses like equipment and buildings over the last 12 months. It shows how much money is available for growth, debt repayment, or dividends.",
   returnOnAsset:
-    "Shows how efficiently a company uses its assets to generate profit. It’s the percentage of profit earned for every €1 of assets owned.",
+    "Shows how efficiently a company uses its assets to generate profit. It’s the percentage of profit earned for every $1 of assets owned.",
   aYearHigh:
     "The highest price at which a stock has traded during the past 52 weeks (one year). It shows the peak value investors have paid recently.",
   revenueTTM:
@@ -27,13 +27,13 @@ const metricFormulas: Record<string, string> = {
   avgFCF5Yrs:
     "The average amount of cash a company generated each year after expenses over the last 5 years. It shows the company’s ability to produce cash consistently.",
   returnOnEquity:
-    "Measures how much profit a company generates with the money shareholders have invested. It shows the return earned on every €1 of equity.",
+    "Measures how much profit a company generates with the money shareholders have invested. It shows the return earned on every $1 of equity.",
   aYearlow:
     "The lowest price at which a stock has traded during the past 52 weeks (one year). It shows the lowest value investors have paid recently.",
   netIcomeTTM:
     "The profit a company makes after subtracting all costs, taxes, and expenses from its revenue. It shows how much money the company truly earned. Also called: net profit or bottom line.",
   priceToFCFTTM:
-    "The ratio that shows how much investors pay for each €1 of free cash flow generated in the last 12 months. It helps evaluate if a stock is expensive based on cash generation.",
+    "The ratio that shows how much investors pay for each $1 of free cash flow generated in the last 12 months. It helps evaluate if a stock is expensive based on cash generation.",
   returnOnInvestedCapitalTTM:
     "Shows how well a company uses all its invested money (debt + equity) to generate profit over the last 12 months. It measures efficiency in turning capital into returns.",
   allTimeHigh:
@@ -45,11 +45,11 @@ const metricFormulas: Record<string, string> = {
   avgROIC5yrs:
     "The average return a company generated on its invested capital each year over the past 5 years. It shows consistent efficiency in using capital to create profits.",
   pToERatioTTM:
-    "The Price-to-Earnings ratio using earnings from the last 12 months. It shows how much investors are paying for €1 of the company’s earnings.",
+    "The Price-to-Earnings ratio using earnings from the last 12 months. It shows how much investors are paying for $1 of the company’s earnings.",
   dividendsPaid:
     "The total amount of money a company has distributed to its shareholders as dividends. It shows how much cash the company returns to investors.", // Added this as it was in the text but not in the original object
   priceToBookRatio:
-    "Compares a company’s market price to its book value (the net asset value). It shows how much investors pay for each €1 of the company’s net assets.",
+    "Compares a company’s market price to its book value (the net asset value). It shows how much investors pay for each $1 of the company’s net assets.",
   pToEAvgNetIncomeFive5yrs:
     "The Price-to-Earnings ratio based on the average earnings over the past 5 years. It helps smooth out short-term ups and downs to show a more stable valuation.",
   enterpriseValue:
@@ -57,15 +57,15 @@ const metricFormulas: Record<string, string> = {
   compRevGrowth3yrs:
     "The average annual growth rate of a company’s revenue over the past 3 years, showing how quickly sales have increased each year on average.",
   psRatioTTM:
-    "The Price-to-Sales ratio using revenue from the last 12 months. It shows how much investors are paying for each €1 of the company’s sales.",
+    "The Price-to-Sales ratio using revenue from the last 12 months. It shows how much investors are paying for each $1 of the company’s sales.",
   evToNet:
-    "The ratio comparing Enterprise Value (total company value) to its net profit. It helps investors see how much they’re paying for each €1 of actual profit.",
+    "The ratio comparing Enterprise Value (total company value) to its net profit. It helps investors see how much they’re paying for each $1 of actual profit.",
   compRevGrowth5yrs:
     "The average annual growth rate of a company’s revenue over the past 5 years. It shows the steady pace at which sales have grown each year on average.",
   profitMarginTTM:
     "The percentage of revenue that the company kept as profit over the last 12 months. It shows how efficiently the company turns sales into profit.",
   evToFCF:
-    "The ratio that compares Enterprise Value to Free Cash Flow. It shows how much investors pay for each €1 of cash the company generates after expenses.",
+    "The ratio that compares Enterprise Value to Free Cash Flow. It shows how much investors pay for each $1 of cash the company generates after expenses.",
   compRevGrowth10yrs:
     "The average yearly growth rate of a company’s revenue over the last 10 years. It shows how consistently the company’s sales have increased over a decade.",
   avgProfitMargin5yrs:

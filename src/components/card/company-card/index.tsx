@@ -76,13 +76,13 @@ const CompanyCard: React.FC<ICompanyCard> = ({
               style={{
                 borderRadius: "9999px", // Ensure the image itself is circular
               }}
-              width={46} // Reduced to 46px to accommodate the 1px border (48 - 1*2)
-              height={46} // Reduced to 46px
+              width={44} // Reduced to 46px to accommodate the 1px border (48 - 1*2)
+              height={44} // Reduced to 46px
               onError={() => setImageError(true)} // Set error state if image fails
             />
           ) : (
             // Fallback content when image fails to load
-            <div className="w-[46px] h-[46px] rounded-full bg-gray-500 flex items-center justify-center text-white text-xs">
+            <div className="w-[44px] h-[44px] rounded-full bg-gray-500 flex items-center justify-center text-white text-xs">
               N/A
             </div>
           )}

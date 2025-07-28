@@ -191,22 +191,25 @@ export function getFontWeightByTitle(title?: string): number | undefined {
   const boldTitles = [
     "revenue",
     "net income",
-    "net interest income",
     "gross profit",
-    "research and development expenses",
-    "selling general and administrative expenses",
-    "operating expenses",
+
     "operating income",
     "pre-tax income",
+    "net receivables",
     "inventories",
-    "goodwill & intangible assets",
-    "other total stockholders equity",
-    "depreciation and amortization",
+    "property plant equipment net",
+    "total non current assets",
+    "common dividends paid",
+
     "net cash provided by investing activities",
+    "total assets",
     "free cash flow",
-    "capital expenditure",
+
     "total liabilities",
     "total current liabilities",
+    "total current liabilities",
+    "total non current liabilities",
+    "total equity",
     "cash & short term investments",
   ];
 

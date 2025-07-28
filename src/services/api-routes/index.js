@@ -9,7 +9,8 @@ export const routes = {
   retrievePlans: () => "/api/subscription/retrieve/all",
   updateProfile: (email) => `/api/user/update_details/${email}`,
   blog: (page, limit) => `/api/stock/news/general?page=${page}&limit=${limit}`,
-  pressRelease: (page, limit) => `/api/stock/news/general/press_release?page=${page}&limit=${limit}`,
+  pressRelease: (page, limit) =>
+    `/api/stock/news/general/press_release?page=${page}&limit=${limit}`,
   stockNews: (symbol, page, limit) =>
     `/api/stock/news/specific_stock_news?symbol=${symbol}&page=${page}&limit=${limit}`,
   createBlog: () => "/api/blog/create",
@@ -78,6 +79,7 @@ export const routes = {
   getWishlist: () => "/api/stock/get-wishlist",
   deleteWishlist: () => "/api/stock/delete-wishlist",
   updateWishlist: () => "/api/stock/update-wishlist",
+  submitReport: () => "/api/user/report_issue",
   addmyPillerUrl: () => "/api/stock/mypiller/update",
   userStats: () => "/api/admin/userstats",
   userCommunity: () => "/api/community/retrieve/user/channel",

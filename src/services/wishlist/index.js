@@ -63,3 +63,23 @@ export const useUpdateWatchlist = (handleSuccess) => {
     updateWishlistPayload: (payload) => mutate(payload),
   };
 };
+export const useSubmitReport = (handleSuccess) => {
+  const { data, error, isPending, mutate } = useMutateItem({
+    mutationFn: (payload) =>
+      httpService.postData(payload, routes.submitReport()),
+    onSuccess: (requestParams) => {
+      const resData = requestParams?.data;
+      handleSuccess(resData);
+    },
+    onError: (error) => {
+      showErrorAlert(error?.response?.data?.errorMessages[0]);
+    },
+  });
+
+  return {
+    submitReportData: data,
+    submitReportError: ErrorHandler(error),
+    submitReportIsLoading: isPending,
+    submitReportPayload: (payload) => mutate(payload),
+  };
+};

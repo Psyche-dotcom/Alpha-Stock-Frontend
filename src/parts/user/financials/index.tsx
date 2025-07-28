@@ -6,6 +6,7 @@ import {
   AlldataSourceFinance,
   formatDateToHumanReadableNew,
   formatMoneyNumber,
+  formatMoneyNumberNew,
 } from "@/components/util";
 
 import { IButtonFilter2 } from "@/interface/button-filter";
@@ -87,15 +88,13 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     if (typeof value !== "number") {
       return "";
     }
-
-    const formattedValue = formatMoneyNumber(value);
-
     const isShareDataTable =
       btnFilter === "income-statements" && sectionType === "share";
-
     if (isShareDataTable) {
-      return formattedValue;
+      var data = formatMoneyNumberNew(value);
+      return data;
     } else {
+      const formattedValue = formatMoneyNumber(value);
       return `${formattedValue}`;
     }
   };
@@ -118,7 +117,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
       "property plant equipment net",
       "total non current assets",
       "common dividends paid",
-
+      "total current assets",
       "net cash provided by investing activities",
       "total assets",
       "free cash flow",
@@ -474,6 +473,20 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
     row9: formatDateToHumanReadableNew(Data[9]?.date),
     row10: formatDateToHumanReadableNew(Data[10]?.date),
   };
+  const columnLabels6 = {
+    title: "ADDITIONAL ITEMS",
+    ttm: "TTM",
+    row1: formatDateToHumanReadableNew(Data[1]?.date),
+    row2: formatDateToHumanReadableNew(Data[2]?.date),
+    row3: formatDateToHumanReadableNew(Data[3]?.date),
+    row4: formatDateToHumanReadableNew(Data[4]?.date),
+    row5: formatDateToHumanReadableNew(Data[5]?.date),
+    row6: formatDateToHumanReadableNew(Data[6]?.date),
+    row7: formatDateToHumanReadableNew(Data[7]?.date),
+    row8: formatDateToHumanReadableNew(Data[8]?.date),
+    row9: formatDateToHumanReadableNew(Data[9]?.date),
+    row10: formatDateToHumanReadableNew(Data[10]?.date),
+  };
 
   const btnList = [
     {
@@ -653,7 +666,7 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
           fixed={true}
         />
       )}
-      {btnFilter === "cashflow" && (
+      {/* {btnFilter === "cashflow" && (
         <TableComponent<DataType>
           //@ts-ignore
           tableData={AlldataSourceFinance(btnFilter, "Items", Data)}
@@ -665,6 +678,25 @@ const Financials: React.FC<IStockComponent> = ({ symbol }) => {
           )}
           columnOrder={columnOrder}
           columnLabels={columnLabels5}
+          fixed={true}
+        />
+      )} */}
+      {btnFilter === "balance-sheet" && (
+        <TableComponent<DataType>
+          //@ts-ignore
+          tableData={AlldataSourceFinance(
+            btnFilter,
+            "ADDITIONALBALSHEET",
+            Data
+          )}
+          cellRenderers={Object.fromEntries(
+            Object.entries(cellRenderers).map(([key, renderer]) => [
+              key,
+              (item: DataType) => (renderer as any)(item, "ADDITIONALBALSHEET"),
+            ])
+          )}
+          columnOrder={columnOrder}
+          columnLabels={columnLabels6}
           fixed={true}
         />
       )}

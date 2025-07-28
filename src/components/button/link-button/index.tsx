@@ -8,6 +8,8 @@ interface ILinkButton {
   variant?: string;
   bg?: string;
   p?: string | number | object;
+  px?: string | number | object;
+  py?: string | number | object;
   color?: string;
   border?: string;
   fontWeight?: number;
@@ -23,6 +25,8 @@ const LinkButton: FC<ILinkButton> = ({
   variant,
   bg,
   p,
+  px,
+  py,
   color,
   border,
   fontWeight = 500,
@@ -41,6 +45,8 @@ const LinkButton: FC<ILinkButton> = ({
         borderRadius={"8px"}
         fontSize={fontSize}
         p={p}
+        px={px}
+        py={py}
         color={color}
         fontWeight={fontWeight}
         _hover={{

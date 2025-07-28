@@ -79,7 +79,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-16">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-8 lg:mb-16">
           {stockData.length == 0
             ? Array.from({ length: 4 }).map((_, index) => (
                 <div key={index}>
@@ -91,15 +91,15 @@ const Home = () => {
                   <StockCard stock={stock} />
                 </div>
               ))}
-        </div>
+        </div> */}
 
         {/* Market Move Tables Section */}
         <div className="mb-[64px]">
-          <HeaderCard
+          {/* <HeaderCard
             text="Watch the market move in real time."
             linkText="Get started"
             href="#"
-          />
+          /> */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
             {" "}
             {/* Responsive grid for tables */}

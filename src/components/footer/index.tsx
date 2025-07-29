@@ -40,56 +40,62 @@ const Footer = () => {
   ];
 
   return (
-    <Box
-      display={{ base: "grid", lg: "flex" }}
-      gridTemplateColumns={{ md: "repeat(4, 1fr)" }}
-      justifyContent={{ md: "center" }}
-      gap={4}
+    <Flex // Changed to Flex to allow for column direction
+      direction="column" // Stacks children vertically
+      align="center" // Centers content horizontally
       mt={{ base: "30px", sm: "60px", lg: "80px" }}
-      flexDirection={{ base: "column", sm: "row" }}
+      mb={8}
       mx={4}
-      flexWrap="wrap"
+      gap={4} // Adds gap between the main sections
     >
-      <Flex
-        alignItems={"center"}
+      <Box
+        display={{ base: "grid", lg: "flex" }}
+        gridTemplateColumns={{ md: "repeat(4, 1fr)" }}
+        justifyContent={{ md: "center" }}
         gap={4}
-        bg="#fff"
-        borderRadius={"8px"}
-        py={2}
-        px={4}
-        w="fit-content"
-        minH={4}
+        flexWrap="wrap"
       >
-        {footerList.map((footer: IFooter, index: number) => (
-          <Link href="#" passHref key={index}>
-            <Box key={index}>{footer.icon}</Box>
-          </Link>
-        ))}
-      </Flex>
-      <LinkButton
-        href={"/terms-and-conditions"}
-        text="Terms and Conditions"
-        variant="solid"
-        bg="#FFFFFF"
-        px={4}
-        py={2}
-        color="#000"
-        fontWeight={500}
-        w={"fit-content"}
-      />
-      <LinkButton
-        href={"#"}
-        text="Report Issue"
-        variant="solid"
-        bg="#FFFFFF"
-        px={4}
-        py={2}
-        color="#000"
-        fontWeight={500}
-        w={"fit-content"}
-      />
+        <Flex
+          alignItems={"center"}
+          gap={4}
+          bg="#fff"
+          borderRadius={"8px"}
+          py={2}
+          px={4}
+          w="fit-content"
+          minH={4}
+        >
+          {footerList.map((footer: IFooter, index: number) => (
+            <Link href="#" passHref key={index}>
+              <Box key={index}>{footer.icon}</Box>
+            </Link>
+          ))}
+        </Flex>
+        <LinkButton
+          href={"/terms-and-conditions"}
+          text="Terms and Conditions"
+          variant="solid"
+          bg="#FFFFFF"
+          px={4}
+          py={2}
+          color="#000"
+          fontWeight={500}
+          w={"fit-content"}
+        />
+        <LinkButton
+          href={"#"}
+          text="Report Issue"
+          variant="solid"
+          bg="#FFFFFF"
+          px={4}
+          py={2}
+          color="#000"
+          fontWeight={500}
+          w={"fit-content"}
+        />
+      </Box>
 
-      {/* TradingView Disclaimer - Wrapped in a Box for consistent styling */}
+      {/* TradingView Disclaimer - This will now be on a new line */}
       <Box
         bg="#FFFFFF"
         borderRadius={"8px"}
@@ -99,12 +105,14 @@ const Footer = () => {
         display="flex"
         alignItems="center"
         minH={4}
+        mt={4} // Added margin-top for spacing from the elements above
       >
         <Text fontSize="sm" fontWeight={500}>
           Charts and Ticker Tape Powered by Tradingview
         </Text>
       </Box>
 
+      {/* The commented-out LinkButton */}
       {/* <LinkButton
         href={"#"}
         text="support@alphainvestments.com"
@@ -115,7 +123,7 @@ const Footer = () => {
         fontWeight={500}
         w={"fit-content"}
       /> */}
-    </Box>
+    </Flex>
   );
 };
 

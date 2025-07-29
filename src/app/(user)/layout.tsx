@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
-import { Box } from "@chakra-ui/react";
-import UserNavbar from "@/components/navbar/user";
 import { UserSessionProvider } from "../context/user-context";
-import RedirectContent from "@/components/redirect-modal";
-import Footer from "@/parts/user/user_main_footer";
-import TradingViewTickerTape from "@/components/tradingview-ticker-tape";
-import ImageBackground from "@/components/image-background";
+import LayoutContent from "@/components/LayoutContent"; // Import the new client component
 
 export const metadata: Metadata = {
   title: "Nvidia",
@@ -19,19 +14,8 @@ export default function UserLayout({
 }>) {
   return (
     <UserSessionProvider>
-      <Box className="relative min-h-screen overflow-hidden">
-        {/* Background Image */}
-        <ImageBackground />
-        {/* Foreground Content */}
-        <Box className="relative z-10">
-          <UserNavbar />
-          {/* NEW: TradingView Ticker Tape below the navbar */}
-          <TradingViewTickerTape />
-          <Box className="px-4 md:px-6 lg:px-8 mt-6">{children}</Box>
-          <RedirectContent />
-          <Footer />
-        </Box>
-      </Box>
+      {/* LayoutContent is now a separate client component */}
+      <LayoutContent>{children}</LayoutContent>
     </UserSessionProvider>
   );
 }

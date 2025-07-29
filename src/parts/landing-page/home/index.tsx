@@ -57,20 +57,23 @@ const Home = () => {
           <div className="h-auto items-center flex bg-white w-full p-8 rounded-[12px]">
             <div className="w-full">
               <p className="mb-4 font-bold leading-[43.2px] md:leading-[50px] lg:leading-[59px] text-[#180E03] text-[30px] sm:text-[36px] md:text-[48px] xl:text-[60px]">
-                Learn, observe and move with the market.
+                Transforming how value investors find great businesses
               </p>
               <p className="font-normal text-[#6B7280] text-base lg:text-lg">
-                Whether you’re a seasoned investor or just starting out, our
-                platform provides you with comprehensive tools and resources.
-                Explore stock trends, get personalized trading insights, and
-                access a wealth of educational content designed to help you make
-                informed decisions
+                With Alpha Strategy, you'll build your own investment process
+                and develop independent thinking based on your return goals and
+                risk tolerance. You won’t be alone — by subscribing, you’ll join
+                a community of investors, from seasoned professionals to
+                complete beginners, all helping each other grow in knowledge and
+                confidence. With access to our tools and community, we truly
+                believe you’ll be able to manage your investments better than
+                your financial advisor.
               </p>
             </div>
           </div>
           <div className="w-full rounded-[12px] h-auto">
             <Image
-              src="/assets/images/card-image.png"
+              src="/assets/images/cta.jpg"
               className="object-cover rounded-[12px] w-full h-full"
               width={716}
               height={546}

@@ -21,6 +21,13 @@ export default function Footer() {
         Report Issue
       </p>
 
+      <p
+        onClick={() => setIsOpen(true)}
+        className="bg-white rounded-xl px-6 py-3 shadow-sm text-sm font-semibold text-black hover:underline"
+      >
+        Charts and Ticker Tape Powered by Tradingview
+      </p>
+
       {/* <FooterLink
         href="mailto:support@alphainvestments.com"
         label="support@alphainvestments.com"

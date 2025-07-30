@@ -56,8 +56,8 @@ const Home = () => {
         <div className="mb-4 flex gap-4 md:gap-8 py-4 md:py-8 flex-col lg:flex-row">
           <div className="h-auto items-center flex bg-white w-full p-8 rounded-[12px]">
             <div className="w-full">
-              <p className="mb-4 font-bold leading-[43.2px] md:leading-[50px] lg:leading-[59px] text-[#180E03] text-[30px] sm:text-[36px] md:text-[48px] xl:text-[60px]">
-                Transforming how value investors find great businesses
+              <p className="mb-4 font-bold leading-[43.2px] md:leading-[50px] lg:leading-[59px] text-[#180E03] text-[28px] sm:text-[34px] md:text-[46px] xl:text-[58px]">
+                Transforming How Value Investors Find Great Businesses
               </p>
               <p className="font-normal text-[#6B7280] text-base lg:text-lg">
                 With Alpha Strategy, you'll build your own investment process

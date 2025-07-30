@@ -21,6 +21,37 @@ const CompanyCard: React.FC<ICompanyCard> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [imageError, setImageError] = useState(false);
+
+  // --- Start of modified code ---
+  // Default to an empty string if urlCompanyImg is initially undefined or null
+  const [processedImageUrl, setProcessedImageUrl] = useState(urlCompanyImg || '');
+
+  useEffect(() => {
+    // Function to ensure the image URL ends with .jpg
+    const ensureJpgExtension = (url: string | undefined | null) => {
+      // **CRITICAL FIX: Add a check for undefined or null URL**
+      if (!url || typeof url !== 'string') {
+        return ""; // Return an empty string or a default placeholder URL if url is invalid
+      }
+
+      const lastDotIndex = url.lastIndexOf(".");
+      if (lastDotIndex === -1) {
+        // No extension found, just add .jpg
+        return url + ".jpg";
+      }
+      const currentExtension = url.substring(lastDotIndex);
+      if (currentExtension.toLowerCase() !== ".jpg") {
+        // Replace existing extension with .jpg
+        return url.substring(0, lastDotIndex) + ".jpg";
+      }
+      // Already .jpg, return as is
+      return url;
+    };
+
+    setProcessedImageUrl(ensureJpgExtension(urlCompanyImg));
+  }, [urlCompanyImg]);
+  // --- End of modified code ---
+
   const {
     getWishlistIsAddedData,
     getWishlistIsAddedFilter,
@@ -69,19 +100,20 @@ const CompanyCard: React.FC<ICompanyCard> = ({
             // Removed p-1 and bg-[#111928] completely
           }}
         >
-          {!imageError ? (
+          {/* Ensure processedImageUrl is not empty or null before attempting to render */}
+          {!imageError && processedImageUrl ? (
             <Image
-              src={urlCompanyImg}
+              src={processedImageUrl} // Use the processed URL here
               alt="stock symbol"
               style={{
                 borderRadius: "9999px", // Ensure the image itself is circular
               }}
-              width={44} // Reduced to 46px to accommodate the 1px border (48 - 1*2)
-              height={44} // Reduced to 46px
+              width={47}
+              height={47}
               onError={() => setImageError(true)} // Set error state if image fails
             />
           ) : (
-            // Fallback content when image fails to load
+            // Fallback content when image fails to load or processedImageUrl is invalid
             <div className="w-[44px] h-[44px] rounded-full bg-gray-500 flex items-center justify-center text-white text-xs">
               N/A
             </div>

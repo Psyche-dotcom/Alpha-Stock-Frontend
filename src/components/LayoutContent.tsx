@@ -17,6 +17,8 @@ interface LayoutContentProps {
 const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
   const { profileData } = useUserSession();
 
+  console.log(profileData, "Profile Data in LayoutContent");
+
   // Determine freePlanEndDate based on profileData
   const freePlanEndDate = (() => {
     // If the user is subscribed, or if profileData/result is not available,

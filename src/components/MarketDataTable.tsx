@@ -7,11 +7,29 @@ import { MarketMove } from "@/types";
 import { cn } from "@/lib/utils";
 
 export interface MarketDataTableProps {
-  leaderType: "MostTraded" | "MostGainer" | "MostLoser"; 
+  leaderType: "MostTraded" | "MostGainer" | "MostLoser";
 }
 
 const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
   const [stockNewData, setNewStockData] = useState<MarketMove[]>([]);
+
+  // Helper function to ensure .jpg extension
+  const ensureJpgExtension = (url: string) => {
+    if (!url) return ""; // Handle null or empty URL cases
+
+    const lastDotIndex = url.lastIndexOf('.');
+    if (lastDotIndex === -1) {
+      // No extension found, just add .jpg
+      return url + ".jpg";
+    }
+    const currentExtension = url.substring(lastDotIndex);
+    if (currentExtension.toLowerCase() !== ".jpg") {
+      // Replace existing extension with .jpg
+      return url.substring(0, lastDotIndex) + ".jpg";
+    }
+    // Already .jpg, return as is
+    return url;
+  };
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -27,7 +45,7 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
         .slice(0, 5)
         .map(async (stock: any) => {
           const symbol = stock.symbol;
-          let imageUrl = "/assets/images/card-image.png";
+          let imageUrl = "/assets/images/card-image.png"; // Default fallback image
 
           try {
             const res = await fetch(
@@ -37,13 +55,19 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
             if (res.ok) {
               const data = await res.json();
               if (data?.result?.[0]?.image) {
-                imageUrl = data.result[0].image;
+                // Apply the JPG conversion here
+                imageUrl = ensureJpgExtension(data.result[0].image);
+              } else {
+                // If API returns no image, use fallback
+                imageUrl = "/assets/images/card-image.png";
               }
             } else {
-              imageUrl = "";
+              // If API request not ok, use fallback
+              imageUrl = "/assets/images/card-image.png";
             }
           } catch (error) {
-            imageUrl = "";
+            // If fetch fails, use fallback
+            imageUrl = "/assets/images/card-image.png";
           }
 
           return {
@@ -84,12 +108,14 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
       const [imageError, setImageError] = useState(false);
 
       useEffect(() => {
+        // Reset imageError when record.url changes (i.e., new data comes in)
         setImageError(false);
       }, [record.url]);
 
       return (
         <div className="flex items-center gap-2 justify-start">
           <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+            {/* The record.url already has the .jpg extension applied from the useEffect above */}
             {!imageError && record.url ? (
               <Image
                 src={record.url}
@@ -137,6 +163,7 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
           </p>
         </div>
       );
+      // Removed Dialog components entirely
     },
   };
 
@@ -173,8 +200,6 @@ const MarketDataTable: React.FC<MarketDataTableProps> = ({ leaderType }) => {
         linkFormatter={marketMoveLinkFormatter}
         fixed={false}
       />
-
-      {/* Removed Dialog components entirely */}
     </div>
   );
 };

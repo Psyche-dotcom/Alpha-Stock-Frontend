@@ -15,7 +15,7 @@ const AuthCard: React.FC<IAuthCardProps> = () => {
     >
       <Text fontSize="32px" fontWeight={700} color="#EBE9E6">
         {/* Take control of the market with the right tools and accurate insight */}
-        Sign Up Today to Enjoy 7 days free for All Premium Tools.
+        Sign Up Today to Enjoy 7 days Free for All Premium Tools.
         After that, 9€/month.
       </Text>
       <Box

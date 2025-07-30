@@ -17,6 +17,7 @@ import { useDeleteWishlist } from "@/services/wishlist";
 import AddWishlist from "@/parts/user/profiles/watchlist/add-wishlist";
 import DeleteContent from "@/components/delete-content";
 import { cn } from "@/lib/utils";
+
 interface MarketMoveContentProps {
   // No props needed if it's self-contained and always behaves the same way
 }
@@ -41,6 +42,26 @@ const MarketMoveContent: React.FC<MarketMoveContentProps> = () => {
     }
   );
 
+  // --- Start of new/modified code ---
+  // Helper function to ensure .jpg extension
+  const ensureJpgExtension = (url: string) => {
+    if (!url) return ""; // Handle null or empty URL cases
+
+    const lastDotIndex = url.lastIndexOf('.');
+    if (lastDotIndex === -1) {
+      // No extension found, just add .jpg
+      return url + ".jpg";
+    }
+    const currentExtension = url.substring(lastDotIndex);
+    if (currentExtension.toLowerCase() !== ".jpg") {
+      // Replace existing extension with .jpg
+      return url.substring(0, lastDotIndex) + ".jpg";
+    }
+    // Already .jpg, return as is
+    return url;
+  };
+  // --- End of new/modified code ---
+
   useEffect(() => {
     const eventSource = new EventSource(
       `${process.env.NEXT_PUBLIC_API_URL}/api/stock/stream/market_performance?leaderType=${marketFilter}`
@@ -54,7 +75,7 @@ const MarketMoveContent: React.FC<MarketMoveContentProps> = () => {
         .slice(0, 5)
         .map(async (stock: any) => {
           const symbol = stock.symbol;
-          let imageUrl = "/assets/images/card-image.png";
+          let imageUrl = "/assets/images/card-image.png"; // Default fallback image
 
           try {
             const res = await fetch(
@@ -64,13 +85,19 @@ const MarketMoveContent: React.FC<MarketMoveContentProps> = () => {
             if (res.ok) {
               const data = await res.json();
               if (data?.result?.[0]?.image) {
-                imageUrl = data.result[0].image;
+                // Apply the JPG conversion here before assigning
+                imageUrl = ensureJpgExtension(data.result[0].image);
+              } else {
+                // If API returns no image, use the default fallback
+                imageUrl = "/assets/images/card-image.png";
               }
             } else {
-              imageUrl = "";
+              // If API request not ok, use the default fallback
+              imageUrl = "/assets/images/card-image.png";
             }
           } catch (error) {
-            imageUrl = "";
+            // If fetch fails, use the default fallback
+            imageUrl = "/assets/images/card-image.png";
           }
 
           return {
@@ -133,12 +160,14 @@ const MarketMoveContent: React.FC<MarketMoveContentProps> = () => {
       const [imageError, setImageError] = useState(false);
 
       useEffect(() => {
+        // Reset imageError when record.url changes (i.e., new data comes in)
         setImageError(false);
       }, [record.url]);
 
       return (
         <div className="flex items-center gap-2 justify-start">
           <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+            {/* The record.url already has the .jpg extension applied from the useEffect above */}
             {!imageError && record.url ? (
               <Image
                 src={record.url}

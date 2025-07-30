@@ -37,6 +37,24 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
   const { companiesData, companiesFilter, companiesIsLoading } =
     useGetCompanies({ enabled: enableSearch });
 
+  // Helper function to ensure .jpg extension
+  const ensureJpgExtension = (url: string) => {
+    if (!url) return ""; // Handle null or empty URL cases
+
+    const lastDotIndex = url.lastIndexOf('.');
+    if (lastDotIndex === -1) {
+      // No extension found, just add .jpg
+      return url + ".jpg";
+    }
+    const currentExtension = url.substring(lastDotIndex);
+    if (currentExtension.toLowerCase() !== ".jpg") {
+      // Replace existing extension with .jpg
+      return url.substring(0, lastDotIndex) + ".jpg";
+    }
+    // Already .jpg, return as is
+    return url;
+  };
+
   const fetchLogo = async (rawSymbol: string) => {
     const symbol = rawSymbol.split(".")[0];
 
@@ -66,9 +84,11 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
       const image = data?.result?.[0]?.image;
 
       if (image) {
+        // Apply the JPG conversion here before storing in state
+        const processedImage = ensureJpgExtension(image);
         setLogoStatus((prev) => ({
           ...prev,
-          [symbol]: { url: image, error: false },
+          [symbol]: { url: processedImage, error: false },
         }));
       } else {
         // No image URL found in the API response
@@ -186,7 +206,7 @@ const SearchDropdown: React.FC<iProps> = ({ isAuth = false }) => {
     // Otherwise, render the Image component with onError handling
     return (
       <Image
-        src={url}
+        src={url} // Use the processed URL here
         alt={`${symbol} logo`}
         width={32} // Corresponds to w-8 (32px)
         height={32} // Corresponds to h-8 (32px)

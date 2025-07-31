@@ -1,4 +1,6 @@
 "use client";
+
+import React from "react";
 import AuthCard from "@/components/card/auth-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,17 +13,15 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
-import { GoogleIcon } from "@/utils/icons";
 import Link from "next/link";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputForm from "@/components/form/InputForm";
-import { SignupSchemaType, signupSchema } from "@/schemas";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 import { useSignup } from "@/services/auth";
 import { useHandlePush } from "@/hooks/handlePush";
 import Storage from "@/utils/storage";
+import { SignupSchemaType, signupSchema } from "@/schemas";
 
 const Signup: React.FC = () => {
   const { handlePush } = useHandlePush();
@@ -41,6 +41,8 @@ const Signup: React.FC = () => {
       country: "",
       phoneNumber: "",
     },
+    // FIX: Set the mode to "onBlur" to enable real-time validation as the user leaves a field.
+    mode: "onBlur",
   });
 
   async function onSubmit(values: SignupSchemaType) {
@@ -105,7 +107,6 @@ const Signup: React.FC = () => {
                           field.onChange(country.name);
                         }}
                       />
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -148,15 +149,6 @@ const Signup: React.FC = () => {
             </form>
           </Form>
           <Separator className="bg-[#E5E7EB] h-1 my-8" />
-          {/* <p className="text-sm font-normal text-center mb-8 text-[#6B7280]">
-            Or sign in with
-          </p>
-          <Button
-            btnText="Google"
-            variant="outline"
-            className="w-full text-base font-medium"
-            icon={<GoogleIcon />}
-          /> */}
           <div className="flex gap-2 items-center justify-center mt-8">
             <p className="font-medium text-sm text-[#6B7280]">
               Already a user on our platform?
@@ -179,3 +171,4 @@ const Signup: React.FC = () => {
 };
 
 export default Signup;
+

@@ -11,8 +11,6 @@ export const loginSchema = z.object({
     .regex(/\d/, { message: "Password must contain at least one number" }),
 });
 
-export type LoginSchemaType = z.infer<typeof loginSchema>;
-
 export const signupSchema = z.object({
   firstName: z
     .string()
@@ -22,7 +20,8 @@ export const signupSchema = z.object({
     .min(3, { message: "Last name must be at least 3 characters" }),
   userName: z
     .string()
-    .min(3, { message: "Username must be at least 3 characters" }),
+    .min(3, { message: "Username must be at least 3 characters" })
+    .regex(/^\S+$/, { message: "Username cannot contain spaces." }),
   email: z.string().email("Invalid email provided"),
   password: z
     .string()

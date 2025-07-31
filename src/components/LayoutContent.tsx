@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 import { Box } from "@chakra-ui/react";
 import UserNavbar from "@/components/navbar/user";
 import { useUserSession } from "@/app/context/user-context";
@@ -8,7 +8,7 @@ import RedirectContent from "@/components/redirect-modal";
 import Footer from "@/parts/user/user_main_footer";
 import TradingViewTickerTape from "@/components/tradingview-ticker-tape";
 import ImageBackground from "@/components/image-background";
-import FreePlanFloater from '@/components/FreePlanFloater';
+import FreeSubscriptionFloater from "@/components/FreeSubscriptionFloater";
 
 interface LayoutContentProps {
   children: React.ReactNode;
@@ -19,16 +19,19 @@ const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
 
   console.log(profileData, "Profile Data in LayoutContent");
 
-  // Determine freePlanEndDate based on profileData
-  const freePlanEndDate = (() => {
+  // Determine freeSubscriptionEndDate based on profileData
+  const freeSubscriptionEndDate = (() => {
     // If the user is subscribed, or if profileData/result is not available,
-    // or if there's no specific freePlanEndDate in profileData,
+    // or if there's no specific freeSubscriptionEndDate in profileData,
     // then the floater should not be shown.
-    if (profileData?.result?.isSubActive || !profileData?.result?.freePlanEndDate) {
+    if (
+      profileData?.result?.isSubActive ||
+      !profileData?.result?.freeSubscriptionEndDate
+    ) {
       return null;
     }
-    // If the user is NOT subscribed and freePlanEndDate exists in profileData, use it.
-    return profileData.result.freePlanEndDate;
+    // If the user is NOT subscribed and freeSubscriptionEndDate exists in profileData, use it.
+    return profileData.result.freeSubscriptionEndDate;
   })();
 
   return (
@@ -43,9 +46,9 @@ const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
 
         {/* Free Plan Floater - Rendered here */}
         {profileData && ( // Ensure profileData is loaded before rendering
-          <FreePlanFloater
+          <FreeSubscriptionFloater
             isSubActive={profileData.result?.isSubActive || false}
-            freePlanEndDate={freePlanEndDate || ''}
+            freeSubscriptionEndDate={freeSubscriptionEndDate || ""}
           />
         )}
 

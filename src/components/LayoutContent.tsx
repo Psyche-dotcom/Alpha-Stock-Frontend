@@ -17,7 +17,7 @@ interface LayoutContentProps {
 const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
   const { profileData } = useUserSession();
 
-  console.log(profileData, "Profile Data in LayoutContent");
+  // console.log(profileData, "Profile Data in LayoutContent");
 
   // Determine freeSubscriptionEndDate based on profileData
   const freeSubscriptionEndDate = (() => {
@@ -26,12 +26,12 @@ const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
     // then the floater should not be shown.
     if (
       profileData?.result?.isSubActive ||
-      !profileData?.result?.freeSubscriptionEndDate
+      !profileData?.result?.freeSubcriptionEndDate
     ) {
       return null;
     }
     // If the user is NOT subscribed and freeSubscriptionEndDate exists in profileData, use it.
-    return profileData.result.freeSubscriptionEndDate;
+    return profileData.result.freeSubcriptionEndDate;
   })();
 
   return (

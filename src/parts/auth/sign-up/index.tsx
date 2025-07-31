@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import AuthCard from "@/components/card/auth-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,24 +13,28 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
 import Link from "next/link";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputForm from "@/components/form/InputForm";
+import { SignupSchemaType, signupSchema } from "@/schemas";
 import { CountryDropdown } from "@/components/ui/country-dropdown";
 import { useSignup } from "@/services/auth";
 import { useHandlePush } from "@/hooks/handlePush";
 import Storage from "@/utils/storage";
-import { SignupSchemaType, signupSchema } from "@/schemas";
 
 const Signup: React.FC = () => {
   const { handlePush } = useHandlePush();
+
   const { signupData, signupIsLoading, signupPayload } = useSignup(
     (res: any) => {
       handlePush(ROUTES.AUTH.CONFIRMEMAIL);
     }
   );
+
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(signupSchema),
+
     defaultValues: {
       email: "",
       password: "",
@@ -41,12 +44,13 @@ const Signup: React.FC = () => {
       country: "",
       phoneNumber: "",
     },
-    // FIX: Set the mode to "onBlur" to enable real-time validation as the user leaves a field.
+
     mode: "onBlur",
   });
 
   async function onSubmit(values: SignupSchemaType) {
     signupPayload(values);
+
     Storage.set("email", values.email);
   }
 
@@ -171,4 +175,3 @@ const Signup: React.FC = () => {
 };
 
 export default Signup;
-

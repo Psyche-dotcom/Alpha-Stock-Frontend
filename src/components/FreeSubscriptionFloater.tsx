@@ -3,12 +3,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
 interface FreeSubscriptionFloaterProps {
-  isSubActive: boolean;
-  freeSubscriptionEndDate: string; // Assuming this is a string in a format like 'YYYY-MM-DD' or ISO string
+  freeSubscriptionEndDate: string; // Assuming a 'YYYY-MM-DD' or ISO string format
 }
 
 const FreeSubscriptionFloater: React.FC<FreeSubscriptionFloaterProps> = ({
-  isSubActive,
   freeSubscriptionEndDate,
 }) => {
   const [daysLeft, setDaysLeft] = useState<number | null>(null);
@@ -17,50 +15,45 @@ const FreeSubscriptionFloater: React.FC<FreeSubscriptionFloaterProps> = ({
   const offset = useRef({ x: 0, y: 0 });
   const floaterRef = useRef<HTMLDivElement>(null);
 
-  // Calculate days left
+  // Calculate days left and determine visibility based on date
   useEffect(() => {
-    if (!isSubActive && freeSubscriptionEndDate) {
+    // Only proceed if a valid end date is provided
+    if (freeSubscriptionEndDate) {
       const endDate = new Date(freeSubscriptionEndDate);
       const today = new Date();
-      // Set hours, minutes, seconds, milliseconds to 0 for accurate day difference
+
+      // Normalize dates to midnight for accurate day-only comparison
       endDate.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
 
+      // Calculate time difference in milliseconds
       const timeDiff = endDate.getTime() - today.getTime();
-      const calculatedDaysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-      setDaysLeft(calculatedDaysLeft);
-      console.log(
-        "FreeSubscriptionFloater: Calculated days left:",
-        calculatedDaysLeft
-      ); // Debugging
-    } else {
-      setDaysLeft(null); // Hide if subscribed or no end date
-      console.log(
-        "FreeSubscriptionFloater: Not showing floater. isSubActive:",
-        isSubActive,
-        "freeSubscriptionEndDate:",
-        freeSubscriptionEndDate
-      ); // Debugging
-    }
-  }, [isSubActive, freeSubscriptionEndDate]);
 
-  // Initialize position on mount (top right, under assumed navbar height)
+      // Calculate days left, rounding up to include the current day
+      const calculatedDaysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+      // Set daysLeft only if the date has not passed
+      if (calculatedDaysLeft >= 0) {
+        setDaysLeft(calculatedDaysLeft);
+      } else {
+        setDaysLeft(null); // Hide the floater if the date has passed
+      }
+    } else {
+      setDaysLeft(null); // Hide if no end date is provided
+    }
+  }, [freeSubscriptionEndDate]);
+
+  // Initial position setup (top right) and drag handlers remain the same
+  // (You can copy and paste the rest of the original component's logic here)
   useEffect(() => {
     if (floaterRef.current) {
       const floaterWidth = floaterRef.current.offsetWidth;
-      // Adjusted initial position: more aggressive top-right placement
-      // You might need to fine-tune these 'top' and 'right' values based on your actual navbar height and page layout
       const initialX = window.innerWidth - floaterWidth - 30; // 30px from right edge
       const initialY = 90; // 90px from top, assuming a navbar height
       setPosition({ x: initialX, y: initialY });
-      console.log("FreeSubscriptionFloater: Initial position set to", {
-        x: initialX,
-        y: initialY,
-      }); // Debugging
     }
   }, []);
 
-  // Handle mouse down to start dragging
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (floaterRef.current) {
       setIsDragging(true);
@@ -68,17 +61,13 @@ const FreeSubscriptionFloater: React.FC<FreeSubscriptionFloaterProps> = ({
         x: e.clientX - floaterRef.current.getBoundingClientRect().left,
         y: e.clientY - floaterRef.current.getBoundingClientRect().top,
       };
-      floaterRef.current.style.cursor = "grabbing"; // Change cursor to grabbing
-      console.log("FreeSubscriptionFloater: Dragging started."); // Debugging
+      floaterRef.current.style.cursor = "grabbing";
     }
   }, []);
 
-  // Handle mouse move to update position
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
       if (!isDragging) return;
-
-      // Calculate new position, clamping to window boundaries
       const newX = Math.max(
         0,
         Math.min(
@@ -93,22 +82,18 @@ const FreeSubscriptionFloater: React.FC<FreeSubscriptionFloaterProps> = ({
           window.innerHeight - (floaterRef.current?.offsetHeight || 0)
         )
       );
-
       setPosition({ x: newX, y: newY });
     },
     [isDragging]
   );
 
-  // Handle mouse up to stop dragging
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
     if (floaterRef.current) {
-      floaterRef.current.style.cursor = "grab"; // Change cursor back to grab
-      console.log("FreeSubscriptionFloater: Dragging stopped."); // Debugging
+      floaterRef.current.style.cursor = "grab";
     }
   }, []);
 
-  // Add and remove global mouse event listeners for dragging
   useEffect(() => {
     if (isDragging) {
       document.addEventListener("mousemove", handleMouseMove);
@@ -117,15 +102,15 @@ const FreeSubscriptionFloater: React.FC<FreeSubscriptionFloaterProps> = ({
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     }
-
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
-  // Do not render if subscribed or no days left
-  if (isSubActive || daysLeft === null || daysLeft <= 0) {
+
+  // Main render condition: Do not show if daysLeft is null (i.e., date has passed or is invalid)
+  if (daysLeft === null) {
     return null;
   }
 
@@ -137,11 +122,11 @@ const FreeSubscriptionFloater: React.FC<FreeSubscriptionFloaterProps> = ({
         position: "fixed",
         top: position.y,
         left: position.x,
-        zIndex: 1000, // Ensure it's above most content
-        cursor: isDragging ? "grabbing" : "grab", // Change cursor dynamically
-        touchAction: "none", // Prevent default touch actions like scrolling
+        zIndex: 1000,
+        cursor: isDragging ? "grabbing" : "grab",
+        touchAction: "none",
       }}
-      className="bg-[#351F05] text-white rounded-xl px-4 py-2 shadow-lg flex items-center justify-center text-sm font-semibold whitespace-nowrap"
+      className="bg-[#351F05] text-white rounded-xl px-6 py-2 shadow-lg flex items-center justify-center text-sm font-semibold whitespace-nowrap"
     >
       {`${daysLeft} day${daysLeft === 1 ? "" : "s"} left of Free Plan`}
     </div>

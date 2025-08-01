@@ -121,8 +121,13 @@ export const useConfirmEmail = (handleSuccess) => {
     mutationFn: (payload) =>
       httpService.postDataWithoutToken(payload, routes.confirmEmail()),
     onSuccess: (requestParams) => {
+      // Pass the data to the handleSuccess callback if needed
       handleSuccess(requestParams);
-      showSuccessAlert(requestParams);
+
+      // CORRECT WAY: Extract the message string from the response data
+      const successMessage =
+        requestParams?.data?.message || "Email confirmed successfully!";
+      showSuccessAlert(successMessage);
     },
     onError: (error) => {
       showErrorAlert(error?.response?.data?.errorMessages[0]);

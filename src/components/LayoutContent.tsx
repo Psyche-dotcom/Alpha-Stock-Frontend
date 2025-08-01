@@ -17,22 +17,9 @@ interface LayoutContentProps {
 const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
   const { profileData } = useUserSession();
 
-  // console.log(profileData, "Profile Data in LayoutContent");
-
-  // Determine freeSubscriptionEndDate based on profileData
-  const freeSubscriptionEndDate = (() => {
-    // If the user is subscribed, or if profileData/result is not available,
-    // or if there's no specific freeSubscriptionEndDate in profileData,
-    // then the floater should not be shown.
-    if (
-      profileData?.result?.isSubActive ||
-      !profileData?.result?.freeSubcriptionEndDate
-    ) {
-      return null;
-    }
-    // If the user is NOT subscribed and freeSubscriptionEndDate exists in profileData, use it.
-    return profileData.result.freeSubcriptionEndDate;
-  })();
+  // Get the free subscription end date directly from profileData
+  const freeSubscriptionEndDate =
+    profileData?.result?.freeSubcriptionEndDate || null;
 
   return (
     <Box className="relative min-h-screen overflow-hidden">
@@ -45,10 +32,9 @@ const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
         <TradingViewTickerTape />
 
         {/* Free Plan Floater - Rendered here */}
-        {profileData && ( // Ensure profileData is loaded before rendering
+        {profileData && freeSubscriptionEndDate && (
           <FreeSubscriptionFloater
-            isSubActive={profileData.result?.isSubActive || false}
-            freeSubscriptionEndDate={freeSubscriptionEndDate || ""}
+            freeSubscriptionEndDate={freeSubscriptionEndDate}
           />
         )}
 

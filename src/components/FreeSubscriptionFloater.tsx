@@ -15,44 +15,34 @@ const FreeSubscriptionFloater: React.FC<FreeSubscriptionFloaterProps> = ({
   const offset = useRef({ x: 0, y: 0 });
   const floaterRef = useRef<HTMLDivElement>(null);
 
-  // Calculate days left and determine visibility based on date
+  // Calculate days left
   useEffect(() => {
-    // Only proceed if a valid end date is provided
     if (freeSubscriptionEndDate) {
       const endDate = new Date(freeSubscriptionEndDate);
       const today = new Date();
-
-      // Normalize dates to midnight for accurate day-only comparison
       endDate.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
-
-      // Calculate time difference in milliseconds
       const timeDiff = endDate.getTime() - today.getTime();
-
-      // Calculate days left, rounding up to include the current day
       const calculatedDaysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-      // Set daysLeft only if the date has not passed
       if (calculatedDaysLeft >= 0) {
         setDaysLeft(calculatedDaysLeft);
       } else {
-        setDaysLeft(null); // Hide the floater if the date has passed
+        setDaysLeft(null);
       }
     } else {
-      setDaysLeft(null); // Hide if no end date is provided
+      setDaysLeft(null);
     }
   }, [freeSubscriptionEndDate]);
 
-  // Initial position setup (top right) and drag handlers remain the same
-  // (You can copy and paste the rest of the original component's logic here)
+  // Set the initial position after the component mounts and the ref is available
   useEffect(() => {
     if (floaterRef.current) {
       const floaterWidth = floaterRef.current.offsetWidth;
-      const initialX = window.innerWidth - floaterWidth - 30; // 30px from right edge
-      const initialY = 90; // 90px from top, assuming a navbar height
+      const initialX = window.innerWidth - floaterWidth - 10; // 10px from right edge
+      const initialY = window.innerHeight * 0.2; // 20% from the top
       setPosition({ x: initialX, y: initialY });
     }
-  }, []);
+  }, [floaterRef.current]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (floaterRef.current) {
@@ -108,8 +98,6 @@ const FreeSubscriptionFloater: React.FC<FreeSubscriptionFloaterProps> = ({
     };
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
-
-  // Main render condition: Do not show if daysLeft is null (i.e., date has passed or is invalid)
   if (daysLeft === null) {
     return null;
   }

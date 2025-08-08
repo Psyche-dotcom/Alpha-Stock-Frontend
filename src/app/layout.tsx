@@ -7,8 +7,8 @@ import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
-  title: "Nvidia",
-  description: "Welcome to your stock analysis page",
+  title: "Alpha Strategy",
+  description: "Manage Your Investments Better",
   icons: {
     icon: {
       url: "/favicon.ico",

@@ -649,13 +649,13 @@ const Analyzer: React.FC<IStockComponent> = ({ symbol }) => {
                 <option value={3}>(Low, Mid, High)</option>
               </Select>
             </Box>
-            <Button
+            {/* <Button
               className="border-[#351F05] px-3 py-2 font-medium text-[#351F05] text-xs"
               variant={"outline"}
               onClick={() => setShowAnalysisHistory(!showAnalysisHistory)}
             >
               Analysis History
-            </Button>
+            </Button> */}
           </div>
         </Box>
 
